@@ -1,0 +1,9 @@
+{
+  "styles": [
+    "le/css/app.css"
+  ],
+
+  "scripts": [
+    "le/scripts/scripts.@script_hash@.js"
+  ]
+}

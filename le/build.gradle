@@ -1,0 +1,138 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.apache.tools.ant.taskdefs.condition.Os
+import static groovy.io.FileType.FILES
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+jar {
+  baseName = 'os-le'
+  version =  '1.0.0'
+
+  manifest {
+    attributes("os-plugin-name": "le")
+  }
+  
+  doFirst {
+    from ('./src/main/webapp/dist') {
+      include '**/**'
+ 
+      into 'META-INF/resources/le'
+    }
+
+    from('./src/main/webapp') {
+      include 'def.json'
+
+      into 'META-INF/resources/le'
+
+      def scriptHash = "-1"
+      new File('./src/main/webapp/dist/').eachFileRecurse(FILES) {
+        if (it.name.startsWith("scripts") && it.name.endsWith("js")) {
+          def parts = it.name.split(/\./);
+          scriptHash = parts[1]
+        }
+      }
+
+      filter(ReplaceTokens, tokens: [script_hash: scriptHash])
+    }
+  }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+  ajc
+  aspects
+  aspectCompile
+  
+  compile {
+    extendsFrom aspects
+  }
+}
+
+configurations.all {
+  transitive = false
+}
+
+def springVersion = "3.2.13.RELEASE"
+
+dependencies {
+  ajc       "org.aspectj:aspectjtools:1.8.6"
+  compile   "org.aspectj:aspectjrt:1.8.6"
+  compile   "javax.persistence:persistence-api:1.0.2"
+  aspects   "org.springframework:spring-aspects:3.2.13.RELEASE"
+  aspects   fileTree(dir: '../lib', include: ['openspecimen.jar'])
+
+  compile group: 'asm', name: 'asm', version:'3.3.1'
+  compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.8.6'
+  compile group: 'org.javassist', name: 'javassist', version:'3.19.0-GA'
+  compile group: 'cglib', name: 'cglib', version:'3.1'
+
+  compile group: 'commons-collections', name: 'commons-collections', version:'3.2.1'
+  compile group: 'commons-logging', name: 'commons-logging', version:'1.2'
+  compile group: 'commons-lang', name: 'commons-lang', version:'2.6'
+  compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
+  compile group: 'log4j', name: 'log4j', version:'1.2.16'
+
+  compile group: 'org.hibernate', name: 'hibernate-envers', version:'4.2.18.Final'
+
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.5.3'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.5.3'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.5.3'
+
+  compile group: 'org.springframework', name: 'spring-aop', version:springVersion
+  compile group: 'org.springframework', name: 'spring-beans',  version:springVersion
+  compile group: 'org.springframework', name: 'spring-context', version:springVersion
+  compile group: 'org.springframework', name: 'spring-core', version:springVersion
+  compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.2.7.RELEASE'
+  compile group: 'org.springframework', name: 'spring-tx', version:springVersion
+  compile group: 'org.springframework', name: 'spring-web', version:springVersion
+  compile group: 'org.springframework', name: 'spring-webmvc', version:springVersion
+}
+
+compileJava {
+  doLast{
+    ant.taskdef(resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+                classpath: configurations.ajc.asPath)
+
+    ant.iajc(
+      source: 1.8, target: 1.8,
+      destDir: sourceSets.main.output.classesDir.absolutePath,
+      maxmem: "512m", fork: "true",
+      aspectPath: configurations.aspects.asPath,
+      sourceRootCopyFilter: "**/*.java",
+      classpath: "${configurations.compile.asPath};${configurations.aspectCompile.asPath}") {
+        sourceroots {
+          sourceSets.main.java.srcDirs.each {
+            pathelement(location:it.absolutePath)
+          }
+        }
+      }
+  }
+}
+
+def grunt_cmd = "grunt"
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+  grunt_cmd = "grunt.cmd"
+}
+
+task grunt_build(type: Exec) {
+  workingDir './src/main/webapp'
+  commandLine grunt_cmd, 'build'
+}
+
+task grunt_clean(type: Exec) {
+  workingDir './src/main/webapp'
+  commandLine grunt_cmd, 'clean'
+}
+
+clean.dependsOn grunt_clean
+
+jar.dependsOn grunt_build
+build.dependsOn jar
