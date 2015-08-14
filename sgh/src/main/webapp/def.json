@@ -1,0 +1,9 @@
+{
+  "styles": [
+    "sgh/css/app.css"
+  ],
+
+  "scripts": [
+    "sgh/scripts/scripts.@script_hash@.js"
+  ]
+}
