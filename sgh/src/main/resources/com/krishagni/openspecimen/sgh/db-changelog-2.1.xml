@@ -42,7 +42,25 @@
       update
         catissue_specimen_coll_group
       set
+        REASON_FOR_MISSED_CASE = 'No post ops consent taken within 3 months'
+      where
+        REASON_FOR_MISSED_CASE = 'No Post Ops consent taken within 3 mths'
+    </sql>
+    
+    <sql>
+      update
+        catissue_specimen_coll_group
+      set
         MISSED_REASON = REASON_FOR_MISSED_CASE
+    </sql>
+    
+    <sql>
+      update
+        catissue_specimen_coll_group
+      set
+        COLLECTION_STATUS = 'Complete'
+      where
+        COLLECTION_STATUS = 'Complete-Late'
     </sql>
     
     <sql>
@@ -55,7 +73,13 @@
     </sql>
   </changeSet>
   
-  <changeSet author="nmarwaha" id="Set label formats for all protocols as per SG format" failOnError="false">
+  <changeSet author="nmarwaha" id="Drop older reason for missed case column from SCG table">
+    <dropColumn
+      tableName="CATISSUE_SPECIMEN_COLL_GROUP"
+      columnName="REASON_FOR_MISSED_CASE"/>    
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set label formats for all protocols as per SG format">
     <sql>
       update
         catissue_collection_protocol
@@ -66,7 +90,7 @@
     </sql>
   </changeSet>
   
-  <changeSet author="nmarwaha" id="Reset TRID counter in key sequence table" failOnError="false">
+  <changeSet author="nmarwaha" id="Reset TRID counter in key sequence table">
     <sql>
       select 
         MAX(CAST(SUBSTRING(name, 2, length(name)) AS UNSIGNED)) 
