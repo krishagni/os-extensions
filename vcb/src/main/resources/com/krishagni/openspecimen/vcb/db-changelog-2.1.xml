@@ -10,4 +10,119 @@
       update catissue_permissible_value set value = "Deceased" where public_id = "2004001" and value = "Dead";
     </sql>
   </changeSet>
+
+  <changeSet author="asamgir" id="Adding specimen quantity  units">
+    <sql>
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Cell", "MNC Bone Marrow", "cell count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Cell", "MNC Bone Marrow with Trizol", "cell count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Cell", "PBMNC", "cell count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Molecular", "ctDNA", "ug", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Molecular", "DNA", "ug", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Molecular", "RNA", "ug", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Departmental FFPE Block", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "EBUS", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Ethanol Fixed Paraffin H&amp;E Slide", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Ethanol Fixed Paraffin Slide", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "ETOH-Fixed Paraffin Block", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "FFPE Block", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "FFPE H&amp;E Slide", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "FFPE Slide", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Fresh Tissue", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Microdissected", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Not Specified", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "OCT Block", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "OCT Slide", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Snap Frozen", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "Tissue Micro Array", "count", NULL, "Active");
+
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Tissue", "FFPE Core", "count", NULL, "Active");
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>
