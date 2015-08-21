@@ -31,17 +31,17 @@
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
       values
-        ("Molecular", "ctDNA", "ug", NULL, "Active");
+        ("Molecular", "ctDNA", "µg", NULL, "Active");
 
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
       values
-        ("Molecular", "DNA", "ug", NULL, "Active");
+        ("Molecular", "DNA", "µg", NULL, "Active");
 
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
       values
-        ("Molecular", "RNA", "ug", NULL, "Active");
+        ("Molecular", "RNA", "µg", NULL, "Active");
 
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
