@@ -31,21 +31,6 @@
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
       values
-        ("Molecular", "ctDNA", "µg", NULL, "Active");
-
-      insert into os_specimen_qty_units
-        (specimen_class, specimen_type, unit, html_display_code, activity_status)
-      values
-        ("Molecular", "DNA", "µg", NULL, "Active");
-
-      insert into os_specimen_qty_units
-        (specimen_class, specimen_type, unit, html_display_code, activity_status)
-      values
-        ("Molecular", "RNA", "µg", NULL, "Active");
-
-      insert into os_specimen_qty_units
-        (specimen_class, specimen_type, unit, html_display_code, activity_status)
-      values
         ("Tissue", "Departmental FFPE Block", "count", NULL, "Active");
 
       insert into os_specimen_qty_units
