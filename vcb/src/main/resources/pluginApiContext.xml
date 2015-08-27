@@ -22,4 +22,9 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="changeLog" value="classpath:com/krishagni/openspecimen/vcb/db-changelog-2.1.xml" />
   </bean>
+  
+  <bean id="vcb-pv-liquibase" class="liquibase.integration.spring.SpringLiquibase">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="changeLog" value="classpath:com/krishagni/openspecimen/vcb/db-vcb-pv.xml" />
+  </bean>
 </beans>
