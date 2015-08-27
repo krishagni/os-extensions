@@ -10,9 +10,7 @@
   <property name="text.type" value="varchar" dbms="mysql" />
   <property name="text.type" value="varchar2" dbms="oracle" />
 
-  
-  <!-- Commenting for now, will uncomment once get the updated PV file from QA -->
-  <changeSet id="removing existing PV" author="nmarwaha">
+  <changeSet id="removing existing PV" author="asamgir">
     <sql>
       delete from catissue_permissible_value where public_id = 'Race_PID';
     </sql>
@@ -51,7 +49,7 @@
     </sql>
   </changeSet>
 
-  <changeSet id="Permissible_values csv file upload" author="nmarwaha">
+  <changeSet id="Permissible_values csv file upload" author="asamgir">
     <loadUpdateData encoding="UTF-8"
       file="classpath:com/krishagni/openspecimen/vcb/VCB_PVs.csv"
       primaryKey="IDENTIFIER"

@@ -5,7 +5,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-  <changeSet author="asamgir" id="Adding specimen quantity  units">
+  <changeSet author="asamgir" id="Adding specimen quantity units">
     <sql>
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
