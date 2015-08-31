@@ -25,12 +25,14 @@ osApp.providers
 
     tmplCache.put(
       'plugin-ui-resources/sgh/cp-bulk-reg-btn.html',
-      '<button class="default" ui-sref="cp-bulk-part-regs">' +
-      '  <span class="fa fa-plus"></span>' +
-      '  <span translate="custom_sgh.bulk_reg">' +
-      '    Bulk Register' +
-      '  </span>' +
-      '</button>'
+      '<span ng-controller="sgh.BulkRegistrationButtonCtrl">'+
+      '  <button class="default" ui-sref="cp-bulk-part-regs" ng-if="bulkRegEnabled">' +
+      '    <span class="fa fa-plus"></span>' +
+      '    <span translate="custom_sgh.bulk_reg">' +
+      '      Bulk Register' +
+      '    </span>' +
+      '  </button>' +
+      '</span>'
     );
 
     tmplCache.put(

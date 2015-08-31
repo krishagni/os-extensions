@@ -22,4 +22,18 @@ osApp.providers
     }
 
     init();
+  })
+
+  .controller('sgh.BulkRegistrationButtonCtrl', function(
+    $scope, CpConfigSvc) {
+
+    function init() {
+      CpConfigSvc.getBulkRegParticipantTmpl($scope.cp.id, -1).then(
+        function(tmpl) {
+          $scope.bulkRegEnabled = tmpl != undefined;
+        }
+      );
+      }
+
+    init();
   });
