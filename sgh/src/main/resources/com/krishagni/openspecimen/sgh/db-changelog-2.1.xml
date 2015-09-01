@@ -176,5 +176,21 @@
       );
     </sql>
   </changeSet>
-  
+  <changeSet author="vratnaparkhi" id="Setting parent and derivate specimen storage requirement to Virtual">
+    <sql>
+      update
+        catissue_cp_req_specimen
+      set
+        storage_type = 'Virtual'
+      where lineage in('New', 'Derived');
+    </sql>
+  </changeSet>
+  <changeSet author="vratnaparkhi" id="Updating initial quantity to non-zero in specimen requirements">
+    <loadUpdateData
+      file="com/krishagni/openspecimen/sgh/specimen_req_initial_quantity.csv"
+      primaryKey="identifier"
+      tableName="catissue_cp_req_specimen">
+      <column name="initial_quantity" type="numeric"/>
+    </loadUpdateData>
+  </changeSet>
 </databaseChangeLog>
