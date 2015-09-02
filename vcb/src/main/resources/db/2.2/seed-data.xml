@@ -43,7 +43,7 @@
         catissue_permissible_value 
       where 
         public_id 
-      in ('Race_PID', 'Ethnicity_PID', '2003988', '2003989', '2003993', '2003997', '2004001');    
+      in ('Race_PID', 'Ethnicity_PID', 'Tissue_Site_PID', '2003988', '2003989', '2003993', '2003997', '2004001');    
     </sql>
     
     <sql>
