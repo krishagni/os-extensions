@@ -28,9 +28,9 @@ osApp.providers
     $scope, CpConfigSvc) {
 
     function init() {
-      CpConfigSvc.getBulkRegParticipantTmpl($scope.cp.id, -1).then(
-        function(tmpl) {
-          $scope.bulkRegEnabled = tmpl != undefined;
+      CpConfigSvc.getWorkflowData($scope.cp.id, "bulkRegister").then(
+        function(workflowData) {
+          $scope.bulkRegEnabled = workflowData.enabled;
         }
       );
       }
