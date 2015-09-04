@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -144,7 +143,6 @@ public class CprServiceImpl implements CprService {
 			specimen.setVisit(visit);
 			if(parent != null){
 				Specimen parentSpecimen = new Specimen();
-				parentSpecimen.setLabel(parent.getLabel());
 				parentSpecimen.setId(parent.getId());
 				parentSpecimen.setVisit(visit);
 				specimen.setParentSpecimen(parentSpecimen);
@@ -152,9 +150,6 @@ public class CprServiceImpl implements CprService {
 			
 			SpecimenDetail spDetail = SpecimenDetail.from(specimen);
 			spDetail.setStatus(Status.SPECIMEN_COLLECTION_STATUS_PENDING.getStatus());
-			
-			String label = getLabel(specimen);
-			spDetail.setLabel(label);
 			
 			ResponseEvent<SpecimenDetail> specimenResp = specimenSvc.createSpecimen(getRequest(spDetail));
 			specimenResp.throwErrorIfUnsuccessful();
@@ -204,16 +199,6 @@ public class CprServiceImpl implements CprService {
 		visit.setCpShortTitle(cpe.getCollectionProtocol().getShortTitle());
 		visit.setName(cprDetail.getPpid() + "-v" + visitCnt);
 		return visit;
-	}
-	
-	
-	private String getLabel(Specimen specimen) {
-		String labelTmpl = specimen.getLabelTmpl();
-		String label = null;
-		if (StringUtils.isNotBlank(labelTmpl)) {
-			label = labelGenerator.generateLabel(labelTmpl, specimen);
-		}
-		return label;
 	}
 	
 	private RequestEvent<PrintSpecimenLabelDetail> getPrintLabelsReq(List<Long> specimenIds) {
