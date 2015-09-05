@@ -46,6 +46,7 @@
   <bean id="tridPrintSvc" class="com.krishagni.openspecimen.sgh.services.impl.TridPrintSvcImpl">
     <property name="cfgSvc" ref="cfgSvc"/>
     <property name="tridGenerator" ref="tridGenerator"/>
+    <property name="daoFactory"  ref="biospecimenDaoFactory"/>
   </bean>
   
   <bean id="tridGenerator" class="com.krishagni.openspecimen.sgh.services.impl.TridGeneratorImpl">

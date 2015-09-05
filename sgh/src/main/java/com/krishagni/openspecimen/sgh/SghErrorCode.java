@@ -6,7 +6,11 @@ public enum SghErrorCode implements ErrorCode{
 	
 	INVALID_PARTICIPANT_COUNT,
 	
-	INVALID_TRID_COUNT;
+	INVALID_TRID_COUNT,
+	
+	CANNOT_PRINT_PLANNED_TRID,
+	
+	INVALID_TRID_SPECIFIED;
 
 	@Override
 	public String code() {

@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Query;
+
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.biospecimen.domain.factory.SpecimenErrorCode;
+import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
+import com.krishagni.catissueplus.core.biospecimen.repository.impl.DaoFactoryImpl;
 import com.krishagni.catissueplus.core.biospecimen.services.impl.DefaultSpecimenLabelPrinter;
 import com.krishagni.catissueplus.core.common.OpenSpecimenAppCtxProvider;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
@@ -16,6 +22,7 @@ import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
+import com.krishagni.openspecimen.sgh.events.TridsRePrintOpDetail;
 import com.krishagni.openspecimen.sgh.SghErrorCode;
 import com.krishagni.openspecimen.sgh.events.BulkTridPrintOpDetail;
 import com.krishagni.openspecimen.sgh.services.TridGenerator;
@@ -29,12 +36,18 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 	
 	private TridGenerator tridGenerator;
 	
+	private DaoFactory daoFactory;
+	
 	public void setCfgSvc(ConfigurationService cfgSvc) {
 		this.cfgSvc = cfgSvc;
 	}
 	
 	public void setTridGenerator(TridGenerator tridGenerator) {
 		this.tridGenerator = tridGenerator;
+	}
+	
+	public void setDaoFactory(DaoFactory daoFactory) {
+		this.daoFactory = daoFactory;
 	}
 
 	@Override
@@ -63,6 +76,45 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		if (job == null) {
 			throw OpenSpecimenException.userError(SpecimenErrorCode.PRINT_ERROR);
 		}
+		return ResponseEvent.response(true);
+	}
+	
+	@Override
+	@PlusTransactional
+	public ResponseEvent<Boolean> printTrids(RequestEvent<TridsRePrintOpDetail> req){
+		List<String> tridsToPrint = req.getPayload().getTrids();
+		
+		List<String> plannedTrids = getPlannedTrids(tridsToPrint);
+		if(CollectionUtils.isNotEmpty(plannedTrids)){
+			throw OpenSpecimenException.userError(SghErrorCode.CANNOT_PRINT_PLANNED_TRID, StringUtils.join(plannedTrids, ","));
+		}
+		
+		List<String> validTrids = getUnplannedTrids(tridsToPrint);
+		
+		List<String> invalidTrids = tridsToPrint;
+		invalidTrids.removeAll(validTrids);
+		
+		if(CollectionUtils.isNotEmpty(invalidTrids)){
+			throw OpenSpecimenException.userError(SghErrorCode.INVALID_TRID_SPECIFIED, StringUtils.join(invalidTrids, ","));
+		}
+		
+		List<Specimen> specimens = new ArrayList<Specimen>();
+		for(String trid : validTrids){
+			specimens.addAll(getSpecimensToPrint(trid));
+		}
+		
+		DefaultSpecimenLabelPrinter printer = getLabelPrinter();
+		if (printer == null) {
+			throw OpenSpecimenException.serverError(SpecimenErrorCode.NO_PRINTER_CONFIGURED);
+		}
+		
+		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
+		
+		LabelPrintJob job = printer.print(specimens, copiesToPrint);
+		if (job == null) {
+			throw OpenSpecimenException.userError(SpecimenErrorCode.PRINT_ERROR);
+		}
+		
 		return ResponseEvent.response(true);
 	}
 	
@@ -99,6 +151,18 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		return specimens;
 	}
 	
+	private List<String> getUnplannedTrids(List<String> tridsToPrint) {
+		Query query = ((DaoFactoryImpl)daoFactory).getSessionFactory().getCurrentSession().createSQLQuery(GET_UNPLANNED_TRIDS);
+		query.setParameterList("trids", tridsToPrint);
+		return query.list();
+	}
+
+	private List<String> getPlannedTrids(List<String> tridsToPrint) {
+		Query query = ((DaoFactoryImpl)daoFactory).getSessionFactory().getCurrentSession().createSQLQuery(GET_PLANNED_TRIDS);
+		query.setParameterList("trids", tridsToPrint);
+		return query.list();
+	}
+	
 	private DefaultSpecimenLabelPrinter getLabelPrinter() {
 		String labelPrinterBean = cfgSvc.getStrSetting(
 				ConfigParams.MODULE, 
@@ -124,5 +188,21 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 	private String getNonMalignantAliqSuffix() {
 		return cfgSvc.getStrSetting(SGH_MODULE, "non_malignant_aliq_suffix", "FZ-N");
 	}
+	
+	private static final String GET_PLANNED_TRIDS = 
+			"select " +
+			"  protocol_participant_id " + 
+			"from " +
+			"  catissue_coll_prot_reg cpr " +
+			"where " +
+			"  cpr.protocol_participant_id in (:trids)";
+	
+	private static final String GET_UNPLANNED_TRIDS = 
+			"select " +
+			"  distinct item_label " +
+			"from " +
+			"  os_label_print_job_items jobItems " +
+			"where " +
+			" item_label in (:trids)";
 	
 }

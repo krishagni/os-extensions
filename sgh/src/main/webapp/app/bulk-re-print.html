@@ -1,0 +1,34 @@
+<div>
+  <div os-page-header>
+    <h3> 
+      <span translate="custom_sgh.bulk_pre_printing">Bulk Print TRIDs</span>
+    </h3>
+  </div>
+   
+  <div class="container">
+    <form class="form-horizontal" name="bulkRePrintForm" os-form-validator="bulkRePrintForm" novalidate>
+      <div class="form-group">
+        <label class="control-label col-xs-3" translate="custom_sgh.trid_to_print">TRIDs to print</label>
+        <div class="col-xs-6">
+          <textarea name="trids" ng-model="trids" class="form-control" 
+            placeholder="{{'custom_sgh.trids' | translate}}" required>
+            <div os-field-error field="bulkRePrintForm.trids"></div>
+          </textarea>
+        </div>
+      </div>
+
+      <div class="os-divider"></div>
+
+      <div class="form-group">
+        <div class="col-xs-offset-3 col-xs-6">
+          <button type="submit" class="btn btn-primary" os-form-submit="bulkPrint()">
+            <span translate="custom_sgh.buttons.print">Print</span>
+          </button>
+          <button type="submit" class="btn os-btn-text" ng-click="back()">
+            <span translate="common.buttons.cancel">Cancel</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

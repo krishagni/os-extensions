@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
+import com.krishagni.openspecimen.sgh.events.TridsRePrintOpDetail;
 import com.krishagni.openspecimen.sgh.events.BulkTridPrintOpDetail;
 import com.krishagni.openspecimen.sgh.services.TridPrintSvc;
 
@@ -26,6 +27,17 @@ public class TridPrintController {
 	public Boolean generateAndPrintTrids(@RequestBody BulkTridPrintOpDetail detail) {
 		RequestEvent<BulkTridPrintOpDetail> req = new RequestEvent<BulkTridPrintOpDetail>(detail);
 		ResponseEvent<Boolean> resp = tridPrintSvc.generateAndPrintTrids(req);
+		resp.throwErrorIfUnsuccessful();
+		
+		return resp.getPayload();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value="/print")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody	
+	public Boolean rePrintTrids(@RequestBody TridsRePrintOpDetail detail) {
+		RequestEvent<TridsRePrintOpDetail> req = new RequestEvent<TridsRePrintOpDetail>(detail);
+		ResponseEvent<Boolean> resp = tridPrintSvc.printTrids(req);
 		resp.throwErrorIfUnsuccessful();
 		
 		return resp.getPayload();

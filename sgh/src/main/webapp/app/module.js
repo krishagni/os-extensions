@@ -16,6 +16,12 @@ osApp.providers
     templateUrl: 'plugin-ui-resources/sgh/bulk-registrations.html',
     controller: 'sghCpBulkRegistrationsCtrl',
     parent: 'cp-view'
+  })
+  .state('bulk-re-print-trids', {
+    url: '/bulk-print-trids',
+    templateUrl: 'custom-modules/sgh/biospecimen/bulk-re-print.html',
+    controller: 'sgh.CpBulkRePrintingCtrl',
+    parent: 'signed-in'  
   });
 
   function initSghPlugin() {

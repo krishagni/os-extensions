@@ -10,8 +10,12 @@
     "trid_count": "TRID Count",
     "bulk_printing": "Bulk Print TRIDs for Unplanned Protocols",
     "bpp_desc": "Bulk pre print TRIDs for unplanned collection protocols",
+    "bulk_pre_printing": "Bulk Print TRIDs",
+    "trid_to_print": "TRIDs to print",
+    "trids": "TRIDs",
     "buttons":{
-      "print": "Print"
+      "print": "Print",
+      "rePrint": "RePrint"
     }
   },
   
