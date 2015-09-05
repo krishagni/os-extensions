@@ -89,23 +89,22 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			throw OpenSpecimenException.userError(SghErrorCode.CANNOT_PRINT_PLANNED_TRID, StringUtils.join(plannedTrids, ","));
 		}
 		
-		List<String> validTrids = getUnplannedTrids(tridsToPrint);
+		List<String> unplannedTrides = getUnplannedTrids(tridsToPrint);
 		
-		List<String> invalidTrids = tridsToPrint;
-		invalidTrids.removeAll(validTrids);
+		List<String> invalidTrids = CollectionUtils.subtract(tridsToPrint, unplannedTrides);
 		
 		if(CollectionUtils.isNotEmpty(invalidTrids)){
 			throw OpenSpecimenException.userError(SghErrorCode.INVALID_TRID_SPECIFIED, StringUtils.join(invalidTrids, ","));
 		}
 		
-		List<Specimen> specimens = new ArrayList<Specimen>();
-		for(String trid : validTrids){
-			specimens.addAll(getSpecimensToPrint(trid));
-		}
-		
 		DefaultSpecimenLabelPrinter printer = getLabelPrinter();
 		if (printer == null) {
 			throw OpenSpecimenException.serverError(SpecimenErrorCode.NO_PRINTER_CONFIGURED);
+		}
+		
+		List<Specimen> specimens = new ArrayList<Specimen>();
+		for(String trid : unplannedTrides){
+			specimens.addAll(getSpecimensToPrint(trid));
 		}
 		
 		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
@@ -152,13 +151,18 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 	}
 	
 	private List<String> getUnplannedTrids(List<String> tridsToPrint) {
-		Query query = ((DaoFactoryImpl)daoFactory).getSessionFactory().getCurrentSession().createSQLQuery(GET_UNPLANNED_TRIDS);
+		Query query = ((DaoFactoryImpl)daoFactory).getSessionFactory()
+				.getCurrentSession()
+				.createSQLQuery(GET_UNPLANNED_TRIDS);
+		
 		query.setParameterList("trids", tridsToPrint);
 		return query.list();
 	}
 
 	private List<String> getPlannedTrids(List<String> tridsToPrint) {
-		Query query = ((DaoFactoryImpl)daoFactory).getSessionFactory().getCurrentSession().createSQLQuery(GET_PLANNED_TRIDS);
+		Query query = ((DaoFactoryImpl)daoFactory).getSessionFactory()
+				.getCurrentSession()
+				.createSQLQuery(GET_PLANNED_TRIDS);
 		query.setParameterList("trids", tridsToPrint);
 		return query.list();
 	}

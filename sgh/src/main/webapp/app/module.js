@@ -17,9 +17,9 @@ osApp.providers
     controller: 'sghCpBulkRegistrationsCtrl',
     parent: 'cp-view'
   })
-  .state('bulk-re-print-trids', {
-    url: '/bulk-print-trids',
-    templateUrl: 'custom-modules/sgh/biospecimen/bulk-re-print.html',
+  .state('bulk-reprint-trids', {
+    url: '/bulk-reprint-trids',
+    templateUrl: 'custom-modules/sgh/biospecimen/bulk-reprint.html',
     controller: 'sgh.CpBulkRePrintingCtrl',
     parent: 'signed-in'  
   });
