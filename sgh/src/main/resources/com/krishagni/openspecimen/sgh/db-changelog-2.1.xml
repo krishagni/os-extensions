@@ -185,6 +185,7 @@
       where lineage in('New', 'Derived');
     </sql>
   </changeSet>
+  
   <changeSet author="vratnaparkhi" id="Updating initial quantity to non-zero in specimen requirements">
     <loadUpdateData
       file="com/krishagni/openspecimen/sgh/specimen_req_initial_quantity.csv"
@@ -193,4 +194,96 @@
       <column name="initial_quantity" type="numeric"/>
     </loadUpdateData>
   </changeSet>
+  
+  <changeSet author="hemant" id="Updating collection event table from scg event">
+    <sql>
+      update
+        catissue_coll_event_param cscep
+        inner join catissue_specimen cs on cs.identifier=cscep.specimen_id
+        inner join catissue_specimen_coll_group scg on cs.specimen_collection_group_id=scg.identifier
+      set 
+        cscep.user_id=scg.collector_id,
+        cscep.container=scg.collection_container, 
+        cscep.collection_procedure=scg.collection_procedure, 
+        cscep.comments=scg.collection_comments,
+        cscep.event_timestamp=scg.collection_timestamp 
+      where 
+        cs.collection_status='Collected'
+        and cs.lineage='New'
+        and cs.activity_status != 'Disabled'
+        and scg.collection_container != 'Use CP Defaults'
+        and scg.collection_procedure != 'Use CP Defaults';
+    </sql>
+  </changeSet>
+
+  <changeSet author="hemant" id="Updating received event table from scg event">
+    <sql>
+      update
+        catissue_received_event_param crep
+        inner join catissue_specimen cs on cs.identifier=crep.specimen_id
+        inner join catissue_specimen_coll_group scg on cs.specimen_collection_group_id=scg.identifier
+      set 
+        crep.user_id=scg.receiver_id,
+        crep.comments=scg.received_comments, 
+        crep.event_timestamp=scg.received_timestamp, 
+        crep.received_quality=scg.received_quality
+      where 
+        cs.collection_status='Collected'
+        and cs.lineage='New'
+        and cs.activity_status != 'Disabled'
+        and scg.received_quality != 'Use CP Defaults';
+    </sql>
+   </changeSet>
+ 
+  <changeSet author="hemant" id="Updating container column of collection event table">
+    <sql>
+      update
+        catissue_coll_event_param cscep
+        inner join catissue_specimen cs on cs.identifier=cscep.specimen_id
+        inner join catissue_cp_req_specimen as ccrs on ccrs.identifier= cs.req_specimen_id
+        join catissue_specimen_coll_group scg on  cs.specimen_collection_group_id=scg.identifier
+      set 
+        cscep.container=ccrs.collection_container 
+      where 
+        cs.collection_status='Collected'
+        and cs.lineage='New'
+        and cs.activity_status != 'Disabled'
+        and scg.collection_container='Use CP Defaults';
+    </sql>
+  </changeSet>
+
+  <changeSet author="hemant" id="Updating collection procedure column of collection event table">
+    <sql>
+      update
+        catissue_coll_event_param cscep
+        inner join catissue_specimen cs on cs.identifier=cscep.specimen_id
+        inner join catissue_cp_req_specimen as ccrs on ccrs.identifier= cs.req_specimen_id
+        join catissue_specimen_coll_group scg on  cs.specimen_collection_group_id=scg.identifier
+      set 
+        cscep.collection_procedure=ccrs.collection_procedure  
+      where 
+        cs.collection_status='Collected'
+        and cs.lineage='New'
+        and cs.activity_status != 'Disabled'
+        and scg.collection_procedure='Use CP Defaults';
+    </sql>
+  </changeSet>
+   
+  <changeSet author="hemant" id="Updating received quality column of received event table">
+    <sql>
+      update
+        catissue_received_event_param crep
+        inner join catissue_specimen cs on cs.identifier=crep.specimen_id
+        inner join catissue_cp_req_specimen as ccrs on ccrs.identifier= cs.req_specimen_id
+        join catissue_specimen_coll_group scg on  cs.specimen_collection_group_id=scg.identifier
+      set 
+        crep.received_quality=ccrs.received_quality 
+      where 
+        cs.collection_status='Collected'
+        and cs.lineage='New'
+        and cs.activity_status != 'Disabled'
+        and scg.received_quality='Use CP Defaults';
+    </sql>
+  </changeSet>
+  
 </databaseChangeLog>
