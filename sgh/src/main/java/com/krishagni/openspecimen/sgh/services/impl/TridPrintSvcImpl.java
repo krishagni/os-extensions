@@ -89,10 +89,14 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			throw OpenSpecimenException.userError(SghErrorCode.CANNOT_PRINT_PLANNED_TRID, StringUtils.join(plannedTrids, ","));
 		}
 		
-		List<String> unplannedTrides = getUnplannedTrids(tridsToPrint);
-		
-		List<String> invalidTrids = CollectionUtils.subtract(tridsToPrint, unplannedTrides);
-		
+//		List<String> unplannedTrides = getUnplannedTrids(tridsToPrint);
+//		
+//		List<String> invalidTrids = CollectionUtils.subtract(tridsToPrint, unplannedTrides);
+//		
+		List<String> validTrids = getUnplannedTrids(tridsToPrint);
+//	
+		List<String> invalidTrids = tridsToPrint;
+		invalidTrids.removeAll(validTrids);
 		if(CollectionUtils.isNotEmpty(invalidTrids)){
 			throw OpenSpecimenException.userError(SghErrorCode.INVALID_TRID_SPECIFIED, StringUtils.join(invalidTrids, ","));
 		}
@@ -103,7 +107,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		}
 		
 		List<Specimen> specimens = new ArrayList<Specimen>();
-		for(String trid : unplannedTrides){
+		for(String trid : validTrids){
 			specimens.addAll(getSpecimensToPrint(trid));
 		}
 		
