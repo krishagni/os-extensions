@@ -24,7 +24,7 @@ osApp.providers
     init();
   })
 
-  .controller('sgh.BulkRegistrationButtonCtrl', function(
+  .controller('sghBulkRegistrationButtonCtrl', function(
     $scope, CpConfigSvc) {
 
     function init() {

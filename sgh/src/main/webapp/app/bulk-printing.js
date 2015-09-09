@@ -19,7 +19,7 @@ osApp.providers
 
     init();
   })
-  .controller('sgh.CpBulkRePrintingCtrl', function(
+  .controller('sghCpBulkRePrintingCtrl', function(
     $scope, $http, $state, ApiUrls, Alerts) {
 
     function init() {
