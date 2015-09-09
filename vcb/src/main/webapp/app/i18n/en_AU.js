@@ -10,7 +10,8 @@
   },
 
   "srs": {
-    "label_fmt": "Tissue Bank Number Format"
+    "label_fmt": "Tissue Bank Number Format",
+    "receiver": "Processor"
   },
 
   "cp": {
@@ -45,5 +46,5 @@
  
   "specimen_list": {
     "label": "Tissue Bank Number (Barcode)"
-   }
+  }
 }
