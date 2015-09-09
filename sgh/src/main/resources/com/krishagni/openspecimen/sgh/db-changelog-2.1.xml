@@ -286,4 +286,22 @@
     </sql>
   </changeSet>
   
+  <changeSet author="nmarwaha" id="Set allowed manual visit name falg to true">
+    <sql>
+      update 
+        catissue_collection_protocol 
+      set 
+        MANUAL_VISIT_NAME_ALLOWED=1 
+      where 
+        identifier in (
+          select 
+            collection_protocol_id 
+          from 
+            catissue_site_cp site_cp
+            join catissue_site site on site.identifier=site_cp.site_id 
+          where 
+            name='TissueBank');
+    </sql>
+  </changeSet>
+  
 </databaseChangeLog>
