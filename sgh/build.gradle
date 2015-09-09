@@ -23,7 +23,7 @@ jar {
     from('./src/main/webapp') {
       include 'def.json'
 
-      into 'META-INF/resources/le'
+      into 'META-INF/resources/sgh'
 
       def scriptHash = "-1"
       new File('./src/main/webapp/dist/').eachFileRecurse(FILES) {
