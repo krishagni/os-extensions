@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <property name="boolean.type" value="boolean" dbms="mysql" />
+  <property name="boolean.type" value="number(1,0)" dbms="oracle" />
+  <property name="text.type" value="varchar" dbms="mysql" />
+  <property name="text.type" value="varchar2" dbms="oracle" />
+  
+  <changeSet author="asamgir" id="Adding specimen quantity units">
+    <sql>
+      insert into os_specimen_qty_units
+        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      values
+        ("Cell", "MNC Bone Marrow", "cell count", NULL, "Active"),
+        ("Cell", "MNC Bone Marrow with Trizol", "cell count", NULL, "Active"),
+        ("Cell", "PBMNC", "cell count", NULL, "Active"),
+        ("Tissue", "Departmental FFPE Block", "count", NULL, "Active"),
+        ("Tissue", "EBUS", "count", NULL, "Active"),
+        ("Tissue", "Ethanol Fixed Paraffin H&amp;E Slide", "count", NULL, "Active"),
+        ("Tissue", "Ethanol Fixed Paraffin Slide", "count", NULL, "Active"),
+        ("Tissue", "ETOH-Fixed Paraffin Block", "count", NULL, "Active"),
+        ("Tissue", "FFPE Block", "count", NULL, "Active"),
+        ("Tissue", "FFPE H&amp;E Slide", "count", NULL, "Active"),
+        ("Tissue", "FFPE Slide", "count", NULL, "Active"),
+        ("Tissue", "Fresh Tissue", "count", NULL, "Active"),
+        ("Tissue", "Microdissected", "count", NULL, "Active"),
+        ("Tissue", "Not Specified", "count", NULL, "Active"),
+        ("Tissue", "OCT Block", "count", NULL, "Active"),
+        ("Tissue", "OCT Slide", "count", NULL, "Active"),
+        ("Tissue", "Snap Frozen", "count", NULL, "Active"),
+        ("Tissue", "Tissue Micro Array", "count", NULL, "Active"),
+        ("Tissue", "FFPE Core", "count", NULL, "Active");
+    </sql>
+  </changeSet>
+
+  <changeSet id="removing existing PV" author="asamgir">
+    <sql>
+      delete from
+        catissue_permissible_value 
+      where 
+        public_id 
+      in ('Race_PID', 'Ethnicity_PID', 'Tissue_Site_PID', '2003988', '2003989', '2003993', '2003997', '2004001');    
+    </sql>
+    
+    <sql>
+      delete from 
+        catissue_permissible_value 
+      where 
+        parent_identifier 
+      in (1,2,3,4);
+    </sql>
+
+    <sql>
+      commit;
+    </sql>
+  </changeSet>
+
+  <changeSet id="Permissible_values csv file upload" author="asamgir">
+    <loadUpdateData encoding="UTF-8"
+      file="classpath:db/2.2/pvs.csv"
+      primaryKey="IDENTIFIER"
+      tableName="CATISSUE_PERMISSIBLE_VALUE">
+      <column name="CONCEPT_CODE" type="String"/>            
+    </loadUpdateData>
+  </changeSet>
+
+</databaseChangeLog>
