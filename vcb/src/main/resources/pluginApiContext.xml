@@ -20,6 +20,7 @@
 
   <bean id="vcb-liquibase" class="liquibase.integration.spring.SpringLiquibase">
     <property name="dataSource" ref="dataSource"/>
-    <property name="changeLog" value="classpath:db/2.2/db-changelog.xml" />
+    <property name="changeLog" value="classpath:com/krishagni/openspecimen/vcb/2.2/db-changelog.xml" />
   </bean>
+  
 </beans>

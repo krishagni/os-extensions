@@ -1,0 +1,848 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",DNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",RNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",ctDNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Fresh Tissue,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Snap Frozen,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",OCT Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",OCT Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",ETOH-Fixed Paraffin Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Microdissected,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Tissue Micro Array,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Ethanol Fixed Paraffin Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE H&E Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Ethanol Fixed Paraffin H&E Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Whole Blood,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Whole Bone Marrow,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Serum,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Plasma,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Bone Marrow Plasma,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Buffy Coat,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Buffy Coat without DMSO,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Buffy Coat with DMSO,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",PBMNC,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",MNC Bone Marrow,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Ascites,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Urine,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",EBUS,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",FNA rinse in PBS,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",FNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",PBMNC,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Blood Pellet,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",MNC Bone Marrow with Trizol,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Not Specified,null,0
+getNextPvId(),,,null,No Additive Vacutainer,2003997,0
+getNextPvId(),,,null,Serum Separator Vacutainer,2003997,0
+getNextPvId(),,,null,EDTA Vacutainer,2003997,0
+getNextPvId(),,,null,Citrate Vacutainer,2003997,0
+getNextPvId(),,,null,ACD Vacutainer,2003997,0
+getNextPvId(),,,null,Heparin Vacutainer,2003997,0
+getNextPvId(),,,null,Sterile Specimen Container,2003997,0
+getNextPvId(),,,null,CPT Tiger Top Vacutainer,2003997,0
+getNextPvId(),,,null,P-Citrate Vacutainer,2003997,0
+getNextPvId(),,,null,P-Heparin Vacutainer,2003997,0
+getNextPvId(),,,null,Paxgene DNA Vacutainer,2003997,0
+getNextPvId(),,,null,70mL Specimen Container,2003997,0
+getNextPvId(),,,null,Not Specified,2003997,0
+getNextPvId(),,,null,Lip,Tissue_Site_PID,0
+getNextPvId(),,,null,Tongue,Tissue_Site_PID,0
+getNextPvId(),,,null,Gum,Tissue_Site_PID,0
+getNextPvId(),,,null,Mouth,Tissue_Site_PID,0
+getNextPvId(),,,null,Parotid gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Major salivary gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Tonsil,Tissue_Site_PID,0
+getNextPvId(),,,null,Oropharynx,Tissue_Site_PID,0
+getNextPvId(),,,null,Nasopharynx,Tissue_Site_PID,0
+getNextPvId(),,,null,Periform sinus,Tissue_Site_PID,0
+getNextPvId(),,,null,Hypopharynx,Tissue_Site_PID,0
+getNextPvId(),,,null,Oesophagus,Tissue_Site_PID,0
+getNextPvId(),,,null,Stomach,Tissue_Site_PID,0
+getNextPvId(),,,null,Small intestine,Tissue_Site_PID,0
+getNextPvId(),,,null,Colon,Tissue_Site_PID,0
+getNextPvId(),,,null,Rectosigmoid junction,Tissue_Site_PID,0
+getNextPvId(),,,null,Rectum,Tissue_Site_PID,0
+getNextPvId(),,,null,Anus,Tissue_Site_PID,0
+getNextPvId(),,,null,Liver,Tissue_Site_PID,0
+getNextPvId(),,,null,Gallbladder,Tissue_Site_PID,0
+getNextPvId(),,,null,Biliary tract,Tissue_Site_PID,0
+getNextPvId(),,,null,Pancreas,Tissue_Site_PID,0
+getNextPvId(),,,null,"Head, face or neck",Tissue_Site_PID,0
+getNextPvId(),,,null,Larynx,Tissue_Site_PID,0
+getNextPvId(),,,null,Trachea,Tissue_Site_PID,0
+getNextPvId(),,,null,Lung,Tissue_Site_PID,0
+getNextPvId(),,,null,Pleura,Tissue_Site_PID,0
+getNextPvId(),,,null,Skin,Tissue_Site_PID,0
+getNextPvId(),,,null,"Connective, subcutaneous and other soft tissues ",Tissue_Site_PID,0
+getNextPvId(),,,null,Breast,Tissue_Site_PID,0
+getNextPvId(),,,null,Vuvla,Tissue_Site_PID,0
+getNextPvId(),,,null,Vagina,Tissue_Site_PID,0
+getNextPvId(),,,null,Cervix,Tissue_Site_PID,0
+getNextPvId(),,,null,Uterus,Tissue_Site_PID,0
+getNextPvId(),,,null,Endometrium,Tissue_Site_PID,0
+getNextPvId(),,,null,Fallopian tube,Tissue_Site_PID,0
+getNextPvId(),,,null,Ovary,Tissue_Site_PID,0
+getNextPvId(),,,null,Penis,Tissue_Site_PID,0
+getNextPvId(),,,null,Prostate gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Testis,Tissue_Site_PID,0
+getNextPvId(),,,null,Kidney,Tissue_Site_PID,0
+getNextPvId(),,,null,Ureter,Tissue_Site_PID,0
+getNextPvId(),,,null,Bladder,Tissue_Site_PID,0
+getNextPvId(),,,null,Meninges,Tissue_Site_PID,0
+getNextPvId(),,,null,Spinal cord,Tissue_Site_PID,0
+getNextPvId(),,,null,Brain,Tissue_Site_PID,0
+getNextPvId(),,,null,Thyroid gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Adrenal gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Other,Tissue_Site_PID,0
+getNextPvId(),,,null,Not specified,Tissue_Site_PID,0
+getNextPvId(),,,null,Acute myelomonocytic leukemia with abnnormal marrow eosinophils,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acidophil adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acidophil carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acinar cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acinar cell cystadenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acral lentiginous melanoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute basophilic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute biphenotypic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute lymphoblastic leukemia, L2 type, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute megakaryoblastic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute monocytic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia with multilineage dysplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia (megakaryoblastic) with t(1;22)(p13;q13);RBM15-MLK1,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia with inv(3)(q21q26.2) or t(3;3)(q21;q26.2);RPN1EVI1,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia with maturation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia with t(6;9)(p23;q34) DEK-NUP214,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myeloid leukemia without maturation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute myeloid leukemia, 11q23 abnormalities",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute myeloid leukemia, M6 type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute myeloid leukemia, minimal differentiation",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute myeloid leukemia, t(8;21)(q22;q22)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute myelomonocytic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Acute panmyelosis with myelofibrosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Acute promyelocytic leukemia,t(15;17)(q22;q11-12)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adamantinoma of long bones,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adamantinomatous craniopharyngioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarc. in situ in mult. adenomatous polyps,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoid tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in adenoma. polyposis coli,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in adenomatous polyp,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in mult. adenomatous polyps,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in situ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in situ in adenomatous polyp,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in situ in familial polyp. coli,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in situ in tubulovillous adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in situ in villous adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in tubulovillous adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma in villous adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma of anal glands,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma w cartilag. & oss. metaplas.,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma with apocrine metaplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma with mixed subtypes,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma with neuroendocrine differen.,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma with spindle cell mataplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenocarcinoma with squamous metaplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Adenocarcinoma, endocervical type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Adenocarcinoma, intestinal type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Adenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenoid basal cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenoid cystic carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Adenoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adenosquamous carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adrenal cortical carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Adult T-cell leukemia/lymphoma (HTLV-1 pos.),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Aggressive NK-cell leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,ALK positive large B-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Alveolar adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Alveolar rhabdomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Alveolar soft part sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Amelanotic melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Ameloblastic fibrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Ameloblastic odontosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Ameloblastoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Anaplastic large cell lymphoma, T-cell and Null cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Androblastoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Angioimmunoblastic T-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Angiolipoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Angiomatous meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Angiomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Aortic body tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Apocrine adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Askin tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Astroblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Astrocytoma, anaplastic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Astrocytoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Atypical carcinoid tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Atypical choroid plexus papilloma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Atypical chronic myeloid leukemia, BCR/ABL negative",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Atypical lipoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Atypical medullary carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Atypical meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Atypical teratoid/rhabdoid tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,B lymphblastic leukemia/lymphoma with t(5;14)(q31;q32);IL3-IGH,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with hyperdiploidy,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"B lymphoblastic leukemia/lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Balloon cell melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Basal cell adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Basal cell carcinoma, fibroepithelial",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Basal cell carcinoma, nodular",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Basal cell carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Basaloid carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Basaloid squamous cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Basophil adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Basophil carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Basosquamous carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Bile duct cystadenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Blue nevus, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Bowen disease,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Brenner tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Bronchioalveolar carcinoma, mixed mucinous and non-mucinous",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Bronchiolo-alveolar adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Bronchiolo-alveolar carcinoma, mucinous",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Bronchiolo-alveolar carcinoma, non-mucinous",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Burkitt cell leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Burkitt lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Capillary hemangioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Carcinofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinoid tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Carcinoma in pleomorphic adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinoma in situ, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Carcinoma showing thymus-like element,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Carcinoma simplex,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Carcinoma with osteoclast-like giant cells,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinoma, anaplastic type, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinoma, diffuse type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinoma, undifferentiated type, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinosarcoma, embryonal type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carcinosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Carotid body tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cavernous hemangioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Central osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Centrol neurocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Cerebellar sarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Ceruminous adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cholangiocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chondroblastic osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chondroblastoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chondroid chordoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chondrosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chordoid glioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chordoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Choriocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Choriocarcinoma combined w/ other germ cell elements,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Choroid plexus papilloma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Choroid plexus papilloma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chromophobe adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chromophobe carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chronic lymphocytic leukemia/small lymphocytic lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chronic myelogenous leukemia, BCR/ABL positive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chronic myeloid leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chronic myelomonocytic leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Chronic myeloproliferative disease, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Chronic neutrophilic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Clear cell adenocarcinofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Clear cell adenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Clear cell adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Clear cell chondrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Clear cell meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Clear cell sarcoma of kidney,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Clear cell sarcoma,NOS (except of kidney M-8964/3)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Clear cell tumor, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cloacogenic carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Collecting duct carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Combined hepatocellular carcinoma & cholangiocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Combined small cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Comedocarcinoma, non-infiltrating",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Comedocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Composite carcinoid,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Composite Hodgkin and non-Hodgkin lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Craniopharyngioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cribriform carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cribriform carcinoma in situ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Cutaneous T-cell lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Cystadenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cyst-associated renal cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Cystic hypersecretory carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Dedifferentiated chondrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Dedifferentiated chordoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Dedifferentiated liposarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Dermatofibrosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Dermoid cyst, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Desmoplastic infantile astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Desmoplastic medulloblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Desmoplastic melanoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Desmoplastic small round cell tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Diffuse melanocytosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Duct carcinoma in situ, solid type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Duct carcinoma, desmoplastic type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Dysembryoplastic neuroepithelial tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Dysgerminoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Dysplastic gangliocytoma of cerebellum (Lhermitte-Duclos),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Eccrine adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Eccrine papillary adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Eccrine poroma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Embryonal carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Embryonal rhabdomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Embryonal sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Endometrial stromal sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Endometrial stromal sarcoma, low grade",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Endometrioid adenocarcinoma, ciliated cell variant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Endometrioid adenocarcinoma, secretory variant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Endometrioid adenofibroma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Endometrioid carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Enterochromaffin cell carcinoid,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Enterochromaffin-like cell tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Enteroglucagonoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Ependymoma, anaplastic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Ependymoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Epithelial mesothelioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Epithelial tumor, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Epithelial-myoepithelial carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Epithelioid cell melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Epithelioid hemangioendothelioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Epithelioid leiomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Epithelioid sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Epithelioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Essential thrombocythemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Ewing sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Extra-adrenal paraganglioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fascial fibrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fetal adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibrillary astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibroblastic liposarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibroblastic osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibroblastic reticular cell tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibrolipoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Fibroma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibromyxosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Fibrosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Fibrous histiocytoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Fibrous meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Fibrous mesothelioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Follicular adenocarcinoma trabecular,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Follicular adenocarcinoma well differentiated,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Follicular adenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Follicular carcinoma, minimally invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Follicular dendritic cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Follicular lymphoma, grade 1",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Follicular lymphoma, grade 2",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Follicular lymphoma, grade 3",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Follicular lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Gangliocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Ganglioglioma, anaplastic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Ganglioglioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Ganglioneuroblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Ganglioneuroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Gastrinoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Gastrointestinal stromal sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Gemistocytic astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Germ cell tumor, nonseminomatous",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Germinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Giant cell and spindle cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Giant cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Giant cell glioblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Giant cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Giant cell tumor of bone, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Glandular intraepithelial neoplasia, grade III",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Glassy cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Glioblastoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Gliofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Glioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Gliomatosis cerebri,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Gliosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Glomangiosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Glucagonoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Glycogen-rich carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Goblet cell carcinoid,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Granular cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Granular cell tumor of the sellar region,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Granular cell tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Granular cell tumor, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Granulosa cell tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Granulosa cell-theca cell tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Gynandroblastoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hairy cell leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Heavy chain disease, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hemangioblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangioendothelioma, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangioendothelioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangioendothelioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangiopericytoma, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangiopericytoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hemangiopericytoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hemangiosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hepatoblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hepatocellular carcinoma, clear cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hepatocellular carcinoma, fibrolamellar",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hepatocellular carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hepatocellular carcinoma, pleomorphic type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hepatocellular carcinoma, scirrhous",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hepatocellular carcinoma, spindle cell variant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hepatoid adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hepatosplenic gamma-delta cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,High grade surface osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Histiocytic sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hodgkin granuloma [obs],Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, lymphocyte depletion, diffuse fibrosis",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, nodular lymphocyte predominant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, lymphocyte depletion, reticular",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, lymphocyte-rich",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, lymphocytic depletion, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, mixed cellularity, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, nodular sclerosis, cellular phase",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, nodular sclerosis, grade 1",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, nodular sclerosis, grade 2",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, nodular sclerosis, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Hodgkin lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hodgkin sarcoma [obs],Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hydroa vacciniforme-like lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Hypereosinophilic syndrome,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Immunoproliferative disease, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Immunoproliferative small intestinal disease,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Infantile fibrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Infiltrating duct mixed with other types of carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Infiltrating duct mixed with other types of carcinoma, in situ",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Infiltrating basal cell carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Infiltrating duct and lobular carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Infiltrating duct carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Infiltrating ductular carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Infiltrating lobular mixed with other types of carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Inflammatory carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Instrosseous well differentiated osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Insular carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Insulinoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Interdigitating dendritic cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intestinal T-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intracortical osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Intracystic carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intraductal and lobular in situ carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Intraductal carcinoma, noninfiltrating, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intraductal micropapillary carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intraductal papillary adenocarcinoma with invasion,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Intraductal papillary-mucinous carcinoma, invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Intraductal papillary-mucinous carcinoma, non-invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intratubular malignant germ cells,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Intravascular large B-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Islet cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Juvenile myelomonocytic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Juxtacortical chondrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Kaposi sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Klatskin tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Kupffer cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Langerhans cell histiocytosis, disseminated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Langerhans cell histiocytosis, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Langerhans cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Large cell carcinoma with rhabdoid phenotype,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Large cell carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Large cell medulloblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Large cell neuroendocrine carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Leiomyoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Leiomyomatosis, nOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Leiomyosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Lentigo maligna,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Lentigo maligna melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Leukemia/lymphoma with hypodiploidy (hypodiploid ALL),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Leukemia/lymphoma with t(1;19)(q23;p13.3); E2A PBX1 (TCF3 PBX1),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Leukemia/lymphoma with t(12;21)(p13;q22);TEL-AML1(ETV6-RUNX1),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Leukemia/lymphoma with t(9;22)(q34;q11.2);BCR-ABL1,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Leukemia/lymphoma with t(v;11q23);MLL rearranged,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Leydig cell tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Linitis plastica,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Lipid-rich carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Lipoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Liposarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Liposarcoma, well differentiated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Lobular carcinoma in situ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Lobular carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Large B-cell lymphoma in HHV8-associated multicentric Castleman DZ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Lymphangiosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Lymphoepithelial carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Lymphoid leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant melanoma in giant pigmented nevus,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant  melanoma in junctional nevus,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant  melanoma in precancerous melanosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant cystic nephroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant eccrine spiradenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant giant cell tumor of soft parts,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant histiocytosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, non-Hodgkin",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant mastocytosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant melanoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant melanoma, regressing",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant myoepithelioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant peripheral nerve sheath tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant placental site trophoblastic tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant rhabdoid tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Malignant tenosynovial giant cell tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant teratoma, intermediate",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant teratoma, trophoblastic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant teratoma, undifferentiated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant tumor, clear cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant tumor, giant cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant tumor, small cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant tumor, spindle cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mantle cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Marginal zone B-cell lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mast cell leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mast cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mature T-cell lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mediastinal large B-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Medullary carcinoma with amyloid stroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Medullary carcinoma with lymphoid stroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Medullary carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Medulloblastoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Medulloepithelioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Medullomyoblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Melanoma in situ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Melanotic neurofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Meningeal melanocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Meningeal melanomatosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Meningeal sarcomatosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Meningioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Meningioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Meningiomatosis, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Meningothelial meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Merkel cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mesenchymal chondrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mesenchymoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mesodermal mixed tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mesonephroma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mesothelioma, biphasic, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mesothelioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Metaplastic carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Metatypical carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed acidophil-basophil adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed acidophil-basophil carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed cell adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed cell adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed epithelium & spindle cell melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed germ cell tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed glioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed islet cell & exocrine adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed medullary-follicular carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed medullary-papillary carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed phenotype acute leukemia with t(9;22)(q34;q11.2);BCR-ABL1,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed phenotype acute leukemia with t(v;11q23);MLL rearranged,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mixed phenotype acute leukemia, B/myeloid, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mixed phenotype acute leukemia, T/myeloid, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mixed tumor, malignant, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed type liposarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mixed type rhabdomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, large B-cell, diffuse",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, large B-cell, diffuse, immunoblastic, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, lymphoplasmacytic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, mixed small and large cell, diffuse",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Malignant lymphoma, small B lymphocytic, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Monomorphic adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,MPNST with rhabdomyoblastic differentiation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mucinous adenocarcinofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mucinous adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mucinous adenocarcinoma, endocervical type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mucinous cystadenocarcinoma, non-invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Mucinous cystadenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mucinous cystic tumor of borderline malignancy (C56.9),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mucin-producing adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mucoepidermoid carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mucosal lentiginous melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mullerian mixed tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Multifocal superficial basal cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Multiple myeloma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Mycosis fungoides,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myelodysplastic syndr. with 5q deletion syndrome,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Myelodysplastic syndrome, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Myelodysplastic/Myeloproliferative neoplasm, unclassifiable",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myeloid and lymphoid neoplasm with FGFR1 abnormalities,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myeloid and lymphoid neoplasms with PDGFRB re arrangement,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myeloid and lymphoid neoplasms with PDGFRB rearrangement,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myeloid leukemia associated with Down Syndrome,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Myeloid leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myeloid sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myelosclerosis with myeloid metaplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myxoid chondrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myxoid leiomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myxoid liposarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myxopapillary ependymoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Myxosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neoplasm, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neoplasm, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neoplasm, uncertain whether benign or malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Nephroblastoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neurilemmoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neurilemoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Neurinomatosis,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neuroblastoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Neuroendocrine carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neuroepithelioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neurofibroma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neurofibromatosis, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Neuroma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Neurothekeoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"NK/T-cell lymphoma, nasal and nasal-type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Nodular hidradenoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Nodular melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Nonencapsulated sclerosing carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Noninfiltrating intracystic carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Noninfiltrating intraductal papillary adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Non-small cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Oat cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Odontogenic carcinosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Odontogenic tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Olfactory neurcytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Olfactory neuroblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Olfactory neuroepithelioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Olfactory neurogenic tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Oligodendroblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Oligodendroglioma, anaplastic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Oligodendroglioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Osteosarcoma in Paget disease,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Osteosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Ovarian stromal tumor, mal.",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Oxyphilic adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Oxyphilic adenoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Paget dis. & infil. duct carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Paget disease and intraductal ca.,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Paget disease, extramammary",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Paget disease, mammary",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pancreatoblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary adenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary adenoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary carcinoma in situ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary carcinoma, columnar cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary carcinoma, encapsulated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary carcinoma, follicular variant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary carcinoma, oxyphilic cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary craniopharyngioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary cystadenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary cystadenoma, borderline malignancy (C56.9)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary ependymoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary microcarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary mucinous cystadenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary mucinous cystadenoma, borderline malignancy (C56.9)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary serous cystadenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary squamous cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary squamous cell carcinoma, non-invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Papillary trans. cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Papillary trans. cell carcinoma, non-invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Paraganglioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Paraganglioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Parietal cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Parosteal osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Perineurioma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Perineurioma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Periosteal fibrosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Periosteal osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Peripheral neuroectodermal tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pheochromocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Phyllodes tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pigmented dermatofibrosarcoma protuberans,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pilocytic astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pilocytic astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pilomatrix carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Pinealoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pineoblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pineocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Pituitary adenoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Pituitary carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Plasma cell leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Plasmablastic lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Plasmacytoma, extramedullary",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Plasmacytoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pleomorphic carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pleomorphic liposarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Pleomorphic rhabdomyosarcoma, adult type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pleomorphic xanthoastrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pleuropulmonary blastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Plexiform neurofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Polar spongioblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Polycythemia vera,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Polyembryoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Polygonal cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Polymorphic PTLD,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Polymorphous low grade adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Precancerous melanosis, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Precursor B-cell lymphoblastic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Precursor B-cell lymphoblastic lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Precursor cell lymphoblastic leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Precursor cell lymphoblastic lymphoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Precursor T-cell lymphoblastic lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Primary cutan. CD30+ T-cell lymphoprolif. disorder,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Primary Cutaneous follicle centre lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Primary Cutaneous gamma-delta T-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Primary effusion lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Primitive neuroectodermal tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Prolactinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Prolymphocytic leukemia, B-cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Prolymphocytic leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Prolymphocytic leukemia, T-cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Protoplasmic astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Psammomatous meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pseudosarcomatous carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Pulmonary blastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Queyrat erythroplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refract. anemia with excess blasts in transformation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refractory anemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refractory anemia with excess blasts,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refractory anemia with sideroblasts,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refractory cytopenia with multilineage dysplasia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refractory neutropenia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Refractory thrombocytopenia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Renal cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Renal cell carcinoma, chromophobe type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Renal cell carcinoma, sarcomatoid",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Retinoblastoma, differentiated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Retinoblastoma, diffuse",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Retinoblastoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Retinoblastoma, undifferentiated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Rhabdomyoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Rhabdomyosarcoma with ganglionic differentiation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Rhabdomyosarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Round cell liposarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Schneiderian carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Scirrhous adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Sclerosing sweat duct carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Sebaceous adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Secretory carcinoma of breast,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Seminoma, anaplastic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Seminoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Serous adenocarcinofibroma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Serous cystadenocarcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Serous cystadenoma, borderline malignancy (C56.9)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Serous papillary cystic tumor of borderline malignancy (C56.9),Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Serous surface papillary carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Sertoli cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sertoli-Leydig cell tumor, poorly differentiated",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sertoli-Leydig cl tum., p.d. w heterologous elements",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Sezary syndrome,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Signet ring cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Skin appendage carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Small cell carcinoma, fusiform cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Small cell carcinoma, intermediate cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Small cell carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Small cell osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Small cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Smooth muscle tumor, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Soft tissue tumor, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Solid carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Solid pseudopapillary carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Solitary fibrous tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Solitary fibrous tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Somatostatinoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Spermatocytic seminoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Spindle cell carcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Spindle cell melanoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Spindle cell melanoma, type A",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Spindle cell melanoma, type B",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Spindle cell rhabdomyosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Spindle cell sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Spindle epithelial tumor with thymus-like element,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Splenic marginal zone B-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Spongioneuroblastoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Sq. cell carc. in situ with question. stromal invas.,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, keratinizing, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, keratinizing, NOS, in situ",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, lg. cell, non-ker.",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, lg. cell, non-ker., in situ",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, micro-invasive",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, sm. cell, non-ker.",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Sq. cell carcinoma, spindle cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Squamous cell carcinoma in situ, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Squamous cell carcinoma with horn formation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Squamous cell carcinoma, adenoid",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Squamous cell carcinoma, clear cell type",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Squamous cell carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Squamous intraepithelial neoplasia, grade III",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Steroid cell tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Stromal sarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Struma ovarii, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Subcutaneous panniculitis-like T-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Subependymoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Supependymal giant cell astrocytoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Superficial spreading adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Superficial spreading melanoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Superficial spreading melanoma, in situ",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Sweat gland adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Synovial sarcoma, biphasic",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Synovial sarcoma, epithelioid cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Synovial sarcoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Synovial sarcoma, spindle cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,SystemicEBV pos. T-cell lymphoproliferative disease of childhood,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,T lymphoblastic leukemia/lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,T-cell histiocyte rich large B-cell lymphoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,T-cell large granular lymphocytic leukemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Telangiectatic osteosarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Teratocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Teratoid medulloepithelioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Teratoma with malig. transformation,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Teratoma, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Teratoma, malignant, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Teratoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thecoma, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Therapy-related acute myeloid leukemia, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Therapy-related myelodysplastic syndrome, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymic carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymoma, malignant, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymoma, type A, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymoma, type AB, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymoma, type B1, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymoma, type B2, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Thymoma, type B3, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Trabecular adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Trans. cell carcinoma, spindle cell",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Transitional cell carcinoma in situ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Transitional cell carcinoma, micropapillary",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Transitional cell carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Transitional meningioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Trichilemmocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Trophoblastic tumor, epithelioid",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Tubular adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Tumor cells, benign",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Tumor cells, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Tumor cells, uncertain whether benign or malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Undifferentiated sarcoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Venous hemangioma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Verrucous carcinoma, NOS",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Villous adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Vipoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Waldenstrom macroglobulinemia,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Warthin tumor, malignant",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Water-clear cell adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Yolk sac tumor,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Metastatic adenocarcinoma,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,No tissue banked ,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Not cited in report,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Follow-up examination after treatment for malignant neoplasm,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Prophylactic surgery for risk-factors related to malignant neoplasms,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Other plastic surgery for unacceptable cosmetic appearance,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,"Non-malignant diagnosis, no history of cancer (Other Medical Care)",Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Personal history of malignant neoplasm,Clinical_Diagnosis_PID,0
+getNextPvId(),,,null,Tumour,2003993,0
+getNextPvId(),,,null,Adjacent normal,2003993,0
+getNextPvId(),,,null,Clinically normal,2003993,0
+getNextPvId(),,,null,Benign,2003993,0
+getNextPvId(),,,null,Not Specified,2003993,0
+getNextPvId(),,,null,Primary,2003988,0
+getNextPvId(),,,null,Metastasis (Secondary),2003988,0
+getNextPvId(),,,null,Recurrence,2003988,0
+getNextPvId(),,,null,Not Specified,2003988,0
+getNextPvId(),,,null,Transformation,2003988,0
+getNextPvId(),,,null,Remission,2003988,0
+getNextPvId(),,,null,Clinically normal,2003988,0
+getNextPvId(),,,null,Alive,2004001,0
+getNextPvId(),,,null,Deceased,2004001,0
+getNextPvId(),,,null,Unknown,2004001,0
+getNextPvId(),,,null,Male,2003989,0
+getNextPvId(),,,null,Female,2003989,0
+getNextPvId(),,,null,Unknown,2003989,0
