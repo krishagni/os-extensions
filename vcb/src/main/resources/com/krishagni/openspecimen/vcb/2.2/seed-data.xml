@@ -37,7 +37,7 @@
     </sql>
   </changeSet>
 
-  <changeSet id="removing existing PV" author="asamgir">
+  <changeSet author="asamgir" id="removing existing PVs">
     <sql>
       delete from
         catissue_permissible_value 
@@ -45,17 +45,41 @@
         public_id 
       in ('Race_PID', 'Ethnicity_PID', 'Tissue_Site_PID', '2003988', '2003989', '2003993', '2003997', '2004001');    
     </sql>
-    
+  </changeSet>
+  
+  <changeSet author="asamgir" id="removing existing specimen types for Molecular specimen class ">
     <sql>
       delete from 
         catissue_permissible_value 
       where 
-        parent_identifier 
-      in (1,2,3,4);
+        parent_identifier = (select getPvParentId('2003991', 'Molecular') from dual);
     </sql>
-
+  </changeSet>
+  
+  <changeSet author="asamgir" id="removing existing specimen types for Cell specimen class ">
     <sql>
-      commit;
+      delete from 
+        catissue_permissible_value 
+      where 
+        parent_identifier = (select getPvParentId('2003991', 'Cell') from dual);
+    </sql>
+  </changeSet>
+  
+  <changeSet author="asamgir" id="removing existing specimen types for Tissue specimen class ">
+    <sql>
+      delete from 
+        catissue_permissible_value 
+      where 
+        parent_identifier = (select getPvParentId('2003991', 'Tissue') from dual);
+    </sql>
+  </changeSet>
+  
+  <changeSet author="asamgir" id="removing existing specimen types for Fluid specimen class ">
+    <sql>
+      delete from 
+        catissue_permissible_value 
+      where 
+        parent_identifier = (select getPvParentId('2003991', 'Fluid') from dual);
     </sql>
   </changeSet>
 
