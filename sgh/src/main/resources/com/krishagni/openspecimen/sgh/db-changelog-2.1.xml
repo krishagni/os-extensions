@@ -304,4 +304,24 @@
     </sql>
   </changeSet>
   
+  <changeSet author="nmarwaha" id="Delete the newly added missed collection status values">
+    <sql>
+      delete from
+        catissue_permissible_value
+      where 
+        public_id = 'missed_visit_reason'
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Update the publuc ID of the older missed collection statuc values">
+    <sql>
+      update
+        catissue_permissible_value
+      set 
+        public_id = 'missed_visit_reason'
+      where 
+        public_id = '2004301'
+    </sql>
+  </changeSet>
+  
 </databaseChangeLog>
