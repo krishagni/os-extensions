@@ -9,15 +9,18 @@
   <property name="boolean.type" value="number(1,0)" dbms="oracle" />
   <property name="text.type" value="varchar" dbms="mysql" />
   <property name="text.type" value="varchar2" dbms="oracle" />
+ 
+  <changeSet author="hemantk" id="Deleting specimen class 'cell' from os_specimen_qty_units">
+    <sql>
+      update os_specimen_qty_units set unit='ml' where specimen_class='Cell';
+    </sql>
+  </changeSet>
   
   <changeSet author="asamgir" id="Adding specimen quantity units">
     <sql>
       insert into os_specimen_qty_units
         (specimen_class, specimen_type, unit, html_display_code, activity_status)
       values
-        ("Cell", "MNC Bone Marrow", "cell count", NULL, "Active"),
-        ("Cell", "MNC Bone Marrow with Trizol", "cell count", NULL, "Active"),
-        ("Cell", "PBMNC", "cell count", NULL, "Active"),
         ("Tissue", "Departmental FFPE Block", "count", NULL, "Active"),
         ("Tissue", "EBUS", "count", NULL, "Active"),
         ("Tissue", "Ethanol Fixed Paraffin H&amp;E Slide", "count", NULL, "Active"),
