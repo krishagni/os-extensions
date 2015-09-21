@@ -10,16 +10,16 @@
   <property name="text.type" value="varchar" dbms="mysql" />
   <property name="text.type" value="varchar2" dbms="oracle" />
  
-  <changeSet author="hemantk" id="Updating specimen class 'cell' from os_specimen_qty_units">
+  <changeSet author="hemantk" id="Updating specimen class 'cell' from os_specimen_units">
     <sql>
-      update os_specimen_qty_units set unit='ml' where specimen_class='Cell';
+      update os_specimen_units set qty_unit='ml' where specimen_class='Cell';
     </sql>
   </changeSet>
   
   <changeSet author="asamgir" id="Adding specimen quantity units">
     <sql>
-      insert into os_specimen_qty_units
-        (specimen_class, specimen_type, unit, html_display_code, activity_status)
+      insert into os_specimen_units
+        (specimen_class, specimen_type, qty_unit, qty_html_display_code, activity_status)
       values
         ("Tissue", "Departmental FFPE Block", "count", NULL, "Active"),
         ("Tissue", "EBUS", "count", NULL, "Active"),
