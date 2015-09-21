@@ -10,7 +10,7 @@
   <property name="text.type" value="varchar" dbms="mysql" />
   <property name="text.type" value="varchar2" dbms="oracle" />
  
-  <changeSet author="hemantk" id="Deleting specimen class 'cell' from os_specimen_qty_units">
+  <changeSet author="hemantk" id="Updating specimen class 'cell' from os_specimen_qty_units">
     <sql>
       update os_specimen_qty_units set unit='ml' where specimen_class='Cell';
     </sql>
