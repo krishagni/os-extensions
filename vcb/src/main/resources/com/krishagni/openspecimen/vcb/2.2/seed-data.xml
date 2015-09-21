@@ -94,5 +94,38 @@
       <column name="parent_identifier" type="NUMERIC"/>            
     </loadData>
   </changeSet>
+  
+    <changeSet author="nmarwaha" id="Set the MPI format">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'mpi_format' and module_id = @module_id;
+
+      insert into os_cfg_settings
+        (identifier, property_id, value, activated_by, activation_date, activity_status)
+      values
+        (default, @prop_id, 'B%06d', 1, current_timestamp(), 'Active');
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Update the sequence value for the MPI">
+    <sql>
+      insert into key_seq_generator
+        (identifier, key_value, key_sequence_id, key_type)
+      values
+        (default,'MPI',399999,'MPI')
+    </sql>
+  </changeSet>
+  
 
 </databaseChangeLog>
