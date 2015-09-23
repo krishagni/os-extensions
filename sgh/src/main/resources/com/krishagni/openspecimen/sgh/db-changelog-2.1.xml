@@ -79,13 +79,13 @@
       columnName="REASON_FOR_MISSED_CASE"/>    
   </changeSet>
   
-  <changeSet author="nmarwaha" id="Set label formats for all protocols as per SG format">
+  <changeSet author="nmarwaha" id="Set label formats for all protocols as per SG format" runOnChange="true">
     <sql>
       update
         catissue_collection_protocol
       set
-        LABEL_FORMAT='%VISIT_NAME%-%SP_TYPE%%PPI_YOC_UID%-%SP_PATH_STATUS%',
-        DERIV_LABEL_FORMAT='%PSPEC_LABEL%-%SP_TYPE%%PPI_YOC_UID%',
+        LABEL_FORMAT='%VISIT_NAME%-%SP_TYPE%%PPI_SPEC_TYPE_UID%-%SP_PATH_STATUS%',
+        DERIV_LABEL_FORMAT='%PSPEC_LABEL%-%SP_TYPE%',
         ALIQUOT_LABEL_FORMAT='%PSPEC_LABEL%_%PSPEC_UID%'
     </sql>
   </changeSet>
@@ -321,6 +321,21 @@
         public_id = 'missed_visit_reason'
       where 
         public_id = '2004301'
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Setting the default distribution site for the DP">
+    <sql>
+      insert into os_distribution_protocol_sites 
+        (
+        select 
+          dp.identifier, site.identifier 
+        from 
+          catissue_distribution_protocol dp, 
+          catissue_site site
+        where 
+          site.name in ('Biospecimen','TissueBank')
+        )
     </sql>
   </changeSet>
   
