@@ -95,7 +95,7 @@
     </loadData>
   </changeSet>
   
-    <changeSet author="nmarwaha" id="Set the MPI format">
+  <changeSet author="nmarwaha" id="Set the MPI format">
     <sql>
       select 
         identifier into @module_id 
