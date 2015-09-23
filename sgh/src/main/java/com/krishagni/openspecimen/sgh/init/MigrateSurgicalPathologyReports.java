@@ -137,8 +137,11 @@ public class MigrateSurgicalPathologyReports implements InitializingBean {
 						SprDetail sprDetail = new SprDetail();
 						sprDetail.setVisitId(rs.getLong("visitId"));
 						sprDetail.setFileName(rs.getString("fileName"));
-						sprDetail.setInputStream(rs.getBlob("fileContent").getBinaryStream());
 						sprDetail.setRecordId(rs.getLong("recordId"));
+						Blob fileContent = rs.getBlob("fileContent");
+						if (fileContent != null) {
+							sprDetail.setInputStream(fileContent.getBinaryStream());
+						}
 						return sprDetail;
 					}
 				});					
