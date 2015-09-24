@@ -339,4 +339,63 @@
     </sql>
   </changeSet>
   
+  <changeSet author="nmarwaha" id="Setting the bulk registration workflow for the CPs with site 'Biospecimen'">
+    <sql>
+      insert into os_cp_workflows
+        (
+        select 
+          site_cp.collection_protocol_id , '[{"name": "bulkRegister","data": {"enabled": true}}]' 
+        from 
+          catissue_site_cp site_cp 
+          join catissue_site site on site_cp.site_id = site.identifier 
+        where 
+          site.name = 'Biospecimen'
+        )
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set the NRIC validation pattern">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'participant_uid_pattern' and module_id = @module_id;
+
+      insert into os_cfg_settings
+        (identifier, property_id, value, activated_by, activation_date, activity_status)
+      values
+        (default, @prop_id, '^((S|T|F|G)[0-9]{7}|(X|Y)[0-9]{10})[a-zA-Z]$', 1, current_timestamp(), 'Active');
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Disable the return event form, which got loaded during 1.1 upgrade">
+    <sql>
+      update
+        dyextn_containers
+      set
+        deleted_on = now()
+      where 
+        name = 'SpecimenReturnEvent';
+    </sql>
+    
+    <sql>
+      update 
+        catissue_form_context ctxt
+        join dyextn_containers de on de.identifier = ctxt.container_id
+      set
+        ctxt.deleted_on = now()
+      where 
+        de.name = 'SpecimenReturnEvent';
+    </sql>
+  </changeSet>
+  
 </databaseChangeLog>
