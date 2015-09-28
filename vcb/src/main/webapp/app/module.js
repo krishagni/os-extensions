@@ -12,6 +12,12 @@ function initVcbPlugin() {
         'add-visit': {
           template: 'plugin-ui-resources/vcb/add-visit.html'
         }
+      },
+
+      'visit-detail': {
+        'overview': {
+          template: 'plugin-ui-resources/vcb/visit-overview.html'
+        }
       }
     }
   );
