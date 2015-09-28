@@ -194,7 +194,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 	}
 	
 	private String getNonMalignantAliqSuffix() {
-		return cfgSvc.getStrSetting(SGH_MODULE, "non_malignant_aliq_suffix", "FZ-N");
+		return cfgSvc.getStrSetting(SGH_MODULE, "non_malignant_aliq_suffix", "FZ2-N");
 	}
 	
 	private static final String GET_PLANNED_TRIDS = 
