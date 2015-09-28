@@ -36,6 +36,8 @@
   },
 
   "visits": {
+    "primary_site": "Primary Site",
+
     "ctx_menu": {
       "print_specimen_labels": "Print Tissue Bank Numbers"
     }

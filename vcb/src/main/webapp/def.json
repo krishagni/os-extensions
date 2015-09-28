@@ -1,0 +1,5 @@
+{
+  "scripts": [
+    "vcb/scripts/scripts.@script_hash@.js"
+  ]
+}
