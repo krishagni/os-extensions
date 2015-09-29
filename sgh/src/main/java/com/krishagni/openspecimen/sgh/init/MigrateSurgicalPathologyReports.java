@@ -3,6 +3,7 @@ package com.krishagni.openspecimen.sgh.init;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
