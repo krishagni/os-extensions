@@ -1,0 +1,25 @@
+#Specimen Type,Abbreviation
+Fixed Tissue,FX
+Archiving Paraffin Block,PA
+Fixed Tissue Slide,FXS
+Frozen Tissue,FZ
+Fresh Tissue,FT
+QC Paraffin Block,QC
+OCT Frozen Tissue,FZ-OCT
+DNA,DN
+RNA,RN
+Whole Blood,B
+Serum,S
+Plasma,P
+Buffy Coat,BC
+Body Cavity Fluid,BCF
+Cerebrospinal Fluid,CSF
+Ascitic Fluid,ASC
+Pleural Fluid,PF
+Saliva,Sa
+Urine,U
+Bone Marrow Aspirate,BMA
+Frozen Cell Pellet,FZ-CP
+Frozen Tissue Slide,FZS
+Fixed Tissue Block,FXB
+Not Specified,
