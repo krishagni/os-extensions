@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <property name="boolean.type" value="boolean" dbms="mysql" />
+  <property name="boolean.type" value="number(1,0)" dbms="oracle" />
+  <property name="text.type" value="varchar" dbms="mysql" />
+  <property name="text.type" value="varchar2" dbms="oracle" />
+ 
+  <changeSet author="hemantk" id="removing existing PVs of missed visit reason">
+    <sql>
+      delete from
+        catissue_permissible_value 
+      where 
+        public_id ='missed_visit_reason';    
+    </sql>
+  </changeSet>
+  
+  <changeSet id="Permissible values csv file upload" author="hemantk">
+    <loadData encoding="UTF-8"
+      file="classpath:com/krishagni/openspecimen/uom/2.3/pvs.csv"
+      tableName="CATISSUE_PERMISSIBLE_VALUE">
+      <column name="identifier" type="NUMERIC"/>
+      <column name="parent_identifier" type="NUMERIC"/>            
+    </loadData>
+  </changeSet>
+  
+</databaseChangeLog>
