@@ -1,0 +1,7 @@
+{
+  "styles": [],
+
+  "scripts": [
+    "redcap/scripts/scripts.@script_hash@.js"
+  ]
+}
