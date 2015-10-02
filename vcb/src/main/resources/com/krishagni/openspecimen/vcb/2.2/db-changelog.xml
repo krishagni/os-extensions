@@ -9,4 +9,31 @@
 
   <include file="com/krishagni/openspecimen/vcb/2.2/seed-data.xml"/>
   <include file="com/krishagni/openspecimen/vcb/2.2/schema.xml"/>
+
+  <changeSet author="hemantk" id="Set the Medicare Number validation pattern">
+    <sql>
+      select
+        identifier into @module_id
+      from
+        os_modules
+      where
+        name = 'biospecimen';
+
+      select
+        identifier into @prop_id
+      from
+        os_cfg_props
+      where
+        name = 'participant_uid_pattern' and module_id = @module_id;
+
+      update
+        os_cfg_settings
+      set
+        value = '^([0-9]{10})'
+      where
+        property_id = @prop_id
+
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>
