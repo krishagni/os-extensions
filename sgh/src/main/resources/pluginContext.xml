@@ -33,6 +33,7 @@
   
   <bean id="sghReportsDeIdentifier" class="com.krishagni.openspecimen.sgh.services.impl.SprDeIdentifier">
     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="daoFactory"  ref="biospecimenDaoFactory"/>
   </bean> 
   
   <bean id="migrateSprs" class="com.krishagni.openspecimen.sgh.init.MigrateSurgicalPathologyReports">

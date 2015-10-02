@@ -7,18 +7,28 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 
+import com.krishagni.catissueplus.core.biospecimen.domain.Participant;
+import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
+import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.DocumentDeIdentifier;
 
 public class SprDeIdentifier implements DocumentDeIdentifier {
 	private SessionFactory sessionFactory;
 	
+	private DaoFactory daoFactory;
+	
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+	
+	public void setDaoFactory(DaoFactory daoFactory) {
+		this.daoFactory = daoFactory;
 	}
 
 	@Override
 	public String deIdentify(String report, Map<String, Object> contextMap) {
 		report = deIdentifyText(report);
+		report = deIdentifyParticipantName(report, contextMap);
 		return report;
 	}
 
@@ -58,6 +68,34 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 		return report;
 	}
 	
+	private String deIdentifyParticipantName(String report, Map<String, Object> contextMap) {
+		Long visitId = (Long) contextMap.get("visitId");
+		Visit visit = daoFactory.getVisitsDao().getById(visitId);
+		Participant participant = visit.getRegistration().getParticipant();
+		
+		StringBuilder regex = new StringBuilder();
+		if(StringUtils.isNotBlank(participant.getLastName())) {
+			regex.append(participant.getLastName());
+		}
+		
+		if(StringUtils.isNotBlank(participant.getFirstName())) {
+			addOr(regex);
+			regex.append(participant.getFirstName());
+		}
+		
+		if(StringUtils.isNotBlank(participant.getMiddleName())) {
+			addOr(regex);
+			regex.append(participant.getMiddleName());
+		}
+		
+		if (regex.length() > 0) {
+			regex.insert(0, "(?i)(");
+			regex.append(")\\b");
+			report = report.replaceAll(regex.toString(), REPLACEMENT_STRING);
+		}
+		return report;
+	}
+	
 	private String replaceString(String input, String regexFmt, StringBuilder regexText, boolean delete) {
 		if (regexText.length() <= 0) {
 			return input;
@@ -72,7 +110,7 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 			cond.append("|");
 		}
 	}
-	
+
 	private static final String GET_DEIDENTIFICATION_TEXT = "select string_content, delete_line, delete_next_line from catissue_deidentified_text";
 	
 	private static final String REPLACEMENT_STRING = "XXX";
