@@ -45,7 +45,7 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 			boolean deleteLine = (obj[1] != null) ? (Boolean) obj[1] : false;
 			boolean deleteNextLine = (obj[2] != null) ? (Boolean) obj[2] : false;
 			if (deleteNextLine) {
-				if (searchText.equals("Primary Provider:")) {
+				if (searchText.equals("Sex: Age: DOB:")) {
 					addOr(regexPhi);
 					regexPhi.append(searchText);
 				} else {
@@ -61,7 +61,7 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 			}
 		}
 	
-		report = replaceString(report, REPLACE_5_LINE_REGX, regexPhi, true);
+		report = replaceString(report, REPLACE_3_LINE_REGX, regexPhi, true);
 		report = replaceString(report, REPLACE_2_LINE_REGX, regexDeleteNextLine, true);
 		report = replaceString(report, REPLACE_1_LINE_REGX, regexDeleteLine, true);
 		report = replaceString(report, REPLACE_WORD, regexDeIdentifyWord, false);
@@ -74,18 +74,15 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 		Participant participant = visit.getRegistration().getParticipant();
 		
 		StringBuilder regex = new StringBuilder();
-		if(StringUtils.isNotBlank(participant.getLastName())) {
-			regex.append(participant.getLastName());
+		String lastName = participant.getLastName();
+		if (StringUtils.isNotBlank(lastName) && lastName.length() > 1) {
+			regex.append(lastName);
 		}
 		
-		if(StringUtils.isNotBlank(participant.getFirstName())) {
+		String firstName = participant.getFirstName();
+		if (StringUtils.isNotBlank(firstName) && firstName.length() > 1) {
 			addOr(regex);
-			regex.append(participant.getFirstName());
-		}
-		
-		if(StringUtils.isNotBlank(participant.getMiddleName())) {
-			addOr(regex);
-			regex.append(participant.getMiddleName());
+			regex.append(firstName);
 		}
 		
 		if (regex.length() > 0) {
@@ -115,8 +112,8 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 	
 	private static final String REPLACEMENT_STRING = "XXX";
 	
-	private static final String REPLACE_5_LINE_REGX = "(?i).*?(%s)" + 
-			"((.*?\\n.*?\\n.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n)|(.*?\\n)|(\\b))";
+	private static final String REPLACE_3_LINE_REGX = "(?i).*?(%s)" + 
+			"((.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n)|(.*?\\n)|(\\b))";
 	
 	private static final String REPLACE_2_LINE_REGX = "(?i).*?(%s)((.*?\\n.*?\\n)|(.*?\\n)|(\\b))";
 	
