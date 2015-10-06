@@ -1,0 +1,6 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,value,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Patient declined collection,missed_visit_reason,null
+getNextPvId(),,,null,Patient declined consent,missed_visit_reason,null
+getNextPvId(),,,null,Visit cancelled,missed_visit_reason,null
+getNextPvId(),,,null,Sample not collected by clinic/ Clinic error,missed_visit_reason,null
+getNextPvId(),,,null,Lost to follow-up,missed_visit_reason,null

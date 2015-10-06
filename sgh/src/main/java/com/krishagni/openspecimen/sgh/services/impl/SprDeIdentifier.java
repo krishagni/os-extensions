@@ -7,18 +7,28 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
 
+import com.krishagni.catissueplus.core.biospecimen.domain.Participant;
+import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
+import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.DocumentDeIdentifier;
 
 public class SprDeIdentifier implements DocumentDeIdentifier {
 	private SessionFactory sessionFactory;
 	
+	private DaoFactory daoFactory;
+	
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+	
+	public void setDaoFactory(DaoFactory daoFactory) {
+		this.daoFactory = daoFactory;
 	}
 
 	@Override
 	public String deIdentify(String report, Map<String, Object> contextMap) {
 		report = deIdentifyText(report);
+		report = deIdentifyParticipantName(report, contextMap);
 		return report;
 	}
 
@@ -35,7 +45,7 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 			boolean deleteLine = (obj[1] != null) ? (Boolean) obj[1] : false;
 			boolean deleteNextLine = (obj[2] != null) ? (Boolean) obj[2] : false;
 			if (deleteNextLine) {
-				if (searchText.equals("Primary Provider:")) {
+				if (searchText.equals("Sex: Age: DOB:")) {
 					addOr(regexPhi);
 					regexPhi.append(searchText);
 				} else {
@@ -51,10 +61,35 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 			}
 		}
 	
-		report = replaceString(report, REPLACE_5_LINE_REGX, regexPhi, true);
+		report = replaceString(report, REPLACE_3_LINE_REGX, regexPhi, true);
 		report = replaceString(report, REPLACE_2_LINE_REGX, regexDeleteNextLine, true);
 		report = replaceString(report, REPLACE_1_LINE_REGX, regexDeleteLine, true);
 		report = replaceString(report, REPLACE_WORD, regexDeIdentifyWord, false);
+		return report;
+	}
+	
+	private String deIdentifyParticipantName(String report, Map<String, Object> contextMap) {
+		Long visitId = (Long) contextMap.get("visitId");
+		Visit visit = daoFactory.getVisitsDao().getById(visitId);
+		Participant participant = visit.getRegistration().getParticipant();
+		
+		StringBuilder regex = new StringBuilder();
+		String lastName = participant.getLastName();
+		if (StringUtils.isNotBlank(lastName) && lastName.length() > 1) {
+			regex.append(lastName);
+		}
+		
+		String firstName = participant.getFirstName();
+		if (StringUtils.isNotBlank(firstName) && firstName.length() > 1) {
+			addOr(regex);
+			regex.append(firstName);
+		}
+		
+		if (regex.length() > 0) {
+			regex.insert(0, "(?i)(");
+			regex.append(")\\b");
+			report = report.replaceAll(regex.toString(), REPLACEMENT_STRING);
+		}
 		return report;
 	}
 	
@@ -72,13 +107,13 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 			cond.append("|");
 		}
 	}
-	
+
 	private static final String GET_DEIDENTIFICATION_TEXT = "select string_content, delete_line, delete_next_line from catissue_deidentified_text";
 	
 	private static final String REPLACEMENT_STRING = "XXX";
 	
-	private static final String REPLACE_5_LINE_REGX = "(?i).*?(%s)" + 
-			"((.*?\\n.*?\\n.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n)|(.*?\\n)|(\\b))";
+	private static final String REPLACE_3_LINE_REGX = "(?i).*?(%s)" + 
+			"((.*?\\n.*?\\n.*?\\n)|(.*?\\n.*?\\n)|(.*?\\n)|(\\b))";
 	
 	private static final String REPLACE_2_LINE_REGX = "(?i).*?(%s)((.*?\\n.*?\\n)|(.*?\\n)|(\\b))";
 	

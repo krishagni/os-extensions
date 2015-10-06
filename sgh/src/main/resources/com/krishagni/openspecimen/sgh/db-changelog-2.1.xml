@@ -5,12 +5,14 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-  <changeSet author="vgaikwad" id="Added text 'Primary Provider:' to deindentify in spr report" dbms="mysql">
+  <changeSet author="vgaikwad" id="Delete two lines if row contains biospy number" dbms="mysql">
     <sql>
-      insert into catissue_deidentified_text
-        (string_content, delete_line, delete_next_line) 
-      values
-        ("Primary Provider:", 1, 1);
+      update 
+        catissue_deidentified_text 
+      set 
+        delete_next_line = 1 
+      where 
+        string_content= 'Biopsy No';
     </sql>
   </changeSet>
   
@@ -369,11 +371,14 @@
         os_cfg_props 
       where 
         name = 'participant_uid_pattern' and module_id = @module_id;
+        
+      update 
+        os_cfg_settings
+      set 
+        value = '^((S|T|F|G)[0-9]{7}|(X|Y)[0-9]{10})[a-zA-Z]$'
+      where 
+        property_id = @prop_id 
 
-      insert into os_cfg_settings
-        (identifier, property_id, value, activated_by, activation_date, activity_status)
-      values
-        (default, @prop_id, '^((S|T|F|G)[0-9]{7}|(X|Y)[0-9]{10})[a-zA-Z]$', 1, current_timestamp(), 'Active');
     </sql>
   </changeSet>
   
@@ -395,6 +400,159 @@
         ctxt.deleted_on = now()
       where 
         de.name = 'SpecimenReturnEvent';
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Setting the Job scheduler for generating specimen label cmd files">
+    <sql>
+      insert 
+        into 
+      os_scheduled_jobs
+        (
+         IDENTIFIER, NAME, CREATED_BY, START_DATE, ACTIVITY_STATUS, 
+         REPEAT_SCHEDULE, TYPE, TASK_IMPL_FQN, RT_ARGS_PROVIDED
+        )
+      values 
+        (
+         default, 'Job to generate cmd files', 1, now(), 'Active', 
+         'MINUTELY', 'INTERNAL', 'com.krishagni.openspecimen.sgh.services.impl.LabelFileGenerator', 0
+        )
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set the NRIC mandatory flag to true">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'uid_mandatory' and module_id = @module_id;
+        
+      update 
+        os_cfg_settings
+      set 
+        value = 'true'
+      where 
+        property_id = @prop_id 
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Disable all the default queries">
+    <sql>
+      update catissue_saved_queries set deleted_on = now();
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set consent waived option to 1 as SG is not using consent feature at CP level">
+    <sql>
+      update catissue_collection_protocol set consents_waived=1;
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set the SGH specific report identifier">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'spr_deidentifier' and module_id = @module_id;
+        
+      update 
+        os_cfg_settings
+      set 
+        value = 'sghReportsDeIdentifier'
+      where 
+        property_id = @prop_id
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set specimen type abbreviation for specimen labels">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'specimen_type_abbr_map' and module_id = @module_id;
+        
+      update 
+        os_cfg_settings
+      set 
+        value = 'classpath:/com/krishagni/openspecimen/sgh/specimen_type_abbre.csv'
+      where 
+        property_id = @prop_id
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Updating quantity units for the specimen type and class">
+    <sql>
+      update os_specimen_units set qty_unit='ml/Test tubes' where specimen_class='Fluid';
+    </sql>
+    
+    <sql>
+      update os_specimen_units set qty_unit='cell count' where specimen_class='Cell';
+    </sql>
+    
+    <sql>
+      update os_specimen_units set qty_unit='gm/Bites' where specimen_class='Tissue';
+    </sql>
+    <sql>
+      insert into os_specimen_units
+        (specimen_class, specimen_type, qty_unit, qty_html_display_code, activity_status)
+      values
+        ("Tissue", "Frozen Tissue Slide", "count", NULL, "Active"),
+        ("Tissue", "Fixed Tissue Block", "count", NULL, "Active"),
+        ("Tissue", "Frozen Tissue Block", "count", NULL, "Active"),
+        ("Tissue", "Fixed Tissue Slide", "count", NULL, "Active"),
+        ("Tissue", "Microdissected", "cells", NULL, "Active")
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Set the pathology abbreviation file for SGH">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'spmn_path_status_abbr_map' and module_id = @module_id;
+        
+      update 
+        os_cfg_settings
+      set 
+        value = 'classpath:/com/krishagni/openspecimen/sgh/spmn_path_status.csv'
+      where 
+        property_id = @prop_id
     </sql>
   </changeSet>
   

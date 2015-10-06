@@ -6,24 +6,24 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 jar {
-  baseName = 'os-sgh'
+  baseName = 'os-redcap'
   version =  '1.0.0'
 
   manifest {
-    attributes("os-plugin-name": "sgh")
+    attributes("os-plugin-name": "redcap")
   }
   
   doFirst {
     from ('./src/main/webapp/dist') {
       include '**/**'
  
-      into 'META-INF/resources/sgh'
+      into 'META-INF/resources/redcap'
     }
 
     from('./src/main/webapp') {
       include 'def.json'
 
-      into 'META-INF/resources/sgh'
+      into 'META-INF/resources/redcap'
 
       def scriptHash = "-1"
       new File('./src/main/webapp/dist/').eachFileRecurse(FILES) {
@@ -72,7 +72,6 @@ dependencies {
   compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.8.6'
   compile group: 'org.javassist', name: 'javassist', version:'3.19.0-GA'
   compile group: 'cglib', name: 'cglib', version:'3.1'
-  compile group: 'com.google.code.gson', name: 'gson', version:'2.3.1'
 
   compile group: 'commons-collections', name: 'commons-collections', version:'3.2.1'
   compile group: 'commons-logging', name: 'commons-logging', version:'1.2'
