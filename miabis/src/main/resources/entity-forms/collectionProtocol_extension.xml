@@ -1,0 +1,195 @@
+<form>
+<view>
+<name>mIABISstudyinformation</name>
+<caption><![CDATA[MIABIS study information]]></caption>
+<row>
+<listBox>
+<name>DD2</name>
+<udn>studyDesign</udn>
+<caption><![CDATA[Study design]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[Case-control]]></value>
+</option>
+<option>
+<value><![CDATA[Cohort]]></value>
+</option>
+<option>
+<value><![CDATA[Cross-sectional]]></value>
+</option>
+<option>
+<value><![CDATA[Longitudinal]]></value>
+</option>
+<option>
+<value><![CDATA[Twin-study]]></value>
+</option>
+<option>
+<value><![CDATA[Quality control]]></value>
+</option>
+<option>
+<value><![CDATA[Population-based]]></value>
+</option>
+<option>
+<value><![CDATA[Disease specific]]></value>
+</option>
+<option>
+<value><![CDATA[Birth cohort]]></value>
+</option>
+<option>
+<value><![CDATA[Other]]></value>
+</option>
+</options>
+<autoCompleteDropdown>false</autoCompleteDropdown>
+<noOfRows>0</noOfRows>
+<minQueryChars>3</minQueryChars>
+<multiSelect>true</multiSelect>
+</listBox>
+</row>
+<row>
+<listBox>
+<name>MLB3</name>
+<udn>dataCategories</udn>
+<caption><![CDATA[Data categories]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[Biological samples]]></value>
+</option>
+<option>
+<value><![CDATA[Survey data]]></value>
+</option>
+<option>
+<value><![CDATA[Imaging data]]></value>
+</option>
+<option>
+<value><![CDATA[Medical records]]></value>
+</option>
+<option>
+<value><![CDATA[National registries]]></value>
+</option>
+<option>
+<value><![CDATA[Genealogical records]]></value>
+</option>
+<option>
+<value><![CDATA[Physiological/Biochemical measurements]]></value>
+</option>
+<option>
+<value><![CDATA[Other]]></value>
+</option>
+</options>
+<autoCompleteDropdown>false</autoCompleteDropdown>
+<noOfRows>0</noOfRows>
+<minQueryChars>3</minQueryChars>
+<multiSelect>true</multiSelect>
+</listBox>
+</row>
+<!--row>
+<listBox>
+<name>DD4</name>
+<udn>inclusionCriteria</udn>
+<caption><![CDATA[Inclusion criteria]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<optionsFile>DD4.csv</optionsFile>
+</options>
+<autoCompleteDropdown>false</autoCompleteDropdown>
+<noOfRows>0</noOfRows>
+<minQueryChars>3</minQueryChars>
+<multiSelect>true</multiSelect>
+</listBox>
+</row-->
+<row>
+<textArea>
+<name>TA5</name>
+<udn>description</udn>
+<caption><![CDATA[Description]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Study Decription]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>3</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<height>3</height>
+</textArea>
+</row>
+<row>
+<textField>
+<name>ST6</name>
+<udn>sampleCollectionID</udn>
+<caption><![CDATA[Sample Collection ID]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+<row>
+<textField>
+<name>ST7</name>
+<udn>sampleCollectionAcronym</udn>
+<caption><![CDATA[Sample Collection Acronym]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+<row>
+<textField>
+<name>ST8</name>
+<udn>sampleCollectionName</udn>
+<caption><![CDATA[Sample Collection Name]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+<row>
+<textArea>
+<name>TA9</name>
+<udn>sampleCollectionDescription</udn>
+<caption><![CDATA[Sample Collection Description]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>3</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<height>3</height>
+</textArea>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>
