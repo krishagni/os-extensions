@@ -1,0 +1,103 @@
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-spacing:0;border-collapse:separate">
+  <tbody>
+    <tr>
+      <td style="border-collapse:collapse;">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;line-height:20px">
+          <tbody>
+            <tr>
+              <td style="padding:0px;border-collapse:collapse;padding:0px;padding-bottom:10px">
+                <p style="margin:10px 0 0 0">
+                  Hello Admin,
+                  <br><br>
+                  A new user, $user.firstName $user.lastName, has signed up. Please review and process the request at the earliest.
+                  <br><br>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table>
+                  <tr>
+                    <td><b>Last Name </b></td> <td> : $user.lastName</td>
+                  </tr>
+                  <tr>
+                    <td><b>First Name </b></td><td> : $user.firstName </td>
+                  </tr>
+                  <tr>
+                    <td><b>Login Name </b></td> <td> : $user.loginName </td>
+                  </tr>
+                  <tr>
+                    <td><b>Email Address </b></td><td> : $user.emailAddress </td>
+                  </tr>
+                  <tr>
+                    <td><b>Demo Requested </b></td><td> : $user.demoReq </td>
+                  </tr>
+                  <tr>
+                    <td><b>Have Legacy Data </b></td><td> : $user.legacyData </td>
+                  </tr>
+                  <tr>
+                    <td><b>Specimen Collection? </b></td>
+                    #if ( $user.specimenCollection )
+                      <td> : $user.specimenCollection </td>
+                    #else
+                      <td> : Not Specified </td>
+                    #end
+                  </tr>
+                  <tr>
+                    <td><b>Distribute Specimens? </b></td>
+                    #if ( $user.specimenDistribution != "Others" )
+                      <td> : $user.specimenDistribution </td>
+                    #else
+                      <td> : Others- #if($user.specimenDistributionOthers) $user.specimenDistributionOthers #else Not Specified #end </td>
+                    #end
+                  </tr>
+                  <tr>
+                    <td><b>Os Integration </b></td>
+                    #if ( $user.osIntegrationValue )
+                      <td> : $user.osIntegrationValue </td>
+                    #else
+                      <td> : Not Specified </td>
+                    #end
+                  </tr>
+                  <tr>
+                    <td><b>Server Needs </b></td><td> : $user.serverNeeds </td>
+                  </tr>
+                  <tr>
+                    <td><b>Explanation </b></td>
+                    #if ( $user.explanation )
+                      <td> : $user.explanation </td>
+                    #else
+                      <td> : Not Specified </td>
+                    #end
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="border-collapse:collapse;padding-bottom:10px">
+                <table cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;color:#333">
+                  <tbody>
+                    <tr>
+                      <td style="background:#3068a2;background:-moz-linear-gradient(top,#4687ce 0%,#3068a2 100%);background:-webkit-linear-gradient(top,#4687ce 0%,#3068a2 100%);background:-o-linear-gradient(top,#4687ce 0%,#3068a2 100%);background:-ms-linear-gradient(top,#4687ce 0%,#3068a2 100%);background:linear-gradient(top,#4687ce 0%,#3068a2 100%);padding:0px;border-collapse:collapse;border-radius:3px;padding:5px;margin:0px">
+                        <a style="color:#3b73af;text-decoration:none;color:#fff;font-weight:bold;padding:6px;font-size:14px;line-height:1.429;font-family:Arial,sans-serif" href="$appUrl/#/users/$user.id/overview" target="_blank">Review Request</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="height:5px;line-height:5px;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+        #parse( $footer )
+      </td>
+    <tr>
+  </tbody>
+</table>

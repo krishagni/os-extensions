@@ -1,0 +1,203 @@
+<div ng-controller="demoSignupCtrl" class="os-demo-signup">
+  <div ng-if="!signedUp">
+    <div class="os-center-box os-sign-up-box">
+      <form name="userForm" class="form-horizontal" os-form-validator="userForm" validator="userFormValidator" novalidate>
+        <div class="os-header">
+          <h3 translate="user.create_account">Create your OpenSpecimen Demo Account</h3>
+        </div>
+
+        <div class="os-body">
+          <div class="link">
+            <span translate="user.already_have_an_openspecimen_id">Already have an OpenSpecimen ID?</span> 
+            <a ui-sref="login" translate="user.sign_in_here">Sign In here </a>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-6">
+              <label translate="user.last_name">Last Name</label>
+              <input type="text" name="lastName" ng-model="user.lastName" class="form-control" ng-maxlength="255" required/>
+              <div os-field-error field="userForm.lastName"></div>
+            </div>
+            <div class="col-xs-6">
+              <label translate="user.first_name">First Name</label>
+              <input type="text" name="firstName" ng-model="user.firstName" class="form-control" ng-maxlength="255" required/>
+              <div os-field-error field="userForm.firstName"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-xs-6">
+              <label translate="user.email_address">Email Address</label>
+              <input type="email" name="email" class="form-control" ng-model="user.emailAddress" ng-maxlength="255" required> 
+              <div os-field-error field="userForm.email"></div>
+            </div>
+            <div class="col-xs-6">
+              <label translate="user.phone_number">Phone Number</label>
+              <input type="text" name="phoneNumber" ng-model="user.phoneNumber" class="form-control" ng-maxlength="16" required/>
+              <div os-field-error field="userForm.phoneNumber"></div>
+            </div>
+          </div>
+        
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.req_demo">
+                Would you like our experts to give you a live demo?
+              </label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="reqDemo" ng-model="user.demoReq" value="Yes" required>
+                <span translate="common.yes">Yes</span>
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="reqDemo" ng-model="user.demoReq" value="No" required>
+                <span translate="common.no">No</span>
+              </label>
+              <div os-field-error field="userForm.reqDemo"></div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.legacy_data">
+                Do you have legacy data (in Excel, MS Access, other databases, etc) to be migrated?
+              </label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="legacyData" ng-model="user.legacyData" value="Yes" required>
+                <span translate="common.yes">Yes</span>
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="legacyData" ng-model="user.legacyData" value="No" required>
+                <span translate="common.no">No</span>
+              </label>
+              <div os-field-error field="userForm.legacyData"></div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.specimen_collection">What best describes your specimen collection?</label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="plannedCollection" ng-model="user.plannedCollection">
+                <span translate="user.planned_collection">Planned clinical study based collections</span>
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="unplannedCollection" ng-model="user.unplannedCollection">
+                <span translate="user.unplanned_collection">General biobanking unplanned collections</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.explanation">Briefly explain your biospecimen collection</label>
+              <textarea rows="2" ng-model="user.explanation" class="form-control">
+              </textarea>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.specimen_distribution">Do you distribute specimens to researchers?</label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="specimenDistribution" ng-model="user.specimenDistribution" value="Yes" required>
+                <span translate="common.yes">Yes</span>
+              </label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="specimenDistribution" ng-model="user.specimenDistribution" value="No" required>
+                <span translate="common.no">No</span>
+              </label><br/>
+              <div class="os-inline-flex">
+                <label class="radio-inline">
+                  <input type="radio" name="specimenDistribution" ng-model="user.specimenDistribution" value="Others" required>
+                  <span translate="user.others">Others: </span>
+                </label>
+                <input type="text" class="form-control os-others" ng-model="user.specimenDistributionOthers"
+                  ng-maxlength="255"/>
+              </div>
+              <div os-field-error field="userForm.specimenDistribution"></div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.os_integration">
+                Would you like to integrate OpenSpecimen with any of the below?
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="cdms" ng-model="user.cdms">
+                <span translate="user.clinical_data_management_system">Clinical Data Management System</span>
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="barcodePrinters" ng-model="user.barcodePrinters">
+                <span translate="user.barcode_printers">Barcode Printers</span>
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="cerner" ng-model="user.cerner">
+                <span translate="user.cerner">Cerner (or other path database)</span>
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="redcap" ng-model="user.redcap">
+                <span translate="user.redcap">RedCAP</span>
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="openClinica" ng-model="user.openClinica">
+                <span translate="user.openclinica">OpenClinica</span>
+              </label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="velos" ng-model="user.velos">
+                <span translate="user.velos">EPIC/Velos</span>
+              </label><br/>
+              <div class="os-inline-flex">
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="velos" ng-model="user.osIntegration">
+                  <span translate="user.others">Others: </span>
+                </label>
+                <input type="text" class="form-control os-others" ng-model="user.osIntegrationOthers" ng-maxlength="255"/>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label translate="user.server_needs">Which option best describes your server needs?</label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="serverNeeds" ng-model="user.serverNeeds" 
+                  value="{{'user.hosted_and_managed_by_krishagni' | translate}}" required>
+                <span translate="user.hosted_and_managed_by_krishagni">Hosted and managed by Krishagni</span>
+              </label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="serverNeeds" ng-model="user.serverNeeds" 
+                  value="{{'user.managed_by_krishagni_staff' | translate}}" required>
+                <span translate="user.managed_by_krishagni_staff">On premise (managed by Krishagni IT staff)</span>
+              </label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="serverNeeds" ng-model="user.serverNeeds" 
+                  value="{{'user.managed_by_internal_staff' | translate}}" required>
+                <span translate="user.managed_by_internal_staff">On premise (managed by internal IT staff)</span>
+              </label>
+              <div os-field-error field="userForm.specimenDistribution"></div>
+            </div>
+          </div>
+        
+          <div>
+            <button class="btn btn-block btn-primary" os-form-submit="signup()">
+              <span translate="user.signup"> Sign up </span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel panel-default os-margin-10" ng-if="signedUp">
+    <div class="panel-body">
+      <p>
+        <strong translate="user.signed_up">
+          Your membership request has been received. Please wait for an approval email from OpenSpecimen Administrator.
+          Thank you.
+        </strong>
+      </p>
+      <p>
+        <a ui-sref="login" translate="user.return_to_signin">Return to Sign in</a>
+      </p>
+    </div>
+  </div>
+<div>

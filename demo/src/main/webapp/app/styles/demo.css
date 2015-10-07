@@ -1,0 +1,17 @@
+.os-demo-signup {
+  background-color: #2d67a3;
+  margin-bottom: 50px;
+}
+
+.os-inline-flex {
+  display: inline-flex;
+}
+
+.os-signin-footer {
+  position: fixed;
+  background-color: #2d67a3;
+}
+
+.os-others {
+  margin-left: 6px;
+}

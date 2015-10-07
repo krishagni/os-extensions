@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet author="slakhani" id="inserting default institute and department" dbms="mysql">
+    <sql>
+      insert into catissue_institution (NAME, ACTIVITY_STATUS) values ("A1 - For Demo Users", "Active")
+    </sql>
+    
+    <sql>
+      insert into os_departments (NAME, INSTITUTE_ID) values ("Pathology", 
+      (SELECT IDENTIFIER FROM CATISSUE_INSTITUTION WHERE NAME="A1 - For Demo Users"))
+    </sql>
+  </changeSet>
+  
+  <changeSet author="slakhani" id="inserting default institute and department" dbms="oracle">
+    <sql>
+      insert into catissue_institution (IDENTIFIER, NAME, ACTIVITY_STATUS) 
+      values (CATISSUE_INSTITUTION_SEQ.nextval, 'A1 - For Demo Users', 'Active')
+    </sql>
+    
+    <sql>
+      insert into os_departments (IDENTIFIER, NAME, INSTITUTE_ID) values (OS_DEPARTMENTS_SEQ.nextval,
+      'Pathology', (SELECT IDENTIFIER FROM CATISSUE_INSTITUTION WHERE NAME='A1 - For Demo Users'))
+    </sql>
+  </changeSet>
+  
+</databaseChangeLog>
