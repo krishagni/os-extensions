@@ -89,11 +89,9 @@ public class LabelFileGenerator implements ScheduledTask{
 			
 			JsonParser parser = new JsonParser();
 			JsonObject jsonObj = (JsonObject)parser.parse(data);
-			if (printerName != null && !printerName.isEmpty()){
-				bw.write("\""+jsonObj.get("Specimen Label") + "\"" + ", " + "\"" + jsonObj.get("Name") + "\"");
-			} else {
-				bw.write(jsonObj.get("Specimen Label") +", "+ jsonObj.get("Name"));
-			}
+			String label = String.valueOf(jsonObj.get("Specimen Label"));
+			String trid = String.valueOf(jsonObj.get("Name"));
+			bw.write(label.replace("\"", "") +", "+ trid.replace("\"", ""));
 		}
 		
 		catch(Exception ex)

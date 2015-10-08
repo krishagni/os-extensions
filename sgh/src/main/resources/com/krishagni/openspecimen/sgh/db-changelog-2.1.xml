@@ -556,4 +556,62 @@
     </sql>
   </changeSet>
   
+  <changeSet author="nmarwaha" id="Updating the sequence values for parent specimen unique id for aliquots">
+    <sql>
+      delete from
+        key_seq_generator
+      where
+        key_type = 'PSPEC_UID'; 
+    </sql>
+    <sql endDelimiter="//">
+      drop procedure if exists updatePspecUid //
+
+      create procedure updatePspecUid ()
+
+      begin
+        declare parentId bigint;
+        declare aliqCount bigint;
+        declare v_finished INTEGER DEFAULT 0;
+
+        declare curs cursor for 
+          select 
+            parent_specimen_id 
+          from 
+            catissue_specimen 
+          where 
+            parent_specimen_id is not null and lineage='Aliquot' group by parent_specimen_id;
+
+        declare continue handler 
+          for not found set v_finished = 1;
+
+        Open curs;
+        get_aliq_cnt: loop
+          fetch curs into parentId;
+
+          if v_finished = 1 then 
+            leave get_aliq_cnt;
+          end if;
+
+          select 
+            count(*) into aliqCount 
+          from 
+            catissue_specimen 
+          where 
+            parent_specimen_id = parentId and lineage = 'Aliquot' and label is not null;
+      
+          if(aliqCount > 0) then
+            insert into key_seq_generator(key_value, key_sequence_id, key_type)
+            values(parentId,aliqCount,'PSPEC_UID');
+          end if;
+
+        end loop get_aliq_cnt;
+        close curs;
+
+      end
+      //
+    </sql>
+    
+    <sql>call updatePspecUid();</sql>
+  </changeSet>
+  
 </databaseChangeLog>

@@ -19,7 +19,7 @@ osApp.providers
   })
   .state('bulk-reprint-trids', {
     url: '/bulk-reprint-trids',
-    templateUrl: 'custom-modules/sgh/biospecimen/bulk-reprint.html',
+    templateUrl: 'plugin-ui-resources/sgh/bulk-reprint.html',
     controller: 'sghCpBulkRePrintingCtrl',
     parent: 'signed-in'  
   });
