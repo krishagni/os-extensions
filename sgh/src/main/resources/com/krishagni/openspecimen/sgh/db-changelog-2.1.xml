@@ -31,6 +31,15 @@
     </sql>
   </changeSet>
   
+  <changeSet author="vgaikwad" id="Added token to remove some header part from spr report" dbms="mysql">
+    <sql>
+      insert into catissue_deidentified_text
+        (string_content, delete_line, delete_next_line) 
+      values
+        ('Histopathology Report Final', 1, 0);
+    </sql>
+  </changeSet>
+  
   <changeSet author="vgaikwad" id="Added regular expressions for date formats dd-mm-yyyy and dd-mmm-yyyy to deidentify dates in spr report" dbms="mysql">
     <sql>
       insert into catissue_deidentified_text
