@@ -22,6 +22,15 @@
     </sql>
   </changeSet>
   
+  <changeSet author="vgaikwad" id="Added token to remove hospital name from header" dbms="mysql">
+    <sql>
+      insert into catissue_deidentified_text
+        (string_content, delete_line, delete_next_line) 
+      values
+        ('KK Hospital', 1, 0);
+    </sql>
+  </changeSet>
+  
   <changeSet author="vgaikwad" id="Added regular expressions for date formats dd-mm-yyyy and dd-mmm-yyyy to deidentify dates in spr report" dbms="mysql">
     <sql>
       insert into catissue_deidentified_text
