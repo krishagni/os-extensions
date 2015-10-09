@@ -16,6 +16,12 @@
     </sql>
   </changeSet>
   
+  <changeSet author="vgaikwad" id="Delete unused row from deidentification text table " dbms="mysql">
+    <sql>
+      delete from catissue_deidentified_text where string_content= 'Primary Provider:';
+    </sql>
+  </changeSet>
+  
   <changeSet author="vgaikwad" id="Added regular expressions for date formats dd-mm-yyyy and dd-mmm-yyyy to deidentify dates in spr report" dbms="mysql">
     <sql>
       insert into catissue_deidentified_text

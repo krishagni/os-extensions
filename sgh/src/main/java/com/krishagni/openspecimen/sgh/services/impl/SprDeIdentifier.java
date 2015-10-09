@@ -119,6 +119,6 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 	
 	private static final String REPLACE_1_LINE_REGX = "(?i).*?(%s)((.*?\\n)|(\\b))";
 	
-	private static final String REPLACE_WORD = "(?i).*?(%s)\\b";
+	private static final String REPLACE_WORD = "(?i)(%s)\\b";
 	
 }
