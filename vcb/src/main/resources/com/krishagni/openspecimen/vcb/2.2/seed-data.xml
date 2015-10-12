@@ -50,51 +50,46 @@
     </sql>
   </changeSet>
   
-  <changeSet author="asamgir" id="removing existing specimen types for Molecular specimen class ">
+  <changeSet author="hemantk" id="removing existing specimen types from PVs table" runOnChange="true">
     <sql>
-      delete from 
-        catissue_permissible_value 
-      where 
-        parent_identifier = (select getPvParentId('2003991', 'Molecular') from dual);
-    </sql>
-  </changeSet>
-  
-  <changeSet author="asamgir" id="removing existing specimen types for Cell specimen class ">
-    <sql>
-      delete from 
-        catissue_permissible_value 
-      where 
-        parent_identifier = (select getPvParentId('2003991', 'Cell') from dual);
-    </sql>
-  </changeSet>
-  
-  <changeSet author="asamgir" id="removing existing specimen types for Tissue specimen class ">
-    <sql>
-      delete from 
-        catissue_permissible_value 
-      where 
-        parent_identifier = (select getPvParentId('2003991', 'Tissue') from dual);
-    </sql>
-  </changeSet>
-  
-  <changeSet author="asamgir" id="removing existing specimen types for Fluid specimen class ">
-    <sql>
-      delete from 
-        catissue_permissible_value 
-      where 
-        parent_identifier = (select getPvParentId('2003991', 'Fluid') from dual);
+      delete a from
+        catissue_permissible_value as a
+        join catissue_permissible_value as b on a.parent_identifier=b.identifier
+      where
+        b.value
+      in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
     </sql>
   </changeSet>
 
-  <changeSet id="Permissible_values csv file upload" author="asamgir">
-    <loadData encoding="UTF-8"
-      file="classpath:com/krishagni/openspecimen/vcb/2.2/pvs.csv"
-      tableName="CATISSUE_PERMISSIBLE_VALUE">
-      <column name="identifier" type="NUMERIC"/>
-      <column name="parent_identifier" type="NUMERIC"/>            
-    </loadData>
+  <changeSet author="hemantk" id="removing existing clinical diagnosis from PVs table">
+    <sql>
+      delete from
+        catissue_permissible_value
+      where
+        public_id='Clinical_Diagnosis_PID';
+    </sql>
   </changeSet>
   
+  <changeSet author="hemantk" id="Permissible_values csv file upload">
+    <validCheckSum>7:f8585eb4835939c86547678c2e3f0cd8</validCheckSum>
+      <preConditions onFail="WARN">
+        <sqlCheck expectedResult="0">
+          select count(*) from
+            catissue_permissible_value as a
+            join catissue_permissible_value as b on a.parent_identifier=b.identifier
+          where
+            b.value
+          in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
+        </sqlCheck>
+      </preConditions>
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/vcb/2.2/pvs.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>
+ 
   <changeSet author="nmarwaha" id="Set the MPI format">
     <sql>
       select 
