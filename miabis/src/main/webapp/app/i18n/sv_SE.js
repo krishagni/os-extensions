@@ -149,6 +149,7 @@
 
   "visits": {
     "anticipated_specimens": "Anticipated Samples",
+    "comments": "Description",
     "ctx_menu": {
       "collect_planned_specimens": "Collect Planned Samples",
       "collect_unplanned_specimens": "Collect Unplanned Samples",
