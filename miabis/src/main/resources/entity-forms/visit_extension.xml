@@ -1,0 +1,40 @@
+<form>
+<view>
+<name>mIABISSampleCollection</name>
+<caption><![CDATA[MIABIS sample collection]]></caption>
+<row>
+<textField>
+<name>ST2</name>
+<udn>iD</udn>
+<caption><![CDATA[ID]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Sample Collection ID that links the sample collection to the hosting biobank/study]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+<row>
+<textField>
+<name>ST3</name>
+<udn>acronym</udn>
+<caption><![CDATA[Acronym]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Short name in use for the sample collection]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>

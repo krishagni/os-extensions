@@ -1,6 +1,6 @@
 <form>
 <view>
-<name>mIABISstudyinformation</name>
+<name>mIABISStudyInformation</name>
 <caption><![CDATA[MIABIS study information]]></caption>
 <row>
 <listBox>
@@ -92,25 +92,6 @@
 <multiSelect>true</multiSelect>
 </listBox>
 </row>
-<!--row>
-<listBox>
-<name>DD4</name>
-<udn>inclusionCriteria</udn>
-<caption><![CDATA[Inclusion criteria]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<options>
-<optionsFile>DD4.csv</optionsFile>
-</options>
-<autoCompleteDropdown>false</autoCompleteDropdown>
-<noOfRows>0</noOfRows>
-<minQueryChars>3</minQueryChars>
-<multiSelect>true</multiSelect>
-</listBox>
-</row-->
 <row>
 <textArea>
 <name>TA5</name>
@@ -119,69 +100,6 @@
 <phi>false</phi>
 <mandatory>false</mandatory>
 <toolTip><![CDATA[Study Decription]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>3</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<height>3</height>
-</textArea>
-</row>
-<row>
-<textField>
-<name>ST6</name>
-<udn>sampleCollectionID</udn>
-<caption><![CDATA[Sample Collection ID]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>8</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<url>false</url>
-<password>false</password>
-</textField>
-</row>
-<row>
-<textField>
-<name>ST7</name>
-<udn>sampleCollectionAcronym</udn>
-<caption><![CDATA[Sample Collection Acronym]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>8</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<url>false</url>
-<password>false</password>
-</textField>
-</row>
-<row>
-<textField>
-<name>ST8</name>
-<udn>sampleCollectionName</udn>
-<caption><![CDATA[Sample Collection Name]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>8</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<url>false</url>
-<password>false</password>
-</textField>
-</row>
-<row>
-<textArea>
-<name>TA9</name>
-<udn>sampleCollectionDescription</udn>
-<caption><![CDATA[Sample Collection Description]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
 <showLabel>true</showLabel>
 <showInGrid>false</showInGrid>
 <width>3</width>
