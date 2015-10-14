@@ -25,8 +25,9 @@
     "confirm_delete_event": "Collection Protocol Event and its sample requirements will be deleted. Are you sure you want to proceed?",
     "tooltip": {
       "view_details": "Click to view/edit Study details",
-      "collected_specimens_count": "Count of Collected Samples",
       "add": "Click to add new Study",
+      "edit": "Click to edit Study",
+      "collected_specimens_count": "Count of Collected Samples",
       "search": "Click to search Studies"
     },
     "label_format": {
