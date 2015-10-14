@@ -31,12 +31,18 @@
     </sql>
   </changeSet>
   
-  <changeSet author="vgaikwad" id="Added token to remove some header part from spr report" dbms="mysql">
+  <changeSet author="vgaikwad" id="Delete unused token 'Histopathology Report Final' from deidentification text table " dbms="mysql">
+    <sql>
+      delete from catissue_deidentified_text where string_content= 'Histopathology Report Final';
+    </sql>
+  </changeSet>
+  
+  <changeSet author="vgaikwad" id="Added token to remove Date and 'Histopathology Report' text from header of spr" dbms="mysql">
     <sql>
       insert into catissue_deidentified_text
         (string_content, delete_line, delete_next_line) 
-      values
-        ('Histopathology Report Final', 1, 0);
+      values 
+        ('\\b\\d{1,2}-[a-zA-Z]{3}-\\d{4} \\d{2}:\\d{2}\\b Histopathology Report', 1, 0);
     </sql>
   </changeSet>
   
@@ -637,5 +643,5 @@
     
     <sql>call updatePspecUid();</sql>
   </changeSet>
-  
+   
 </databaseChangeLog>
