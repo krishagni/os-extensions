@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        
+  <property name="now" value="now()"   dbms="mysql" />
+  <property name="now" value="sysdate" dbms="oracle" />
+
+  <changeSet id="Insert public_id for animal categories" author="slakhani">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          count(*) 
+        from 
+          catissue_cde
+        where 
+          public_id = 'Animal_Category_PID'
+      </sqlCheck>
+    </preConditions>
+    <sql>
+      insert into catissue_cde
+        (public_id, long_name, definition, version, last_updated) 
+      values
+        ('Animal_Category_PID', 'Animal_Category_PID', 'Animal_Category_PID', 2.4, ${now});
+    </sql>
+  </changeSet>
+
+  <changeSet id="Loading permissible values for attribute: category and breed" author="slakhani">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = 'Animal_Category_PID'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="com/krishagni/openspecimen/actrec/2.4/category-and-breed.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+      <column name="parent_identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>  
+</databaseChangeLog>

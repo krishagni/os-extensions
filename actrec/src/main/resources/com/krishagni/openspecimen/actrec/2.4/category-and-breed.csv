@@ -1,0 +1,37 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,value,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Mouse,Animal_Category_PID,null
+getNextPvId(),,,null,Nude mouse,Animal_Category_PID,null
+getNextPvId(),,,null,Hamster,Animal_Category_PID,null
+getNextPvId(),,,null,Guinea pig,Animal_Category_PID,null
+getNextPvId(),,,null,Rat,Animal_Category_PID,null
+getNextPvId(),,,null,Canine (Dog),Animal_Category_PID,null
+getNextPvId(),,,null,Feline (Cat),Animal_Category_PID,null
+getNextPvId(),,,null,Bovine,Animal_Category_PID,null
+getNextPvId(),,,null,Equine,Animal_Category_PID,null
+getNextPvId(),,,null,Sheep,Animal_Category_PID,null
+getNextPvId(),,,null,Rabbit,Animal_Category_PID,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Labrador",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Boxer",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","German Shepherd",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Golden Retriever",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Cocker Spaniel",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Lhasa Apso",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Doberman",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Pomeranian",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Pug",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Yorkshire Terrier",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Non Descript",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Saint Bernard",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Shitzu",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Canine (Dog)')","Mixed Breed",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Feline (Cat)')","Persian",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Feline (Cat)')","Siamese",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Feline (Cat)')","Non Descript",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Rat')","Sprague Dawley (SD)",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Rat')","Wistar",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Mouse')","SCID",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Mouse')","NUDE",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Mouse')","C3h Jax",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Mouse')","C57 BL/6",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Mouse')","BALB/c",null,null
+getNextPvId(),,,"getPvParentId('Animal_Category_PID', 'Mouse')","Swiss",null,null

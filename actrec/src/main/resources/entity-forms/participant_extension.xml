@@ -1,0 +1,166 @@
+<form>
+<view>
+<name>aCTRECBioBank</name>
+<caption><![CDATA[ACTREC BioBank]]></caption>
+<row>
+<dropDown>
+<name>category</name>
+<udn>category</udn>
+<caption><![CDATA[Category]]></caption>
+<phi>false</phi>
+<mandatory>true</mandatory>
+<toolTip><![CDATA[Category]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[Mouse]]></value>
+</option>
+<option>
+<value><![CDATA[Nude mouse]]></value>
+</option>
+<option>
+<value><![CDATA[Hamster]]></value>
+</option>
+<option>
+<value><![CDATA[Guinea pig]]></value>
+</option>
+<option>
+<value><![CDATA[Rat]]></value>
+</option>
+<option>
+<value><![CDATA[Canine (Dog)]]></value>
+</option>
+<option>
+<value><![CDATA[Feline (Cat)]]></value>
+</option>
+<option>
+<value><![CDATA[Bovine]]></value>
+</option>
+<option>
+<value><![CDATA[Equine]]></value>
+</option>
+<option>
+<value><![CDATA[Sheep]]></value>
+</option>
+<option>
+<value><![CDATA[Rabbit]]></value>
+</option>
+</options>
+<lazyLoad>true</lazyLoad>
+<width>0</width>
+<minQueryChars>0</minQueryChars>
+</dropDown>
+</row>
+<row>
+<dropDown>
+<name>breed</name>
+<udn>breed</udn>
+<caption><![CDATA[Breed]]></caption>
+<phi>false</phi>
+<mandatory>true</mandatory>
+<toolTip><![CDATA[Breed]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[Labrador]]></value>
+</option>
+<option>
+<value><![CDATA[Boxer]]></value>
+</option>
+<option>
+<value><![CDATA[German Shepherd]]></value>
+</option>
+<option>
+<value><![CDATA[Golden Retriever]]></value>
+</option>
+<option>
+<value><![CDATA[Cocker spaniel]]></value>
+</option>
+<option>
+<value><![CDATA[Lhasa Apso]]></value>
+</option>
+<option>
+<value><![CDATA[Doberman]]></value>
+</option>
+<option>
+<value><![CDATA[Pomeranian]]></value>
+</option>
+<option>
+<value><![CDATA[Pug]]></value>
+</option>
+<option>
+<value><![CDATA[Yorkshire Terrier]]></value>
+</option>
+<option>
+<value><![CDATA[Non Descript]]></value>
+</option>
+<option>
+<value><![CDATA[Saint Bernard]]></value>
+</option>
+<option>
+<value><![CDATA[Shitzu]]></value>
+</option>
+<option>
+<value><![CDATA[Mixed breed]]></value>
+</option>
+<option>
+<value><![CDATA[Persian]]></value>
+</option>
+<option>
+<value><![CDATA[Siamese]]></value>
+</option>
+<option>
+<value><![CDATA[Non Descript]]></value>
+</option>
+<option>
+<value><![CDATA[Sprague Dawley (SD)]]></value>
+</option>
+<option>
+<value><![CDATA[Wistar]]></value>
+</option>
+<option>
+<value><![CDATA[SCID]]></value>
+</option>
+<option>
+<value><![CDATA[NUDE]]></value>
+</option>
+<option>
+<value><![CDATA[C3h Jax]]></value>
+</option>
+<option>
+<value><![CDATA[C57 BL/6]]></value>
+</option>
+<option>
+<value><![CDATA[BALB/c]]></value>
+</option>
+<option>
+<value><![CDATA[Swiss]]></value>
+</option>
+</options>
+<lazyLoad>true</lazyLoad>
+<width>0</width>
+<minQueryChars>0</minQueryChars>
+</dropDown>
+</row>
+<row>
+<textField>
+<name>colour</name>
+<udn>colour</udn>
+<caption><![CDATA[Colour]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Colour]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>
