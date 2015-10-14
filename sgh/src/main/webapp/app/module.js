@@ -38,6 +38,12 @@ osApp.providers
           'page-body': {
             template: 'plugin-ui-resources/sgh/unplanned-bulk-pre-print-icon.html'
           }
+        },
+
+        'participant-addedit': {
+          'page-body': {
+            template: 'plugin-ui-resources/sgh/participant-addedit.html'
+          }
         }
       }
     );
