@@ -49,6 +49,7 @@
   },
   
   "dp": {
-   "title": "Title/TR Code"
+   "title": "Title",
+   "short_title": "TR Code"
   }
 }
