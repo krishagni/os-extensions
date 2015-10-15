@@ -41,4 +41,23 @@ jar {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+def grunt_cmd = "grunt"
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+  grunt_cmd = "grunt.cmd"
+}
+
+task grunt_build(type: Exec) {
+  workingDir './src/main/webapp'
+  commandLine grunt_cmd, 'build'
+}
+
+task grunt_clean(type: Exec) {
+  workingDir './src/main/webapp'
+  commandLine grunt_cmd, 'clean'
+}
+
+clean.dependsOn grunt_clean
+
+jar.dependsOn grunt_build
 build.dependsOn jar
