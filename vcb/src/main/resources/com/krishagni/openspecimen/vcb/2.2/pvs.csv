@@ -846,3 +846,14 @@ getNextPvId(),,,null,Unknown,2004001,0
 getNextPvId(),,,null,Male,2003989,0
 getNextPvId(),,,null,Female,2003989,0
 getNextPvId(),,,null,Unknown,2003989,0
+getNextPvId(),,,null,Aboriginal or Torres Strait Islander,Ethnicity_PID,0
+getNextPvId(),,,null,African,Ethnicity_PID,0
+getNextPvId(),,,null,Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Australasian,Ethnicity_PID,0
+getNextPvId(),,,null,Australian,Ethnicity_PID,0
+getNextPvId(),,,null,Central American,Ethnicity_PID,0
+getNextPvId(),,,null,European,Ethnicity_PID,0
+getNextPvId(),,,null,Middle Eastern,Ethnicity_PID,0
+getNextPvId(),,,null,North American,Ethnicity_PID,0
+getNextPvId(),,,null,Not Specified,Ethnicity_PID,0
+getNextPvId(),,,null,South American,Ethnicity_PID,0
