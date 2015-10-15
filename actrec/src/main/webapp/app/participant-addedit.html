@@ -92,7 +92,7 @@
           <div class="col-xs-6">
             <os-select name="categoty" ng-model="cpr.participant.extensionDetail.attrsMap.category" list="category" 
               required placeholder="{{'participant.category' | translate}}" 
-              on-select="populateBreed(cpr.participant.extensionDetail.attrsMap.category)">
+              on-select="loadBreeds(cpr.participant.extensionDetail.attrsMap.category)">
             </os-select>
             <div os-field-error field="pform.category"></div>
           </div>

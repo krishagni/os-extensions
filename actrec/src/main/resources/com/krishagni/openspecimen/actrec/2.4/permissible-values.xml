@@ -42,5 +42,39 @@
       <column name="identifier" type="NUMERIC"/>
       <column name="parent_identifier" type="NUMERIC"/>
     </loadData>
-  </changeSet>  
+  </changeSet>
+  
+  <changeSet id="Updating gender's pv values" author="slakhani">
+    <sql>
+      update catissue_permissible_value 
+        set value = 'Male' 
+      where 
+        value = 'Male Gender'
+    </sql>
+    
+    <sql>
+      update catissue_permissible_value 
+        set value = 'Female' 
+      where 
+        value = 'Female Gender'
+    </sql>
+  </changeSet>
+  
+  <changeSet id="Removing unnecessary gender's pv values" author="slakhani">
+    <sql>
+      delete 
+        from catissue_permissible_value 
+      where 
+        public_id = '2004001' and value in ('Unknown', 'Unspecified')
+    </sql>
+  </changeSet>
+  
+  <changeSet id="Removing unnecessary vital-status's pv values" author="slakhani">
+    <sql>
+      delete 
+        from catissue_permissible_value 
+      where 
+        public_id = '2003989' and value in ('Unknown', 'Unspecified')
+    </sql>
+  </changeSet>
 </databaseChangeLog>
