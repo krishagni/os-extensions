@@ -88,7 +88,8 @@
     }
   },
   
-  "specimen_list": { 
+  "specimen_list": {
+    "label": "Sample ID",
     "cp": "Study",
     "new_list": "New Sample List",
     "create_list": "Create Sample List",
@@ -222,10 +223,11 @@
   "orders": {
      "specimens": "Samples",
      "no_specimens_in_list": "No samples in order list to distribute. Add at least one sample",
-     "enter_specimen_label": "Enter sample labels separated by comma/tab/newline",
+     "enter_specimen_label": "Enter sample ids separated by comma/tab/newline",
      "specimens_not_found_or_no_access": "One or more samples could not be loaded either because they do not exists or you do not have",
      "spec": {
-      "cp": "Study"
+       "label": "Sample ID",
+       "cp": "Study"
     }
   }
 }   
