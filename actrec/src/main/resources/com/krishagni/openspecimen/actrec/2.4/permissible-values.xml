@@ -49,14 +49,14 @@
       update catissue_permissible_value 
         set value = 'Male' 
       where 
-        value = 'Male Gender'
+        value = 'Male Gender' and public_id = '2003989'
     </sql>
     
     <sql>
       update catissue_permissible_value 
         set value = 'Female' 
       where 
-        value = 'Female Gender'
+        value = 'Female Gender' and public_id = '2003989'
     </sql>
   </changeSet>
   
