@@ -2,7 +2,7 @@
   "menu": {
     "collection_protocols": "Studies",
     "specimen_lists": "Sample Lists",
-    "cp_desc": "Create, update SOP of visits and samples",
+    "cp_desc": "Create, update SOP of sample collections and samples",
     "dp_desc": "Create, update procedures for distributing samples",
     "specimen_lists_desc": "Create, share and manage sample lists",
     "distribution_orders_desc": "Create, execute request orders for distributing samples"
@@ -23,6 +23,8 @@
     "aliquot_label_fmt": "Aliquot ID Format",
     "spec_labels": "Sample IDs",
     "confirm_delete_event": "Collection Protocol Event and its sample requirements will be deleted. Are you sure you want to proceed?",
+    "visit_name_fmt": "Sample Collection Name Format",
+    "visit_names": "Sample Collection Names",
     "tooltip": {
       "view_details": "Click to view/edit Study details",
       "add": "Click to add new Study",
@@ -31,7 +33,8 @@
       "search": "Click to search Studies"
     },
     "label_format": {
-      "specimen": "Sample"
+      "specimen": "Sample",
+      "visit": "Sample Collection"
     }
   }, 
   
@@ -45,7 +48,7 @@
   
   "role": {
     "resources" : {
-    "VisitAndSpecimen": "Visits and Samples",
+    "VisitAndSpecimen": "Sample Collections and Samples",
     "CollectionProtocol": "Studies"
     }
   },
@@ -75,7 +78,11 @@
       "uid": "PIN"
     },
     "tooltip": {
-      "collected_specimens_count": "Count of Collected Samples"
+      "collected_specimens_count": "Count of Collected Samples",
+      "completed_visits_count": "Count of Completed Sample Collections"
+    },
+    "menu": {
+      "visits": "Sample Collection"
     }
   },
  
@@ -137,6 +144,12 @@
     "delete_specimens":  "Are you sure you want to delete selected samples ?",
     "specimens_closed": "Selected samples are closed successfully",
     "specimen_closed": "Sample is closed successfully",
+    
+    "visit_details": "Sample Collection Details",
+    "visit_name": "Sample Collection Name",
+    "visit_date": "Sample Collection Date",
+    "visit_site": "Sample Collection Site",
+    
     "ctx_menu": {
       "view_specimen": "View Sample",
       "edit_specimen": "Edit Sample"
@@ -150,12 +163,35 @@
   },
 
   "visits": {
+    "title": "Sample Collection",
+    "list": "Sample Collections",
+    "occurred_visits": "Occurred Sample Collections",
+    "anticipated_visits": "Anticipated Sample Collections",
+    "missed_visits": "Missed Sample Collections",
+    "visit_date": "Sample Collection Date",
+    "anticipated_visit_date": "Anticipated Sample Collection Date",
+    "visit_site": "Sample Collection Site",
+    "clinical_diagnosis": "Clinical Diagnosis",
+    "clinical_status": "Clinical Status",
+    "cohort": "Cohort",
+    "surgical_path_no": "Surg Path Number",
+    "reason_for_missed_visit": "Reason for Missed Sample Collection",
     "anticipated_specimens": "Anticipated Samples",
     "comments": "Description",
+    
+    "bulk_import": "Bulk Import Sample Collections",
+    "visit_extensions": "Sample Collection Forms",
+    "search_results": "Sample Collection Search Result for {{key}}",
+    
     "ctx_menu": {
+      "add_visit": "Add Sample Collection",
+      "view_visit": "View Sample Collection",
+      "edit_visit": "Edit Sample Collection",
       "collect_planned_specimens": "Collect Planned Samples",
       "collect_unplanned_specimens": "Collect Unplanned Samples",
-      "print_specimen_labels": "Print Sample IDs"
+      "print_specimen_labels": "Print Sample IDs",
+      "repeat_visit": "Repeat Sample Collection",
+      "missed_visit": "Missed Sample Collection"
     }
   },
 
@@ -193,7 +229,8 @@
 
   "extensions": {
     "bulk_import_specimen_extns": "Bulk Import Sample Forms",
-    "bulk_import_specimen_events": "Bulk Import Sample Events"
+    "bulk_import_specimen_events": "Bulk Import Sample Events",
+    "bulk_import_visit_extns": "Bulk Import Sample Collection Forms"
   },
 
   "queries": {
@@ -207,6 +244,7 @@
     "specimen_event": "Sample Event",
     "specimen_list": "Sample List",
     "collection_protocol": "Study",
+    "visit": "Sample Collection",
     "collection_protocol_event": "Study Event",
     "collection_protocol_registration": "Study Registration"
   }, 
@@ -216,6 +254,7 @@
       "specimen": "Samples",
       "specimenAliquot": "Sample Aliquots",
       "specimenDerivative": "Derived Samples",
+      "visit": "Sample Collections",
       "cpr": "Study Registrations"
     }
   },
