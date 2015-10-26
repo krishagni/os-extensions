@@ -16,6 +16,16 @@
           <div os-field-error field="bulkRePrintForm.trids"></div>
         </div>
       </div>
+      
+      <div class="form-group">
+        <label class="col-xs-3 control-label" translate="custom_sgh.printer">Printer</label>
+        <div class="col-xs-6">
+          <label class="radio-inline" ng-repeat="printer in printers">
+            <input type="radio" name="printerName" ng-model="printerName" ng-value="printer"> {{printer}}
+          </label>
+          <div os-field-error field="bulkPrintForm.printer"></div>
+        </div>
+      </div>
 
       <div class="os-divider"></div>
 

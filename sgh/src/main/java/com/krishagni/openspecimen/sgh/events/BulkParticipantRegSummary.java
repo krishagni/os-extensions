@@ -5,7 +5,9 @@ public class BulkParticipantRegSummary {
 	
 	private Integer participantCount;
 	
-	private Boolean printLabels; 
+	private Boolean printLabels;
+	
+	private String printerName;
 	
 	public BulkParticipantRegSummary() {
 	}
@@ -33,4 +35,13 @@ public class BulkParticipantRegSummary {
 	public void setPrintLabels(Boolean printLabels) {
 		this.printLabels = printLabels;
 	}
+	
+	public String getPrinterName() {
+		return printerName;
+	}
+
+	public void setPrinterName(String printerName) {
+		this.printerName = printerName;
+	}
+	
 }

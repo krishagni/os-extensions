@@ -1,11 +1,16 @@
 osApp.providers
   .controller('sghCpBulkPrintingCtrl', function(
-    $scope, $http, $state, ApiUrls, Alerts) {
+    $scope, $http, $state, ApiUrls, PvManager, Alerts) {
 
     function init() {
       $scope.regReq = {
         tridCount: 0
       }
+      loadPvs();
+    }
+    
+    function loadPvs() {
+      $scope.printers = PvManager.getPvs('printer-site');
     };
 
     $scope.bulkPrint = function() {
@@ -20,10 +25,16 @@ osApp.providers
     init();
   })
   .controller('sghCpBulkRePrintingCtrl', function(
-    $scope, $http, $state, ApiUrls, Alerts) {
+    $scope, $http, $state, ApiUrls, PvManager, Alerts) {
 
     function init() {
       $scope.trids = "";
+      $scope.printerName="";
+      loadPvs();
+    }
+    
+    function loadPvs() {
+      $scope.printers = PvManager.getPvs('printer-site');
     };
 
     $scope.bulkPrint = function() {
@@ -35,7 +46,7 @@ osApp.providers
         return;
       }
 
-      $http.post(ApiUrls.getBaseUrl() + 'sgh/trids/print', {trids: trids}).then(
+      $http.post(ApiUrls.getBaseUrl() + 'sgh/trids/print?printer='+printerName, {trids: trids}).then(
         function(result) {
           Alerts.success("custom_sgh.trid_printed");
           $state.go('home');  

@@ -80,6 +80,8 @@ public class CprServiceImpl implements CprService {
 		try {
 			BulkParticipantRegSummary regReq = req.getPayload();
 			int participantCount = regReq.getParticipantCount();
+			String printerName = regReq.getPrinterName();
+			
 			if (participantCount < 1){
 				return ResponseEvent.userError(SghErrorCode.INVALID_PARTICIPANT_COUNT);
 			}
@@ -91,7 +93,7 @@ public class CprServiceImpl implements CprService {
 			
 			List<CollectionProtocolRegistrationDetail> registrations = new ArrayList<CollectionProtocolRegistrationDetail>();
 			for (int i = 0; i < participantCount; i++){
-				CollectionProtocolRegistrationDetail regDetail = registerParticipant(cp, regReq.isPrintLabels());
+				CollectionProtocolRegistrationDetail regDetail = registerParticipant(cp, regReq.isPrintLabels(), printerName);
 				registrations.add(regDetail);
 			}
 			
@@ -103,7 +105,7 @@ public class CprServiceImpl implements CprService {
 		}
 	}
 	
-	private CollectionProtocolRegistrationDetail registerParticipant(CollectionProtocol cp, Boolean isPrintLabels) {
+	private CollectionProtocolRegistrationDetail registerParticipant(CollectionProtocol cp, Boolean isPrintLabels, String printerName) {
 		CollectionProtocolRegistrationDetail cprDetail = getRegistrationDetail(cp);
 		ResponseEvent<CollectionProtocolRegistrationDetail> regResp = cprService.createRegistration(getRequest(cprDetail));
 		regResp.throwErrorIfUnsuccessful();
@@ -114,7 +116,7 @@ public class CprServiceImpl implements CprService {
 		
 		List<Long> specimenIds = new ArrayList<Long>();
 		for (CollectionProtocolEvent cpe : eventColl) {
-			VisitDetail visitDetail = createVisit(cprDetail, cpe, visitCnt++);
+			VisitDetail visitDetail = createVisit(cprDetail, cpe, printerName, visitCnt++);
 			ResponseEvent<VisitDetail> visitResp = visitService.addVisit(getRequest(visitDetail));
 			visitResp.throwErrorIfUnsuccessful();
 			
@@ -189,11 +191,11 @@ public class CprServiceImpl implements CprService {
 	}
 	
 	private VisitDetail createVisit(CollectionProtocolRegistrationDetail cprDetail,
-			CollectionProtocolEvent cpe, int visitCnt) {
+			CollectionProtocolEvent cpe, String printerName, int visitCnt) {
 		VisitDetail visit = new VisitDetail();
 		visit.setEventId(cpe.getId());
 		visit.setStatus(Status.VISIT_STATUS_PENDING.getStatus());
-		visit.setSite(cpe.getDefaultSite().getName());
+		visit.setSite(printerName);
 		visit.setCprId(cprDetail.getId());
 		visit.setPpid(cprDetail.getPpid());
 		visit.setCpShortTitle(cpe.getCollectionProtocol().getShortTitle());

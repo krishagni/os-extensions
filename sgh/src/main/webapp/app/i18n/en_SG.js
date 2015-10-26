@@ -13,6 +13,7 @@
     "bulk_pre_printing": "Bulk Print TRIDs",
     "trid_to_print": "TRIDs to print",
     "trids": "TRIDs",
+    "printer": "Printer",
     
     "buttons":{
       "print": "Print",

@@ -1,7 +1,7 @@
 osApp.providers
   .controller('sghCpBulkRegistrationsCtrl', function(
     $scope, $http, $state,
-    cp, ApiUrls, Alerts) {
+    cp, ApiUrls, PvManager, Alerts) {
 
     function init() {
       $scope.cp = cp;
@@ -10,6 +10,12 @@ osApp.providers
         participantCount: 0,
         printLabels: false
       }
+      
+      loadPvs();
+    }
+    
+    function loadPvs() {
+      $scope.printers = PvManager.getPvs('printer-site');
     };
 
     $scope.bulkRegister = function() {

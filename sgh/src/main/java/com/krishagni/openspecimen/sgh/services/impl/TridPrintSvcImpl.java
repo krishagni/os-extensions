@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 
+import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
@@ -55,6 +56,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 	public ResponseEvent<Boolean> generateAndPrintTrids(RequestEvent<BulkTridPrintOpDetail> req) {
 		BulkTridPrintOpDetail printReq = req.getPayload();
 		int tridsCount = printReq.getTridCount();
+		String printerName = printReq.getPrinterName();
 		if (tridsCount < 1) {
 			return ResponseEvent.userError(SghErrorCode.INVALID_TRID_COUNT);
 		}
@@ -67,7 +69,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		List<Specimen> specimens = new ArrayList<Specimen>();
 		for(int i = 0; i < printReq.getTridCount(); i++){
 			String trid = tridGenerator.getNextTrid();
-			specimens.addAll(getSpecimensToPrint(trid));
+			specimens.addAll(getSpecimensToPrint(trid,printerName));
 		}
 		
 		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
@@ -83,6 +85,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 	@PlusTransactional
 	public ResponseEvent<Boolean> printTrids(RequestEvent<TridsRePrintOpDetail> req){
 		List<String> tridsToPrint = req.getPayload().getTrids();
+		String printerName = req.getPayload().getPrinterName();
 		
 		List<String> plannedTrids = getPlannedTrids(tridsToPrint);
 		if(CollectionUtils.isNotEmpty(plannedTrids)){
@@ -108,7 +111,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		
 		List<Specimen> specimens = new ArrayList<Specimen>();
 		for(String trid : validTrids){
-			specimens.addAll(getSpecimensToPrint(trid));
+			specimens.addAll(getSpecimensToPrint(trid, printerName));
 		}
 		
 		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
@@ -121,11 +124,14 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		return ResponseEvent.response(true);
 	}
 	
-	private Collection<Specimen> getSpecimensToPrint(String visitName) {
+	private Collection<Specimen> getSpecimensToPrint(String visitName, String printerName) {
 		
 		List<Specimen> specimens = new ArrayList<Specimen>();
 		Visit visit = new Visit();
 		visit.setName(visitName);
+		Site site = new Site();
+		site.setName(printerName);
+		visit.setSite(site);
 		
 		int tridCopies = cfgSvc.getIntSetting(SGH_MODULE, "trid_copies", 2);
 		

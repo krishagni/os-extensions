@@ -31,6 +31,17 @@
           <div os-field-error field="bulkRegForm.participantCnt"></div>
         </div>
       </div>
+      
+      <div class="form-group">
+        <label class="col-xs-3 control-label" translate="custom_sgh.printer">Printer</label>
+        <div class="col-xs-6">
+          <label class="radio-inline" ng-repeat="printer in printers">
+            <input type="radio" name="gender" ng-model="regReq.printerName" ng-value="printer"> {{printer}}
+          </label>
+          <div os-field-error field="bulkPrintForm.printer"></div>
+        </div>
+      </div>
+      
       <div class="form-group">
         <label class="control-label col-xs-3">
           <span translate="custom_sgh.print_labels">
@@ -44,7 +55,7 @@
           </label>
         </div>
       </div>
-
+      
       <div class="os-divider"></div>
 
       <div class="form-group">
