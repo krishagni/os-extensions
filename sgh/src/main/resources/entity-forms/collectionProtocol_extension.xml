@@ -1,0 +1,27 @@
+<form>
+<view>
+<name>CollectionProtocolForm</name>
+<caption><![CDATA[Collection Protocol Form]]></caption>
+
+<row>
+<radioButton>
+<name>protoType</name>
+<udn>protoType</udn>
+<caption><![CDATA[Protocol Type]]></caption>
+<phi>false</phi>
+<mandatory>true</mandatory>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[Planned]]></value>
+</option>
+<option>
+<value><![CDATA[Unplanned]]></value>
+</option>
+</options>
+<optionsPerRow>4</optionsPerRow>
+</radioButton>
+</row>
+</view>
+</form>
