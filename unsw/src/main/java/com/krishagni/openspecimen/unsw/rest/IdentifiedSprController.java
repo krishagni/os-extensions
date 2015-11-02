@@ -25,7 +25,7 @@ public class IdentifiedSprController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public IdentifiedSprDetail getIdentifiedSpr(@PathVariable Long visitId) {
-		ResponseEvent<IdentifiedSprDetail> resp = identifiedSprSvc.getIdentifiedSprDetail(new RequestEvent<Long>(visitId));
+		ResponseEvent<IdentifiedSprDetail> resp = identifiedSprSvc.getIdentifiedSpr(new RequestEvent<Long>(visitId));
 		resp.throwErrorIfUnsuccessful();
 		return resp.getPayload();
 	}

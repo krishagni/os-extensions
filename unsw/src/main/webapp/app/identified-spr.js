@@ -1,7 +1,6 @@
 osApp.providers
   .controller('unswIdentifiedSprCtrl', function($scope, $sce, $http,
-     Alerts, ApiUrls, ApiUtil, DeleteUtil) {
-	  
+     Alerts, ApiUrls, DeleteUtil) {
     function init() {
       $scope.sprUploader = {};
       $scope.sprUploadUrl = $sce.trustAsResourceUrl(ApiUrls.getBaseUrl() + 'form-files');
@@ -15,11 +14,11 @@ osApp.providers
         $scope.sprFormDetail = result.data;
         var formData = $scope.sprFormDetail.formData;
         $scope.identifiedSprName = formData ? formData.fileUpload.filename : undefined;
-        $scope.identifiedSprUrl = getDownloadSprUrl($scope.sprFormDetail);
+        $scope.identifiedSprUrl = getSprDownloadUrl($scope.sprFormDetail);
       });
     }
 
-    function getDownloadSprUrl(sprFormDetail) {
+    function getSprDownloadUrl(sprFormDetail) {
       var url = ApiUrls.getBaseUrl() + 'form-files?';
       url = url + 'formId=' + sprFormDetail.formId + '&recordId=' + sprFormDetail.recordId + '&ctrlName=fileUpload';
       return $sce.trustAsResourceUrl(url);
@@ -43,8 +42,8 @@ osApp.providers
           };
 
           var saveDataUrl = ApiUrls.getBaseUrl() + '/forms/' + $scope.sprFormDetail.formId + '/data';
-          $http.put(saveDataUrl, formData).then(function(result) {
-            Alerts.success("visits.spr_uploaded", {file:response.filename});
+          $http.post(saveDataUrl, formData).then(function(result) {
+            Alerts.success("visits.identified_spr_uploaded", {file:response.filename});
             $scope.sprFormDetail.recordId = result.data.id;
             $scope.identifiedSprName = result.data.fileUpload.filename;
             $scope.identifiedSprUrl = getDownloadSprUrl($scope.sprFormDetail);
@@ -57,7 +56,7 @@ osApp.providers
     $scope.confirmDeleteSpr = function() {
       DeleteUtil.confirmDelete({
         entity: {sprName: $scope.identifiedSprName},
-        templateUrl: 'modules/biospecimen/participant/visit/confirm-delete-spr-file.html',
+        templateUrl: 'plugin-ui-resources/unsw/confirm-delete-identified-spr.html',
         delete: deleteSpr
       });
     }

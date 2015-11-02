@@ -5,8 +5,6 @@ function initUnswPlugin() {
       'spr': {
         'page-body': {
           template: 'plugin-ui-resources/unsw/identified-spr.html',
-          controller: 'unswSpr',
-	  parent: 'visit-detail'
         }
       }
     }

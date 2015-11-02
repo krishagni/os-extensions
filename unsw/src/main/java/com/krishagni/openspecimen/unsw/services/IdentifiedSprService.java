@@ -6,6 +6,6 @@ import com.krishagni.openspecimen.unsw.events.IdentifiedSprDetail;
 
 public interface IdentifiedSprService {
 	
-	public ResponseEvent<IdentifiedSprDetail> getIdentifiedSprDetail(RequestEvent<Long> req);
+	public ResponseEvent<IdentifiedSprDetail> getIdentifiedSpr(RequestEvent<Long> req);
 
 }
