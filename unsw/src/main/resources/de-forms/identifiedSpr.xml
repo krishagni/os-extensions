@@ -1,0 +1,20 @@
+<form>
+  <view>
+    <name>identifiedSpr</name>
+    <caption><![CDATA[Identified SPR]]></caption>
+    <row>
+    <fileUpload>
+      <name>sprFileUpload</name>
+      <udn>identifiedSurgicalPathology2</udn>
+      <caption><![CDATA[Identified Surgical Pathology Report]]></caption>
+      <phi>false</phi>
+      <mandatory>false</mandatory>
+      <toolTip><![CDATA[]]></toolTip>
+      <showLabel>true</showLabel>
+      <showInGrid>false</showInGrid>
+    </fileUpload>
+    </row>
+</view>
+<skipRules>
+</skipRules>
+</form>
