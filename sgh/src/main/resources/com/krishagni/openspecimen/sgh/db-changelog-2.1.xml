@@ -370,7 +370,7 @@
         )
     </sql>
   </changeSet>
-  
+
   <changeSet author="nmarwaha" id="Setting the bulk registration workflow for the CPs with site 'Biospecimen'">
     <sql>
       insert into os_cp_workflows
@@ -643,5 +643,24 @@
     
     <sql>call updatePspecUid();</sql>
   </changeSet>
-   
+
+  <changeSet author="vlonushte" id="Creating specimen collection event param view">
+    <createView viewName="os_cep_records_view">
+      select
+        re.object_id as specimen_id, cep.identifier as identifier, cep.collection_procedure, 
+        cep.container as container, cep.event_timestamp as event_timestamp, cep.user_id as user_id, 
+        cep.comments as comments
+      from
+        dyextn_containers dc 
+        join catissue_form_context fc on fc.container_id = dc.identifier
+        join catissue_form_record_entry re on re.form_ctxt_id = fc.identifier
+        join catissue_coll_event_param cep on re.record_id = cep.identifier
+      where 
+        dc.name = 'SpecimenCollectionEvent' and
+        fc.entity_type = 'SpecimenEvent' and 
+        fc.deleted_on is null and
+        re.activity_status = 'ACTIVE'
+    </createView>
+  </changeSet>
+
 </databaseChangeLog>

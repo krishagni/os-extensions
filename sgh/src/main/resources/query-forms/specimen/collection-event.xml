@@ -1,0 +1,109 @@
+#macro(getMessage $code)$messageSource.getMessage($code, null, $locale)#end
+
+<row>
+  <subForm>
+    <name>sghCollectionEvent</name>
+    <udn>sghCollectionEvent</udn>
+    <caption>#getMessage("collection_event")</caption>
+    <table>OS_CPE_RECORDS_VIEW</table>
+    <primaryKey>IDENTIFIER</primaryKey>
+    <foreignKey>SPECIMEN_ID</foreignKey>
+    <parentKey>IDENTIFIER</parentKey>
+  
+    <row>
+      <dropDown>
+        <name>procedure</name>
+        <udn>procedure</udn>
+        <caption>#getMessage("collection_event_procedure")</caption>
+        <column>COLLECTION_PROCEDURE</column>
+        <options>
+          <sql>
+            select value from catissue_permissible_value where public_id = '2003996' order by value
+          </sql>
+        </options>
+        <mandatory>true</mandatory>
+      </dropDown>
+    </row>
+  
+    <row>
+      <dropDown>
+        <name>container</name>
+        <udn>container</udn>
+        <caption>#getMessage("collection_event_container")</caption>
+        <column>CONTAINER</column>
+        <options>
+          <sql>
+            select value from catissue_permissible_value where public_id = '2003997' order by value
+          </sql>
+        </options>
+        <mandatory>true</mandatory>
+      </dropDown>
+    </row>
+  
+    <row>
+      <subForm>
+        <name>userInfo</name>
+        <udn>userInfo</udn>
+        <caption>User information</caption>
+        <table>USER_VIEW</table>
+        <foreignKey>IDENTIFIER</foreignKey>
+        <parentKey>USER_ID</parentKey>
+        <row>
+          <userField>
+            <name>user</name>
+            <udn>user</udn>
+            <caption>#getMessage("specimen_event_user")</caption>
+            <column>IDENTIFIER</column>
+            <showInGrid>true</showInGrid>
+            <mandatory>true</mandatory>
+          </userField>
+        </row>
+        <row>          
+          <dropDown>
+            <name>department</name>
+            <udn>department</udn>
+            <caption>User Department</caption>
+            <column>DEPARTMENT_NAME</column>
+            <options>
+              <sql>select distinct DEPARTMENT_NAME from USER_VIEW</sql>
+            </options>
+          </dropDown>
+        </row>
+        <row>          
+          <dropDown>
+            <name>institute</name>
+            <udn>institute</udn>
+            <caption>User Institute</caption>
+            <column>INSTITUTE_NAME</column>
+            <options>
+              <sql>select distinct INSTITUTE_NAME from USER_VIEW</sql>
+            </options>
+          </dropDown>
+        </row>
+      </subForm>
+    </row>
+  
+    <row>
+      <datePicker>
+        <name>time</name>
+        <udn>time</udn>
+        <caption>#getMessage("specimen_event_date_time")</caption>
+        <column>EVENT_TIMESTAMP</column>
+        <format>MM-dd-yyyy HH:mm</format>
+        <showInGrid>true</showInGrid>
+        <default>current_date</default>
+        <mandatory>true</mandatory>
+      </datePicker>
+    </row>
+  
+    <row>
+      <textArea>
+        <name>comments</name>
+        <udn>comments</udn>
+        <caption>#getMessage("specimen_event_comments")</caption>
+        <column>COMMENTS</column>
+        <height>2</height>
+      </textArea>
+    </row>
+  </subForm>
+</row>
