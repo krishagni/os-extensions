@@ -1,46 +1,26 @@
 package com.krishagni.openspecimen.unsw.events;
 
-import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
 
 public class IdentifiedSprDetail {
-
-	private Long formId;
 	
-	private Long formContextId;
+	private Long visitId;
 	
-	private Long recordId;
-	
-	private Map<String, Object> formData; 
+	private MultipartFile spr;
 
-	public Long getFormId() {
-		return formId;
+	public Long getVisitId() {
+		return visitId;
 	}
 
-	public void setFormId(Long formId) {
-		this.formId = formId;
+	public void setVisitId(Long visitId) {
+		this.visitId = visitId;
 	}
 
-	public Long getFormContextId() {
-		return formContextId;
+	public MultipartFile getSpr() {
+		return spr;
 	}
 
-	public void setFormContextId(Long formContextId) {
-		this.formContextId = formContextId;
-	}
-
-	public Long getRecordId() {
-		return recordId;
-	}
-
-	public void setRecordId(Long recordId) {
-		this.recordId = recordId;
-	}
-
-	public Map<String, Object> getFormData() {
-		return formData;
-	}
-
-	public void setFormData(Map<String, Object> formData) {
-		this.formData = formData;
+	public void setSpr(MultipartFile spr) {
+		this.spr = spr;
 	}
 }

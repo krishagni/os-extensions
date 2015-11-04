@@ -3,52 +3,19 @@ osApp.providers
      Alerts, ApiUrls, DeleteUtil) {
     function init() {
       $scope.sprUploader = {};
-      $scope.sprUploadUrl = $sce.trustAsResourceUrl(ApiUrls.getBaseUrl() + 'form-files');
-      loadIdentifiedSpr();
+      $scope.identifiedSprUrl = $sce.trustAsResourceUrl(getIdentifiedSprUrl());
       $scope.uploadMode = false;
-    }
-
-    function loadIdentifiedSpr() {
-      var url = ApiUrls.getBaseUrl() + '/identified-spr/'+ $scope.visit.id;
-      $http.get(url).then(function(result) {
-        $scope.sprFormDetail = result.data;
-        var formData = $scope.sprFormDetail.formData;
-        $scope.identifiedSprName = formData ? formData.fileUpload.filename : undefined;
-        $scope.identifiedSprUrl = getSprDownloadUrl($scope.sprFormDetail);
+      $http.get(getIdentifiedSprFileNameUrl()).then(function(result) {
+        $scope.identifiedSprName = result.data;
       });
-    }
-
-    function getSprDownloadUrl(sprFormDetail) {
-      var url = ApiUrls.getBaseUrl() + 'form-files?';
-      url = url + 'formId=' + sprFormDetail.formId + '&recordId=' + sprFormDetail.recordId + '&ctrlName=fileUpload';
-      return $sce.trustAsResourceUrl(url);
-    }
-
-    $scope.showUploadMode = function() {
-      $scope.uploadMode = true;
-    }
-
-    $scope.cancel = function() {
-      $scope.uploadMode = false;
     }
 
     $scope.upload = function() {
       $scope.sprUploader.ctrl.submit().then(
-        function(response) {
-          var formData = {
-            appData: {formCtxtId: $scope.sprFormDetail.formContextId, objectId: $scope.visit.id},
-            fileUpload: {filename: response.filename, contentType: response.contentType, fileId: response.fileId},
-            recordId: $scope.sprFormDetail.recordId || undefined
-          };
-
-          var saveDataUrl = ApiUrls.getBaseUrl() + '/forms/' + $scope.sprFormDetail.formId + '/data';
-          $http.post(saveDataUrl, formData).then(function(result) {
-            Alerts.success("visits.identified_spr_uploaded", {file:response.filename});
-            $scope.sprFormDetail.recordId = result.data.id;
-            $scope.identifiedSprName = result.data.fileUpload.filename;
-            $scope.identifiedSprUrl = getDownloadSprUrl($scope.sprFormDetail);
-            $scope.uploadMode = false;
-          });
+        function(result) {
+          Alerts.success("visits.identified_spr_uploaded", {file:result.filename});
+          $scope.identifiedSprName = result.filename;
+          $scope.uploadMode = false;
         }
       )
     }
@@ -61,17 +28,30 @@ osApp.providers
       });
     }
 
+    $scope.showUploadMode = function() {
+      $scope.uploadMode = true;
+    }
+
+    $scope.cancel = function() {
+      $scope.uploadMode = false;
+    }
+
     function deleteSpr() {
-      var url = ApiUrls.getBaseUrl() + '/forms/' + $scope.visit.id + '/data/' + $scope.sprFormDetail.recordId;
-      url = $sce.trustAsResourceUrl(url);
-      $http.delete(url).then(
+      $http.delete($scope.identifiedSprUrl).then(
         function(result) {
           if (result) {
             $scope.identifiedSprName = undefined;
-            $scope.sprFormDetail.recordId = undefined;
           }
         }
       );
+    }
+
+    function getIdentifiedSprUrl() {
+      return ApiUrls.getBaseUrl() + '/identified-spr/'+ $scope.visit.id;
+    }
+
+    function getIdentifiedSprFileNameUrl() {
+       return getIdentifiedSprUrl() + '/name';
     }
 
     init();

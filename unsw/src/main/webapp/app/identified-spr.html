@@ -1,5 +1,4 @@
 <div show-if-allowed="participantResource.readOpts" ng-controller="unswIdentifiedSprCtrl">
-
   <ul class="os-key-values os-one-col">
     <li class="item">
       <strong class="key key-sm" translate="visits.identified_spr">Identified Surgical Pathology Report</strong>
@@ -24,7 +23,7 @@
         </div>
       </div>
       <div class="value value-md" ng-if="uploadMode">
-        <form action="{{sprUploadUrl}}" class="form-inline">
+        <form action="{{identifiedSprUrl}}" class="form-inline">
           <div class="form-group">
             <div os-file-upload ctrl="sprUploader.ctrl">
             </div>
