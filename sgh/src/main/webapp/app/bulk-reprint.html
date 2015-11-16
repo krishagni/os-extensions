@@ -20,10 +20,10 @@
       <div class="form-group">
         <label class="col-xs-3 control-label" translate="custom_sgh.printer">Printer</label>
         <div class="col-xs-6">
-          <label class="radio-inline" ng-repeat="printer in printers">
-            <input type="radio" name="printerName" ng-model="printerName" ng-value="printer"> {{printer}}
+          <label class="radio-inline" ng-repeat="p in printers">
+            <input type="radio" name="printerName" ng-model="printer.printerName" value="{{p}}"> {{p}}
           </label>
-          <div os-field-error field="bulkPrintForm.printer"></div>
+          <div os-field-error field="bulkPrintForm.printerName"></div>
         </div>
       </div>
 

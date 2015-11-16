@@ -29,7 +29,9 @@ osApp.providers
 
     function init() {
       $scope.trids = "";
-      $scope.printerName="";
+      $scope.printer= {
+    	printerName : ""	  
+      }
       loadPvs();
     }
     
@@ -46,7 +48,7 @@ osApp.providers
         return;
       }
 
-      $http.post(ApiUrls.getBaseUrl() + 'sgh/trids/print?printer='+printerName, {trids: trids}).then(
+      $http.post(ApiUrls.getBaseUrl() + 'sgh/trids/print?printer='+$scope.printer.printerName, {trids: trids}).then(
         function(result) {
           Alerts.success("custom_sgh.trid_printed");
           $state.go('home');  

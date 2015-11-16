@@ -662,5 +662,26 @@
         re.activity_status = 'ACTIVE'
     </createView>
   </changeSet>
+  
+  <changeSet author="nmarwaha" id="Insert default printer site values" failOnError="false">
+    <sql>
+      insert into catissue_cde
+        (public_id, long_name, definition, version, last_updated)
+      values
+        ('printer-site', 'Printer Site', 'Printer Site', '2.0', now())
+    </sql>
+    <sql>
+      insert into catissue_permissible_value
+        (identifier, value, public_id)
+      values
+        (default, "SGH", "printer-site")
+    </sql>
+    <sql>
+      insert into catissue_permissible_value
+        (identifier, value, public_id)
+      values
+        (default, "KKH", "printer-site")
+    </sql>
+  </changeSet>
 
 </databaseChangeLog>

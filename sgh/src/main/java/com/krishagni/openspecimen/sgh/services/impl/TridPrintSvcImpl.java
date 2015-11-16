@@ -138,7 +138,12 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		for(int i = 0; i < tridCopies; ++i){
 			Specimen specimen = new Specimen();
 			specimen.setVisit(visit);
-			specimen.setLabel(visitName);
+			if(i==1){
+				specimen.setLabel(visitName+" ");
+			} else {
+				specimen.setLabel(visitName);
+			}
+			
 			specimens.add(specimen);
 		}
 		
