@@ -9,8 +9,8 @@ function initVcbPlugin() {
       },
 
       'participant-detail': {
-        'overview': {
-          template: 'plugin-ui-resources/vcb/participant-overview.html'
+        'summary': {
+          template: 'plugin-ui-resources/vcb/participant-summary.html'
         }
       },
 
