@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.events;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.krishagni.catissueplus.core.common.events.UserSummary;
+import com.krishagni.openspecimen.redcap.domain.ProjectAuditLog;
 
 public class ProjectAuditLogDetail {
 	private Long id;

@@ -1,8 +1,10 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.repository.impl;
 
 import java.util.List;
 
 import com.krishagni.catissueplus.core.common.repository.AbstractDao;
+import com.krishagni.openspecimen.redcap.domain.Record;
+import com.krishagni.openspecimen.redcap.repository.RecordDao;
 
 public class RecordDaoImpl extends AbstractDao<Record> implements RecordDao {
 

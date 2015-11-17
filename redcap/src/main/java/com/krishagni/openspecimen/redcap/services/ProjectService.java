@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.services;
 
 import java.io.File;
 import java.util.Collection;
@@ -7,6 +7,11 @@ import java.util.List;
 
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
+import com.krishagni.openspecimen.redcap.domain.Project;
+import com.krishagni.openspecimen.redcap.events.ProjectAuditLogDetail;
+import com.krishagni.openspecimen.redcap.events.ProjectDetail;
+import com.krishagni.openspecimen.redcap.events.UpdateDataOp;
+import com.krishagni.openspecimen.redcap.events.UpdateInstrumentsOp;
 
 public interface ProjectService {
 	public ResponseEvent<List<ProjectDetail>> getProjects(RequestEvent<Long> req);

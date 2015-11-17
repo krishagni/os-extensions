@@ -4,18 +4,18 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping auto-import="false">
-  <class name="com.krishagni.openspecimen.redcap.ProjectAuditLog" table="OS_REDCAP_PROJECT_AUDIT_LOGS">
+  <class name="com.krishagni.openspecimen.redcap.domain.ProjectAuditLog" table="OS_REDCAP_PROJECT_AUDIT_LOGS">
     <id name="id" column="IDENTIFIER">
       <generator class="native">
         <param name="sequence">OS_REDCAP_PROJ_AUDIT_LOGS_SEQ</param>
       </generator>
     </id>
 
-    <many-to-one name="project" class="com.krishagni.openspecimen.redcap.Project" column="PROJECT_ID"/>
+    <many-to-one name="project" class="com.krishagni.openspecimen.redcap.domain.Project" column="PROJECT_ID"/>
 
     <property name="operation" column="OPERATION" not-null="true">
       <type name="org.hibernate.type.EnumType">
-        <param name="enumClass">com.krishagni.openspecimen.redcap.ProjectAuditLog$Operation</param>
+        <param name="enumClass">com.krishagni.openspecimen.redcap.domain.ProjectAuditLog$Operation</param>
         <param name="type">12</param>
       </type>
     </property> 
@@ -36,7 +36,7 @@
 
     <property name="status" column="STATUS" not-null="true">
       <type name="org.hibernate.type.EnumType">
-        <param name="enumClass">com.krishagni.openspecimen.redcap.ProjectAuditLog$Status</param>
+        <param name="enumClass">com.krishagni.openspecimen.redcap.domain.ProjectAuditLog$Status</param>
         <param name="type">12</param>
       </type>
     </property> 
@@ -45,7 +45,7 @@
       select
         max(pa.intervalEndTime)
       from
-        com.krishagni.openspecimen.redcap.ProjectAuditLog pa
+        com.krishagni.openspecimen.redcap.domain.ProjectAuditLog pa
         join pa.project p
       where 
         pa.status = 'SUCCESS' and
@@ -57,7 +57,7 @@
       select
         pa
       from
-        com.krishagni.openspecimen.redcap.ProjectAuditLog pa
+        com.krishagni.openspecimen.redcap.domain.ProjectAuditLog pa
         join pa.project p
       where
         p.id = :projectId
@@ -69,7 +69,7 @@
       select
         pa
       from
-        com.krishagni.openspecimen.redcap.ProjectAuditLog pa
+        com.krishagni.openspecimen.redcap.domain.ProjectAuditLog pa
         join pa.project p
         join p.collectionProtocol cp
       where

@@ -9,7 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.krishagni.openspecimen.redcap.Project;
+import com.krishagni.openspecimen.redcap.domain.Project;
 
 import edu.common.dynamicextensions.domain.nui.Container;
 

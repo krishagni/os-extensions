@@ -1,10 +1,12 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.repository.impl;
 
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
 import com.krishagni.catissueplus.core.common.repository.AbstractDao;
+import com.krishagni.openspecimen.redcap.domain.Project;
+import com.krishagni.openspecimen.redcap.repository.ProjectDao;
 
 public class ProjectDaoImpl extends AbstractDao<Project> implements ProjectDao {
 	

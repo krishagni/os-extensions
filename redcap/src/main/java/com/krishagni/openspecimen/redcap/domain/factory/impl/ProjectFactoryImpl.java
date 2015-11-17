@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.domain.factory.impl;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -15,6 +15,10 @@ import com.krishagni.catissueplus.core.common.errors.ErrorType;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.util.AuthUtil;
 import com.krishagni.catissueplus.core.common.util.Status;
+import com.krishagni.openspecimen.redcap.domain.Project;
+import com.krishagni.openspecimen.redcap.domain.ProjectErrorCode;
+import com.krishagni.openspecimen.redcap.domain.factory.ProjectFactory;
+import com.krishagni.openspecimen.redcap.events.ProjectDetail;
 
 public class ProjectFactoryImpl implements ProjectFactory {
 	

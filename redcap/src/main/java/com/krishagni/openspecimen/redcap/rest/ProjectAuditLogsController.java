@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.rest;
 
 import java.io.File;
 import java.util.List;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.util.Utility;
+import com.krishagni.openspecimen.redcap.events.ProjectAuditLogDetail;
+import com.krishagni.openspecimen.redcap.services.ProjectService;
 
 @Controller
 @RequestMapping("/redcap-project-audit-logs")

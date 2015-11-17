@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.rest;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
+import com.krishagni.openspecimen.redcap.events.ProjectDetail;
+import com.krishagni.openspecimen.redcap.events.UpdateDataOp;
+import com.krishagni.openspecimen.redcap.events.UpdateInstrumentsOp;
+import com.krishagni.openspecimen.redcap.services.ProjectService;
 
 @Controller
 @RequestMapping("/redcap-projects")

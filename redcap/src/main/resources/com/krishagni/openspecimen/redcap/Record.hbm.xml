@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping auto-import="false">
-  <class name="com.krishagni.openspecimen.redcap.Record" table="OS_REDCAP_RECORDS">
+  <class name="com.krishagni.openspecimen.redcap.domain.Record" table="OS_REDCAP_RECORDS">
     <id name="id" column="IDENTIFIER">
       <generator class="native">
         <param name="sequence">OS_REDCAP_RECORDS_SEQ</param>
@@ -13,7 +13,7 @@
 
     <property name="recordId" column="RECORD_ID"/>
 
-    <many-to-one name="project" class="com.krishagni.openspecimen.redcap.Project" column="PROJECT_ID"/>
+    <many-to-one name="project" class="com.krishagni.openspecimen.redcap.domain.Project" column="PROJECT_ID"/>
 
     <property name="cprId" column="CPR_ID"/>
 
@@ -23,7 +23,7 @@
       select
         r
       from 
-        com.krishagni.openspecimen.redcap.Record r
+        com.krishagni.openspecimen.redcap.domain.Record r
         join r.project p
       where
         p.id = :projectId and

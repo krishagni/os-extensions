@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.repository.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.krishagni.catissueplus.core.common.repository.AbstractDao;
+import com.krishagni.openspecimen.redcap.domain.ProjectAuditLog;
+import com.krishagni.openspecimen.redcap.repository.ProjectAuditLogDao;
 
 public class ProjectAuditLogDaoImpl extends AbstractDao<ProjectAuditLog> implements ProjectAuditLogDao {
 	

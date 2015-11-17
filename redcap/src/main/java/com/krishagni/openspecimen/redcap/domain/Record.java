@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.domain;
 
 import com.krishagni.catissueplus.core.biospecimen.domain.BaseEntity;
 

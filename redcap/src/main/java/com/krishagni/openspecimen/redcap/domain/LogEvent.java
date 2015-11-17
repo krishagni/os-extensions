@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -24,23 +24,23 @@
     <property name="changeLog" value="classpath:db/rc-schema.xml"/>
   </bean>
 
-  <bean id="projectDao" class="com.krishagni.openspecimen.redcap.ProjectDaoImpl">
+  <bean id="projectDao" class="com.krishagni.openspecimen.redcap.repository.impl.ProjectDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
-  <bean id="projectAuditLogDao" class="com.krishagni.openspecimen.redcap.ProjectAuditLogDaoImpl">
+  <bean id="projectAuditLogDao" class="com.krishagni.openspecimen.redcap.repository.impl.ProjectAuditLogDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
-  <bean id="recordDao" class="com.krishagni.openspecimen.redcap.RecordDaoImpl">
+  <bean id="recordDao" class="com.krishagni.openspecimen.redcap.repository.impl.RecordDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
-  <bean id="projectFactory" class="com.krishagni.openspecimen.redcap.ProjectFactoryImpl">
+  <bean id="projectFactory" class="com.krishagni.openspecimen.redcap.domain.factory.impl.ProjectFactoryImpl">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
   </bean>
 
-  <bean id="projectSvc" class="com.krishagni.openspecimen.redcap.ProjectServiceImpl">
+  <bean id="projectSvc" class="com.krishagni.openspecimen.redcap.services.impl.ProjectServiceImpl">
     <property name="projectFactory" ref="projectFactory"/>
     <property name="projectDao" ref="projectDao"/>
     <property name="projectAuditLogDao" ref="projectAuditLogDao"/>

@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -12,6 +12,9 @@ import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
+import com.krishagni.openspecimen.redcap.events.UpdateInstrumentsOp;
+import com.krishagni.openspecimen.redcap.repository.ProjectDao;
+import com.krishagni.openspecimen.redcap.services.ProjectService;
 
 @Configurable
 public class ProjectMetadataSynchronizer implements ScheduledTask {

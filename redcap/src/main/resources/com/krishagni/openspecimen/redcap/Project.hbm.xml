@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping auto-import="false">
-  <class name="com.krishagni.openspecimen.redcap.Project" table="OS_REDCAP_PROJECTS">
+  <class name="com.krishagni.openspecimen.redcap.domain.Project" table="OS_REDCAP_PROJECTS">
     <id name="id" column="IDENTIFIER">
       <generator class="native">
         <param name="sequence">OS_REDCAP_PROJECTS_SEQ</param>
@@ -45,7 +45,7 @@
       select
         p
       from
-        com.krishagni.openspecimen.redcap.Project p
+        com.krishagni.openspecimen.redcap.domain.Project p
         join p.collectionProtocol cp
       order by
         cp.id, p.id
@@ -55,7 +55,7 @@
       select
         p
       from
-        com.krishagni.openspecimen.redcap.Project p
+        com.krishagni.openspecimen.redcap.domain.Project p
         join p.collectionProtocol cp
       where 
         cp.id = :cpId
@@ -65,7 +65,7 @@
       select
         p
       from
-        com.krishagni.openspecimen.redcap.Project p
+        com.krishagni.openspecimen.redcap.domain.Project p
       where
         p.projectId = :projectId and
         p.hostUrl = :hostUrl
@@ -75,7 +75,7 @@
       select
         p
       from
-        com.krishagni.openspecimen.redcap.Project p
+        com.krishagni.openspecimen.redcap.domain.Project p
         join p.collectionProtocol cp
       where
         p.name = :projectName and

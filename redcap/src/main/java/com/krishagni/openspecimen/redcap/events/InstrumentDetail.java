@@ -1,4 +1,4 @@
-package com.krishagni.openspecimen.redcap;
+package com.krishagni.openspecimen.redcap.events;
 
 import java.util.ArrayList;
 import java.util.Collection;
