@@ -1,0 +1,96 @@
+
+<div class="clearfix" ng-init="loadAuditLogs()">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span>Synchronization Runs</span>
+        <span class="os-btns">
+          <button class="default" ng-click="loadAuditLogs()">
+            <span class="fa fa-refresh"></span>
+            <span>Refresh</span>
+          </button>
+        </span>
+      </div>
+      <div class="panel-body">
+        <table class="os-table os-table-hover">
+          <thead class="os-table-head">
+            <tr class="row">
+              <th class="col">
+                <span>Project</span>
+              </th>
+              <th class="col">
+                <span>Operation</span>
+              </th> 
+              <th class="col">
+                <span>Start Time</span>
+              </th>
+              <th class="col">
+                <span>End Time</span>
+              </th>
+              <th class="col">
+                <span>Interval Start</span>
+              </th>
+              <th class="col">
+                <span>Interval End</span>
+              </th>
+              <th class="col">
+                <span>User</span>
+              </th>
+              <th class="col">
+                <span>Records</span>
+              </th>
+              <th class="col">
+                <span>Status</span>
+              </th>
+              <th class="col">
+                <span>&nbsp;</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="os-table-body">
+            <tr class="row" ng-repeat="log in ctx.auditLogs">
+              <td class="col">
+                <span>{{log.name}}</span>
+              </td>
+              <td class="col" ng-switch on="log.operation">
+                <span ng-switch-when="DATA_SYNC">Synchronize Records</span>
+                <span ng-switch-when="METADATA_SYNC">Synchronize Instruments</span>
+              </td>
+              <td class="col">
+                <span>{{log.startTime | date: global.dateTimeFmt}}</span>
+              </td>
+              <td class="col">
+                <span>{{log.endTime | date: global.dateTimeFmt}}</span>
+              </td>
+              <td class="col" ng-switch on="!!log.intervalStartTime">
+                <span ng-switch-when="true">{{log.intervalStartTime | date: global.dateTimeFmt}}</span>
+                <span ng-switch-default>Beginning of Project</span>
+              </td>
+              <td class="col">
+                <span>{{log.intervalEndTime | date: global.dateTimeFmt}}</span>
+              </td>
+              <td class="col">
+                <span>{{log.user | osUserDisplayName}}</span>
+              </td>
+              <td class="col">
+                <span>{{log.noOfRecords}}</span>
+              </td>
+              <td class="col" ng-switch on="log.status">
+                <span ng-switch-when="IN_PROGRESS">In Progress</span>
+                <span ng-switch-when="FAILED">Failed</span>
+                <span ng-switch-when="SUCCESS">Success</span>
+              </td>
+              <td class="col">
+                <span ng-if="!!log.failedEventsLogUrl">
+                  <a href="{{log.failedEventsLogUrl}}" target="_blank" title="Download failed events log">
+                    <span class="fa fa-download"></span>
+                  </a>
+                </span>
+              </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

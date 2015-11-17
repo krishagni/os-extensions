@@ -1,0 +1,129 @@
+
+<style>
+  .panel .panel-heading span.os-btns {
+    position: absolute;
+    top: 5px;
+    margin-left: 10px;
+  }
+</style>
+
+<div class="clearfix">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span>Project Details</span>
+      <span class="os-btns">
+        <button class="default" ng-click="editProject(ctx.project)">
+          <span class="fa fa-pencil"></span>
+          <span>Edit</span>
+        </button>
+        <span dropdown os-show-if-menu-items-present class="inline">
+          <button class="default dropdown-toggle">
+            <span translate="common.buttons.more">More</span>
+            <span class="fa fa-caret-down"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a ng-click="addProject()">
+                <span class="fa fa-plus"></span>
+                <span>Add Another</span>
+              </a>
+            </li>
+            <li ng-if="ctx.projects.length > 1">
+              <a ng-click="listProjects()">
+                <span class="fa fa-list"></span>
+                <span>View Projects</span>
+              </a>
+            </li>
+            <li>
+              <a ng-click="deleteProject(ctx.project)">
+                <span class="fa fa-trash"></span>
+                <span>Delete</span>
+              </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a ng-click="synchronizeMetadata(ctx.project)">
+                <span class="fa fa-copy"></span>
+                <span>Synchronize Instruments</span>
+              </a>
+            </li>  
+            <li>
+              <a ng-click="synchronizeData(ctx.project)">
+                <span class="fa fa-database"></span>
+                <span>Synchronize Records</span>
+              </a>
+            </li>  
+          </ul>
+        </span>
+      </span>
+    </div>
+    <div class="panel-body">
+      <ul class="os-key-values os-one-col">
+        <li class="item">
+          <strong class="key key-sm">Name</strong>
+          <span class="value value-md">{{ctx.project.name}}</span>
+        </li>
+        <li class="item">
+          <strong class="key key-sm">Host URL</strong>
+          <span class="value value-md">{{ctx.project.hostUrl}}</span>
+        </li>
+        <li class="item">
+          <strong class="key key-sm">Project ID</strong>
+          <span class="value value-md">{{ctx.project.projectId}}</span>
+        </li>
+        <!-- li class="item">
+          <strong class="key key-sm">API Token</strong>
+          <span class="value value-md">{{ctx.project.apiToken}}</span>
+        </li -->
+        <li class="item">
+          <strong class="key key-sm">Fields Transformer</strong>
+          <span class="value value-md">{{ctx.project.transformerFqn}}</span>
+        </li>
+      </ul>
+
+      <div class="os-section os-line-section">
+        <strong class="key key-sm">
+          <span>Subject Fields Mapping</span>
+          <span>&nbsp;</span>
+        </strong>
+
+        <div ng-include src="'redcap/field-mapping-table.html'" 
+          ng-init="fieldsMap=ctx.project.uiSubjectFields">
+        </div>
+      </div>
+
+      <div class="os-section os-line-section">
+        <strong class="key key-sm">
+          <span>Visit Fields Mapping</span>
+          <span>&nbsp;</span>
+        </strong>
+
+        <div ng-include src="'redcap/field-mapping-table.html'" 
+          ng-init="fieldsMap=ctx.project.uiVisitFields">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="redcap/field-mapping-table.html">
+  <div ng-switch on="!fieldsMap || fieldsMap.length == 0">
+    <span ng-switch-when="true">None</span>
+    <span ng-switch-default>
+      <table class="os-table os-table-muted-hdr os-border">
+        <thead class="os-table-head">
+          <tr class="row">
+            <th class="col">REDCap Field</th>
+            <th class="col">OpenSpecimen Field</th>
+          </tr>
+        </thead>
+        <tbody class="os-table-body">
+          <tr class="row" ng-repeat="fieldMap in fieldsMap">
+            <td class="col">{{fieldMap.rcField}}</td>
+            <td class="col">{{fieldMap.opsmnField}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </span>
+  </div>
+</script>

@@ -1,0 +1,103 @@
+
+<div>
+  <div class="panel panel-default">
+    <div class="panel-heading" ng-switch on="!ctx.project.id">
+      <span ng-switch-when="true">Add Project</span>
+      <span ng-switch-when="false">Edit Project</span>
+    </div>
+
+    <div class="panel-body">
+      <form name="projForm" os-form-validator="projForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>Name</span>
+          </label>
+          <div class="col-xs-6">
+            <input name="name" type="text" ng-model="ctx.project.name" class="form-control" 
+              placeholder="Name" required>
+            <div os-field-error field="projForm.name"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>Host URL</span>
+          </label>
+          <div class="col-xs-6">
+            <input name="hostUrl" type="text" ng-model="ctx.project.hostUrl" class="form-control" 
+              placeholder="REDCap Host URL e.g. https://redcap.openspecimen.org" required>
+            <div os-field-error field="projForm.rcUrl"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>Project ID</span>
+          </label>
+          <div class="col-xs-6">
+            <input name="projectId" type="text" ng-model="ctx.project.projectId" class="form-control" 
+              placeholder="REDCap Project ID e.g. 1971" required>
+            <div os-field-error field="projForm.projectId"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>API Token</span>
+          </label>
+          <div class="col-xs-6">
+            <input name="apiToken" type="text" ng-model="ctx.project.apiToken" class="form-control" 
+              placeholder="REDCap Project API Token" ng-required="!ctx.project.id">
+            <div os-field-error field="projForm.apiToken"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>Fields Transformer</span>
+          </label>
+          <div class="col-xs-6">
+            <input name="fieldTransformer" type="text" ng-model="ctx.project.transformerFqn" class="form-control" 
+              placeholder="Fields Transformer">
+          </div>
+        </div>
+       
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>Subject Fields Mapping</span>
+          </label>
+          <div class="col-xs-6">
+            <textarea name="subjFields" type="text" ng-model="ctx.project.subjectFields" class="form-control" 
+              placeholder="Subject Fields Mapping" required rows="4">
+            </textarea>
+          </div>
+        </div>
+       
+        <div class="form-group">
+          <label class="control-label col-xs-3">
+            <span>Visit Fields Mapping</span>
+          </label>
+          <div class="col-xs-6">
+            <textarea name="visitFields" type="text" ng-model="ctx.project.visitFields" class="form-control" 
+              placeholder="Visit Fields Mapping" required rows="4">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="os-divider"></div>
+
+        <div class="form-group">
+          <div class="col-xs-offset-3 col-xs-6">
+            <button class="btn btn-primary" os-form-submit="saveProject()" ng-switch on="!ctx.project.id"> 
+              <span ng-switch-when="true"  translate="common.buttons.create"> Create </span>
+              <span ng-switch-when="false" translate="common.buttons.update"> Update </span>
+            </button>
+            <button class="btn os-btn-text" ng-click="listProjects()">
+              <span translate="common.buttons.discard">Discard</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
