@@ -1,5 +1,5 @@
 osApp.providers
-  .directive('leSpecimenBox', function(SpecimenQtyUnitSvc) {
+  .directive('leSpecimenBox', function(SpecimenUnitSvc) {
     function drawBox(opts, element) {
       var dimension = opts.dimension;
       var specimens = opts.specimens;
@@ -87,9 +87,9 @@ osApp.providers
 
     function getUnit(specimen) {
       var unitEl = angular.element('<span/>');
-      SpecimenQtyUnitSvc.getUnit(specimen.specimenClass, specimen.type).then(
+      SpecimenUnitSvc.getUnit(specimen.specimenClass, specimen.type).then(
         function(unit) {
-          unitEl.html(unit.htmlDisplayCode || unit.unit)
+          unitEl.html(unit.qtyHtmlDisplayCode || unit.qtyUnit)
         }
       );
 
