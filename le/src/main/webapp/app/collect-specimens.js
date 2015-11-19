@@ -433,7 +433,7 @@ osApp.providers
       }
 
       $scope.processAliquotLabels = function(input) {
-        var labels = $scope.boxData.csLabels.split(/,|\t/);
+        var labels = $scope.boxData.csLabels.split(/,|\t|\n/);
         assignLabels(labels); 
         if ($scope.boxData.ctrl) {
           $scope.boxData.ctrl.draw();
@@ -578,6 +578,7 @@ osApp.providers
         var specimenToSave = {
           label: label.trim(),
           reqId: specimen.id,
+          lineage: specimen.lineage,
           status: 'Collected',      
           parentId: specimen.parentSpecimenId,
           visitId: specimen.visitId,
