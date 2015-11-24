@@ -1,9 +1,0 @@
-{
-  "styles": [],
-
-  "scripts": [
-    "redcap/project.js",
-    "redcap/cp-config.js",
-    "redcap/module.js"
-  ]
-}
