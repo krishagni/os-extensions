@@ -86,7 +86,7 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 		}
 		
 		if (regex.length() > 0) {
-			regex.insert(0, "(?i)(");
+			regex.insert(0, "(?i)\\b(");
 			regex.append(")\\b");
 			report = report.replaceAll(regex.toString(), REPLACEMENT_STRING);
 		}
