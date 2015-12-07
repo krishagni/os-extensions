@@ -1,0 +1,25 @@
+<form>
+  <view>
+    <name>specimenExtension</name>
+    <caption>Specimen Extension</caption>
+    <row>
+      <dropDown>
+        <name>morphologicalAbnormality</name>
+        <udn>morphologicalAbnormality</udn>
+        <caption>Morphological Abnormality</caption>
+        <column>MORPHOLOGICAL_ABNORMALITY</column>
+        <options>
+          <sql>
+            select
+              pv.value
+            from
+              catissue_permissible_value pv
+            where
+              pv.public_id = 'Morphological_Abnormalitiy_PID'
+          </sql>
+        </options>
+      </dropDown>
+    </row>
+  </view>
+</form>
+
