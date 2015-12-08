@@ -129,7 +129,6 @@ public class CprServiceImpl implements CprService {
 			for (SpecimenRequirement sr : requirements) {
 				createSpecimens(sr, visit, null, specimenIds);
 			}
-			visitCnt++;
 		}
 		
 		if(isPrintLabels){
