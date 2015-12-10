@@ -29,6 +29,7 @@
     <property name="visitService"  ref="visitService"/>
     <property name="specimenSvc" ref="specimenSvc"/>
     <property name="tridGenerator" ref="tridGenerator"/>
+    <property name="cfgSvc" ref="cfgSvc"/>
   </bean>
   
   <bean id="sghReportsDeIdentifier" class="com.krishagni.openspecimen.sgh.services.impl.SprDeIdentifier">

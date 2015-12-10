@@ -1,14 +1,14 @@
 package com.krishagni.openspecimen.sgh.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
+import com.krishagni.catissueplus.core.administrative.domain.Site;
+import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolEvent;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolRegistration;
@@ -16,6 +16,7 @@ import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.SpecimenRequirement;
 import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.biospecimen.domain.factory.CpErrorCode;
+import com.krishagni.catissueplus.core.biospecimen.domain.factory.SpecimenErrorCode;
 import com.krishagni.catissueplus.core.biospecimen.events.CollectionProtocolRegistrationDetail;
 import com.krishagni.catissueplus.core.biospecimen.events.LabelPrintJobSummary;
 import com.krishagni.catissueplus.core.biospecimen.events.ParticipantDetail;
@@ -26,10 +27,14 @@ import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.CollectionProtocolRegistrationService;
 import com.krishagni.catissueplus.core.biospecimen.services.SpecimenService;
 import com.krishagni.catissueplus.core.biospecimen.services.VisitService;
+import com.krishagni.catissueplus.core.biospecimen.services.impl.DefaultSpecimenLabelPrinter;
+import com.krishagni.catissueplus.core.common.OpenSpecimenAppCtxProvider;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
+import com.krishagni.catissueplus.core.common.domain.LabelPrintJob;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
+import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.catissueplus.core.common.util.Status;
 import com.krishagni.openspecimen.sgh.SghErrorCode;
@@ -49,6 +54,8 @@ public class CprServiceImpl implements CprService {
 	private VisitService visitService;
 	
 	private TridGenerator tridGenerator;
+	
+	private ConfigurationService cfgSvc;
 	
 	@Autowired
 	@Qualifier("specimenLabelGenerator")
@@ -73,6 +80,10 @@ public class CprServiceImpl implements CprService {
 	public void setTridGenerator(TridGenerator tridGenerator) {
 		this.tridGenerator = tridGenerator;
 	}
+	
+	public void setCfgSvc(ConfigurationService cfgSvc) {
+		this.cfgSvc = cfgSvc;
+	}
 
 	@Override
 	@PlusTransactional	
@@ -96,6 +107,8 @@ public class CprServiceImpl implements CprService {
 				CollectionProtocolRegistrationDetail regDetail = registerParticipant(cp, regReq.isPrintLabels(), printerName);
 				registrations.add(regDetail);
 			}
+			
+			printTrids(registrations, printerName);
 			
 			return ResponseEvent.response(BulkParticipantRegDetail.from(regReq, registrations));			
 		} catch (OpenSpecimenException ose) {
@@ -138,6 +151,7 @@ public class CprServiceImpl implements CprService {
 		}
 		return cprDetail;
 	}
+
 
 	private void createSpecimens(SpecimenRequirement sr, Visit visit, SpecimenDetail parent, List<Long> specimenIds) {
 			Specimen specimen = sr.getSpecimen();
@@ -202,10 +216,66 @@ public class CprServiceImpl implements CprService {
 		return visit;
 	}
 	
+	private void printTrids(List<CollectionProtocolRegistrationDetail> registrations, String printerName) {
+		List<String> trids = new ArrayList<String>();
+		for (CollectionProtocolRegistrationDetail cprDetail : registrations) {
+			trids.add(cprDetail.getPpid());
+		}
+		
+		DefaultSpecimenLabelPrinter printer = getLabelPrinter();
+		if (printer == null) {
+			throw OpenSpecimenException.serverError(SpecimenErrorCode.NO_PRINTER_CONFIGURED);
+		}
+		
+		List<Specimen> specimens = new ArrayList<Specimen>();
+		for(String trid : trids){
+			specimens.addAll(getSpecimensToPrint(trid, printerName));
+		}
+		
+		LabelPrintJob job = printer.print(specimens, 1);
+		if (job == null) {
+			throw OpenSpecimenException.userError(SpecimenErrorCode.PRINT_ERROR);
+		}
+		
+	}
+	
+	private Collection<Specimen> getSpecimensToPrint(String visitName, String printerName) {
+		
+		List<Specimen> specimens = new ArrayList<Specimen>();
+		Visit visit = new Visit();
+		visit.setName(visitName);
+		Site site = new Site();
+		site.setName(printerName);
+		visit.setSite(site);
+		
+		for(int i = 0; i < 2; ++i){
+			Specimen specimen = new Specimen();
+			specimen.setVisit(visit);
+			if(i==1){
+				specimen.setLabel(visitName+" ");
+			} else {
+				specimen.setLabel(visitName);
+			}
+			
+			specimens.add(specimen);
+		}
+		return specimens;
+	}
+	
 	private RequestEvent<PrintSpecimenLabelDetail> getPrintLabelsReq(List<Long> specimenIds) {
 		PrintSpecimenLabelDetail printLblDetail = new PrintSpecimenLabelDetail();
 		printLblDetail.setSpecimenIds(specimenIds);
 		return getRequest(printLblDetail);
+	}
+	
+	private DefaultSpecimenLabelPrinter getLabelPrinter() {
+		String labelPrinterBean = cfgSvc.getStrSetting(
+				ConfigParams.MODULE, 
+				ConfigParams.SPECIMEN_LABEL_PRINTER, 
+				"defaultTridPrinter");
+		return (DefaultSpecimenLabelPrinter)OpenSpecimenAppCtxProvider
+				.getAppCtx()
+				.getBean(labelPrinterBean);
 	}
 	
 	private <T> RequestEvent<T> getRequest(T payload) {
