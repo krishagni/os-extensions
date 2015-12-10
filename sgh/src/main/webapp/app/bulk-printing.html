@@ -28,10 +28,21 @@
           <label class="radio-inline" ng-repeat="printer in printers">
             <input type="radio" name="gender" ng-model="regReq.printerName" ng-value="printer"> {{printer}}
           </label>
-          <!--  <os-select ng-model="regReq.printerName" list="printers" name="printerName" 
-            placeholder="{{'custom_sgh.printer' | translate}}" required>
-          </os-select>-->
           <div os-field-error field="bulkPrintForm.printer"></div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="control-label col-xs-3">
+          <span translate="custom_sgh.print_labels">
+            Print Labels
+          </span>
+        </label>
+        <div class="col-xs-6">
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="regReq.printLabels" ng-true-value="true" ng-false-value="false"/> 
+            <span>&nbsp;</span>
+          </label>
         </div>
       </div>
 

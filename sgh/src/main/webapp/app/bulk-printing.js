@@ -4,7 +4,8 @@ osApp.providers
 
     function init() {
       $scope.regReq = {
-        tridCount: 0
+        tridCount: 0,
+        printLabels : false
       }
       loadPvs();
     }
@@ -30,7 +31,7 @@ osApp.providers
     function init() {
       $scope.trids = "";
       $scope.printer= {
-    	printerName : ""	  
+    	printerName : ""
       }
       loadPvs();
     }

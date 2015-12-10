@@ -66,6 +66,10 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			throw OpenSpecimenException.serverError(SpecimenErrorCode.NO_PRINTER_CONFIGURED);
 		}
 		
+		if(!printReq.isPrintLabels()){
+			printerName = "";
+		}
+		
 		List<Specimen> specimens = new ArrayList<Specimen>();
 		for(int i = 0; i < printReq.getTridCount(); i++){
 			String trid = tridGenerator.getNextTrid();
