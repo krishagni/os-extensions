@@ -75,14 +75,14 @@ public class SprDeIdentifier implements DocumentDeIdentifier {
 		
 		StringBuilder regex = new StringBuilder();
 		String lastName = participant.getLastName();
-		if (StringUtils.isNotBlank(lastName) && lastName.length() > 1) {
-			regex.append(lastName);
+		if (StringUtils.isNotBlank(lastName)) {
+			regex.append(" ").append(lastName).append(" ");
 		}
 		
 		String firstName = participant.getFirstName();
-		if (StringUtils.isNotBlank(firstName) && firstName.length() > 1) {
+		if (StringUtils.isNotBlank(firstName)) {
 			addOr(regex);
-			regex.append(firstName);
+			regex.append(" ").append(firstName).append(" ");
 		}
 		
 		if (regex.length() > 0) {
