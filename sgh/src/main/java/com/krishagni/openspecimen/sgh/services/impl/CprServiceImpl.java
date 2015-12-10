@@ -57,10 +57,6 @@ public class CprServiceImpl implements CprService {
 	
 	private ConfigurationService cfgSvc;
 	
-	@Autowired
-	@Qualifier("specimenLabelGenerator")
-	private LabelGenerator labelGenerator;
-	
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
