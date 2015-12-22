@@ -3,9 +3,9 @@ package com.krishagni.openspecimen.sgh.services.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
@@ -35,7 +35,6 @@ import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
-import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.catissueplus.core.common.util.Status;
 import com.krishagni.openspecimen.sgh.SghErrorCode;
 import com.krishagni.openspecimen.sgh.events.BulkParticipantRegDetail;
@@ -104,8 +103,6 @@ public class CprServiceImpl implements CprService {
 				registrations.add(regDetail);
 			}
 			
-			printTrids(registrations, printerName);
-			
 			return ResponseEvent.response(BulkParticipantRegDetail.from(regReq, registrations));			
 		} catch (OpenSpecimenException ose) {
 			return ResponseEvent.error(ose);			
@@ -120,11 +117,19 @@ public class CprServiceImpl implements CprService {
 		regResp.throwErrorIfUnsuccessful();
 		
 		cprDetail = regResp.getPayload();
-		Set<CollectionProtocolEvent> eventColl = cp.getCollectionProtocolEvents();
+		
+		List<CollectionProtocolEvent> eventList = new ArrayList<CollectionProtocolEvent>(cp.getCollectionProtocolEvents());
+		Collections.sort(eventList, new Comparator<CollectionProtocolEvent>(){
+			@Override
+			public int compare(CollectionProtocolEvent cpe1, CollectionProtocolEvent cpe2) {
+				return cpe1.getId().compareTo(cpe2.getId());
+			}
+		});
+
 		int visitCnt = 1;
 		
 		List<Long> specimenIds = new ArrayList<Long>();
-		for (CollectionProtocolEvent cpe : eventColl) {
+		for (CollectionProtocolEvent cpe : eventList) {
 			VisitDetail visitDetail = createVisit(cprDetail, cpe, printerName, visitCnt++);
 			ResponseEvent<VisitDetail> visitResp = visitService.addVisit(getRequest(visitDetail));
 			visitResp.throwErrorIfUnsuccessful();
@@ -141,6 +146,8 @@ public class CprServiceImpl implements CprService {
 		}
 		
 		if(isPrintLabels){
+			printTrids(cprDetail, printerName);
+			
 			RequestEvent<PrintSpecimenLabelDetail> printLabelsReq = getPrintLabelsReq(specimenIds);
 			ResponseEvent<LabelPrintJobSummary> printLabelsResp = specimenSvc.printSpecimenLabels(printLabelsReq);
 			printLabelsResp.throwErrorIfUnsuccessful();
@@ -212,11 +219,7 @@ public class CprServiceImpl implements CprService {
 		return visit;
 	}
 	
-	private void printTrids(List<CollectionProtocolRegistrationDetail> registrations, String printerName) {
-		List<String> trids = new ArrayList<String>();
-		for (CollectionProtocolRegistrationDetail cprDetail : registrations) {
-			trids.add(cprDetail.getPpid());
-		}
+	private void printTrids(CollectionProtocolRegistrationDetail registration, String printerName) {
 		
 		DefaultSpecimenLabelPrinter printer = getLabelPrinter();
 		if (printer == null) {
@@ -224,9 +227,7 @@ public class CprServiceImpl implements CprService {
 		}
 		
 		List<Specimen> specimens = new ArrayList<Specimen>();
-		for(String trid : trids){
-			specimens.addAll(getSpecimensToPrint(trid, printerName));
-		}
+		specimens.addAll(getSpecimensToPrint(registration.getPpid(), printerName));
 		
 		LabelPrintJob job = printer.print(specimens, 1);
 		if (job == null) {
