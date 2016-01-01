@@ -22,6 +22,7 @@ import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 
 @Configurable
 public class IncorrectTissueSiteReport implements ScheduledTask {
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -37,7 +38,7 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 	
 	@SuppressWarnings("unchecked")
 	private void executeQuery(String query, ScheduledJobRun jobRun) {
-		List<Object[]> list = sessionFactory.getCurrentSession().createSQLQuery(query).list();
+		
 		String lineSeperator = System.getProperty( "line.separator" );
 		String location = cfgSvc.getDataDir() + "/os_report";
 		File dir = new File(location);
@@ -54,14 +55,16 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			csvWriter.writeNext(new String[]{lineSeperator});
 			csvWriter.writeNext(new String[]{"Report for Incorrect Tissue Site and Side : "});
 			csvWriter.writeNext(new String[]{lineSeperator});
-			csvWriter.writeNext(new String[]{"TRID", "Specimen Label", "Tissue Site", "Tissue Side"});
-			
+			csvWriter.writeNext(new String[]{"TRID", "Specimen Label", "Tissue Site", "Tissue Side", "Pathological Status"});
+			List<Object[]> list = sessionFactory.getCurrentSession().createSQLQuery(query).list();
+
 			for (Object[] object : list) {
-				String trid = (object[0] != null) ? object[0].toString() : null;
-				String label = (object[1] != null) ? object[1].toString() : null;
-				String tissue_site = (object[2] != null) ? object[2].toString() : null;
-				String tissue_side = (object[3] != null) ? object[3].toString() : null;
-				csvWriter.writeNext(new String[]{trid, label, tissue_site, tissue_side});
+				String trid = getStringValue(object[0]);
+				String label = getStringValue(object[1]);
+				String tissue_site = getStringValue(object[2]);
+				String tissue_side = getStringValue(object[3]);
+				String pathological_status = getStringValue(object[4]);
+				csvWriter.writeNext(new String[]{trid, label, tissue_site, tissue_side, pathological_status});
 				counter++;
 			}
 			
@@ -91,16 +94,21 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 	}
 
 
-	private String getDate(String date){
+	private String getDate(String date) {
 		String [] ddmmyyyy = date.split("-");
 		String yyyymmdd = ddmmyyyy[2] + "-"+ddmmyyyy[1] + "-"+ddmmyyyy[0];
 		return yyyymmdd;
-	}
+	} 
+ 
+	private String getStringValue(Object obj) { 
+		return obj != null ? obj.toString() : null; 
+	}       
 
 	private static final String QUERY =
 			"select " +
 			"  s.name as trid, spmn.label as specimen_label, " +
-			"  spmn.tissue_site as tissue_site, spmn.tissue_side as tissue_side " +
+			"  spmn.tissue_site as tissue_site, spmn.tissue_side as tissue_side, " +
+			"  spmn.pathological_status as pathological_status " +
 			"from " +
 			"  catissue_specimen spmn " +
 			"  join (" +
@@ -111,17 +119,18 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			"      join catissue_specimen spec on spec.specimen_collection_group_id = scg.identifier " +
 			"    where " +
 			"      spec.activity_status in ('Active', 'Closed') and " + 
-			"      spec.collection_status = 'Collected' and " + 
 			"      spec.lineage = 'New' " +
 			"    group by " + 
 			"      scg.name " +
 			"    having " +
 			"      count(distinct spec.tissue_site) > 1 or " +
-			"      count(distinct spec.tissue_side) > 1 " + 
+			"      count(distinct spec.tissue_side) > 1 or " +
+			"      count(distinct spec.pathological_status) > 1 " +        
 			"  ) as s on spmn.specimen_collection_group_id = s.identifier " +
 			"where " + 
 			"  spmn.lineage = 'New' and " +
 			"  spmn.label is not null and " +
+			"  spmn.collection_status = 'Pending' and " +
 			"  s.collection_timestamp between concat( '%s' , ' 00:00:00' ) and concat( '%s' , ' 23:59:59' ) " + 
 			"order by " +
 			"  spmn.label"; 
