@@ -23,7 +23,7 @@
     <property name="changeLog" value="classpath:com/krishagni/openspecimen/vcb/2.2/db-changelog.xml" />
   </bean>
 
-  <bean id="objectSchemaLoader" class="com.krishagni.catissueplus.core.importer.services.impl.ObjectSchemaLoader">
+  <bean id="vcbObjectSchemaLoader" class="com.krishagni.catissueplus.core.importer.services.impl.ObjectSchemaLoader">
     <property name="objectSchemaFactory" ref="objectSchemaFactory"/>
     <property name="schemaResources">
       <list>
