@@ -3,6 +3,7 @@ package com.krishagni.openspecimen.sgh.reports;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,10 +36,23 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 	private String startDate;
 	
 	private String endDate;
-	
+
+	@Override
+	@PlusTransactional
+	public void doJob(ScheduledJobRun jobRun) throws Exception {
+		String[] dates = {"", ""};
+		if(jobRun.getRtArgs() != null && !jobRun.getRtArgs().isEmpty()) { 
+			dates = jobRun.getRtArgs().split(" ");
+		}
+
+		startDate = getDate(dates[0]);
+		endDate = getDate(dates[1]);
+		String query = String.format(QUERY, startDate, endDate);
+		executeQuery(query, jobRun);
+	}
+
 	@SuppressWarnings("unchecked")
 	private void executeQuery(String query, ScheduledJobRun jobRun) {
-		
 		String lineSeperator = System.getProperty( "line.separator" );
 		String location = cfgSvc.getDataDir() + "/os_report";
 		File dir = new File(location);
@@ -55,16 +69,17 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			csvWriter.writeNext(new String[]{lineSeperator});
 			csvWriter.writeNext(new String[]{"Report for Incorrect Tissue Site and Side : "});
 			csvWriter.writeNext(new String[]{lineSeperator});
-			csvWriter.writeNext(new String[]{"TRID", "Specimen Label", "Tissue Site", "Tissue Side", "Pathological Status"});
+			csvWriter.writeNext(new String[]{"CP Short Title", "TRID", "Specimen Label", "Tissue Site", "Tissue Side", "Pathological Status"});
 			List<Object[]> list = sessionFactory.getCurrentSession().createSQLQuery(query).list();
 
 			for (Object[] object : list) {
-				String trid = getStringValue(object[0]);
-				String label = getStringValue(object[1]);
-				String tissue_site = getStringValue(object[2]);
-				String tissue_side = getStringValue(object[3]);
-				String pathological_status = getStringValue(object[4]);
-				csvWriter.writeNext(new String[]{trid, label, tissue_site, tissue_side, pathological_status});
+				String cp_short_title = getStringValue(object[0]);
+				String trid = getStringValue(object[1]);
+				String label = getStringValue(object[2]);
+				String tissue_site = getStringValue(object[3]);
+				String tissue_side = getStringValue(object[4]);
+				String pathological_status = getStringValue(object[5]);
+				csvWriter.writeNext(new String[]{cp_short_title, trid, label, tissue_site, tissue_side, pathological_status});
 				counter++;
 			}
 			
@@ -79,41 +94,28 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 		daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
 	}
 	
-	@Override
-	@PlusTransactional
-	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		String[] dates = {"", ""};
-		if(jobRun.getRtArgs() != null && !jobRun.getRtArgs().isEmpty()) {
-			dates = jobRun.getRtArgs().split(" ");
-		}
-		
-		startDate = getDate(dates[0]);
-		endDate = getDate(dates[1]);
-		String query = String.format(QUERY, startDate , endDate);
-		executeQuery(query, jobRun);
+	private String getDate(String date) throws ParseException {
+		SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
+		Date dt = parser.parse(date);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+		return formatter.format(dt);
 	}
 
-
-	private String getDate(String date) {
-		String [] ddmmyyyy = date.split("-");
-		String yyyymmdd = ddmmyyyy[2] + "-"+ddmmyyyy[1] + "-"+ddmmyyyy[0];
-		return yyyymmdd;
-	} 
- 
 	private String getStringValue(Object obj) { 
 		return obj != null ? obj.toString() : null; 
 	}       
 
 	private static final String QUERY =
 			"select " +
-			"  s.name as trid, spmn.label as specimen_label, " +
-			"  spmn.tissue_site as tissue_site, spmn.tissue_side as tissue_side, " +
-			"  spmn.pathological_status as pathological_status " +
+			"  cp.short_title as cp_short_title, s.name as trid, " + 
+			"  spmn.label as specimen_label, spmn.tissue_site as tissue_site, " + 
+			"  spmn.tissue_side as tissue_side, spmn.pathological_status as pathological_status " +
 			"from " +
 			"  catissue_specimen spmn " +
 			"  join (" +
 			"    select " +
-			"      scg.identifier, scg.collection_timestamp, scg.name " +
+			"      scg.identifier, scg.collection_timestamp, " +
+			"      scg.name, scg.collection_protocol_reg_id " +
 			"    from " +
 			"      catissue_specimen_coll_group scg " +
 			"      join catissue_specimen spec on spec.specimen_collection_group_id = scg.identifier " +
@@ -127,12 +129,14 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			"      count(distinct spec.tissue_side) > 1 or " +
 			"      count(distinct spec.pathological_status) > 1 " +        
 			"  ) as s on spmn.specimen_collection_group_id = s.identifier " +
+			"  join catissue_coll_prot_reg ccpr on ccpr.identifier = s.collection_protocol_reg_id " +
+			"  join catissue_collection_protocol cp on cp.identifier = ccpr.collection_protocol_id " +
 			"where " + 
 			"  spmn.lineage = 'New' and " +
 			"  spmn.label is not null and " +
-			"  spmn.collection_status = 'Pending' and " +
+			"  spmn.collection_status = 'Collected' and " +
 			"  s.collection_timestamp between concat( '%s' , ' 00:00:00' ) and concat( '%s' , ' 23:59:59' ) " + 
 			"order by " +
-			"  spmn.label"; 
+			"  spmn.label "; 
 
 }
