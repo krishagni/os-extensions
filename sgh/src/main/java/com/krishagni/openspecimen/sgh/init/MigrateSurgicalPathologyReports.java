@@ -1,6 +1,7 @@
 package com.krishagni.openspecimen.sgh.init;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
@@ -95,12 +96,12 @@ public class MigrateSurgicalPathologyReports implements InitializingBean {
 						for (final SprDetail detail : sprDetails) {
 							OutputStream outputStream = null;
 							try {
-								File sprFile = getSprFile(detail.getVisitId());
-								String sprText = PdfUtil.getText(detail.getInputStream());
-								FileUtils.writeStringToFile(sprFile, sprText, (String) null, false);
-							
 								String sprName = detail.getFileName(); 
-								sprName = sprName.substring(0, sprName.lastIndexOf(".")) + ".txt";
+								sprName = sprName.substring(0, sprName.lastIndexOf(".")) + ".pdf";
+								File sprFile = getSprFile(detail.getVisitId(), sprName);
+								InputStream in = detail.getInputStream();
+								FileUtils.writeByteArrayToFile(sprFile, IOUtils.toByteArray(in));
+
 								jdbcTemplate.update(UPDATE_SPR_DOCUMENT_NAME_SQL, sprName, detail.getVisitId());
 								
 								jdbcTemplate.update(DISABLE_OLD_MIGRATED_SPR_IN_DE_SQL, detail.getRecordId());
@@ -148,12 +149,12 @@ public class MigrateSurgicalPathologyReports implements InitializingBean {
 				});					
 	}
 	
-	private File getSprFile(Long visitId) {
+	private File getSprFile(Long visitId, String sprName) {
 		String path = cfgSvc.getStrSetting(
 				ConfigParams.MODULE, 
 				ConfigParams.SPR_DIR, 
 				getDefaultVisitSprDir());
-		path = path + File.separator + visitId + File.separator + "spr.txt";
+		path = path + File.separator + visitId + File.separator + sprName;
 		
 		return new File(path);
 	}
