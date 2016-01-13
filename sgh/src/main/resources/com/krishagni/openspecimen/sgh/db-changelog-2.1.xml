@@ -433,23 +433,6 @@
     </sql>
   </changeSet>
   
-  <changeSet author="nmarwaha" id="Setting the Job scheduler for generating specimen label cmd files">
-    <sql>
-      insert 
-        into 
-      os_scheduled_jobs
-        (
-         IDENTIFIER, NAME, CREATED_BY, START_DATE, ACTIVITY_STATUS, 
-         REPEAT_SCHEDULE, TYPE, TASK_IMPL_FQN, RT_ARGS_PROVIDED
-        )
-      values 
-        (
-         default, 'Job to generate cmd files', 1, now(), 'Active', 
-         'MINUTELY', 'INTERNAL', 'com.krishagni.openspecimen.sgh.services.impl.LabelFileGenerator', 0
-        )
-    </sql>
-  </changeSet>
-  
   <changeSet author="nmarwaha" id="Set the NRIC mandatory flag to true">
     <sql>
       select 
