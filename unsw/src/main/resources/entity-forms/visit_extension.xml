@@ -5,11 +5,11 @@
     <row>
       <fileUpload>
         <name>fileUpload</name>
-        <udn>identifiedSurgicalPathology2</udn>
-        <caption><![CDATA[Identified Surgical Pathology Report]]></caption>
+        <udn>identifiedSPR</udn>
+        <caption><![CDATA[Identified SPR]]></caption>
         <phi>false</phi>
         <mandatory>false</mandatory>
-        <toolTip><![CDATA[]]></toolTip>
+        <toolTip><![CDATA[Identified Surgical Pathology Report]]></toolTip>
         <showLabel>true</showLabel>
         <showInGrid>false</showInGrid>
       </fileUpload>
