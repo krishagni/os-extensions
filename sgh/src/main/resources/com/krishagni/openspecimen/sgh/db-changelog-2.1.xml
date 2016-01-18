@@ -667,4 +667,18 @@
     </sql>
   </changeSet>
 
+  <changeSet author="hkambale" id="Updating quantity units for the molecular">
+    <sql>
+      update
+        os_specimen_units
+      set
+        qty_unit = 'µl',
+        qty_html_display_code = 'µl',
+        conc_unit = 'microgram/µl',
+        conc_html_display_code = 'µg/µl'
+      where
+        specimen_class = 'Molecular'
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>
