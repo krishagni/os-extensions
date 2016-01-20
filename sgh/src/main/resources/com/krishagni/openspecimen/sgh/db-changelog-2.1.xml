@@ -681,4 +681,10 @@
     </sql>
   </changeSet>
 
+  <changeSet author="hkambale" id="Adding fat percentage column in tissue specimen event param table">
+    <addColumn tableName="CATISSUE_TIS_SPE_EVENT_PARAM">
+      <column name="FAT_PERCENTAGE" type="double"/>
+    </addColumn>
+  </changeSet>
+
 </databaseChangeLog>
