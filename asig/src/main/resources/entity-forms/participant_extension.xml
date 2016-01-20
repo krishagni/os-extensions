@@ -1,0 +1,33 @@
+<form>
+<view>
+<name>sVHParticipantCustomFields</name>
+<caption><![CDATA[SVH Participant Custom Fields]]></caption>
+<row>
+<radioButton>
+<name>dnaQuality</name>
+<udn>dNAQuality</udn>
+<caption><![CDATA[DNA Quality]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[DNA Quality]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<defaultValue><![CDATA[Good]]></defaultValue>
+<options>
+<option>
+<value><![CDATA[Good]]></value>
+</option>
+<option>
+<value><![CDATA[Poor]]></value>
+</option>
+<option>
+<value><![CDATA[Unknown]]></value>
+</option>
+</options>
+<optionsPerRow>3</optionsPerRow>
+</radioButton>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>

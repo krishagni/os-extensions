@@ -25,17 +25,4 @@
   <bean id="asigDao" class="com.krishagni.openspecimen.asig.dao.impl.AsigDaoImpl">
     <property name="daoFactory" ref="biospecimenDaoFactory" />
   </bean>
-  
-  <bean id="svhObjectSchemaLoader" class="com.krishagni.catissueplus.core.importer.services.impl.ObjectSchemaLoader">
-    <property name="objectSchemaFactory" ref="objectSchemaFactory"/>
-    <property name="schemaResources">
-      <list>
-        <value>com/krishagni/openspecimen/svh/biospecimen/schema/participant.xml</value>
-        <value>com/krishagni/openspecimen/svh/biospecimen/schema/cpr.xml</value>
-        <value>com/krishagni/openspecimen/svh/biospecimen/schema/specimen.xml</value>
-        <value>com/krishagni/openspecimen/svh/biospecimen/schema/specimen-derivative.xml</value>
-      </list>
-    </property>
-  </bean>
-
 </beans>
