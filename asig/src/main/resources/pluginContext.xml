@@ -13,7 +13,29 @@
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context-3.2.xsd
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    
+  <bean id="asigSvc" class="com.krishagni.openspecimen.asig.service.impl.AsigServiceImpl">
+    <property name="asigDao" ref="asigDao" />
+    <property name="cprSvc" ref="cprSvc" />
+    <property name="siteSvc" ref="siteService" />
+    <property name="userSvc" ref="userSvc" />
+    <property name="subRoleSvc" ref="rbacSvc" />
+  </bean>
 
-  <context:component-scan base-package="com.krishagni.openspecimen.asig.rest" />
+  <bean id="asigDao" class="com.krishagni.openspecimen.asig.dao.impl.AsigDaoImpl">
+    <property name="daoFactory" ref="biospecimenDaoFactory" />
+  </bean>
+  
+  <bean id="svhObjectSchemaLoader" class="com.krishagni.catissueplus.core.importer.services.impl.ObjectSchemaLoader">
+    <property name="objectSchemaFactory" ref="objectSchemaFactory"/>
+    <property name="schemaResources">
+      <list>
+        <value>com/krishagni/openspecimen/svh/biospecimen/schema/participant.xml</value>
+        <value>com/krishagni/openspecimen/svh/biospecimen/schema/cpr.xml</value>
+        <value>com/krishagni/openspecimen/svh/biospecimen/schema/specimen.xml</value>
+        <value>com/krishagni/openspecimen/svh/biospecimen/schema/specimen-derivative.xml</value>
+      </list>
+    </property>
+  </bean>
 
 </beans>
