@@ -5,7 +5,7 @@
     <name>sghCollectionEvent</name>
     <udn>sghCollectionEvent</udn>
     <caption>#getMessage("collection_event")</caption>
-    <table>OS_CPE_RECORDS_VIEW</table>
+    <table>OS_CEP_RECORDS_VIEW</table>
     <primaryKey>IDENTIFIER</primaryKey>
     <foreignKey>SPECIMEN_ID</foreignKey>
     <parentKey>IDENTIFIER</parentKey>
