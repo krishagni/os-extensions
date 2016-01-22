@@ -1,4 +1,4 @@
-osApp.providers
+angular.module('os.plugins.vcb') 
   .controller('vcbAddEditVisitCtrl', function($scope, PvManager) {
     function init() {
       loadPvs();
