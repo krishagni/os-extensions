@@ -1,4 +1,4 @@
-osApp.providers
+angular.module('os.plugins.le')
   .directive('leSpecimenBox', function(SpecimenUnitSvc) {
     function drawBox(opts, element) {
       var dimension = opts.dimension;

@@ -1,5 +1,5 @@
 
-osApp.providers
+angular.module('os.plugins.le', ['openspecimen'])
   .controller('leRegAndCollectSpecimensCtrl', 
     function(
       $rootScope, $scope, $state, $stateParams, $http,
