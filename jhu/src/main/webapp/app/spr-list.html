@@ -1,0 +1,38 @@
+<span ng-controller="JhuSprListCtrl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span translate="spr.list">Surgical Pathology Reports</span>
+    </div>
+    <div class="panel-body">
+    <table class="os-table os-table-hover">
+      <thead class="os-table-head">
+        <tr class="row">
+          <th class="col">
+            <span translate="spr.name">Name</span>
+          </th>
+          <th class="col">
+            <span translate="spr.specimenId">Specimen Id</span>
+          </th>
+          <th class="col">
+            <span translate="spr.collectionDate">Collection Date</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="os-table-body">
+        <tr class="row" ng-repeat="spr in sprList" os-row-click="viewSprContent(spr)">
+          <td class="col">
+            <span>{{spr.testDesc}}</span>
+          </td>
+          <td class="col">
+            <span>{{spr.pathId}}</span>
+          </td>
+          <td class="col">
+            <span>{{spr.collectionDateTime}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  
+</span>

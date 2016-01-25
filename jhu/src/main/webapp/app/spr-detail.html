@@ -1,0 +1,35 @@
+<div class="clearfix">
+  <div class="col-xs-8">
+    <a class="default" ng-click="reloadSprList()">
+      <span translate="spr.back">
+        Back to list
+      </span>
+    </a>
+  </div>
+  <div class="col-xs-8">
+    <ul class="os-key-values os-two-cols">
+      <li class="item">
+        <strong class="key key-sm" translate="spr.name">Name</strong>
+        <span class="value value-md">{{sprDetail.name}}</span>
+      </li>
+
+      <li class="item">
+        <strong class="key key-sm" translate="spr.specimenId">Specimen Id</strong>
+        <span class="value value-md">{{sprDetail.pathId}}</span>
+      </li>
+
+      <li class="item">
+        <strong class="key key-sm" translate="spr.collectionDate">Collection Date</strong>
+        <span class="value value-md">{{sprDetail.collectionDate}}</span>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <div class="col-xs-8 os-line-section os-spr">
+      <strong class="key" translate="visits.spr">Surgical Pathology Report</strong>
+      <div class="clearfix">
+        <span class="os-pre-line">{{sprDetail.text}}</span>
+      </div>
+    </div>
+  </div>
+</div>
