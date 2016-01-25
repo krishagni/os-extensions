@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet author="nmarwaha" id="Creating scheduled job for EPIC migraiton">
+    <sql>
+      insert into 
+        os_scheduled_jobs
+      values(
+        OS_SCHEDULED_JOBS_SEQ.nextVal, 'Epic Scheduler', '1', SYSDATE, null, 30, 23, null, 
+        null, 'Active', 'DAILY', 'INTERNAL', null, 'com.krishagni.openspecimen.epic.service.impl.EpicScheduler', 0, null
+        )
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>
