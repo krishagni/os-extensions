@@ -1,0 +1,9 @@
+
+build/
+/bin/
+.project
+.classpath
+.gradle/
+*~
+node_modules/
+dist/

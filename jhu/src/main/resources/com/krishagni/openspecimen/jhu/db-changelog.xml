@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <property name="int.type" value="bigint" dbms="mysql" />
+
+  <property name="text.type" value="varchar" dbms="mysql" />
+  
+  <property name="autoIncrement" value="true" dbms="mysql"/>
+  
+  <changeSet author="nmarwaha" id="Adding JHU specific configuration parameters">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values 
+        (default, 'plugin_jhu', 'JHU custom module plugin');
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_jhu', 'facility_name', 
+        'facility_name', 'facility_name_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_jhu', 'base_url', 
+        'base_url', 'base_url_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_jhu', 'https_protocol', 
+        'https_protocol', 'https_protocol_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_jhu', 'authentication_key', 
+        'authentication_key', 'authentication_key_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_jhu', 'client_id', 
+        'client_id', 'client_id_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_jhu', 'client_secret', 
+        'client_secret', 'client_secret_desc', 
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Creating table for SPR audits">
+    <createTable tableName="SPR_AUDIT_DETAILS">
+      <column name="IDENTIFIER" type="${int.type}" autoIncrement="${autoIncrement}">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+
+      <column name="ACCESS_DATE" type="${text.type}(64)">
+      </column>
+     
+      <column name="IP_ADDRESS" type="${text.type}(64)">
+      </column>
+
+      <column name="LOGIN_NAME" type="${text.type}(64)">
+      </column>
+     
+      <column name="OPERATION" type="${text.type}(64)">
+      </column>
+     
+      <column name="MRN" type="${text.type}(64)">
+      </column>
+     
+      <column name="PATH_ID" type="${text.type}(64)">
+      </column>
+     
+      <column name="TEST_CODE" type="${text.type}(64)">
+      </column>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

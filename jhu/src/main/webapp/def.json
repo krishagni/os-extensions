@@ -1,0 +1,9 @@
+{
+  "styles": [
+    "jhu/css/app.css"
+  ],
+
+  "scripts": [
+    "jhu/scripts/scripts.@script_hash@.js"
+  ]
+}
