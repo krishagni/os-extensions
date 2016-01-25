@@ -1,0 +1,66 @@
+<form>
+<view>
+<name>sVHDerivedSpecimensCustomFields</name>
+<caption><![CDATA[SVH Derived Specimens Custom Fields]]></caption>
+<row>
+<dropDown>
+<name>method</name>
+<udn>method</udn>
+<caption><![CDATA[Method]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Method]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[QiaGen Salt Precipitation]]></value>
+</option>
+<option>
+<value><![CDATA[Myomethod]]></value>
+</option>
+<option>
+<value><![CDATA[Not Specified]]></value>
+</option>
+</options>
+<lazyLoad>true</lazyLoad>
+<width>0</width>
+<minQueryChars>0</minQueryChars>
+</dropDown>
+</row>
+<row>
+<numberField>
+<name>ratio260280</name>
+<udn>ratio260280</udn>
+<caption><![CDATA[260/280]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[260/280]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<noOfDigits>6</noOfDigits>
+<noOfDigitsAfterDecimal>2</noOfDigitsAfterDecimal>
+</numberField>
+</row>
+<row>
+<textField>
+<name>labNumber</name>
+<udn>labNumber</udn>
+<caption><![CDATA[Lab Number]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Lab Number]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>

@@ -1,4 +1,4 @@
-osApp.providers
+angular.module('os.plugins.svh')
   .controller('participantCtrl', function($scope) {
     $scope.sites = [];
     

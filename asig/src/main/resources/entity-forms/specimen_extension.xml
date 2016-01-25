@@ -1,0 +1,64 @@
+<form>
+<view>
+<name>sVHNewSpecimensCustomFields</name>
+<caption><![CDATA[SVH New Specimens Custom Fields]]></caption>
+<row>
+<radioButton>
+<name>quality</name>
+<udn>quality</udn>
+<caption><![CDATA[Quality]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Quality]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<defaultValue><![CDATA[Good]]></defaultValue>
+<options>
+<option>
+<value><![CDATA[Good]]></value>
+</option>
+<option>
+<value><![CDATA[Poor]]></value>
+</option>
+<option>
+<value><![CDATA[Unknown]]></value>
+</option>
+</options>
+<optionsPerRow>3</optionsPerRow>
+</radioButton>
+</row>
+<row>
+<datePicker>
+<name>venesectionDate</name>
+<udn>venesectionDate</udn>
+<caption><![CDATA[Venesection Date]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Venesection Date]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<format>MM-dd-yyyy</format>
+<showCal>true</showCal>
+<default>none</default>
+</datePicker>
+</row>
+<row>
+<textField>
+<name>labNumber</name>
+<udn>labNumber</udn>
+<caption><![CDATA[Lab Number]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Lab Number]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>

@@ -131,54 +131,11 @@
           <div os-field-error field="derivativeForm.createdOn"></div>
         </div>
       </div>
-      
-      <div ng-if="currSpecimen.lineage == 'New'">
-        <div class="form-group">
-          <label class="col-xs-3 control-label" translate="specimens.quality">Quality</label>
-          <div class="col-xs-6">
-            <label class="radio-inline" ng-repeat="quality in qualities">
-              <input type="radio" ng-model="currSpecimen.extensionDetail.attrsMap.quality" ng-value="quality"> {{quality}}
-            </label>
-          </div>
-        </div>
-      
-        <div class="form-group">
-          <label class="col-xs-3 control-label" translate="specimens.venesection_date">Venesection date</label>
-          <div class="col-xs-6">
-            <os-date-picker date="currSpecimen.extensionDetail.attrsMap.venesectionDate" 
-              placeholder="{{'specimens.venesection_date' | translate}}">
-            </os-date-picker>
-          </div>
-        </div>
+
+      <div class="os-entity-extn-form-fields" ng-if="!!extnOpts">
+        <div id='de-form' class='os-extn-form' os-de-form opts="extnOpts" ctrl="deFormCtrl"></div>
       </div>
-      
-      <div ng-if="currSpecimen.lineage == 'Derived'">
-        <div class="form-group">
-          <label class="col-xs-3 control-label" translate="specimens.method">Method</label>
-          <div class="col-xs-6">
-            <os-select ng-model="currSpecimen.extensionDetail.attrsMap.method" list="methods"
-              placeholder="{{'specimens.method' | translate}}">
-            </os-select>
-          </div>
-        </div>
-      
-        <div class="form-group">
-          <label class="col-xs-3 control-label" translate="specimens.ratio_260280">260/280</label>
-          <div class="col-xs-6">
-            <input type="text" ng-model="currSpecimen.extensionDetail.attrsMap.ratio260280" class="form-control"
-              placeholder="{{'specimens.ratio_260280' | translate}}">
-          </div>
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label class="col-xs-3 control-label" translate="specimens.lab_number">Lab Number</label>
-        <div class="col-xs-6">
-          <input type="text" ng-model="currSpecimen.extensionDetail.attrsMap.labNumber" class="form-control"
-            placeholder="{{'specimens.lab_number' | translate}}">
-        </div>
-      </div>
-      
+
       <div class="form-group clearfix">
         <div class="col-xs-offset-3 col-xs-6 os-spmn-close-parent os-no-left-padding">
           <div class="checkbox">

@@ -53,21 +53,6 @@
         <div class="col-xs-2 os-ctrl-padding-top">
           <span>{{parentSpecimen.type}}</span>
         </div>
-        <label class="col-xs-3 control-label" translate="specimens.created_on">Created On</label>
-        <div class="col-xs-4">
-          <div class="os-date-time clearfix">
-            <div class="col-xs-6 input os-no-padding">
-              <os-date-picker name="createdOn" date="aliquotSpec.createdOn"
-                placeholder="{{'specimens.created_on' | translate}}" required>
-              </os-date-picker>
-            </div>
-            <div class="col-xs-6">
-              <timepicker ng-model="aliquotSpec.createdOn" class="os-time-no-wheels" show-meridian="false">
-              </timepicker>
-            </div>
-          </div>
-          <div os-field-error field="aliquotForm.createdOn"></div>
-        </div>
       </div>
 
       <div class="form-group">
@@ -92,6 +77,28 @@
           </div>
           <div os-field-error field="aliquotForm.qtyPerAliquot"></div>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" translate="specimens.created_on">Created On</label>
+        <div class="col-xs-4">
+          <div class="os-date-time clearfix">
+            <div class="col-xs-6 input os-no-padding">
+              <os-date-picker name="createdOn" date="aliquotSpec.createdOn"
+                placeholder="{{'specimens.created_on' | translate}}" required>
+              </os-date-picker>
+            </div>
+            <div class="col-xs-6">
+              <timepicker ng-model="aliquotSpec.createdOn" class="os-time-no-wheels" show-meridian="false">
+              </timepicker>
+            </div>
+          </div>
+          <div os-field-error field="aliquotForm.createdOn"></div>
+        </div>
+      </div>
+
+      <div class="os-entity-extn-form-fields" ng-if="!!extnOpts">
+        <div id='de-form' class='os-extn-form' os-de-form opts="extnOpts" ctrl="deFormCtrl"></div>
       </div>
 
       <div class="form-group clearfix">

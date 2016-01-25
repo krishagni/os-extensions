@@ -1,0 +1,24 @@
+<form>
+<view>
+<name>sVHAliquotSpecimenCustomFields</name>
+<caption><![CDATA[SVH Aliquot Specimens Custom Fields]]></caption>
+<row>
+<textField>
+<name>labNumber</name>
+<udn>labNumber</udn>
+<caption><![CDATA[Lab Number]]></caption>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[Lab Number]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<width>8</width>
+<defaultValue><![CDATA[]]></defaultValue>
+<url>false</url>
+<password>false</password>
+</textField>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>
