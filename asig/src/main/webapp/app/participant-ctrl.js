@@ -7,8 +7,4 @@ angular.module('os.plugins.svh')
         $scope.consentTierResponses = consents.consentTierResponses;
       }
     );
-    
-    angular.forEach($scope.cpr.participant.pmis, function(pmi) {
-      $scope.sites.push(pmi.siteName);
-    });
   });

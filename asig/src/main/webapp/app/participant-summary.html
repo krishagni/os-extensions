@@ -30,7 +30,7 @@
   
   <li class="item">
     <strong class="key key-sm" translate="participant.pmis">Sites</strong>
-    <span class="value value-md" os-inline-edit>{{sites | osArrayJoin | osNoValue}}</span>
+    <span class="value value-md" os-inline-edit>{{cpr.participant.pmis | osArrayJoin: pmiText | osNoValue}}</span>
   </li>
   
   <li class="item" ng-repeat="consent in consentTierResponses">
