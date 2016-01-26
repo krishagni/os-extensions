@@ -687,4 +687,12 @@
     </addColumn>
   </changeSet>
 
+  <changeSet author="hkambale" id="Adding columns in tissue specimen event param table">
+    <addColumn tableName="CATISSUE_TIS_SPE_EVENT_PARAM">
+      <column name="STROMA_PERCENTAGE" type="double"/>
+      <column name="MONOCYTE_PERCENTAGE" type="double"/>
+      <column name="NEUTROPHIL_PERCENTAGE" type="double"/>
+    </addColumn>
+  </changeSet>
+
 </databaseChangeLog>

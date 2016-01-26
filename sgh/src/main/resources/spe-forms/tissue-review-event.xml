@@ -36,6 +36,33 @@
 
     <row>
       <numberField>
+        <name>stromaPct</name>
+        <udn>stromaPct</udn>
+        <caption>#getMessage("tissue_rev_event_stroma_pct")</caption>
+        <column>STROMA_PERCENTAGE</column>
+      </numberField>
+    </row>
+
+    <row>
+      <numberField>
+        <name>monocytePct</name>
+        <udn>monocytePct</udn>
+        <caption>#getMessage("tissue_rev_event_monocyte_pct")</caption>
+        <column>MONOCYTE_PERCENTAGE</column>
+      </numberField>
+    </row>
+
+    <row>
+      <numberField>
+        <name>neutrophilPct</name>
+        <udn>neutrophilPct</udn>
+        <caption>#getMessage("tissue_rev_event_neutrophil_pct")</caption>
+        <column>NEUTROPHIL_PERCENTAGE</column>
+      </numberField>
+    </row>
+
+    <row>
+      <numberField>
         <name>totalCellularityPct</name>
         <udn>totalCellularityPct</udn>
         <caption>#getMessage("tissue_rev_event_total_cellularity_pct")</caption>
