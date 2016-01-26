@@ -1,4 +1,4 @@
-osApp.providers
+angular.module('os.plugins.actrec')
   .controller('actrecAddEditCtrl', function($scope, PvManager) {
     function loadPvs() {
       $scope.category = PvManager.getPvs('Animal_Category_PID');
