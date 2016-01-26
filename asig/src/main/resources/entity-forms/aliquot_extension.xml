@@ -1,7 +1,7 @@
 <form>
 <view>
-<name>sVHAliquotSpecimenCustomFields</name>
-<caption><![CDATA[SVH Aliquot Specimens Custom Fields]]></caption>
+<name>aliquotCustomFields</name>
+<caption><![CDATA[Aliquot Custom Fields]]></caption>
 <row>
 <textField>
 <name>labNumber</name>

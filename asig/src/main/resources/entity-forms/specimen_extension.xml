@@ -1,7 +1,7 @@
 <form>
 <view>
-<name>sVHNewSpecimensCustomFields</name>
-<caption><![CDATA[SVH New Specimens Custom Fields]]></caption>
+<name>specimensCustomFields</name>
+<caption><![CDATA[Specimens Custom Fields]]></caption>
 <row>
 <radioButton>
 <name>quality</name>

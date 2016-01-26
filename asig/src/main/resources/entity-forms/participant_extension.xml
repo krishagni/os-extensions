@@ -1,7 +1,7 @@
 <form>
 <view>
-<name>sVHParticipantCustomFields</name>
-<caption><![CDATA[SVH Participant Custom Fields]]></caption>
+<name>participantCustomFields</name>
+<caption><![CDATA[Participant Custom Fields]]></caption>
 <row>
 <radioButton>
 <name>dnaQuality</name>

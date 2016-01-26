@@ -1,7 +1,7 @@
 <form>
 <view>
-<name>sVHDerivedSpecimensCustomFields</name>
-<caption><![CDATA[SVH Derived Specimens Custom Fields]]></caption>
+<name>derivedCustomFields</name>
+<caption><![CDATA[Derived Custom Fields]]></caption>
 <row>
 <dropDown>
 <name>method</name>
