@@ -17,31 +17,31 @@ angular.module('os.plugins.svh', ['openspecimen'])
         
         'participant-addedit': {
           'page-body': {
-            template: 'plugin-ui-resources/svh/participant-edit.html'
+            template: 'plugin-ui-resources/svh/participant-addedit.html'
           }
         },
         
         'specimen-detail': {
           'overview': {
-            template: 'plugin-ui-resources/svh/specimen/overview.html'
+            template: 'plugin-ui-resources/svh/specimen-overview.html'
           }
         },
         
         'specimen-addedit': {
           'page-body': {
-            template: 'plugin-ui-resources/svh/specimen/addedit.html'
+            template: 'plugin-ui-resources/svh/specimen-addedit.html'
           }
         },
         
         'specimen-create-derivative': {
           'page-body': {
-            template: 'plugin-ui-resources/svh/specimen/add-derivative.html'
+            template: 'plugin-ui-resources/svh/add-derivative.html'
           }
         },
         
         'specimen-create-aliquots': {
           'page-body': {
-            template: 'plugin-ui-resources/svh/specimen/add-aliquots.html'
+            template: 'plugin-ui-resources/svh/add-aliquots.html'
           }
         }
       }

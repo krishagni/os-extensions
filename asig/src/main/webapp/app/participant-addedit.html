@@ -8,7 +8,7 @@
     </h3>
   </div>
 
-  <div class="container os-margin-top" ng-controller="participantCtrl">
+  <div class="container os-margin-top" ng-controller="SvhParticipantCtrl">
     <form name="pform" class="form-horizontal" os-form-validator="pform" validator="pformValidator" novalidate>
       <div ng-if="!matchedParticipants || matchedParticipants.length == 0">
         <div class="form-group" ng-if="cpr.id || !cp.ppidFmt || cp.manualPpidEnabled">

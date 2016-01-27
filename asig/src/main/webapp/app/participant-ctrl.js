@@ -1,5 +1,5 @@
 angular.module('os.plugins.svh')
-  .controller('participantCtrl', function($scope) {
+  .controller('SvhParticipantCtrl', function($scope) {
     $scope.sites = [];
     
     $scope.cpr.getConsents().then(
