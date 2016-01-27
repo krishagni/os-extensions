@@ -695,4 +695,26 @@
     </addColumn>
   </changeSet>
 
+  <changeSet author="hkambale" id="Updating the value for missed reason in pv table">
+    <sql>
+      update 
+        catissue_permissible_value  
+      set 
+        value = 'Previous excisional biopsy done' 
+      where 
+        value = 'Previous excisional biospy done'
+    </sql>
+  </changeSet>
+
+  <changeSet author="hkambale" id="updating the value for missed reason in visit table">
+    <sql>
+      update 
+        catissue_specimen_coll_group
+      set 
+        missed_reason = 'Previous excisional biopsy done'
+      where 
+        missed_reason = 'Previous excisional biospy done'
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>
