@@ -4,7 +4,7 @@ angular.module('os.plugins.svh', ['openspecimen'])
       'svh',
       {
         'participant-list': {
-          'header': {
+          'page-header-panel': {
             template: 'plugin-ui-resources/svh/participant-list-header.html'
           }
         },
