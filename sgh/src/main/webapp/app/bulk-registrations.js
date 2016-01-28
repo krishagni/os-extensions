@@ -1,4 +1,4 @@
-osApp.providers
+angular.module("os.plugins.sgh")
   .controller('sghCpBulkRegistrationsCtrl', function(
     $scope, $http, $state,
     cp, ApiUrls, PvManager, Alerts) {

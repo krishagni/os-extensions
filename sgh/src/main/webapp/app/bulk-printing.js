@@ -1,4 +1,4 @@
-osApp.providers
+angular.module("os.plugins.sgh")
   .controller('sghCpBulkPrintingCtrl', function(
     $scope, $http, $state, ApiUrls, PvManager, Alerts) {
 
