@@ -717,4 +717,39 @@
     </sql>
   </changeSet>
 
+  <changeSet author="hkambale" id="Creating visit consent available view">
+    <createView viewName="os_visit_consent_avl_view" replaceIfExists="true">
+      select
+        user.identifier as collector_id, scg.identifier as scg_id,
+        case when rntry.object_id is null then 'False' else 'True' end as consent_available
+      from
+        catissue_coll_prot_reg cpr
+        join catissue_specimen_coll_group scg on scg.collection_protocol_reg_id = cpr.identifier
+        left join catissue_specimen sp on sp.specimen_collection_group_id = scg.identifier and
+        sp.collection_status = 'Collected' and
+        sp.Lineage='New' and
+        sp.activity_status != 'Disabled'
+        left join catissue_form_record_entry record_entry on record_entry.object_id = sp.identifier and
+        record_entry.form_ctxt_id = 5
+        left join catissue_coll_event_param coll_event on coll_event.identifier = record_entry.record_id
+        left join catissue_form_context form_context on form_context.identifier = record_entry.form_ctxt_id
+        left join catissue_user user on user.identifier = coll_event.user_id
+        left join catissue_form_record_entry rntry on scg.identifier=rntry.object_id and
+        rntry.form_ctxt_id in ( select
+                                  ctxt.identifier
+                                from
+                                  catissue_form_context ctxt
+                                  join dyextn_containers dcont on dcont.identifier = ctxt.container_id and
+                                  dcont.name = 'PatientConsentForm' and
+                                  ctxt.entity_type = 'SpecimenCollectionGroup'
+                              )
+      where
+        scg.name is not null and
+        scg.activity_status != 'Disabled' and
+        scg.collection_status in ('Complete','Pending')
+      group by
+        scg.identifier
+    </createView>
+  </changeSet>
+
 </databaseChangeLog>
