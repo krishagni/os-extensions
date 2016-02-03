@@ -494,7 +494,27 @@
         property_id = @prop_id
     </sql>
   </changeSet>
-  
+
+  <changeSet author="hkambale" id="Added Cellular Pellet specimen type under class Cell">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select
+          count(pv.identifier)
+        from
+          catissue_permissible_value pv
+          join catissue_permissible_value parent on pv.parent_identifier = parent.identifier
+        where
+          pv.value = 'Cellular Pellet' and parent.value = 'Cell' and parent.public_id = '2003991'
+      </sqlCheck>
+    </preConditions>
+    <sql>
+      insert into catissue_permissible_value
+        (identifier, concept_code, definition, parent_identifier, value, public_id, sortorder)
+      values
+        (getNextPvId(),'','',getPvParentId('2003991', 'Cell'),'Cellular Pellet',null,null)
+    </sql>
+  </changeSet>
+
   <changeSet author="nmarwaha" id="Set specimen type abbreviation for specimen labels">
     <sql>
       select 
@@ -543,7 +563,7 @@
         ("Tissue", "Microdissected", "cells", NULL, "Active")
     </sql>
   </changeSet>
-  
+
   <changeSet author="nmarwaha" id="Set the pathology abbreviation file for SGH">
     <sql>
       select 
