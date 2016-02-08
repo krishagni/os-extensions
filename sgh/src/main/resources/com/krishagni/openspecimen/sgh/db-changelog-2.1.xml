@@ -495,7 +495,16 @@
     </sql>
   </changeSet>
 
-  <changeSet author="hkambale" id="Added Cellular Pellet specimen type under class Cell">
+  <changeSet author="hkambale" id="Removed Cellular Pellet specimen type from class Cell">
+    <sql>
+      delete from 
+        catissue_permissible_value 
+      where 
+        value = 'Cellular Pellet'
+    </sql>
+  </changeSet>
+
+  <changeSet author="hkambale" id="Added Cellular Pellet specimen type under class Fluid">
     <preConditions onFail="MARK_RAN">
       <sqlCheck expectedResult="0">
         select
@@ -504,14 +513,14 @@
           catissue_permissible_value pv
           join catissue_permissible_value parent on pv.parent_identifier = parent.identifier
         where
-          pv.value = 'Cellular Pellet' and parent.value = 'Cell' and parent.public_id = '2003991'
+          pv.value = 'Cellular Pellet' and parent.value = 'Fluid' and parent.public_id = '2003991'
       </sqlCheck>
     </preConditions>
     <sql>
       insert into catissue_permissible_value
         (identifier, concept_code, definition, parent_identifier, value, public_id, sortorder)
       values
-        (getNextPvId(),'','',getPvParentId('2003991', 'Cell'),'Cellular Pellet',null,null)
+        (getNextPvId(),'','',getPvParentId('2003991', 'Fluid'),'Cellular Pellet',null,null)
     </sql>
   </changeSet>
 
