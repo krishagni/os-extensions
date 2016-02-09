@@ -70,7 +70,7 @@ public class ClinicalApiConnection {
 		String auth = ConfigUtil.getInstance().getStrSetting(JHU_MODULE, "authentication_key", "");
 		String clientId = ConfigUtil.getInstance().getStrSetting(JHU_MODULE, "client_id", "");
 		String clientSecret = ConfigUtil.getInstance().getStrSetting(JHU_MODULE, "client_secret", "");
-		System.setProperty("https.protocols", httpsProtocol); //Force TLS - http://sourceforge.net/p/grinder/mailman/message/31998135/
+		System.setProperty("https.protocols", httpsProtocol); 
 		WebResource webResource = getClient().resource(baseUrl + url);
 		
 		ClientResponse response = null;

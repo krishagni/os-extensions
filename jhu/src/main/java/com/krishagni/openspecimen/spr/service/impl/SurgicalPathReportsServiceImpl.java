@@ -51,7 +51,7 @@ public class SurgicalPathReportsServiceImpl implements SurgicalPathReportsServic
 		
 		try{
 		  String facility = ConfigUtil.getInstance().getStrSetting("spr", "facilityName", "JHH");
-		  Date loDate = new GregorianCalendar(2013,11-1,1).getTime(); 
+		  Date loDate = new GregorianCalendar(1970,11-1,1).getTime(); 
 		  Date hiDate = new Date();
 		  insertAudit(crit.getMrn(), "VIEW_LIST", "", "T9930");
 		  LabHeader[] results = clincalApi.GetLabs(crit.getMrn(), facility, loDate, hiDate, new String[]{"Anatomic Pathology"}, new String[]{"T9930"});
