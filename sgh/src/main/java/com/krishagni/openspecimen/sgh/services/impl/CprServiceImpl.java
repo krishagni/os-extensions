@@ -31,6 +31,7 @@ import com.krishagni.catissueplus.core.biospecimen.services.impl.DefaultSpecimen
 import com.krishagni.catissueplus.core.common.OpenSpecimenAppCtxProvider;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.domain.LabelPrintJob;
+import com.krishagni.catissueplus.core.common.domain.PrintItem;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
@@ -227,18 +228,21 @@ public class CprServiceImpl implements CprService {
 		}
 		
 		List<Specimen> specimens = new ArrayList<Specimen>();
-		specimens.addAll(getSpecimensToPrint(registration.getPpid(), printerName));
+		List<PrintItem<Specimen>> printItems = new ArrayList<PrintItem<Specimen>>();
 		
-		LabelPrintJob job = printer.print(specimens, 1);
+		printItems.addAll(getSpecimenPrintItems(registration.getPpid(), printerName));
+		
+		LabelPrintJob job = printer.print(printItems);
 		if (job == null) {
 			throw OpenSpecimenException.userError(SpecimenErrorCode.PRINT_ERROR);
 		}
 		
 	}
 	
-	private Collection<Specimen> getSpecimensToPrint(String visitName, String printerName) {
+	private List<PrintItem<Specimen>> getSpecimenPrintItems(String visitName, String printerName) {
 		
-		List<Specimen> specimens = new ArrayList<Specimen>();
+		List<PrintItem<Specimen>> printItems = new ArrayList<PrintItem<Specimen>>();
+		
 		Visit visit = new Visit();
 		visit.setName(visitName);
 		Site site = new Site();
@@ -253,10 +257,9 @@ public class CprServiceImpl implements CprService {
 			} else {
 				specimen.setLabel(visitName);
 			}
-			
-			specimens.add(specimen);
+			printItems.add(PrintItem.make(specimen, 1));
 		}
-		return specimens;
+		return printItems;
 	}
 	
 	private RequestEvent<PrintSpecimenLabelDetail> getPrintLabelsReq(List<Long> specimenIds) {

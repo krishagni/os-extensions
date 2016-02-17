@@ -19,6 +19,7 @@ import com.krishagni.catissueplus.core.biospecimen.services.impl.DefaultSpecimen
 import com.krishagni.catissueplus.core.common.OpenSpecimenAppCtxProvider;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.domain.LabelPrintJob;
+import com.krishagni.catissueplus.core.common.domain.PrintItem;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
@@ -70,15 +71,15 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			printerName = "";
 		}
 		
-		List<Specimen> specimens = new ArrayList<Specimen>();
+		List<PrintItem<Specimen>> printItems = new ArrayList<PrintItem<Specimen>>();
 		for(int i = 0; i < printReq.getTridCount(); i++){
 			String trid = tridGenerator.getNextTrid();
-			specimens.addAll(getSpecimensToPrint(trid,printerName));
+			printItems.addAll(getSpecimenPrintItems(trid,printerName));
 		}
 		
 		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
 		
-		LabelPrintJob job = printer.print(specimens, copiesToPrint);
+		LabelPrintJob job = printer.print(printItems);
 		if (job == null) {
 			throw OpenSpecimenException.userError(SpecimenErrorCode.PRINT_ERROR);
 		}
@@ -96,12 +97,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			throw OpenSpecimenException.userError(SghErrorCode.CANNOT_PRINT_PLANNED_TRID, StringUtils.join(plannedTrids, ","));
 		}
 		
-//		List<String> unplannedTrides = getUnplannedTrids(tridsToPrint);
-//		
-//		List<String> invalidTrids = CollectionUtils.subtract(tridsToPrint, unplannedTrides);
-//		
 		List<String> validTrids = getUnplannedTrids(tridsToPrint);
-//	
 		List<String> invalidTrids = tridsToPrint;
 		invalidTrids.removeAll(validTrids);
 		if(CollectionUtils.isNotEmpty(invalidTrids)){
@@ -113,14 +109,14 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			throw OpenSpecimenException.serverError(SpecimenErrorCode.NO_PRINTER_CONFIGURED);
 		}
 		
-		List<Specimen> specimens = new ArrayList<Specimen>();
+		List<PrintItem<Specimen>> printItems = new ArrayList<PrintItem<Specimen>>();
 		for(String trid : validTrids){
-			specimens.addAll(getSpecimensToPrint(trid, printerName));
+			printItems.addAll(getSpecimenPrintItems(trid, printerName));
 		}
 		
 		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
 		
-		LabelPrintJob job = printer.print(specimens, copiesToPrint);
+		LabelPrintJob job = printer.print(printItems);
 		if (job == null) {
 			throw OpenSpecimenException.userError(SpecimenErrorCode.PRINT_ERROR);
 		}
@@ -128,9 +124,9 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		return ResponseEvent.response(true);
 	}
 	
-	private Collection<Specimen> getSpecimensToPrint(String visitName, String printerName) {
+	private List<PrintItem<Specimen>> getSpecimenPrintItems(String visitName, String printerName) {
 		
-		List<Specimen> specimens = new ArrayList<Specimen>();
+		List<PrintItem<Specimen>> printItems = new ArrayList<PrintItem<Specimen>>();
 		Visit visit = new Visit();
 		visit.setName(visitName);
 		Site site = new Site();
@@ -148,7 +144,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 				specimen.setLabel(visitName);
 			}
 			
-			specimens.add(specimen);
+			printItems.add(PrintItem.make(specimen, 1));
 		}
 		
 		String malignantAliqPrefix = visitName + "_" + getMalignantAliqSuffix() + "_"; 
@@ -156,7 +152,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			Specimen aliquot = new Specimen();
 			aliquot.setVisit(visit);
 			aliquot.setLabel(malignantAliqPrefix + i);
-			specimens.add(aliquot);
+			printItems.add(PrintItem.make(aliquot, 1));
 		}
 		
 		String nonMalignantAliqPrefix = visitName + "_" + getNonMalignantAliqSuffix() + "_";
@@ -164,9 +160,9 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			Specimen aliquot = new Specimen();
 			aliquot.setVisit(visit);
 			aliquot.setLabel(nonMalignantAliqPrefix + i);
-			specimens.add(aliquot);
+			printItems.add(PrintItem.make(aliquot, 1));
 		}
-		return specimens;
+		return printItems;
 	}
 	
 	private List<String> getUnplannedTrids(List<String> tridsToPrint) {
