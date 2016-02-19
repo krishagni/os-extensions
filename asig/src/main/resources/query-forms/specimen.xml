@@ -54,7 +54,7 @@
           <textField>
             <name>parentLabel</name>
             <udn>parentLabel</udn>
-            <caption>#getMessage("specimen_parent_specimen_label")</caption>
+            <caption>#getMessage("specimen_parent_specimen")</caption>
             <column>LABEL</column>
           </textField>  
         </row>
