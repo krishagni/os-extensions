@@ -496,6 +496,7 @@
   </changeSet>
 
   <changeSet author="hkambale" id="Removed Cellular Pellet specimen type from class Cell">
+    <validCheckSum>7:15aa2246e5d3ab930c30b5e494e956bc</validCheckSum>
     <sql>
       delete from 
         catissue_permissible_value 
@@ -711,16 +712,40 @@
   </changeSet>
 
   <changeSet author="hkambale" id="Adding fat percentage column in tissue specimen event param table">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists 
+          columnName="FAT_PERCENTAGE" 
+          tableName="CATISSUE_TIS_SPE_EVENT_PARAM"/>
+      </not>
+    </preConditions>
+
     <addColumn tableName="CATISSUE_TIS_SPE_EVENT_PARAM">
-      <column name="FAT_PERCENTAGE" type="double"/>
+      <column 
+        name="FAT_PERCENTAGE" 
+        type="double"/>
     </addColumn>
   </changeSet>
 
   <changeSet author="hkambale" id="Adding columns in tissue specimen event param table">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists 
+          columnName="STROMA_PERCENTAGE" 
+          tableName="CATISSUE_TIS_SPE_EVENT_PARAM"/>
+      </not>
+    </preConditions>   
+
     <addColumn tableName="CATISSUE_TIS_SPE_EVENT_PARAM">
-      <column name="STROMA_PERCENTAGE" type="double"/>
-      <column name="MONOCYTE_PERCENTAGE" type="double"/>
-      <column name="NEUTROPHIL_PERCENTAGE" type="double"/>
+      <column 
+        name="STROMA_PERCENTAGE" 
+        type="double"/>
+      <column 
+        name="MONOCYTE_PERCENTAGE" 
+        type="double"/>
+      <column 
+        name="NEUTROPHIL_PERCENTAGE" 
+        type="double"/>
     </addColumn>
   </changeSet>
 
