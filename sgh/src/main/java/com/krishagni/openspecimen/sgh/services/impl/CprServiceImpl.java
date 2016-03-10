@@ -1,7 +1,6 @@
 package com.krishagni.openspecimen.sgh.services.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -104,11 +103,28 @@ public class CprServiceImpl implements CprService {
 				registrations.add(regDetail);
 			}
 			
+			if(!regReq.isPrintLabels()){
+				logTridGeneration(registrations);
+			}
+			
 			return ResponseEvent.response(BulkParticipantRegDetail.from(regReq, registrations));			
 		} catch (OpenSpecimenException ose) {
 			return ResponseEvent.error(ose);			
 		} catch (Exception e) {
 			return ResponseEvent.serverError(e);			
+		}
+	}
+
+	private void logTridGeneration(List<CollectionProtocolRegistrationDetail> registrations) {
+		String printerName;
+		DefaultSpecimenLabelPrinter printer = getLabelPrinter();
+		if (printer == null) {
+			throw OpenSpecimenException.serverError(SpecimenErrorCode.NO_PRINTER_CONFIGURED);
+		}
+		printerName = "";
+		
+		for (CollectionProtocolRegistrationDetail cpr : registrations) {
+			printTrids(cpr, printerName);
 		}
 	}
 	
