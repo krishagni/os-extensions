@@ -805,5 +805,107 @@
         scg.identifier
     </createView>
   </changeSet>
+  
+  <changeSet author="nmarwaha" id="Procedue to populate the speicmen stats for SG">
+    <sql>
+      drop procedure if exists populate_specimen_stats;
+    </sql>
+    <sql endDelimiter="//">
+      create procedure populate_specimen_stats()
+      begin
+        
+        insert into tmp_specimen_stats (
+          specimen_id, 
+          collection_time, collection_procedure,
+          collection_container, collector_id,
+          received_time,
+          received_quality, receiver_id, 
+          frozen_time, processing_time, ischemia_time,
+          aliquot_seq
+        )
+      
+        select
+          c.identifier as specimen_id, 
+          ce.event_timestamp as coll_time, ce.collection_procedure as coll_procedure,
+          ce.container as collection_container, ce.user_id as collector_id,
+          re.event_timestamp as received_time, 
+          re.received_quality as received_quality, re.user_id as receiver_id, 
+          fe.event_timestamp as frozen_time,
+          MINUTE(TIMEDIFF(fe.event_timestamp, re.event_timestamp)) as processing_time,
+          MINUTE(TIMEDIFF(fe.event_timestamp, ce.event_timestamp)) as ischemia_time,
+          0
+        from
+          catissue_specimen s
+          inner join catissue_form_record_entry cre on cre.object_id = s.identifier
+          inner join catissue_form_context cfc on cfc.identifier = cre.form_ctxt_id
+          inner join dyextn_containers cf on cf.identifier = cfc.container_id and cf.name = 'SpecimenCollectionEvent'
+          inner join catissue_coll_event_param ce on ce.identifier = cre.record_id
+          inner join catissue_form_record_entry rre on rre.object_id = s.identifier
+          inner join catissue_form_context rfc on rfc.identifier = rre.form_ctxt_id
+          inner join dyextn_containers rf on rf.identifier = rfc.container_id and rf.name = 'SpecimenReceivedEvent'
+          inner join catissue_received_event_param re on re.identifier = rre.record_id
+          left join (
+            select
+              fre.object_id as specimen_id, min(fep.event_timestamp) as event_timestamp
+            from
+              catissue_frozen_event_param fep
+              inner join catissue_form_record_entry fre on fre.record_id = fep.identifier
+              inner join catissue_form_context ffc on ffc.identifier = fre.form_ctxt_id
+              inner join dyextn_containers ff on ff.identifier = ffc.container_id and ff.name = 'SpecimenFrozenEvent'
+            group by
+              fre.object_id  
+          ) fe on fe.specimen_id = s.identifier
+          inner join catissue_specimen_hierarchy h on h.ancestor_id = s.identifier
+          inner join catissue_specimen c on c.identifier = h.descendent_id
+        where
+          s.parent_specimen_id is null and s.collection_status != 'Pending' and
+          s.activity_status != 'Disabled' and c.activity_status != 'Disabled' and
+          c.collection_status = 'Collected';
+
+        set @num := 0, @parent := 0;
+
+        update 
+          tmp_specimen_stats stats
+          join (
+            select
+              t.identifier, @num as counter
+            from (
+              select 
+                sp.identifier,sp.parent_specimen_id
+              from
+                catissue_specimen sp
+                join os_specimen_positions_view pos on pos.specimen_id = sp.identifier
+              where 
+                sp.lineage = 'Aliquot' and sp.activity_status = 'Active' and 
+                sp.collection_status = 'Collected' and sp.available = 1 and available_quantity > 0
+              order by 
+                parent_specimen_id
+              ) t
+            where
+              (@num := if(t.parent_specimen_id = @parent, @num + 1, 1)) is not null and 
+              (@parent := t.parent_specimen_id) is not null
+           ) ctr
+        set
+          stats.aliquot_seq = ctr.counter
+        where
+          stats.specimen_id = ctr.identifier;
+        
+      end;
+      //
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Creating scheduled job TRID generation report">
+    <sql>
+      select identifier into @userId from catissue_user where login_name = '$system';
+      
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week, 
+        scheduled_day_of_month, activity_status, repeat_schedule, type, command, task_impl_fqn, rt_args_provided, rt_args_help_text)
+      values
+        (default, 'TRID Generation Report', @userId, now(), null, 0, null, null, 
+        null, 'Active', 'ONDEMAND', 'INTERNAL', null, 'com.krishagni.openspecimen.sgh.reports.TridGenerationReport',0 , 'Please provide correct arguments.');
+    </sql>
+  </changeSet>
 
 </databaseChangeLog>
