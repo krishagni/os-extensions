@@ -1,7 +1,6 @@
 package com.krishagni.openspecimen.sgh.services.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -24,9 +23,9 @@ import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
-import com.krishagni.openspecimen.sgh.events.TridsRePrintOpDetail;
 import com.krishagni.openspecimen.sgh.SghErrorCode;
 import com.krishagni.openspecimen.sgh.events.BulkTridPrintOpDetail;
+import com.krishagni.openspecimen.sgh.events.TridsRePrintOpDetail;
 import com.krishagni.openspecimen.sgh.services.TridGenerator;
 import com.krishagni.openspecimen.sgh.services.TridPrintSvc;
 
@@ -76,8 +75,6 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			String trid = tridGenerator.getNextTrid();
 			printItems.addAll(getSpecimenPrintItems(trid,printerName));
 		}
-		
-		int copiesToPrint = cfgSvc.getIntSetting(SGH_MODULE, "copies_to_print", 1);
 		
 		LabelPrintJob job = printer.print(printItems);
 		if (job == null) {

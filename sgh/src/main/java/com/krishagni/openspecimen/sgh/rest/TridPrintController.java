@@ -1,5 +1,4 @@
 package com.krishagni.openspecimen.sgh.rest;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
-import com.krishagni.openspecimen.sgh.events.TridsRePrintOpDetail;
 import com.krishagni.openspecimen.sgh.events.BulkTridPrintOpDetail;
+import com.krishagni.openspecimen.sgh.events.TridsRePrintOpDetail;
 import com.krishagni.openspecimen.sgh.services.TridPrintSvc;
 
 @Controller
