@@ -11,7 +11,7 @@
                 <p style="margin:10px 0 0 0">
                   Hello $dp.principalInvestigator.firstName $dp.principalInvestigator.lastName,
                   <br><br>
-                  $dp.irbIdentifier is expiring on $dateFmt.format($dp.endDate).
+                  $dp.irbId is expiring on $dateFmt.format($dp.endDate).
                   <br><br>
                   A brief description of the protocol is given below:
                   <br>
@@ -47,8 +47,8 @@
                   </tr>
                   <tr>
                     <td> IRB ID </td>
-                    #if ( $dp.irbIdentifier && !$dp.irbIdentifier.trim().isEmpty() )
-                      <td> : $dp.irbIdentifier </td>
+                    #if ( $dp.irbId && !$dp.irbId.trim().isEmpty() )
+                      <td> : $dp.irbId </td>
                     #else
                       <td> : Not Specified </td>
                     #end
@@ -64,6 +64,11 @@
                 <table cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;color:#333">
                   <tbody>
                     <tr>
+                      <td>
+                        We would appreciate if you could send us a copy of the approved CIRB renewal letter before the expiry date to keep this project open.
+                      </td>
+                    </tr>
+                    <tr>
                       <td style="background:#3068a2;background:-moz-linear-gradient(top,#4687ce 0%,#3068a2 100%);
                       background:-webkit-linear-gradient(top,#4687ce 0%,#3068a2 100%);
                       background:-o-linear-gradient(top,#4687ce 0%,#3068a2 100%);
@@ -76,11 +81,7 @@
                         </a>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        We would appreciate if you could send us a copy of the approved CIRB renewal letter before the expiry date to keep this project open.
-                      </td>
-                    </tr>
+                    
                   </tbody>
                 </table>
               </td>
