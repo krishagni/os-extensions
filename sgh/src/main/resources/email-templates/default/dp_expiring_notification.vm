@@ -22,11 +22,11 @@
               <td>
                 <table>
                   <tr>
-                    <td> TR Code </td>
+                    <td>Title </td>
                     <td> : $dp.title </td>
                   </tr>
                   <tr>
-                    <td> Short Title </td>
+                    <td> TR Code </td>
                     <td> : $dp.shortTitle </td>
                   </tr>
                   <tr>
