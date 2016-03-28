@@ -8,7 +8,7 @@
         <udn>primarySite</udn>
         <caption>Primary Site</caption>
         <column>PRIMARY_SITE_ID</column>
-		<showWhen><![CDATA[$extendedObj.clinicalStatus = "Metastasis (Secondary)"]]></showWhen>
+        <showWhen><![CDATA[$extendedObj.clinicalStatus = "Metastasis (Secondary)"]]></showWhen>
         <options>
           <sql>
             select
