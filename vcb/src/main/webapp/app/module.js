@@ -14,18 +14,6 @@ angular.module('os.plugins.vcb', ['openspecimen'])
           'summary': {
             template: 'plugin-ui-resources/vcb/participant-summary.html'
           }
-        },
-  
-        'visit-addedit': {
-          'page-body': {
-            template: 'plugin-ui-resources/vcb/addedit-visit.html'
-          }
-        },
-  
-        'visit-detail': {
-          'overview': {
-            template: 'plugin-ui-resources/vcb/visit-overview.html'
-          }
         }
       }
     );
