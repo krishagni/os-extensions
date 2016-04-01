@@ -20,6 +20,161 @@
         </options>
       </dropDown>
     </row>
+    <row>
+      <subForm>
+        <maxEntries>-1</maxEntries>
+        <showAddMoreLink>false</showAddMoreLink>
+        <udn>externalIDs</udn>
+        <pasteButtonEnabled>false</pasteButtonEnabled>
+        <name>externalIDs</name>
+        <caption><![CDATA[External IDs]]></caption>
+        <row>
+          <dropDown>
+            <name>externalID</name>
+            <udn>externalID</udn>
+            <caption><![CDATA[External ID]]></caption>
+            <phi>false</phi>
+            <mandatory>false</mandatory>
+            <toolTip><![CDATA[External ID]]></toolTip>
+            <showLabel>true</showLabel>
+            <showInGrid>false</showInGrid>
+            <options>
+              <option>
+                <value><![CDATA[External Values]]></value>
+              </option>
+              <option>
+                <value><![CDATA[AP SEALS label]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Auckland Hospital]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Block label]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Cancer Genetics Lab No.]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Colchester Research Facility]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Davies Campbell de Lambert]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Douglass Hanly Moir]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Familial Cancer reference]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Genetic Services Sample Number]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Genetic Technologies]]></value>
+              </option>
+              <option>
+                <value><![CDATA[GF number]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Hand written label ID]]></value>
+              </option>
+              <option>
+                <value><![CDATA[HAPS Lab No.]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Hawaii Cancer Centre DNA ID]]></value>
+              </option>
+              <option>
+                <value><![CDATA[IMVS Lab Number]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Initial]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Lab number]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Mt Sinai Ontario]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Lamond and Finlayson]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Mayo Clinic Rochester]]></value>
+              </option>
+              <option>
+                <value><![CDATA[PaLMS Lab No]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Peter Mac Label]]></value>
+              </option>
+              <option>
+                <value><![CDATA[POWH MRN]]></value>
+              </option>
+              <option>
+                <value><![CDATA[QIMR Person_ID]]></value>
+              </option>
+              <option>
+                <value><![CDATA[SA Pathology]]></value>
+              </option>
+              <option>
+                <value><![CDATA[SA Pathology/IMVS]]></value>
+              </option>
+              <option>
+                <value><![CDATA[SEALS - ST GEORGE]]></value>
+              </option>
+              <option>
+                <value><![CDATA[SEALS - WOLLONGONG]]></value>
+              </option>
+              <option>
+                <value><![CDATA[SEALS secondary label]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Southern Cross Pathology Lab ID]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Southern IML]]></value>
+              </option>
+              <option>
+                <value><![CDATA[UNSW staff number]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Surrey Memorial Hospital No.]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Sutter Gen Hosp Path]]></value>
+              </option>
+              <option>
+                <value><![CDATA[SydPath]]></value>
+              </option>
+              <option>
+                <value><![CDATA[Tube text]]></value>
+              </option>
+              <option>
+                <value><![CDATA[VCGS lab number]]></value>
+              </option>
+            </options>
+            <lazyLoad>true</lazyLoad>
+            <width>0</width>
+            <minQueryChars>0</minQueryChars>
+          </dropDown>
+          <textField>
+            <name>externalValue</name>
+            <udn>externalValue</udn>
+            <caption><![CDATA[External Value]]></caption>
+            <phi>false</phi>
+            <mandatory>false</mandatory>
+            <toolTip><![CDATA[External Value]]></toolTip>
+            <showLabel>true</showLabel>
+            <showInGrid>false</showInGrid>
+            <width>8</width>
+            <defaultValue />
+            <url>false</url>
+            <password>false</password>
+          </textField>
+        </row>
+      </subForm>
+    </row>  
   </view>
 </form>
 

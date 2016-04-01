@@ -21,7 +21,6 @@
   <bean id="migrateSprs" class="com.krishagni.openspecimen.unsw.init.MigrateIdentifiedReports">
     <property name="txnMgr" ref="transactionManager"/>
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="cfgSvc" ref="cfgSvc"/>
     <property name="visitSvc" ref="visitService"/>
     <property name="formSvc" ref="formSvc"/>
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
