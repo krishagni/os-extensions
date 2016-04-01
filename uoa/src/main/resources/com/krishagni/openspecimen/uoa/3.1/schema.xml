@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet author="nmarwaha" id="Adding trigger to update lastName before insert">
+    <sql endDelimiter="/">
+      drop trigger if exists trg_update_part_lastName_on_insert //
+
+      create trigger trg_update_part_lastName_insert before insert 
+      on catissue_participant
+      for each row begin
+ 
+        if (new.last_name is not null) then
+          set new.last_name = upper(new.last_name);
+        end if;
+      end;
+      //
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Adding trigger to update lastName before update">
+    <sql endDelimiter="/">
+      drop trigger if exists trg_update_part_lastName_on_update //
+
+      create trigger trg_update_part_lastName_on_update before update 
+      on catissue_participant
+      for each row begin
+ 
+        if (new.last_name is not null) then
+          set new.last_name = upper(new.last_name);
+        end if;
+      end;
+      //
+    </sql>
+  </changeSet>
+</databaseChangeLog>

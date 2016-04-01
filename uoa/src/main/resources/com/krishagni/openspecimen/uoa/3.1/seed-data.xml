@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <property name="boolean.type" value="boolean" dbms="mysql" />
+  <property name="boolean.type" value="number(1,0)" dbms="oracle" />
+  <property name="text.type" value="varchar" dbms="mysql" />
+  <property name="text.type" value="varchar2" dbms="oracle" />
+ 
+  <changeSet author="hemantk" id="Updating specimen class 'cell' from os_specimen_units">
+    <sql>
+      update os_specimen_units set qty_unit='ml' where specimen_class='Cell';
+    </sql>
+  </changeSet>
+  
+  <changeSet author="asamgir" id="Adding specimen quantity units">
+    <sql>
+      insert into os_specimen_units
+        (specimen_class, specimen_type, qty_unit, qty_html_display_code, activity_status)
+      values
+        ("Tissue", "Departmental FFPE Block", "count", NULL, "Active"),
+        ("Tissue", "EBUS", "count", NULL, "Active"),
+        ("Tissue", "Ethanol Fixed Paraffin H&amp;E Slide", "count", NULL, "Active"),
+        ("Tissue", "Ethanol Fixed Paraffin Slide", "count", NULL, "Active"),
+        ("Tissue", "ETOH-Fixed Paraffin Block", "count", NULL, "Active"),
+        ("Tissue", "FFPE Block", "count", NULL, "Active"),
+        ("Tissue", "FFPE H&amp;E Slide", "count", NULL, "Active"),
+        ("Tissue", "FFPE Slide", "count", NULL, "Active"),
+        ("Tissue", "Fresh Tissue", "count", NULL, "Active"),
+        ("Tissue", "Microdissected", "count", NULL, "Active"),
+        ("Tissue", "Not Specified", "count", NULL, "Active"),
+        ("Tissue", "OCT Block", "count", NULL, "Active"),
+        ("Tissue", "OCT Slide", "count", NULL, "Active"),
+        ("Tissue", "Snap Frozen", "count", NULL, "Active"),
+        ("Tissue", "Tissue Micro Array", "count", NULL, "Active"),
+        ("Tissue", "FFPE Core", "count", NULL, "Active");
+    </sql>
+  </changeSet>
+
+  <changeSet author="asamgir" id="removing existing PVs">
+    <sql>
+      delete from
+        catissue_permissible_value 
+      where 
+        public_id 
+      in ('Race_PID', 'Ethnicity_PID', 'Tissue_Site_PID', '2003988', '2003989', '2003993', '2003997', '2004001');    
+    </sql>
+  </changeSet>
+  
+  <changeSet author="hemantk" id="removing existing specimen types from PVs table" runOnChange="true">
+    <sql>
+      delete a from
+        catissue_permissible_value as a
+        join catissue_permissible_value as b on a.parent_identifier=b.identifier
+      where
+        b.value
+      in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
+    </sql>
+  </changeSet>
+
+  <changeSet author="hemantk" id="removing existing clinical diagnosis from PVs table">
+    <sql>
+      delete from
+        catissue_permissible_value
+      where
+        public_id='Clinical_Diagnosis_PID';
+    </sql>
+  </changeSet>
+  
+  <changeSet author="hemantk" id="Permissible_values csv file upload">
+    <validCheckSum>7:f8585eb4835939c86547678c2e3f0cd8</validCheckSum>
+      <preConditions onFail="WARN">
+        <sqlCheck expectedResult="0">
+          select count(*) from
+            catissue_permissible_value as a
+            join catissue_permissible_value as b on a.parent_identifier=b.identifier
+          where
+            b.value
+          in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
+        </sqlCheck>
+      </preConditions>
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/uoa/3.1/pvs.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>
+ 
+  <changeSet author="nmarwaha" id="Set the MPI format">
+    <sql>
+      select 
+        identifier into @module_id 
+      from 
+        os_modules 
+      where 
+        name = 'biospecimen';
+
+      select 
+        identifier into @prop_id 
+      from 
+        os_cfg_props 
+      where 
+        name = 'mpi_format' and module_id = @module_id;
+
+      insert into os_cfg_settings
+        (identifier, property_id, value, activated_by, activation_date, activity_status)
+      values
+        (default, @prop_id, 'B%06d', 1, current_timestamp(), 'Active');
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Update the sequence value for the MPI">
+    <sql>
+      insert into key_seq_generator
+        (identifier, key_value, key_sequence_id, key_type)
+      values
+        (default,'MPI',399999,'MPI')
+    </sql>
+  </changeSet>
+
+  <changeSet author="hemantk" id="Removing existing ethnicity values from pv table">
+    <sql>
+      delete from catissue_permissible_value where public_id='Ethnicity_PID'
+    </sql>
+  </changeSet>
+   
+  <changeSet author="hemantk" id="Add ethnicity values in pv table">
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/uoa/3.1/ethnicity_pvs.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>
+
+</databaseChangeLog>

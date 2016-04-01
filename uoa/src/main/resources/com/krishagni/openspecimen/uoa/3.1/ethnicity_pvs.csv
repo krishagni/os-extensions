@@ -1,0 +1,120 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Dutch,Ethnicity_PID,0
+getNextPvId(),,,null,New Zealand European,Ethnicity_PID,0
+getNextPvId(),,,null,Other European,Ethnicity_PID,0
+getNextPvId(),,,null,Pacific Island not further defined,Ethnicity_PID,0
+getNextPvId(),,,null,Samoan,Ethnicity_PID,0
+getNextPvId(),,,null,Cook Island Maori,Ethnicity_PID,0
+getNextPvId(),,,null,Tongan,Ethnicity_PID,0
+getNextPvId(),,,null,Niuean,Ethnicity_PID,0
+getNextPvId(),,,null,Tokelauan,Ethnicity_PID,0
+getNextPvId(),,,null,Fijian,Ethnicity_PID,0
+getNextPvId(),,,null,Other Pacific Island,Ethnicity_PID,0
+getNextPvId(),,,null,Asian not further defined,Ethnicity_PID,0
+getNextPvId(),,,null,Southeast Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Chinese,Ethnicity_PID,0
+getNextPvId(),,,null,Indian,Ethnicity_PID,0
+getNextPvId(),,,null,Other Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Middle Eastern,Ethnicity_PID,0
+getNextPvId(),,,null,Latin American / Hispanic,Ethnicity_PID,0
+getNextPvId(),,,null,African,Ethnicity_PID,0
+getNextPvId(),,,null,Not Specified,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Aupouri,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahu,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kurl,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngapuhi,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngapuhi ki Whaingaroa-Ngati Kahu ki Whaingaroa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Rarawa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngai Takoto,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Wai,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Whatua,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Kawerau,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Uri-o-Hau,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Roroa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Hako,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Hei,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Maru (Hauraki),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Paoa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Patukirikiri,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Porou ki Harataunga ki Mataora,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Pukenga ki Waiau,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Rahiri Tumutumu,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngai Tai (Hauraki),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tamatera,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tara Tokanui,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Whanaunga,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Haua (Waikato),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Maniapoto,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Raukawa (Waikato),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Waikato,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Pikiao (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Rangiteaorere (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Rangitihi (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Rangiwewehi (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Tapuika (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Tarawhai (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Tuhourangi (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Uenuku-Kopako (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Waitaha (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Whakaue (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tuwharetoa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tahu-Ngati Whaoa (Te Arawa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Pukenga,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngaiterangi,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Ranginui,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Awa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Manawa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngai Tai (Tauranga Moana/Mataatua),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Tuhoe,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Whakatohea,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Whanau-a-Apanui,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Whare,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Porou,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Aitanga-a-Mahaki,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Rongowhakaata,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngai Tamanuhiri,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Rongomaiwahine (Te Mahia),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahungunu ki Te Wairoa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahungunu ki Heretaunga,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahungunu ki Wairarapa,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Rangitane (Te Matau-a-Maui/Hawke's Bay/Wairarapa),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahungunu ki Te Whanganui-a-Orotu,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahungunu ki Tamatea,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kahungunu ki Tamakinui a Rua,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Pahauwera,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Rakaipaaka,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Atiawa (Taranaki),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Maru (Taranaki),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Mutunga (Taranaki),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Nga Rauru,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Nga Ruahine,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Ruanui,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tama (Taranaki),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Taranaki,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Tangahoe,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Pakakohi,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Apa (Rangitlkei),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Ati Haunui-a-Paparangi,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Haua (Taumarunui),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Hauiti,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Atiawa (Te Whanganui-a-Tara/Wellington),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Muaupoko,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Rangitane (Manawatu),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Raukawa (Horowhenua/Manawatu),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Toarangatira (Te Whanganui-a-Tara/Wellington),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Atiawa ki Whakarongotai,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tama ki Te Upoko o Te Ika (Te Whanganui-a-Tara/Wellington),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kauwhata,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Te Atiawa (Te Waipounamu/South Island),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Koata,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Kuia,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Kati Mamoe,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Moriori,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Mutunga (Wharekauri/Chatham Islands),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Rangitane (Te Waipounamu/South Island),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Rarua,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngai Tahu / Kai Tahu,Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Tama (Te Waipounamu/South Island),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Toarangatira (Te Waipounamu/South Island),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Waitaha (Te Waipounamu/South Island),Ethnicity_PID,0
+getNextPvId(),,,null,Maori - Ngati Apa ki Te Ra To,Ethnicity_PID,0
