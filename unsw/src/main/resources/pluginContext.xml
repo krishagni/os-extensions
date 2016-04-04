@@ -26,4 +26,10 @@
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
   </bean> 
   
+  <bean id="migrateExternalIds" class="com.krishagni.openspecimen.unsw.init.MigrateExternalIds">
+    <property name="txnMgr" ref="transactionManager"/>
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    <property name="daoFactory" ref="biospecimenDaoFactory"/>
+  </bean>
+  
 </beans>
