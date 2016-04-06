@@ -1,5 +1,7 @@
 package com.krishagni.openspecimen.unsw.init;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +30,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.krishagni.catissueplus.core.administrative.domain.User;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
+import com.krishagni.catissueplus.core.common.util.CsvFileReader;
 import com.krishagni.catissueplus.core.de.domain.DeObject;
 import com.krishagni.catissueplus.core.de.events.ExtensionDetail;
 import com.krishagni.catissueplus.core.de.events.ExtensionDetail.AttrDetail;
@@ -88,7 +92,9 @@ public class MigrateExternalIds implements InitializingBean {
 					specimenIds.add(detail.getSpecimenId());
 				}
 				
-				deleteMigratedData(specimenIds);
+				if (CollectionUtils.isNotEmpty(specimenIds)) {
+					deleteMigratedData(specimenIds);
+				}
 				
 				logger.info("Migration completed successfully...");
 				System.out.println("Migration completed successfully...");
@@ -113,7 +119,7 @@ public class MigrateExternalIds implements InitializingBean {
 			@Override
 			public void processRow(ResultSet rs) throws SQLException {
 				Long specimenId = rs.getLong("specimen_id");
-				String externalId = rs.getString("name");
+				String externalId = rs.getString("name").trim();
 				String value = rs.getString("value");
 				
 				ExternalIdDetail detail = externalIdDetails.get(specimenId);
@@ -134,51 +140,14 @@ public class MigrateExternalIds implements InitializingBean {
 		logger.info("Deleted record for specimen id : " + StringUtils.join(ids, ","));
 	}
 	
-	private void populateExternalIdsMap() {
-		mappingExternalIds.put("ap seals block label", "AP SEALS label");
-		mappingExternalIds.put("ap block label", "AP SEALS label");
-		mappingExternalIds.put("ap seal block label", "AP SEALS label");
-		mappingExternalIds.put("ap seals", "AP SEALS label");
-		mappingExternalIds.put("ap seals label", "AP SEALS label");
-		mappingExternalIds.put("ap slide label", "AP SEALS label");
-		mappingExternalIds.put("block label", "AP SEALS label");
-		mappingExternalIds.put("block reserved @ ap seals", "AP SEALS label");
-		mappingExternalIds.put("seal block label", "AP SEALS label");
-		mappingExternalIds.put("seal block no", "AP SEALS label");
-		mappingExternalIds.put("seal block no.", "AP SEALS label");
-		mappingExternalIds.put("seals", "AP SEALS label");
-		mappingExternalIds.put("seals - pow", "AP SEALS label");
-		mappingExternalIds.put("seals ap block label", "AP SEALS label");
-		mappingExternalIds.put("seals barcode", "AP SEALS label");
-		mappingExternalIds.put("seals block", "AP SEALS label");
-		mappingExternalIds.put("seals block label", "AP SEALS label");
-		mappingExternalIds.put("seals block lable", "AP SEALS label");
-		mappingExternalIds.put("seals block no.", "AP SEALS label");
-		mappingExternalIds.put("seals block reserved", "AP SEALS label");
-		mappingExternalIds.put("seals label", "AP SEALS label");
-		mappingExternalIds.put("seals no.", "AP SEALS label");
-		mappingExternalIds.put("seals slice label", "AP SEALS label");
-		mappingExternalIds.put("seals slide labe", "AP SEALS label");
-		mappingExternalIds.put("seals slide label", "AP SEALS label");
-		mappingExternalIds.put("seals slide lable", "AP SEALS label");
-		mappingExternalIds.put("seals slide lablel", "AP SEALS label");
-		mappingExternalIds.put("seals slide no.", "AP SEALS label");
-		mappingExternalIds.put("seals tissue label", "AP SEALS label");
-		mappingExternalIds.put("seas block label", "AP SEALS label");
-		mappingExternalIds.put("seasl block label", "AP SEALS label");
-		mappingExternalIds.put("seasl slide label", "AP SEALS label");
-		mappingExternalIds.put("seasls slide label", "AP SEALS label");
-		mappingExternalIds.put("auckland hospital molecular genetics lab", "Auckland Hospital");
-		mappingExternalIds.put("block text", "Block label");
-		mappingExternalIds.put("familial cancer refernce", "Familial Cancer reference");
-		mappingExternalIds.put("imvs", "IMVS Lab Number");
-		mappingExternalIds.put("imvs lab #", "IMVS Lab Number");
-		mappingExternalIds.put("imvs lab#", "IMVS Lab Number");
-		mappingExternalIds.put("label on tube from mt sinai ontario", "Mt Sinai Ontario");
-		mappingExternalIds.put("peter mac ref", "Peter Mac Label");
-		mappingExternalIds.put("pow mrn", "POWH MRN");
-		mappingExternalIds.put("qmir person_iD", "QIMR Person_ID");
-		mappingExternalIds.put("sa pathology", "SA Pathology");
+	private void populateExternalIdsMap() throws IOException {
+		InputStream in = getClass().getResourceAsStream("/Mapping_ExternalIDs.csv"); 
+		CsvFileReader reader = CsvFileReader.createCsvFileReader(in, true);
+		
+		while (reader.next()) {
+			String row[] = reader.getRow();
+			mappingExternalIds.put(row[0].trim(), row[1].trim());
+		}
 	}
 
 	private static final String GET_EXTERNAL_ID_DETAIL = "select * from CATISSUE_EXTERNAL_IDENTIFIER"; 
@@ -203,8 +172,7 @@ public class MigrateExternalIds implements InitializingBean {
 		}
 
 		public void addExternalId(String externalId, String externalValue) {
-			String key = externalId.toLowerCase().trim();
-			externalId = mappingExternalIds.containsKey(key) ? mappingExternalIds.get(key) : externalId;
+			externalId = mappingExternalIds.containsKey(externalId) ? mappingExternalIds.get(externalId) : externalId;
 			
 			Map<String, String> value = new HashMap<String, String>();
 			value.put("externalID", externalId);
