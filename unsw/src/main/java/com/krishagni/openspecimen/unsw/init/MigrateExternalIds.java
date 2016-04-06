@@ -4,17 +4,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -38,7 +40,7 @@ public class MigrateExternalIds implements InitializingBean {
 	
 	private JdbcTemplate jdbcTemplate;
 	
-	private static Map<String, String> mappingExternalIds = new HashMap<String, String>();
+	private Map<String, String> mappingExternalIds = new HashMap<String, String>();
 
 	public void setTxnMgr(PlatformTransactionManager txnMgr) {
 		this.txnMgr = txnMgr;
@@ -67,29 +69,26 @@ public class MigrateExternalIds implements InitializingBean {
 		txnTmpl.execute(new TransactionCallback<Integer>() {
 			@Override
 			public Integer doInTransaction(TransactionStatus status) {
-				String adminEmailId = "admin@unsw.edu.au"; //"admin@admin.com";
-				String adminDomain = "openspecimen";
-				User user = daoFactory.getUserDao().getUser(adminEmailId, adminDomain);
-				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user,null, user.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(token);
+				setUserInContextHolder();
 				
-				final List<ExternalIdDetail> externalIds = getExternalIdsDetail(GET_EXTERNAL_ID_DETAIL);
-				
-				Map<Long, List<Map<String, String>>> extensionDetail = generateSpecimenExtensionDetail(externalIds);
-				for (Long specimenId : extensionDetail.keySet()) {
-					ExtensionDetail detail = new ExtensionDetail();
+				List<Long> specimenIds = new ArrayList<Long>();
+				Collection<ExternalIdDetail> externalIdDetails = getExternalIdsDetail(GET_EXTERNAL_ID_DETAIL);
+				for (ExternalIdDetail detail : externalIdDetails) {
+					ExtensionDetail extnDetail = new ExtensionDetail();
 					
 					AttrDetail attr = new AttrDetail();
 					attr.setName("externalIDs");
-					attr.setValue(extensionDetail.get(specimenId));
-					detail.setAttrs(Collections.singletonList(attr));
+					attr.setValue(detail.getExternalIds());
+					extnDetail.setAttrs(Collections.singletonList(attr));
 					
-					Specimen specimen = daoFactory.getSpecimenDao().getById(specimenId);
-					specimen.setExtension(DeObject.createExtension(detail, specimen));
+					Specimen specimen = daoFactory.getSpecimenDao().getById(detail.getSpecimenId());
+					specimen.setExtension(DeObject.createExtension(extnDetail, specimen));
 					specimen.addOrUpdateExtension();
 					
-					deleteMigratedData(specimenId);
+					specimenIds.add(detail.getSpecimenId());
 				}
+				
+				deleteMigratedData(specimenIds);
 				
 				logger.info("Migration completed successfully...");
 				System.out.println("Migration completed successfully...");
@@ -98,48 +97,41 @@ public class MigrateExternalIds implements InitializingBean {
 		});
 	}
 	
-	private List<ExternalIdDetail> getExternalIdsDetail(String getExternalIdDetail) {
-		return jdbcTemplate.query(getExternalIdDetail, 
-			new RowMapper<ExternalIdDetail>() {
-				public ExternalIdDetail mapRow(ResultSet rs, int rowNum) throws SQLException {
-					String name = rs.getString("name").toLowerCase().trim();
-					String externalId = mappingExternalIds.containsKey(name) ? mappingExternalIds.get(name) : rs.getString("name");
-					
-					ExternalIdDetail detail = new ExternalIdDetail();
-					detail.setExternalId(externalId);
-					detail.setExternalValue(rs.getString("value"));
-					detail.setSpecimenId(rs.getLong("specimen_id"));
-					return detail;
-				}
-			}
-		);
+	private void setUserInContextHolder() {
+		String adminEmailId = "admin@unsw.edu.au"; //"admin@admin.com";
+		String adminDomain = "openspecimen";
+		User user = daoFactory.getUserDao().getUser(adminEmailId, adminDomain);
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user,null, user.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 	
-	private Map<Long, List<Map<String, String>>> generateSpecimenExtensionDetail(List<ExternalIdDetail> externalIds) {
-		Map<Long, List<Map<String, String>>> extensionDetail = new HashMap<Long, List<Map<String, String>>>();
-		for (ExternalIdDetail externalIdDetail : externalIds) {
-			Long specimenId = externalIdDetail.getSpecimenId();
-			String externalId = externalIdDetail.getExternalId();
-			String externalValue = externalIdDetail.getExternalValue();
-			
-			List<Map<String, String>> externalIdList = extensionDetail.get(specimenId);
-			if (externalIdList == null) {
-				externalIdList = new ArrayList<Map<String,String>>();
-			}
-			
-			Map<String, String> obj = new HashMap<String, String>();
-			obj.put("externalID", externalId);
-			obj.put("externalValue", externalValue);
+	private Collection<ExternalIdDetail> getExternalIdsDetail(String getExternalIdDetail) {
+		Map<Long, ExternalIdDetail> externalIdDetails = new HashMap<Long, ExternalIdDetail>();
+		
+		jdbcTemplate.query(getExternalIdDetail, new RowCallbackHandler() {
+
+			@Override
+			public void processRow(ResultSet rs) throws SQLException {
+				Long specimenId = rs.getLong("specimen_id");
+				String externalId = rs.getString("name");
+				String value = rs.getString("value");
 				
-			externalIdList.add(obj);
-			extensionDetail.put(specimenId, externalIdList);
-		}
-		return extensionDetail;
+				ExternalIdDetail detail = externalIdDetails.get(specimenId);
+				if (detail == null) {
+					detail = new ExternalIdDetail(specimenId);
+					externalIdDetails.put(specimenId, detail);
+				}
+				
+				detail.addExternalId(externalId, value);
+			}
+		});
+		
+		return externalIdDetails.values();
 	}
 	
-	private void deleteMigratedData(Long id) {
-		jdbcTemplate.update(String.format(DELETE_MIGRATED_DATA, id));
-		logger.info("Deleted record for specimen id : " + id);
+	private void deleteMigratedData(List<Long> ids) {
+		jdbcTemplate.update(String.format(DELETE_MIGRATED_DATA, StringUtils.join(ids, ",")));
+		logger.info("Deleted record for specimen id : " + StringUtils.join(ids, ","));
 	}
 	
 	private void populateExternalIdsMap() {
@@ -191,37 +183,34 @@ public class MigrateExternalIds implements InitializingBean {
 
 	private static final String GET_EXTERNAL_ID_DETAIL = "select * from CATISSUE_EXTERNAL_IDENTIFIER"; 
 	
-	private static final String DELETE_MIGRATED_DATA = "delete from CATISSUE_EXTERNAL_IDENTIFIER where specimen_id = %d";
+	private static final String DELETE_MIGRATED_DATA = "delete from CATISSUE_EXTERNAL_IDENTIFIER where specimen_id in (%s)";
 	
 	private class ExternalIdDetail {
-		private String externalId;
-		
-		private String externalValue;
-		
 		private Long specimenId;
-
-		public String getExternalId() {
-			return externalId;
-		}
-
-		public void setExternalId(String externalId) {
-			this.externalId = externalId;
-		}
-
-		public String getExternalValue() {
-			return externalValue;
-		}
-
-		public void setExternalValue(String externalValue) {
-			this.externalValue = externalValue;
+		
+		private List<Map<String, String>> externalIds = new ArrayList<Map<String, String>>();
+		
+		public ExternalIdDetail(Long specimenId) {
+			this.specimenId = specimenId;
 		}
 
 		public Long getSpecimenId() {
 			return specimenId;
 		}
+		
+		public List<Map<String, String>> getExternalIds() {
+			return externalIds;
+		}
 
-		public void setSpecimenId(Long specimenId) {
-			this.specimenId = specimenId;
+		public void addExternalId(String externalId, String externalValue) {
+			String key = externalId.toLowerCase().trim();
+			externalId = mappingExternalIds.containsKey(key) ? mappingExternalIds.get(key) : externalId;
+			
+			Map<String, String> value = new HashMap<String, String>();
+			value.put("externalID", externalId);
+			value.put("externalValue", externalValue);
+			
+			externalIds.add(value);
 		}
 	}
 }
