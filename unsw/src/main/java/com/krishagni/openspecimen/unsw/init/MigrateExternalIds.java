@@ -78,14 +78,18 @@ public class MigrateExternalIds implements InitializingBean {
 				List<Long> specimenIds = new ArrayList<Long>();
 				Collection<ExternalIdDetail> externalIdDetails = getExternalIdsDetail(GET_EXTERNAL_ID_DETAIL);
 				for (ExternalIdDetail detail : externalIdDetails) {
-					ExtensionDetail extnDetail = new ExtensionDetail();
+					Specimen specimen = daoFactory.getSpecimenDao().getById(detail.getSpecimenId());
+					if (specimen == null) {
+						continue;
+					}
 					
+					ExtensionDetail extnDetail = new ExtensionDetail();
+
 					AttrDetail attr = new AttrDetail();
 					attr.setName("externalIDs");
 					attr.setValue(detail.getExternalIds());
 					extnDetail.setAttrs(Collections.singletonList(attr));
 					
-					Specimen specimen = daoFactory.getSpecimenDao().getById(detail.getSpecimenId());
 					specimen.setExtension(DeObject.createExtension(extnDetail, specimen));
 					specimen.addOrUpdateExtension();
 					
