@@ -119,16 +119,18 @@ public class MigrateExternalIds implements InitializingBean {
 			@Override
 			public void processRow(ResultSet rs) throws SQLException {
 				Long specimenId = rs.getLong("specimen_id");
-				String externalId = rs.getString("name").trim();
+				String externalId = rs.getString("name");
 				String value = rs.getString("value");
 				
-				ExternalIdDetail detail = externalIdDetails.get(specimenId);
-				if (detail == null) {
-					detail = new ExternalIdDetail(specimenId);
-					externalIdDetails.put(specimenId, detail);
+				if (StringUtils.isNotBlank(externalId) && StringUtils.isNotBlank(value)) {
+					ExternalIdDetail detail = externalIdDetails.get(specimenId);
+					if (detail == null) {
+						detail = new ExternalIdDetail(specimenId);
+						externalIdDetails.put(specimenId, detail);
+					}
+					
+					detail.addExternalId(externalId.trim(), value);
 				}
-				
-				detail.addExternalId(externalId, value);
 			}
 		});
 		
@@ -137,6 +139,7 @@ public class MigrateExternalIds implements InitializingBean {
 	
 	private void deleteMigratedData(List<Long> ids) {
 		jdbcTemplate.update(String.format(DELETE_MIGRATED_DATA, StringUtils.join(ids, ",")));
+		jdbcTemplate.update(DELETE_NULL_VALUES);
 		logger.info("Deleted record for specimen id : " + StringUtils.join(ids, ","));
 	}
 	
@@ -153,6 +156,8 @@ public class MigrateExternalIds implements InitializingBean {
 	private static final String GET_EXTERNAL_ID_DETAIL = "select * from CATISSUE_EXTERNAL_IDENTIFIER"; 
 	
 	private static final String DELETE_MIGRATED_DATA = "delete from CATISSUE_EXTERNAL_IDENTIFIER where specimen_id in (%s)";
+	
+	private static final String DELETE_NULL_VALUES = "delete from CATISSUE_EXTERNAL_IDENTIFIER where name is null and value is null";
 	
 	private class ExternalIdDetail {
 		private Long specimenId;
