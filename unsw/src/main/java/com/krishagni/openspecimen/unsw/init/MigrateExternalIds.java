@@ -76,7 +76,7 @@ public class MigrateExternalIds implements InitializingBean {
 				setUserInContextHolder();
 				
 				List<Long> specimenIds = new ArrayList<Long>();
-				Collection<ExternalIdDetail> externalIdDetails = getExternalIdsDetail(GET_EXTERNAL_ID_DETAIL);
+				Collection<ExternalIdDetail> externalIdDetails = getExternalIdsDetail(GET_EXTERNAL_IDS_SQL);
 				for (ExternalIdDetail detail : externalIdDetails) {
 					Specimen specimen = daoFactory.getSpecimenDao().getById(detail.getSpecimenId());
 					if (specimen == null) {
@@ -123,18 +123,16 @@ public class MigrateExternalIds implements InitializingBean {
 			@Override
 			public void processRow(ResultSet rs) throws SQLException {
 				Long specimenId = rs.getLong("specimen_id");
-				String externalId = rs.getString("name");
+				String externalId = rs.getString("name").trim();
 				String value = rs.getString("value");
 				
-				if (StringUtils.isNotBlank(externalId) && StringUtils.isNotBlank(value)) {
-					ExternalIdDetail detail = externalIdDetails.get(specimenId);
-					if (detail == null) {
-						detail = new ExternalIdDetail(specimenId);
-						externalIdDetails.put(specimenId, detail);
-					}
-					
-					detail.addExternalId(externalId.trim(), value);
+				ExternalIdDetail detail = externalIdDetails.get(specimenId);
+				if (detail == null) {
+					detail = new ExternalIdDetail(specimenId);
+					externalIdDetails.put(specimenId, detail);
 				}
+					
+				detail.addExternalId(externalId.trim(), value);
 			}
 		});
 		
@@ -142,8 +140,17 @@ public class MigrateExternalIds implements InitializingBean {
 	}
 	
 	private void deleteMigratedData(List<Long> ids) {
-		jdbcTemplate.update(String.format(DELETE_MIGRATED_DATA, StringUtils.join(ids, ",")));
-		jdbcTemplate.update(DELETE_NULL_VALUES);
+		int startIdx = 0;
+		int count = 1;
+		
+		while (startIdx < ids.size()) {
+			int lastIdx = count * 999 < ids.size() ? count * 999 : ids.size();
+			jdbcTemplate.update(String.format(DELETE_MIGRATED_DATA, StringUtils.join(ids.subList(startIdx, lastIdx), ",")));
+			startIdx = lastIdx;
+			count++;
+		}
+		
+		jdbcTemplate.update(DELETE_NULL_RECORDS);
 		logger.info("Deleted record for specimen id : " + StringUtils.join(ids, ","));
 	}
 	
@@ -157,11 +164,12 @@ public class MigrateExternalIds implements InitializingBean {
 		}
 	}
 
-	private static final String GET_EXTERNAL_ID_DETAIL = "select * from CATISSUE_EXTERNAL_IDENTIFIER"; 
+	private static final String GET_EXTERNAL_IDS_SQL = 
+			"select * from catissue_external_identifier where name is not null and value is not null"; 
 	
-	private static final String DELETE_MIGRATED_DATA = "delete from CATISSUE_EXTERNAL_IDENTIFIER where specimen_id in (%s)";
+	private static final String DELETE_MIGRATED_DATA = "delete from catissue_external_identifier where specimen_id in (%s)";
 	
-	private static final String DELETE_NULL_VALUES = "delete from CATISSUE_EXTERNAL_IDENTIFIER where name is null and value is null";
+	private static final String DELETE_NULL_RECORDS = "delete from catissue_external_identifier where name is null and value is null";
 	
 	private class ExternalIdDetail {
 		private Long specimenId;
