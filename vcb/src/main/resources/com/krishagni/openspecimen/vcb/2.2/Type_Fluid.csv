@@ -1,0 +1,8 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Ascites,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Bone Marrow Plasma,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Plasma,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Serum,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Urine,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Fluid')",Whole Blood,null,0

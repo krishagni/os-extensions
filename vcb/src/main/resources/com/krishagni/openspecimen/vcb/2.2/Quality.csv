@@ -1,0 +1,13 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Acceptable,2003994,0
+getNextPvId(),,,null,Cauterized,2003994,0
+getNextPvId(),,,null,Clotted,2003994,0
+getNextPvId(),,,null,Damaged,2003994,0
+getNextPvId(),,,null,Frozen,2003994,0
+getNextPvId(),,,null,Haemolysed ,2003994,0
+getNextPvId(),,,null,Haemorrhagic ,2003994,0
+getNextPvId(),,,null,Lipemic,2003994,0
+getNextPvId(),,,null,Not Specified,2003994,0
+getNextPvId(),,,null,Quantity Not Sufficient,2003994,0
+getNextPvId(),,,null,Thawed,2003994,0
+getNextPvId(),,,null,"Unacceptable, Not Specified",2003994,0

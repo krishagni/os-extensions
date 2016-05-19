@@ -1,0 +1,5 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",ctDNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",DNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",RNA,null,0

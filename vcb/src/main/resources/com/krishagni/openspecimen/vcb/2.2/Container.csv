@@ -1,0 +1,17 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,70mL Specimen Container,2003997,0
+getNextPvId(),,,null,ACD Vacutainer,2003997,0
+getNextPvId(),,,null,Cell free DNA Vacutainer,2003997,0
+getNextPvId(),,,null,Citrate Vacutainer,2003997,0
+getNextPvId(),,,null,CPT Tiger Top Vacutainer,2003997,0
+getNextPvId(),,,null,EDTA Vacutainer,2003997,0
+getNextPvId(),,,null,Eppendorf tube,2003997,0
+getNextPvId(),,,null,Heparin Vacutainer,2003997,0
+getNextPvId(),,,null,No Additive Vacutainer,2003997,0
+getNextPvId(),,,null,Not Specified,2003997,0
+getNextPvId(),,,null,Paxgene DNA Vacutainer,2003997,0
+getNextPvId(),,,null,P-Citrate Vacutainer,2003997,0
+getNextPvId(),,,null,P-Heparin Vacutainer,2003997,0
+getNextPvId(),,,null,Serum Separator Vacutainer,2003997,0
+getNextPvId(),,,null,Sterile Specimen Container,2003997,0
+getNextPvId(),,,null,Vacutainer,2003997,0

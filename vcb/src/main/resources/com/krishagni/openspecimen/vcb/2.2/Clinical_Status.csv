@@ -1,0 +1,8 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Clinically Normal ,2003988,0
+getNextPvId(),,,null,Metastasis (Secondary),2003988,0
+getNextPvId(),,,null,Not Specified,2003988,0
+getNextPvId(),,,null,Primary,2003988,0
+getNextPvId(),,,null,Recurrence,2003988,0
+getNextPvId(),,,null,Remission,2003988,0
+getNextPvId(),,,null,Transformation,2003988,0

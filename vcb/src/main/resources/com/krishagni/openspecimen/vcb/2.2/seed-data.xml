@@ -39,56 +39,6 @@
         ("Tissue", "FFPE Core", "count", NULL, "Active");
     </sql>
   </changeSet>
-
-  <changeSet author="asamgir" id="removing existing PVs">
-    <sql>
-      delete from
-        catissue_permissible_value 
-      where 
-        public_id 
-      in ('Race_PID', 'Ethnicity_PID', 'Tissue_Site_PID', '2003988', '2003989', '2003993', '2003997', '2004001');    
-    </sql>
-  </changeSet>
-  
-  <changeSet author="hemantk" id="removing existing specimen types from PVs table" runOnChange="true">
-    <sql>
-      delete a from
-        catissue_permissible_value as a
-        join catissue_permissible_value as b on a.parent_identifier=b.identifier
-      where
-        b.value
-      in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
-    </sql>
-  </changeSet>
-
-  <changeSet author="hemantk" id="removing existing clinical diagnosis from PVs table">
-    <sql>
-      delete from
-        catissue_permissible_value
-      where
-        public_id='Clinical_Diagnosis_PID';
-    </sql>
-  </changeSet>
-  
-  <changeSet author="hemantk" id="Permissible_values csv file upload">
-    <validCheckSum>7:f8585eb4835939c86547678c2e3f0cd8</validCheckSum>
-      <preConditions onFail="WARN">
-        <sqlCheck expectedResult="0">
-          select count(*) from
-            catissue_permissible_value as a
-            join catissue_permissible_value as b on a.parent_identifier=b.identifier
-          where
-            b.value
-          in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
-        </sqlCheck>
-      </preConditions>
-      <loadData encoding="UTF-8"
-        file="classpath:com/krishagni/openspecimen/vcb/2.2/pvs.csv"
-        tableName="CATISSUE_PERMISSIBLE_VALUE">
-        <column name="identifier" type="NUMERIC"/>
-        <column name="parent_identifier" type="NUMERIC"/>
-      </loadData>
-  </changeSet>
  
   <changeSet author="nmarwaha" id="Set the MPI format">
     <sql>
@@ -122,5 +72,263 @@
     </sql>
   </changeSet>
   
+  <changeSet author="nmarwaha" id="Remove existing specimen types from PVs table" runOnChange="true">
+    <sql>
+      delete a from
+        catissue_permissible_value as a
+        join catissue_permissible_value as b on a.parent_identifier=b.identifier
+      where
+        b.value
+      in ('Molecular','Cell','Fluid','Tissue') and b.public_id=2003991;
+    </sql>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Removing existing PVs as per the new request">
+    <sql>
+      delete from
+        catissue_permissible_value 
+      where 
+        public_id 
+      in ('specimen_biohazard', 'Tissue_Site_PID', '2003991', 'Clinical_Diagnosis_PID', '2003988', '2003997', 'Ethnicity_PID', '2003993', '2003996', '2003994');    
+    </sql>
+  </changeSet>
+  
+  <!-- PV loading starts -->
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: clinical status">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = '2003988'
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Clinical_Status.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: collection procedure">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = '2003996'
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Procedure_List.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: container">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = '2003997'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Container.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: ethnicity">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = 'Ethnicity_PID'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Ethnicity.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: pathological status">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = '2003993'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Pathological_Status.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: received quality">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = '2003994'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Quality.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: tissue site">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = 'Tissue_Site_PID'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Anatomic_Site.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet id="Loading permissible values for attribute: specimen class and type" author="vratnaparkhi">
+    <validCheckSum>7:3077a1a733ac6694a1abd05e152bf2c2</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = '2003991'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Class.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: clinical diagnosis">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = 'Clinical_Diagnosis_PID'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Clinical_Diagnosis.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Loading permissible values for attribute: biohazard">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select 
+          case when (count(*) > 0) then 1 else 0 end 
+        from 
+          catissue_permissible_value
+        where
+          public_id = 'specimen_biohazard'  
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/vcb/2.2/Biohazard.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="durgadasc" id="Loading permissible values for attribute: specimen type Tissue">
+    <preConditions onFail="WARN">
+        <sqlCheck expectedResult="0">
+          select 
+		    case when (count(*) > 0) then 1 else 0 end 
+          from
+            catissue_permissible_value
+          where 
+		    PARENT_IDENTIFIER = (select identifier from catissue_permissible_value where public_id= '2003991' and value = 'Tissue');
+        </sqlCheck>
+      </preConditions>
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/vcb/2.2/Type_Tissue.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>  
 
+  <changeSet author="durgadasc" id="Loading permissible values for attribute: specimen type Cell">
+    <preConditions onFail="WARN">
+        <sqlCheck expectedResult="0">
+          select 
+		    case when (count(*) > 0) then 1 else 0 end 
+          from
+            catissue_permissible_value
+          where 
+		    PARENT_IDENTIFIER = (select identifier from catissue_permissible_value where public_id= '2003991' and value = 'Cell');
+        </sqlCheck>
+      </preConditions>
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/vcb/2.2/Type_Cell.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>
+
+  <changeSet author="durgadasc" id="Loading permissible values for attribute: specimen type Fluid">
+    <preConditions onFail="WARN">
+        <sqlCheck expectedResult="0">
+          select 
+		    case when (count(*) > 0) then 1 else 0 end 
+          from
+            catissue_permissible_value
+          where 
+		    PARENT_IDENTIFIER = (select identifier from catissue_permissible_value where public_id= '2003991' and value = 'Fluid');
+        </sqlCheck>
+      </preConditions>
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/vcb/2.2/Type_Fluid.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>
+
+  <changeSet author="durgadasc" id="Loading permissible values for attribute: specimen type Molecular">
+    <preConditions onFail="WARN">
+        <sqlCheck expectedResult="0">
+          select 
+		    case when (count(*) > 0) then 1 else 0 end 
+          from
+            catissue_permissible_value
+          where 
+		    PARENT_IDENTIFIER = (select identifier from catissue_permissible_value where public_id= '2003991' and value = 'Molecular');
+        </sqlCheck>
+      </preConditions>
+      <loadData encoding="UTF-8"
+        file="classpath:com/krishagni/openspecimen/vcb/2.2/Type_Molecular.csv"
+        tableName="CATISSUE_PERMISSIBLE_VALUE">
+        <column name="identifier" type="NUMERIC"/>
+        <column name="parent_identifier" type="NUMERIC"/>
+      </loadData>
+  </changeSet>
 </databaseChangeLog>

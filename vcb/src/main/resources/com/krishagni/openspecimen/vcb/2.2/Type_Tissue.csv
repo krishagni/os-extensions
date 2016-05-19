@@ -1,0 +1,17 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Departmental FFPE Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",EBUS,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Ethanol Fixed Paraffin H&E Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Ethanol Fixed Paraffin Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",ETOH-Fixed Paraffin Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE H&E Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Fresh Tissue,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Microdissected,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",OCT Block,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",OCT Slide,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Snap Frozen,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Tissue Micro Array,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",FFPE Core,null,0

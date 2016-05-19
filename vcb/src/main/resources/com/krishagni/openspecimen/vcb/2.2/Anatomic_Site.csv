@@ -1,0 +1,62 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Adrenal gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Anus,Tissue_Site_PID,0
+getNextPvId(),,,null,Appendix,Tissue_Site_PID,0
+getNextPvId(),,,null,Biliary tract,Tissue_Site_PID,0
+getNextPvId(),,,null,Bladder,Tissue_Site_PID,0
+getNextPvId(),,,null,Blood,Tissue_Site_PID,0
+getNextPvId(),,,null,Bone,Tissue_Site_PID,0
+getNextPvId(),,,null,Bone Marrow,Tissue_Site_PID,0
+getNextPvId(),,,null,Brain,Tissue_Site_PID,0
+getNextPvId(),,,null,Breast,Tissue_Site_PID,0
+getNextPvId(),,,null,Cervix,Tissue_Site_PID,0
+getNextPvId(),,,null,Colon,Tissue_Site_PID,0
+getNextPvId(),,,null,"Connective, subcutaneous and other soft tissues ",Tissue_Site_PID,0
+getNextPvId(),,,null,Duodenum,Tissue_Site_PID,0
+getNextPvId(),,,null,Endometrium,Tissue_Site_PID,0
+getNextPvId(),,,null,Fallopian tube,Tissue_Site_PID,0
+getNextPvId(),,,null,Gallbladder,Tissue_Site_PID,0
+getNextPvId(),,,null,Gum,Tissue_Site_PID,0
+getNextPvId(),,,null,"Head, face or neck",Tissue_Site_PID,0
+getNextPvId(),,,null,Kidney,Tissue_Site_PID,0
+getNextPvId(),,,null,Larynx,Tissue_Site_PID,0
+getNextPvId(),,,null,Lip,Tissue_Site_PID,0
+getNextPvId(),,,null,Liver,Tissue_Site_PID,0
+getNextPvId(),,,null,Lung,Tissue_Site_PID,0
+getNextPvId(),,,null,Lymph node,Tissue_Site_PID,0
+getNextPvId(),,,null,Major salivary gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Mediastinum,Tissue_Site_PID,0
+getNextPvId(),,,null,Meninges,Tissue_Site_PID,0
+getNextPvId(),,,null,Middle ear,Tissue_Site_PID,0
+getNextPvId(),,,null,Mouth,Tissue_Site_PID,0
+getNextPvId(),,,null,Not specified,Tissue_Site_PID,0
+getNextPvId(),,,null,Oesophagus,Tissue_Site_PID,0
+getNextPvId(),,,null,Omentum,Tissue_Site_PID,0
+getNextPvId(),,,null,Other,Tissue_Site_PID,0
+getNextPvId(),,,null,Ovary,Tissue_Site_PID,0
+getNextPvId(),,,null,Pancreas,Tissue_Site_PID,0
+getNextPvId(),,,null,Parathyroid gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Parotid gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Penis,Tissue_Site_PID,0
+getNextPvId(),,,null,Periform sinus,Tissue_Site_PID,0
+getNextPvId(),,,null,Peritoneum,Tissue_Site_PID,0
+getNextPvId(),,,null,Pharynx,Tissue_Site_PID,0
+getNextPvId(),,,null,Pituitary gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Pleura,Tissue_Site_PID,0
+getNextPvId(),,,null,Prostate gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Rectum,Tissue_Site_PID,0
+getNextPvId(),,,null,Skin,Tissue_Site_PID,0
+getNextPvId(),,,null,Small intestine,Tissue_Site_PID,0
+getNextPvId(),,,null,Spinal cord,Tissue_Site_PID,0
+getNextPvId(),,,null,Spleen,Tissue_Site_PID,0
+getNextPvId(),,,null,Stomach,Tissue_Site_PID,0
+getNextPvId(),,,null,Testis,Tissue_Site_PID,0
+getNextPvId(),,,null,Thymus,Tissue_Site_PID,0
+getNextPvId(),,,null,Thyroid gland,Tissue_Site_PID,0
+getNextPvId(),,,null,Tongue,Tissue_Site_PID,0
+getNextPvId(),,,null,Tonsil,Tissue_Site_PID,0
+getNextPvId(),,,null,Trachea,Tissue_Site_PID,0
+getNextPvId(),,,null,Ureter,Tissue_Site_PID,0
+getNextPvId(),,,null,Uterus,Tissue_Site_PID,0
+getNextPvId(),,,null,Vagina,Tissue_Site_PID,0
+getNextPvId(),,,null,Vulva,Tissue_Site_PID,0

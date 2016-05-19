@@ -1,0 +1,11 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Blood Pellet,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Buffy Coat,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Buffy Coat with DMSO,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",FNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",FNA Rinse in PBS,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",MNC Bone Marrow,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",MNC Bone Marrow with Trizol,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Not Specified,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",PBMNC,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Whole Bone Marrow,null,0

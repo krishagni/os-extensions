@@ -1,0 +1,5 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Cell,2003991,0
+getNextPvId(),,,null,Fluid,2003991,0
+getNextPvId(),,,null,Molecular,2003991,0
+getNextPvId(),,,null,Tissue,2003991,0

@@ -38,4 +38,17 @@
       //
     </sql>
   </changeSet>
+  
+  <changeSet author="nmarwaha" id="Increasing the size of collection procedure column for specimen requirement">
+    <modifyDataType columnName="COLLECTION_PROCEDURE" newDataType="varchar(255)" tableName="catissue_cp_req_specimen"/>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Increasing the size of collection procedure column for specimen requirement audit table">
+    <modifyDataType columnName="COLLECTION_PROCEDURE" newDataType="varchar(255)" tableName="catissue_cp_req_specimen_aud"/>
+  </changeSet>
+  
+  <changeSet author="nmarwaha" id="Increasing the size of collection procedure column for collection event">
+    <modifyDataType columnName="COLLECTION_PROCEDURE" newDataType="varchar(255)" tableName="catissue_coll_event_param"/>
+  </changeSet>
+  
 </databaseChangeLog>

@@ -1,0 +1,6 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Adjacent Normal,2003993,0
+getNextPvId(),,,null,Benign,2003993,0
+getNextPvId(),,,null,Clinically Normal,2003993,0
+getNextPvId(),,,null,Not Specified,2003993,0
+getNextPvId(),,,null,Tumour,2003993,0
