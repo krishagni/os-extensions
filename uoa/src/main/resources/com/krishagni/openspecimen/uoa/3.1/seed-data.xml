@@ -37,7 +37,7 @@
         ("Tissue", "Snap Frozen", "count", NULL, "Active"),
         ("Tissue", "Tissue Micro Array", "count", NULL, "Active"),
         ("Tissue", "FFPE Core", "count", NULL, "Active");
-    </sql>
+    </sql> 
   </changeSet>
 
   <changeSet author="asamgir" id="removing existing PVs">
@@ -136,5 +136,60 @@
         <column name="parent_identifier" type="NUMERIC"/>
       </loadData>
   </changeSet>
+  
+  <changeSet author="durgadasc" id="Removing existing ethnicity,procedure,container values from pv table">
+    <sql>
+      delete from catissue_permissible_value where public_id in ('Ethnicity_PID', '2003996', '2003997');
+    </sql>
+  </changeSet>
 
+
+  <changeSet author="durgadasc" id="Loading permissible values for ethnicity">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select
+          case when (count(*) > 0) then 1 else 0 end
+        from
+          catissue_permissible_value
+        where
+          public_id = 'Ethnicity_PID'
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/uoa/3.1/ethnicity.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+
+
+  <changeSet author="durgadasc" id="Loading permissible values for collection_proccedure">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select
+          case when (count(*) > 0) then 1 else 0 end
+        from
+          catissue_permissible_value
+        where
+          public_id = '2003996'
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/uoa/3.1/collection_procedure.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+
+  <changeSet author="durgadasc" id="Loading permissible values for collection_container">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select
+          case when (count(*) > 0) then 1 else 0 end
+        from
+          catissue_permissible_value
+        where
+          public_id = '2003997'
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/uoa/3.1/collection_container.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
 </databaseChangeLog>

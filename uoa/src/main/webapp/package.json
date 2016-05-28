@@ -1,7 +1,7 @@
 {
-  "name": "OpenSpecimen-VCB-Plugin",
+  "name": "OpenSpecimen-UOA-Plugin",
   "version": "1.0.0",
-  "description": "OpenSpecimen VCB Plugin",
+  "description": "OpenSpecimen UOA Plugin",
   "main": "module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +12,7 @@
   },
   "keywords": [
     "OpenSpecimen",
-    "VCB Plugin",
+    "UOA Plugin",
     "Krishagni"
   ],
   "author": "Team Krishagni (support@catissueplus.org)",

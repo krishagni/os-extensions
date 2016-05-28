@@ -1,0 +1,31 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Abdominoperineal Resection,2003996,0
+getNextPvId(),,,null,Dissection,2003996,0
+getNextPvId(),,,null,Distal Pancreatectomy,2003996,0
+getNextPvId(),,,null,ESD Resection,2003996,0
+getNextPvId(),,,null,Excision Biopsy,2003996,0
+getNextPvId(),,,null,High Anterior Resection,2003996,0
+getNextPvId(),,,null,Incisional Biopsy,2003996,0
+getNextPvId(),,,null,Intralesional Resection,2003996,0
+getNextPvId(),,,null,Laparoscopic Anterior Resection,2003996,0
+getNextPvId(),,,null,Laparoscopic Anterior Resection & Ileostomy,2003996,0
+getNextPvId(),,,null,Laparoscopic High Anterior Resection,2003996,0
+getNextPvId(),,,null,Laparoscopic Right Hemicolectomy,2003996,0
+getNextPvId(),,,null,Laparoscopic Total Colectomy,2003996,0
+getNextPvId(),,,null,Laproscopic Partial Gastrectomy,2003996,0
+getNextPvId(),,,null,Needle Core Biopsy,2003996,0
+getNextPvId(),,,null,Open Anterior Resection,2003996,0
+getNextPvId(),,,null,Open High Anterior Resection,2003996,0
+getNextPvId(),,,null,Open Incisional Biopsy,2003996,0
+getNextPvId(),,,null,Open Right Hemicolectomy,2003996,0
+getNextPvId(),,,null,Open Sigmoid Colectomy,2003996,0
+getNextPvId(),,,null,Prophylatic Gastrectomy,2003996,0
+getNextPvId(),,,null,Punch Biopsy,2003996,0
+getNextPvId(),,,null,Re-excision,2003996,0
+getNextPvId(),,,null,Right (ascending) Hemicolectomy,2003996,0
+getNextPvId(),,,null,Subtotal Colectomy,2003996,0
+getNextPvId(),,,null,Surgical Resection,2003996,0
+getNextPvId(),,,null,Wide Excision,2003996,0
+getNextPvId(),,,null,Wide Lesion Excision,2003996,0
+getNextPvId(),,,null,Wide Local Excision,2003996,0
+getNextPvId(),,,null,Wide Resection,2003996,0

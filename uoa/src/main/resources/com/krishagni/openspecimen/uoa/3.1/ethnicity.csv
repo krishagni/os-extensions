@@ -1,0 +1,34 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,African,Ethnicity_PID,0
+getNextPvId(),,,null,Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Asian not further defined,Ethnicity_PID,0
+getNextPvId(),,,null,Australian,Ethnicity_PID,0
+getNextPvId(),,,null,British,Ethnicity_PID,0
+getNextPvId(),,,null,Chinese,Ethnicity_PID,0
+getNextPvId(),,,null,Cook Island Maori,Ethnicity_PID,0
+getNextPvId(),,,null,Dutch,Ethnicity_PID,0
+getNextPvId(),,,null,European,Ethnicity_PID,0
+getNextPvId(),,,null,Fijian,Ethnicity_PID,0
+getNextPvId(),,,null,German,Ethnicity_PID,0
+getNextPvId(),,,null,Hungarian,Ethnicity_PID,0
+getNextPvId(),,,null,Indian,Ethnicity_PID,0
+getNextPvId(),,,null,Irish,Ethnicity_PID,0
+getNextPvId(),,,null,Korean,Ethnicity_PID,0
+getNextPvId(),,,null,Latin American / Hispanic,Ethnicity_PID,0
+getNextPvId(),,,null,Maori,Ethnicity_PID,0
+getNextPvId(),,,null,Middle Eastern,Ethnicity_PID,0
+getNextPvId(),,,null,New Zealand European,Ethnicity_PID,0
+getNextPvId(),,,null,Niuean,Ethnicity_PID,0
+getNextPvId(),,,null,Not Specified,Ethnicity_PID,0
+getNextPvId(),,,null,Other,Ethnicity_PID,0
+getNextPvId(),,,null,Other Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Other European,Ethnicity_PID,0
+getNextPvId(),,,null,Other Pacific Island,Ethnicity_PID,0
+getNextPvId(),,,null,Pacific Island not further defined,Ethnicity_PID,0
+getNextPvId(),,,null,Samoan,Ethnicity_PID,0
+getNextPvId(),,,null,South African,Ethnicity_PID,0
+getNextPvId(),,,null,Southeast Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Sri lankan,Ethnicity_PID,0
+getNextPvId(),,,null,Tokelauan,Ethnicity_PID,0
+getNextPvId(),,,null,Tongan,Ethnicity_PID,0
+getNextPvId(),,,null,Vietnamese,Ethnicity_PID,0

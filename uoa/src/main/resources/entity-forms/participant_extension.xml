@@ -1,0 +1,323 @@
+<form>
+<view>
+<name>participiantExtension</name>
+<caption><![CDATA[participant-extension]]></caption>
+<row>
+<dropDown>
+<name>DD3</name>
+<udn>iwi</udn>
+<caption><![CDATA[Iwi]]></caption>
+<showWhen><![CDATA[$extendedObj.ethnicity = "Maori"]]></showWhen>
+<phi>false</phi>
+<mandatory>false</mandatory>
+<toolTip><![CDATA[]]></toolTip>
+<showLabel>true</showLabel>
+<showInGrid>false</showInGrid>
+<options>
+<option>
+<value><![CDATA[Te Aupouri]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahu]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kuri]]></value>
+</option>
+<option>
+<value><![CDATA[Ngapuhi]]></value>
+</option>
+<option>
+<value><![CDATA[Ngapuhi ki Whaingaroa-Ngati Kahu ki Whaingaroa]]></value>
+</option>
+<option>
+<value><![CDATA[Te Rarawa]]></value>
+</option>
+<option>
+<value><![CDATA[Ngai Takoto]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Wai]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Whatua]]></value>
+</option>
+<option>
+<value><![CDATA[Te Kawerau]]></value>
+</option>
+<option>
+<value><![CDATA[Te Uri-o-Hau]]></value>
+</option>
+<option>
+<value><![CDATA[Te Roroa]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Hako]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Hei]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Maru (Hauraki)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Paoa]]></value>
+</option>
+<option>
+<value><![CDATA[Patukirikiri]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Porou ki Harataunga ki Mataora]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Pukenga ki Waiau]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Rahiri Tumutumu]]></value>
+</option>
+<option>
+<value><![CDATA[Ngai Tai (Hauraki)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tamatera]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tara Tokanui]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Whanaunga]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Haua (Waikato)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Maniapoto]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Raukawa (Waikato)]]></value>
+</option>
+<option>
+<value><![CDATA[Waikato]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Pikiao (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Rangiteaorere (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Rangitihi (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Rangiwewehi (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Tapuika (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Tarawhai (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Tuhourangi (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Uenuku-Kopako (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Waitaha (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Whakaue (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tuwharetoa]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tahu-Ngati Whaoa (Te Arawa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Pukenga]]></value>
+</option>
+<option>
+<value><![CDATA[Ngaiterangi]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Ranginui]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Awa]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Manawa]]></value>
+</option>
+<option>
+<value><![CDATA[Ngai Tai (Tauranga Moana/Mataatua)]]></value>
+</option>
+<option>
+<value><![CDATA[Tuhoe]]></value>
+</option>
+<option>
+<value><![CDATA[Whakatohea]]></value>
+</option>
+<option>
+<value><![CDATA[Te Whanau-a-Apanui]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Whare]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Porou]]></value>
+</option>
+<option>
+<value><![CDATA[Te Aitanga-a-Mahaki]]></value>
+</option>
+<option>
+<value><![CDATA[Rongowhakaata]]></value>
+</option>
+<option>
+<value><![CDATA[Ngai Tamanuhiri]]></value>
+</option>
+<option>
+<value><![CDATA[Rongomaiwahine (Te Mahia)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahungunu ki Te Wairoa]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahungunu ki Heretaunga]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahungunu ki Wairarapa]]></value>
+</option>
+<option>
+<value><![CDATA[Rangitane (Te Matau-a-Maui/Hawke's Bay/Wairarapa)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahungunu ki Te Whanganui-a-Orotu]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahungunu ki Tamatea]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kahungunu ki Tamakinui a Rua]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Pahauwera]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Rakaipaaka]]></value>
+</option>
+<option>
+<value><![CDATA[Te Atiawa (Taranaki)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Maru (Taranaki)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Mutunga (Taranaki)]]></value>
+</option>
+<option>
+<value><![CDATA[Nga Rauru]]></value>
+</option>
+<option>
+<value><![CDATA[Nga Ruahine]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Ruanui]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tama (Taranaki)]]></value>
+</option>
+<option>
+<value><![CDATA[Taranaki]]></value>
+</option>
+<option>
+<value><![CDATA[Tangahoe]]></value>
+</option>
+<option>
+<value><![CDATA[Pakakohi]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Apa (Rangitikei)]]></value>
+</option>
+<option>
+<value><![CDATA[Te Ati Haunui-a-Paparangi]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Haua (Taumarunui)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Hauiti]]></value>
+</option>
+<option>
+<value><![CDATA[Te Atiawa (Te Whanganui-a-Tara/Wellington)]]></value>
+</option>
+<option>
+<value><![CDATA[Muaupoko]]></value>
+</option>
+<option>
+<value><![CDATA[Rangitane (Manawatu)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Raukawa (Horowhenua/Manawatu)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Toarangatira (Te Whanganui-a-Tara/Wellington)]]></value>
+</option>
+<option>
+<value><![CDATA[Te Atiawa ki Whakarongotai]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tama ki Te Upoko o Te Ika (Te Whanganui-a-Tara/Wellington)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kauwhata]]></value>
+</option>
+<option>
+<value><![CDATA[Te Atiawa (Te Waipounamu/South Island)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Koata]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Kuia]]></value>
+</option>
+<option>
+<value><![CDATA[Kati Mamoe]]></value>
+</option>
+<option>
+<value><![CDATA[Moriori]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Mutunga (Wharekauri/Chatham Islands)]]></value>
+</option>
+<option>
+<value><![CDATA[Rangitane (Te Waipounamu/South Island)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Rarua]]></value>
+</option>
+<option>
+<value><![CDATA[Ngai Tahu / Kai Tahu]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Tama (Te Waipounamu/South Island)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Toarangatira (Te Waipounamu/South Island)]]></value>
+</option>
+<option>
+<value><![CDATA[Waitaha (Te Waipounamu/South Island)]]></value>
+</option>
+<option>
+<value><![CDATA[Ngati Apa ki Te Ra To]]></value>
+</option>
+</options>
+<lazyLoad>true</lazyLoad>
+<width>0</width>
+<minQueryChars>0</minQueryChars>
+</dropDown>
+</row>
+</view>
+<skipRules>
+</skipRules>
+</form>

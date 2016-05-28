@@ -1,5 +1,5 @@
 {
   "scripts": [
-    "vcb/scripts/scripts.@script_hash@.js"
+    "uoa/scripts/scripts.@script_hash@.js"
   ]
 }

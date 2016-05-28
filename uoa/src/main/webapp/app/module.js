@@ -1,4 +1,4 @@
-angular.module('os.plugins.vcb', ['openspecimen'])
+angular.module('os.plugins.uoa', ['openspecimen'])
   .run(function(PluginReg) {
   
     PluginReg.registerViews(
@@ -6,13 +6,13 @@ angular.module('os.plugins.vcb', ['openspecimen'])
       {
         'participant-addedit': {
           'page-body': {
-            template: 'plugin-ui-resources/vcb/participant-addedit.html'
+            template: 'plugin-ui-resources/uoa/participant-addedit.html'
           }
         },
   
         'participant-detail': {
           'summary': {
-            template: 'plugin-ui-resources/vcb/participant-summary.html'
+            template: 'plugin-ui-resources/uoa/participant-summary.html'
           }
         }
       }
