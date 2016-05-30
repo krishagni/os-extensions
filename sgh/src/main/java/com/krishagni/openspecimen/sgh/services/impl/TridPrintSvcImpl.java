@@ -144,7 +144,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			printItems.add(PrintItem.make(specimen, 1));
 		}
 		
-		String malignantAliqPrefix = visitName + "_" + getMalignantAliqSuffix() + "_"; 
+		String malignantAliqPrefix = visitName + "-" + getMalignantAliqSuffix() + "_"; 
 		for (int i = 1; i <= getMalignantAliqCnt(); ++i) {
 			Specimen aliquot = new Specimen();
 			aliquot.setVisit(visit);
@@ -152,7 +152,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			printItems.add(PrintItem.make(aliquot, 1));
 		}
 		
-		String nonMalignantAliqPrefix = visitName + "_" + getNonMalignantAliqSuffix() + "_";
+		String nonMalignantAliqPrefix = visitName + "-" + getNonMalignantAliqSuffix() + "_";
 		for (int i = 1; i <= getNonMalignantAliqCnt(); ++i) {
 			Specimen aliquot = new Specimen();
 			aliquot.setVisit(visit);
