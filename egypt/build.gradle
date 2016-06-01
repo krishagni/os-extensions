@@ -44,7 +44,7 @@ dependencies {
   compile   "org.aspectj:aspectjrt:1.8.6"
   compile   "javax.persistence:persistence-api:1.0.2"
   aspects   "org.springframework:spring-aspects:3.2.13.RELEASE"
-  aspects   fileTree(dir: './lib', include: ['openspecimen.jar'])
+  aspects   fileTree(dir: '../lib', include: ['openspecimen.jar'])
 
   compile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.0.1'
   
