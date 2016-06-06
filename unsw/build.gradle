@@ -13,7 +13,30 @@ jar {
     attributes("os-plugin-name": "unsw")
   }
   
-  
+  doFirst {
+    from ('./src/main/webapp/app/') {
+      include '**/**'
+ 
+      into 'META-INF/resources/unsw'
+    }
+
+    from('./src/main/webapp') {
+      include 'def.json'
+
+      into 'META-INF/resources/unsw'
+
+      def scriptHash = "-1"
+      new File('./src/main/webapp/app/').eachFileRecurse(FILES) {
+        if (it.name.startsWith("scripts") && it.name.endsWith("js")) {
+          def parts = it.name.split(/\./);
+          scriptHash = parts[1]
+        }
+      }
+
+      filter(ReplaceTokens, tokens: [script_hash: scriptHash])
+    }
+  }
+
 }
 
 sourceCompatibility = 1.8
