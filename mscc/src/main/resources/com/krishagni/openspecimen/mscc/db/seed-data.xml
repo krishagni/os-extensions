@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog 
   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-
-  <property name="boolean.type" value="boolean" dbms="mysql" />
-  <property name="boolean.type" value="number(1,0)" dbms="oracle" />
-  <property name="text.type" value="varchar" dbms="mysql" />
-  <property name="text.type" value="varchar2" dbms="oracle" />
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
   
   <changeSet author="mdnasim" id="Add clinical diagnosis values in pv table">
     <loadData encoding="UTF-8"
