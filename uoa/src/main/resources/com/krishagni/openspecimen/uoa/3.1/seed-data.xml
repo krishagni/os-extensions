@@ -192,4 +192,22 @@
       <column name="identifier" type="NUMERIC"/>
     </loadData>
   </changeSet>
+
+  <changeSet author="mdnasim" id="Add container values in pv table">
+    <loadData encoding="UTF-8"
+      file="classpath:com/krishagni/openspecimen/uoa/3.1/container.csv"
+      tableName="CATISSUE_PERMISSIBLE_VALUE">
+      <column name="identifier" type="NUMERIC"/>
+      <column name="parent_identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
+  
+  <changeSet author="mdnasim" id="Add collection procedure values in pv table">
+    <loadData encoding="UTF-8"
+      file="classpath:com/krishagni/openspecimen/uoa/3.1/collection_procedure_list.csv"
+      tableName="CATISSUE_PERMISSIBLE_VALUE">
+      <column name="identifier" type="NUMERIC"/>
+      <column name="parent_identifier" type="NUMERIC"/>
+    </loadData>
+  </changeSet>
 </databaseChangeLog>

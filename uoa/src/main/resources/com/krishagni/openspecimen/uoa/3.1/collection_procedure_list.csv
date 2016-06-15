@@ -1,0 +1,355 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Abdominal resection,2003996,null
+getNextPvId(),,,null,Adrenalectomy,2003996,null
+getNextPvId(),,,null,Anterior resection,2003996,null
+getNextPvId(),,,null,Appendicectomy,2003996,null
+getNextPvId(),,,null,Aspirate,2003996,null
+getNextPvId(),,,null,Auricle resection,2003996,null
+getNextPvId(),,,null,Axillary clearance,2003996,null
+getNextPvId(),,,null,Bilateral breast reduction,2003996,null
+getNextPvId(),,,null,Bilateral hemithroidectomy,2003996,null
+getNextPvId(),,,null,Bilateral hemithyroidectomy,2003996,null
+getNextPvId(),,,null,Bilateral mastectomy,2003996,null
+getNextPvId(),,,null,Bilateral mastectomy and axillary dissection,2003996,null
+getNextPvId(),,,null,Bilateral mastectomy and sentinal node biopsy,2003996,null
+getNextPvId(),,,null,Bilateral orchidectomy and inguinal node dissection,2003996,null
+getNextPvId(),,,null,Bilateral prophylactic mastectomy,2003996,null
+getNextPvId(),,,null,Bilateral salpingo-oophorectomy (BSO),2003996,null
+getNextPvId(),,,null,"Bilateral salpingo-oophorectomy, hysterectomy, omentectomy and excision of abdominal wall",2003996,null
+getNextPvId(),,,null,Bilateral subtotal thyroidectomy,2003996,null
+getNextPvId(),,,null,Biopsy,2003996,null
+getNextPvId(),,,null,Bone resection and debulking,2003996,null
+getNextPvId(),,,null,Breast reduction,2003996,null
+getNextPvId(),,,null,Breast WLE and sentinal node biopsy,2003996,null
+getNextPvId(),,,null,Bronchoscopy,2003996,null
+getNextPvId(),,,null,Cholecystectomy,2003996,null
+getNextPvId(),,,null,Colonoscopy,2003996,null
+getNextPvId(),,,null,Colonoscopy with biopsy,2003996,null
+getNextPvId(),,,null,Colonoscopy with removal of polyps,2003996,null
+getNextPvId(),,,null,Complete excision of lymph nodes of axilla,2003996,null
+getNextPvId(),,,null,Complete nephrectomy,2003996,null
+getNextPvId(),,,null,Complete nephroureterectomy,2003996,null
+getNextPvId(),,,null,Complete vaginectomy,2003996,null
+getNextPvId(),,,null,Completion mastectomy,2003996,null
+getNextPvId(),,,null,Completion pneumonectomy,2003996,null
+getNextPvId(),,,null,Cone biopsy,2003996,null
+getNextPvId(),,,null,Craniotomy,2003996,null
+getNextPvId(),,,null,Cystoprostatectomy,2003996,null
+getNextPvId(),,,null,Distal gastrectomy,2003996,null
+getNextPvId(),,,null,Endobronchial Ultrasound (EBUS),2003996,null
+getNextPvId(),,,null,Endoscopy,2003996,null
+getNextPvId(),,,null,Excision (extensive),2003996,null
+getNextPvId(),,,null,Excision from face or neck,2003996,null
+getNextPvId(),,,null,Excision from lower leg,2003996,null
+getNextPvId(),,,null,"Excision from nose, eyelid, lip or ear",2003996,null
+getNextPvId(),,,null,Excision of dermoid/skin lesion,2003996,null
+getNextPvId(),,,null,Excision of lesion,2003996,null
+getNextPvId(),,,null,Excision of lymph nodes,2003996,null
+getNextPvId(),,,null,"Excision of parapharyngeal tumour, by cervical approach",2003996,null
+getNextPvId(),,,null,Excision of pelvic lymph glands,2003996,null
+getNextPvId(),,,null,Excision of tumour,2003996,null
+getNextPvId(),,,null,Extended radical neck dissection,2003996,null
+getNextPvId(),,,null,Fine Needle Aspiration (FNA),2003996,null
+getNextPvId(),,,null,Gastric biopsy,2003996,null
+getNextPvId(),,,null,Gastro-oesophageal resection,2003996,null
+getNextPvId(),,,null,Glossectomy,2003996,null
+getNextPvId(),,,null,Hartmans Procedure,2003996,null
+getNextPvId(),,,null,Hemicolectomy,2003996,null
+getNextPvId(),,,null,"Hemicolectomy, including the descending and sigmoid colon",2003996,null
+getNextPvId(),,,null,Hemiglossectomy,2003996,null
+getNextPvId(),,,null,Hemihepatectomy,2003996,null
+getNextPvId(),,,null,Hemithyroidectomy,2003996,null
+getNextPvId(),,,null,Hepatectomy,2003996,null
+getNextPvId(),,,null,High anterior resection,2003996,null
+getNextPvId(),,,null,Higher pleuropneumonectomy,2003996,null
+getNextPvId(),,,null,Hip Replacement,2003996,null
+getNextPvId(),,,null,"Hysterectomy, abdominal with radical excision of pelvic lymph glands",2003996,null
+getNextPvId(),,,null,"Hysterectomy, abdominal, requiring extensive retroperitoneal dissection",2003996,null
+getNextPvId(),,,null,"Hysterectomy, abdominal, subtotal or total",2003996,null
+getNextPvId(),,,null,"Hysterectomy, bilateral salpingo- oophorectomy",2003996,null
+getNextPvId(),,,null,"Hysterectomy, vaginal",2003996,null
+getNextPvId(),,,null,"Hysterectomy, vaginal with salpingo-oophorectomy",2003996,null
+getNextPvId(),,,null,Ivor Lewis oesophagectomy,2003996,null
+getNextPvId(),,,null,Ivor Lewis oesophagogastrectomy,2003996,null
+getNextPvId(),,,null,Laparoscopic pelvic node dissection,2003996,null
+getNextPvId(),,,null,Laparoscopy with biopsy,2003996,null
+getNextPvId(),,,null,Laparotomy,2003996,null
+getNextPvId(),,,null,"Laparotomy, involving oophorectomy, salpingectomy, salpingoophorectomy",2003996,null
+getNextPvId(),,,null,Laproscopic adrenalectomy,2003996,null
+getNextPvId(),,,null,Laproscopic colectomy,2003996,null
+getNextPvId(),,,null,Laproscopic hemicolectomy,2003996,null
+getNextPvId(),,,null,Laproscopic nephrectomy,2003996,null
+getNextPvId(),,,null,Laproscopic small bowel resection,2003996,null
+getNextPvId(),,,null,Laryngectomy,2003996,null
+getNextPvId(),,,null,Laryngopharyngectomy,2003996,null
+getNextPvId(),,,null,Laser resection,2003996,null
+getNextPvId(),,,null,Layrngopharyngectomy,2003996,null
+getNextPvId(),,,null,Left adrenalectomy,2003996,null
+getNextPvId(),,,null,Left auricle resection,2003996,null
+getNextPvId(),,,null,Left axillary clearance,2003996,null
+getNextPvId(),,,null,Left breast reduction,2003996,null
+getNextPvId(),,,null,Left breast WLE and axillary clearance,2003996,null
+getNextPvId(),,,null,Left breast WLE and sentinal node biopsy,2003996,null
+getNextPvId(),,,null,Left hemi-hepatectomy,2003996,null
+getNextPvId(),,,null,Left hemicolectomy,2003996,null
+getNextPvId(),,,null,"Left hemicolectomy, including the descending and sigmoid colon",2003996,null
+getNextPvId(),,,null,Left hepatectomy,2003996,null
+getNextPvId(),,,null,Left higher pleuropneumonectomy,2003996,null
+getNextPvId(),,,null,Left lobe resection,2003996,null
+getNextPvId(),,,null,Left lobectomy,2003996,null
+getNextPvId(),,,null,Left lower atypical resection,2003996,null
+getNextPvId(),,,null,Left lower lobectomy,2003996,null
+getNextPvId(),,,null,Left lower pneumonectomy,2003996,null
+getNextPvId(),,,null,Left lower segmentectomy,2003996,null
+getNextPvId(),,,null,Left lower/median atypical resection,2003996,null
+getNextPvId(),,,null,Left lower/median lobectomy,2003996,null
+getNextPvId(),,,null,Left lower/median segmentectomy,2003996,null
+getNextPvId(),,,null,Left mastectomy,2003996,null
+getNextPvId(),,,null,Left mastectomy and axillary dissection,2003996,null
+getNextPvId(),,,null,Left mastectomy and sentinel node biopsy,2003996,null
+getNextPvId(),,,null,Left median atypical resection,2003996,null
+getNextPvId(),,,null,Left median lobectomy,2003996,null
+getNextPvId(),,,null,Left median segmentectomy,2003996,null
+getNextPvId(),,,null,Left nephrectomy,2003996,null
+getNextPvId(),,,null,Left nephrectomy with lymph node excision,2003996,null
+getNextPvId(),,,null,Left nephroureterectomy,2003996,null
+getNextPvId(),,,null,Left ooophorectomy,2003996,null
+getNextPvId(),,,null,Left orchidectomy,2003996,null
+getNextPvId(),,,null,Left orchidectomy with lymph node excision,2003996,null
+getNextPvId(),,,null,Left parathyroidectomy,2003996,null
+getNextPvId(),,,null,Left parotidectomy,2003996,null
+getNextPvId(),,,null,Left partial mastectomy,2003996,null
+getNextPvId(),,,null,Left partial nephrectomy,2003996,null
+getNextPvId(),,,null,Left pleurectomy,2003996,null
+getNextPvId(),,,null,Left pneumonectomy,2003996,null
+getNextPvId(),,,null,Left prophylactic mastectomy,2003996,null
+getNextPvId(),,,null,Left salpingo-oophorectomy,2003996,null
+getNextPvId(),,,null,Left upper atypical resection,2003996,null
+getNextPvId(),,,null,Left upper lobectomy,2003996,null
+getNextPvId(),,,null,Left upper segmentectomy,2003996,null
+getNextPvId(),,,null,Left upper/median atypical resection,2003996,null
+getNextPvId(),,,null,Left upper/median lobectomy,2003996,null
+getNextPvId(),,,null,Left upper/median segmentectomy,2003996,null
+getNextPvId(),,,null,Lipectomy wedge excision,2003996,null
+getNextPvId(),,,null,Liver lobectomy,2003996,null
+getNextPvId(),,,null,Lobe resection,2003996,null
+getNextPvId(),,,null,Lobectomy,2003996,null
+getNextPvId(),,,null,Loboisthmectomy,2003996,null
+getNextPvId(),,,null,Local excision,2003996,null
+getNextPvId(),,,null,Local excision of gastric tumour,2003996,null
+getNextPvId(),,,null,Local excision of peri-ampullary or duodenal tumour,2003996,null
+getNextPvId(),,,null,Low anterior resection,2003996,null
+getNextPvId(),,,null,Lower atypical resection,2003996,null
+getNextPvId(),,,null,Lower lobectomy,2003996,null
+getNextPvId(),,,null,Lower pneumonectomy,2003996,null
+getNextPvId(),,,null,Lower segmentectomy,2003996,null
+getNextPvId(),,,null,Lower/median atypical resection,2003996,null
+getNextPvId(),,,null,Lower/median lobectomy,2003996,null
+getNextPvId(),,,null,Lower/median pneumonectomy,2003996,null
+getNextPvId(),,,null,Lower/median segmentectomy,2003996,null
+getNextPvId(),,,null,Lumpectomy,2003996,null
+getNextPvId(),,,null,Lymph node dissection of neck,2003996,null
+getNextPvId(),,,null,Lymphadenectomy,2003996,null
+getNextPvId(),,,null,Mandibulectomy,2003996,null
+getNextPvId(),,,null,Mastectomy,2003996,null
+getNextPvId(),,,null,Mastectomy and axillary dissection,2003996,null
+getNextPvId(),,,null,Mastectomy and sentinel node biopsy,2003996,null
+getNextPvId(),,,null,Maxillectomy,2003996,null
+getNextPvId(),,,null,Median atypical resection,2003996,null
+getNextPvId(),,,null,Median lobectomy,2003996,null
+getNextPvId(),,,null,Median pneumonectomy,2003996,null
+getNextPvId(),,,null,Median segmentectomy,2003996,null
+getNextPvId(),,,null,Modified radical neck dissection,2003996,null
+getNextPvId(),,,null,Mucosectomy,2003996,null
+getNextPvId(),,,null,Near total or total pancreatectomy,2003996,null
+getNextPvId(),,,null,Neck dissection,2003996,null
+getNextPvId(),,,null,Nephrectomy,2003996,null
+getNextPvId(),,,null,Nephrectomy with lymph node excision,2003996,null
+getNextPvId(),,,null,Nephro-ureterectomy,2003996,null
+getNextPvId(),,,null,Nephroureterectomy,2003996,null
+getNextPvId(),,,null,Neurectomy,2003996,null
+getNextPvId(),,,null,Oesophageal biopsy,2003996,null
+getNextPvId(),,,null,Oesophagectomy,2003996,null
+getNextPvId(),,,null,Oesphagectomy with colon or jejunal anastomosis,2003996,null
+getNextPvId(),,,null,Omentectomy,2003996,null
+getNextPvId(),,,null,Oophorectomy,2003996,null
+getNextPvId(),,,null,Open proctocolectomy,2003996,null
+getNextPvId(),,,null,Open prostatectomy,2003996,null
+getNextPvId(),,,null,Orchidectomy,2003996,null
+getNextPvId(),,,null,Orchidectomy with lymph node excision,2003996,null
+getNextPvId(),,,null,"Orchidectomy, simple or subscapular, unilateral",2003996,null
+getNextPvId(),,,null,Pancreatectomy,2003996,null
+getNextPvId(),,,null,Pancreaticoduodenectomy,2003996,null
+getNextPvId(),,,null,Parathyroidectomy,2003996,null
+getNextPvId(),,,null,Parotidectomy,2003996,null
+getNextPvId(),,,null,Partial amputation,2003996,null
+getNextPvId(),,,null,Partial excision,2003996,null
+getNextPvId(),,,null,Partial gastrectomy,2003996,null
+getNextPvId(),,,null,Partial hepatectomy,2003996,null
+getNextPvId(),,,null,Partial mastectomy,2003996,null
+getNextPvId(),,,null,Partial maxillectomy,2003996,null
+getNextPvId(),,,null,Partial nephrectomy,2003996,null
+getNextPvId(),,,null,Partial parotidectomy (includes superficial),2003996,null
+getNextPvId(),,,null,Partial penectomy,2003996,null
+getNextPvId(),,,null,Partial splenectomy,2003996,null
+getNextPvId(),,,null,Partial thyroidectomy,2003996,null
+getNextPvId(),,,null,Partial vaginectomy,2003996,null
+getNextPvId(),,,null,Pelvic exenteration,2003996,null
+getNextPvId(),,,null,Pelvic lymphadenectomy,2003996,null
+getNextPvId(),,,null,Penectomy,2003996,null
+getNextPvId(),,,null,Percutaneous biopsy,2003996,null
+getNextPvId(),,,null,Pharyngectomy,2003996,null
+getNextPvId(),,,null,Pleurectomy,2003996,null
+getNextPvId(),,,null,Pleurodesis,2003996,null
+getNextPvId(),,,null,Pneumonectomy,2003996,null
+getNextPvId(),,,null,Posterior exenteration,2003996,null
+getNextPvId(),,,null,Proctocolectomy,2003996,null
+getNextPvId(),,,null,Prophylactic mastectomy,2003996,null
+getNextPvId(),,,null,Prophylacting bilateral salpingo-oophorectomy,2003996,null
+getNextPvId(),,,null,Radical cystectomy,2003996,null
+getNextPvId(),,,null,Radical excision of intraoral tumour involving resection of mandible and lymph glands of neck,2003996,null
+getNextPvId(),,,null,Radical hysterectomy,2003996,null
+getNextPvId(),,,null,Radical hysterectomy with radical excision of pelvic lymph nodes,2003996,null
+getNextPvId(),,,null,Radical lobectomy or pneumonectomy,2003996,null
+getNextPvId(),,,null,Radical mastectomy,2003996,null
+getNextPvId(),,,null,Radical neck dissection,2003996,null
+getNextPvId(),,,null,Radical nephrectomy with en bloc dissection of lymph nodes,2003996,null
+getNextPvId(),,,null,Radical or debulking operation for advanced gynaecological malignancy,2003996,null
+getNextPvId(),,,null,Radical parotidectomy,2003996,null
+getNextPvId(),,,null,Radical prostatectomy,2003996,null
+getNextPvId(),,,null,Radical prostatectomy with pelvic lymphadenectomy,2003996,null
+getNextPvId(),,,null,Radical vaginectomy,2003996,null
+getNextPvId(),,,null,Radical vulvectomy,2003996,null
+getNextPvId(),,,null,Rectal resection,2003996,null
+getNextPvId(),,,null,Rectosigmoidectomy (Hartmans procedure),2003996,null
+getNextPvId(),,,null,Removal of ascites,2003996,null
+getNextPvId(),,,null,Removal of pituitary tumour,2003996,null
+getNextPvId(),,,null,Removal of polyp,2003996,null
+getNextPvId(),,,null,Removal of retroperitoneal tumour,2003996,null
+getNextPvId(),,,null,Removal of soft tissue by surgical excision,2003996,null
+getNextPvId(),,,null,Removal of tonsils or tonsils and adenoids,2003996,null
+getNextPvId(),,,null,Resection of large intestine including  hemicolectomy,2003996,null
+getNextPvId(),,,null,Resection of large intestine including right hemicolectomy,2003996,null
+getNextPvId(),,,null,Resection of small intestine,2003996,null
+getNextPvId(),,,null,Resection of tumour,2003996,null
+getNextPvId(),,,null,Right adrenalectomy,2003996,null
+getNextPvId(),,,null,Right axillary clearance,2003996,null
+getNextPvId(),,,null,Right breast reduction,2003996,null
+getNextPvId(),,,null,Right breast WLE and axillary clearance,2003996,null
+getNextPvId(),,,null,Right breast WLE and sentinal node biopsy,2003996,null
+getNextPvId(),,,null,Right hemi-hepatectomy,2003996,null
+getNextPvId(),,,null,Right hemicolectomy,2003996,null
+getNextPvId(),,,null,Right hemithyroidectomy,2003996,null
+getNextPvId(),,,null,Right hepatectomy,2003996,null
+getNextPvId(),,,null,Right lobectomy,2003996,null
+getNextPvId(),,,null,Right lower atypical resection,2003996,null
+getNextPvId(),,,null,Right lower lobectomy,2003996,null
+getNextPvId(),,,null,Right lower pneumonectomy,2003996,null
+getNextPvId(),,,null,Right lower segmentectomy,2003996,null
+getNextPvId(),,,null,Right lower/median atypical resection,2003996,null
+getNextPvId(),,,null,Right lower/median lobectomy,2003996,null
+getNextPvId(),,,null,Right lower/median pneumonectomy,2003996,null
+getNextPvId(),,,null,Right lower/median segmentectomy,2003996,null
+getNextPvId(),,,null,Right mastectomy,2003996,null
+getNextPvId(),,,null,Right mastectomy and axillary dissection,2003996,null
+getNextPvId(),,,null,Right mastectomy and sentinel node biopsy,2003996,null
+getNextPvId(),,,null,Right median atypical resection,2003996,null
+getNextPvId(),,,null,Right median lobectomy,2003996,null
+getNextPvId(),,,null,Right median pneumonectomy,2003996,null
+getNextPvId(),,,null,Right median segmentectomy,2003996,null
+getNextPvId(),,,null,Right nephrectomy,2003996,null
+getNextPvId(),,,null,Right nephrectomy with lymph node excision,2003996,null
+getNextPvId(),,,null,Right nephroureterectomy,2003996,null
+getNextPvId(),,,null,Right oophorectomy,2003996,null
+getNextPvId(),,,null,Right orchidectomy,2003996,null
+getNextPvId(),,,null,Right orchidectomy with lymph node excision,2003996,null
+getNextPvId(),,,null,Right parathyroidectomy,2003996,null
+getNextPvId(),,,null,Right parotidectomy,2003996,null
+getNextPvId(),,,null,Right partial mastectomy,2003996,null
+getNextPvId(),,,null,Right partial nephrectomy,2003996,null
+getNextPvId(),,,null,Right pleurectomy,2003996,null
+getNextPvId(),,,null,Right pneumonectomy,2003996,null
+getNextPvId(),,,null,Right prophylactic mastectomy,2003996,null
+getNextPvId(),,,null,Right salpingo-oophorectomy,2003996,null
+getNextPvId(),,,null,Right upper atypical resection,2003996,null
+getNextPvId(),,,null,Right upper lobectomy,2003996,null
+getNextPvId(),,,null,Right upper pneumonectomy,2003996,null
+getNextPvId(),,,null,Right upper segmentectomy,2003996,null
+getNextPvId(),,,null,Right upper/median atypical resection,2003996,null
+getNextPvId(),,,null,Right upper/median lobectomy,2003996,null
+getNextPvId(),,,null,Right upper/median segmentectomy,2003996,null
+getNextPvId(),,,null,Robot-assisted radical prostatectomy,2003996,null
+getNextPvId(),,,null,Salpingo-oophorectomy,2003996,null
+getNextPvId(),,,null,Segmental mandibulectomy and neck dissection,2003996,null
+getNextPvId(),,,null,Segmental resection of mandible,2003996,null
+getNextPvId(),,,null,Segmentectomy,2003996,null
+getNextPvId(),,,null,Selective neck dissection IIV,2003996,null
+getNextPvId(),,,null,Sentinel node biopsy,2003996,null
+getNextPvId(),,,null,Sigmoid colectomy,2003996,null
+getNextPvId(),,,null,Sigmoidoscopy with biopsy,2003996,null
+getNextPvId(),,,null,Simple lymph node dissection of neck,2003996,null
+getNextPvId(),,,null,Skin sparing mastectomy,2003996,null
+getNextPvId(),,,null,Skin sparing mastectomy and sentinal node biopsy,2003996,null
+getNextPvId(),,,null,Skin sparing matectomy and axillary dissection,2003996,null
+getNextPvId(),,,null,Small bowel intubation with biopsy,2003996,null
+getNextPvId(),,,null,Small bowel resection,2003996,null
+getNextPvId(),,,null,Splenectomy,2003996,null
+getNextPvId(),,,null,Stereotactic Craniotomy,2003996,null
+getNextPvId(),,,null,Sternotomy,2003996,null
+getNextPvId(),,,null,Subcutaneous mastectomy,2003996,null
+getNextPvId(),,,null,Subtotal parotidectomy,2003996,null
+getNextPvId(),,,null,Subtotal radical gastrectomy,2003996,null
+getNextPvId(),,,null,Superficial axillary lymph node dissection,2003996,null
+getNextPvId(),,,null,Superficial inguinal node dissection,2003996,null
+getNextPvId(),,,null,Superficial lobectomy,2003996,null
+getNextPvId(),,,null,Superficial parotidectomy,2003996,null
+getNextPvId(),,,null,Supraglottic laryngectomy,2003996,null
+getNextPvId(),,,null,Supraomohyoid Gland Dissection,2003996,null
+getNextPvId(),,,null,TAH/BSO (Total abodominal hysterectomy and bilateral salpingo-oophorectomy),2003996,null
+getNextPvId(),,,null,Temporal lobectomy,2003996,null
+getNextPvId(),,,null,Thoracic wall resection,2003996,null
+getNextPvId(),,,null,Thoracotomy,2003996,null
+getNextPvId(),,,null,Thymectomy,2003996,null
+getNextPvId(),,,null,Thyroidectomy,2003996,null
+getNextPvId(),,,null,"Tongue partial removal, hemi-glossectomy",2003996,null
+getNextPvId(),,,null,Total adrenalectomy,2003996,null
+getNextPvId(),,,null,Total colectomy,2003996,null
+getNextPvId(),,,null,Total colectomy with excision of rectum,2003996,null
+getNextPvId(),,,null,Total gastrectomy,2003996,null
+getNextPvId(),,,null,Total gastrectomy including lower oesophagus,2003996,null
+getNextPvId(),,,null,Total hemithyroidectomy,2003996,null
+getNextPvId(),,,null,Total mastectomy,2003996,null
+getNextPvId(),,,null,Total mesorectal excision,2003996,null
+getNextPvId(),,,null,Total or subtotal thyroidectomy,2003996,null
+getNextPvId(),,,null,Total pancreatectomy,2003996,null
+getNextPvId(),,,null,Total parathyroidectomy,2003996,null
+getNextPvId(),,,null,Total parotidectomy,2003996,null
+getNextPvId(),,,null,Total penectomy,2003996,null
+getNextPvId(),,,null,Total radical gastrectomy,2003996,null
+getNextPvId(),,,null,Total resection of mandible,2003996,null
+getNextPvId(),,,null,Total thyroidectomy,2003996,null
+getNextPvId(),,,null,Trans-hiatal oesophagectomy,2003996,null
+getNextPvId(),,,null,Transanal resection,2003996,null
+getNextPvId(),,,null,Transsphincteric excision,2003996,null
+getNextPvId(),,,null,Transurethral resection (TURP),2003996,null
+getNextPvId(),,,null,Transurethral resection of bladder tumour (TURBT),2003996,null
+getNextPvId(),,,null,"Trephine, percutaneous approach",2003996,null
+getNextPvId(),,,null,Tumourectomy,2003996,null
+getNextPvId(),,,null,Ultra low anterior resection,2003996,null
+getNextPvId(),,,null,Unilateral hemithyroidectomy,2003996,null
+getNextPvId(),,,null,Unilateral retroperitoneal lymph node dissection,2003996,null
+getNextPvId(),,,null,Upper atypical resection,2003996,null
+getNextPvId(),,,null,Upper lobectomy,2003996,null
+getNextPvId(),,,null,Upper pneumonectomy,2003996,null
+getNextPvId(),,,null,Upper segmentectomy,2003996,null
+getNextPvId(),,,null,Upper/median atypical resection,2003996,null
+getNextPvId(),,,null,Upper/median lobectomy,2003996,null
+getNextPvId(),,,null,Upper/median segmentectomy,2003996,null
+getNextPvId(),,,null,Ureterectomy,2003996,null
+getNextPvId(),,,null,Vaginal hysterectomy,2003996,null
+getNextPvId(),,,null,Wedge hepatectomy,2003996,null
+getNextPvId(),,,null,Wedge resection,2003996,null
+getNextPvId(),,,null,Whipples procedure,2003996,null
+getNextPvId(),,,null,Wide local excision (WLE),2003996,null
+getNextPvId(),,,null,Wide local excision & axillary clearance,2003996,null
+getNextPvId(),,,null,Wide local re excision,2003996,null
