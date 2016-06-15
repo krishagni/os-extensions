@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+jar {
+  baseName = 'os-mscc'
+  version =  '1.0.0'
+
+  manifest {
+    attributes("os-plugin-name": "mscc")
+  }
+
+  doFirst {
+    from ('./src/main/webapp/app/') {
+      include '**/**'
+ 
+      into 'META-INF/resources/mscc'
+    }
+  }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+build.dependsOn jar

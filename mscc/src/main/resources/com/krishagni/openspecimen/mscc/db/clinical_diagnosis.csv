@@ -1,0 +1,170 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Right Lateral Border of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Left Lateral Border of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Bilateral Border of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia on Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Verrucous Carcinoma of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Adenocarcinoma of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Erythroleukoplakia of Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Right Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Left Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia on Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer on Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Verrucous Carcinoma of Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Adenocarcinoma of Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Epiglottis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Aryepiglottic Fold,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Glottis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Supraglottis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Vocal Cord,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Hypopharynx,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Post Cricoid,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Pyriform Sinus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Post Pharyngeal Wall,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Right Oropharynx,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Left Oropharynx,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Soft Palate,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Soft Palate,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Adeno Carcinoma of Soft Palate,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Base of Tongue(Vallecula),Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Tonsil,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Posterior Wall,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Uvula,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Tonillar Pillar,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Right Nasopharynx,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Left Nasopharynx,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Right Gingivo Buccal Sulcus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Left Gingivo Buccal Sulcus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia on Gigivo Buccal Sulcus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer on Gingivo Buccal Sulcus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Verrucous Carcinoma of Gingivo Buccal Sulcus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Adenocarcinoma of Gingivo Buccal Sulcus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Right Upper Gingivo Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Right Lower Gingivo Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Left Upper Gingivo Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Left Lower Gingivo Buccal Mucosa,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Right Retromolar Trigone,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Left Retromolar Trigone,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia on Retromolar Trigone,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer on Retromolar Trigone,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Verrucous Carcinoma of Retromolar Trigone,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Adenocarcinoma of Retromolar Trigone,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Upper Lower Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Upper Outer Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Lower Inner Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Lower Outer Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Right Commissure,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Left Commissure,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Right Commissure,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Left Commissure,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Upper Lower Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Upper Outer Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Lower Inner Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Lower Outer Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer of Upper Lower Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer of Upper Outer Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer of Lower Inner Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Ulcer of Lower Outer Lip,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Hard Palate,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Hard Palate,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Floor of Mouth,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Floor of Mouth,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Oral Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Leukoplakia of Oral Tongue,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Upper Alveolus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Lower Alveolus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Right Maxilla,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Left Maxilla,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Maxillary Sinus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Maxillary Alveolus,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Anterior Maxilla,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Posterior Maxilla,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Right Mandible,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Left Mandible,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Anterior Mandible,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Posterior Mandible,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Carcinoma of Thyroid,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute myelogenous leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Chronic myelogenous leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute lymphoblastic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Chronic lymphocytic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with t(8;21) ; RUNX1-RUNX1T1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with inv(16)(p13.1q22) or t(16;16)(p13.1;q22); CBFB-MYH11,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with t(15;17)(q22;q12); PML-RARA,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with t(9;11)(p22;q23); MLLT3-MLL,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with t(6;9)(p23;q34); DEK-NUP214,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with inv(3)(q21q26.2) or t(3;3)(q21;q26.2); RPN1-EVI1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML (megakaryoblastic) with t(1;22)(p13;q13); RBM15-MKL1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Provisional entity: AML with mutated NPM1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Provisional entity: AML with mutated CEBPA,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Acute myeloid leukaemia, not otherwise specified (NOS)",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with minimal differentiation,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML without maturation,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,AML with maturation,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute myelomonocytic leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute monoblastic/monocytic leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute erythroid leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Pure erythroid leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Erythroleukaemia, erythroid/myeloid",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute megakaryoblastic leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute basophilic leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute panmyelosis with myeloﬁbrosis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Myeloid sarcoma,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Myeloid proliferations related to Down syndrome,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Transient abnormal myelopoiesis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Myeloid leukemia associated with Down syndrome,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Blastic plasmacytoid dendritic cell neoplasm,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute undifferentiated leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Mixed phenotype acute leukemia with t(9;22)(q34;q11.2); BCR-ABL1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Mixed phenotype acute leukemia with t(v;11q23); MLL rearranged,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Mixed phenotype acute leukemia, B-myeloid, NOS",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Mixed phenotype acute leukemia, T-myeloid, NOS",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory cytopenia with unilineage dysplasia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory neutopenia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory thrombocytopenia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory anemia RA,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory anemia with ring sideroblasts,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory cytopenia with multilineage dysplasia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Refractory anemia with excess blasts,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Myelodysplastic syndrome,unclassifiable",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,MDS with isolated del(5q),Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Chronic myelomonocytic leukaemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Myelodysplastic/myeloproliferative neoplasm, unclassifiable",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,RARS associated with marked thrombocytosis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Chronic myelogenous leukemia, BCR-ABL1–positive",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Chronic neutrophilic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Polycythemia vera,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Primary myelofibrosis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Essential thrombocythemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Chronic eosinophilic leukemia, not otherwise categorized",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Hypereosinophilic syndrome,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Mastocytosis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Myeloproliferative neoplasms, unclassifiable",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Myeloid and lymphoid neoplasms associated with PDGFRA rearrangement,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Myeloid neoplasms associated with PDGFRB rearrangement,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Myeloid and lymphoid neoplasms associated with FGFR1 abnormalities,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Chronic myelomonocytic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"Atypical chronic myelomonocytic leukemia, BCR-ABL1-negative",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Juvenile myelomonocytic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Provisional entity: refractory anemia with ring sideroblasts and thrombocytosis,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,"B lymphoblastic leukemia/lymphoma, NOS",Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with recurrent genetic abnormalities,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with t(9;22)(q34;q11.2);BCR-ABL 1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with t(v;11q23);MLL rearranged,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with t(12;21)(p13;q22) TEL-AML1 (ETV6-RUNX1),Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with hyperdiploidy,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with hypodiploidy,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with t(5;14)(q31;q32) IL3-IGH,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with t(1;19)(q23;p13.3);TCF3-PBX1,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute T-lymphoblastic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,NK Cell leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Undifferentiated acture myeloblastic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute myeloblastic leukemia with minimal maturation,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute myeloblastic leukemia with maturation,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute promyelocytic leukemia (APL),Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute myelomonocytic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute myelomonocytic leukemia with eosinophilia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute monocytic leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute erythroid leukemia,Clinical_Diagnosis_PID,null
+getNextPvId(),,,null,Acute megakaryoblastic leukemia,Clinical_Diagnosis_PID,null

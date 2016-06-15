@@ -1,0 +1,7 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,Alveolus,Tissue_Site_PID,null
+getNextPvId(),,,null,Buccal mucosa,Tissue_Site_PID,null
+getNextPvId(),,,null,Gingivo buccal sulcus,Tissue_Site_PID,null
+getNextPvId(),,,null,Maxilla,Tissue_Site_PID,null
+getNextPvId(),,,null,Oral cavity,Tissue_Site_PID,null
+getNextPvId(),,,null,Retromolar trigone,Tissue_Site_PID,null
