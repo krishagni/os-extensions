@@ -210,4 +210,23 @@
       <column name="parent_identifier" type="NUMERIC"/>
     </loadData>
   </changeSet>
+  
+  <changeSet author="mdnasim" id="Delete repeated collection procedure pv's">
+    <sql>
+      delete from
+        catissue_permissible_value
+      where
+        public_id='2003996' and value='High Anterior Resection';
+    </sql>
+  </changeSet>
+  
+  <changeSet author="mdnasim" id="Add two collection procedure pv's">
+    <sql>
+      insert into catissue_permissible_value 
+        (identifier, concept_code, definition, parent_identifier, value, public_id, sortorder)
+      values 
+        (getNextPvId(), '', '', NULL, 'High Anterior Resection', '2003996', 0),
+        (getNextPvId(), '', '', NULL, 'Not Specified', '2003996', 0);
+    </sql>
+  </changeSet>
 </databaseChangeLog>
