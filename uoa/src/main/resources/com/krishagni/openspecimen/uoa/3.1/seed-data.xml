@@ -211,7 +211,7 @@
     </loadData>
   </changeSet>
   
-  <changeSet author="mdnasim" id="Delete repeated collection procedure pv's">
+  <changeSet author="mdnasim" id="Delete repeated pv 'High Anterior Resection' of collection procedure">
     <sql>
       delete from
         catissue_permissible_value
@@ -220,7 +220,7 @@
     </sql>
   </changeSet>
   
-  <changeSet author="mdnasim" id="Add two collection procedure pv's">
+  <changeSet author="mdnasim" id="Added 'Not Specified' and 'High Anterior Resection' pv's for collection procedure">
     <sql>
       insert into catissue_permissible_value 
         (identifier, concept_code, definition, parent_identifier, value, public_id, sortorder)
