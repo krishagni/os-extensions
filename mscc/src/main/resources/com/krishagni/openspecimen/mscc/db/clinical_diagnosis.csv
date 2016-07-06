@@ -110,7 +110,6 @@ getNextPvId(),,,null,"Erythroleukaemia, erythroid/myeloid",Clinical_Diagnosis_PI
 getNextPvId(),,,null,Acute megakaryoblastic leukaemia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Acute basophilic leukaemia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Acute panmyelosis with myeloﬁbrosis,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Myeloid sarcoma,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Myeloid proliferations related to Down syndrome,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Transient abnormal myelopoiesis,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Myeloid leukemia associated with Down syndrome,Clinical_Diagnosis_PID,null
@@ -124,8 +123,6 @@ getNextPvId(),,,null,Refractory cytopenia with unilineage dysplasia,Clinical_Dia
 getNextPvId(),,,null,Refractory neutopenia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Refractory thrombocytopenia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Refractory anemia RA,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Refractory anemia with ring sideroblasts,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Refractory cytopenia with multilineage dysplasia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Refractory anemia with excess blasts,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,"Myelodysplastic syndrome,unclassifiable",Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,MDS with isolated del(5q),Clinical_Diagnosis_PID,null
@@ -134,19 +131,15 @@ getNextPvId(),,,null,"Myelodysplastic/myeloproliferative neoplasm, unclassifiabl
 getNextPvId(),,,null,RARS associated with marked thrombocytosis,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,"Chronic myelogenous leukemia, BCR-ABL1–positive",Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Chronic neutrophilic leukemia,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Polycythemia vera,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Primary myelofibrosis,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Essential thrombocythemia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,"Chronic eosinophilic leukemia, not otherwise categorized",Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Hypereosinophilic syndrome,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Mastocytosis,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,"Myeloproliferative neoplasms, unclassifiable",Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Myeloid and lymphoid neoplasms associated with PDGFRA rearrangement,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Myeloid neoplasms associated with PDGFRB rearrangement,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Myeloid and lymphoid neoplasms associated with FGFR1 abnormalities,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Chronic myelomonocytic leukemia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,"Atypical chronic myelomonocytic leukemia, BCR-ABL1-negative",Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Juvenile myelomonocytic leukemia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Provisional entity: refractory anemia with ring sideroblasts and thrombocytosis,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,"B lymphoblastic leukemia/lymphoma, NOS",Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,B lymphoblastic leukemia/lymphoma with recurrent genetic abnormalities,Clinical_Diagnosis_PID,null
@@ -163,8 +156,5 @@ getNextPvId(),,,null,Undifferentiated acture myeloblastic leukemia,Clinical_Diag
 getNextPvId(),,,null,Acute myeloblastic leukemia with minimal maturation,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Acute myeloblastic leukemia with maturation,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Acute promyelocytic leukemia (APL),Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Acute myelomonocytic leukemia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Acute myelomonocytic leukemia with eosinophilia,Clinical_Diagnosis_PID,null
 getNextPvId(),,,null,Acute monocytic leukemia,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Acute erythroid leukemia,Clinical_Diagnosis_PID,null
-getNextPvId(),,,null,Acute megakaryoblastic leukemia,Clinical_Diagnosis_PID,null
