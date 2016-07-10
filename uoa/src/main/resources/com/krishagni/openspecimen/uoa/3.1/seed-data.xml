@@ -160,23 +160,6 @@
     </loadData>
   </changeSet>
 
-
-  <changeSet author="durgadasc" id="Loading permissible values for collection_proccedure">
-    <preConditions onFail="MARK_RAN">
-      <sqlCheck expectedResult="0">
-        select
-          case when (count(*) > 0) then 1 else 0 end
-        from
-          catissue_permissible_value
-        where
-          public_id = '2003996'
-      </sqlCheck>
-    </preConditions>
-    <loadData file="classpath:com/krishagni/openspecimen/uoa/3.1/collection_procedure.csv" tableName="catissue_permissible_value">
-      <column name="identifier" type="NUMERIC"/>
-    </loadData>
-  </changeSet>
-
   <changeSet author="durgadasc" id="Loading permissible values for collection_container">
     <preConditions onFail="MARK_RAN">
       <sqlCheck expectedResult="0">
@@ -201,32 +184,29 @@
       <column name="parent_identifier" type="NUMERIC"/>
     </loadData>
   </changeSet>
-  
-  <changeSet author="mdnasim" id="Add collection procedure pv's">
-    <loadData encoding="UTF-8"
-      file="classpath:com/krishagni/openspecimen/uoa/3.1/collection_procedure_list.csv"
-      tableName="CATISSUE_PERMISSIBLE_VALUE">
-      <column name="identifier" type="NUMERIC"/>
-      <column name="parent_identifier" type="NUMERIC"/>
-    </loadData>
-  </changeSet>
-  
-  <changeSet author="mdnasim" id="Delete repeated pv 'High Anterior Resection' of collection procedure">
+
+  <changeSet author="marwahan" id="Deleting existing PV values for collection procedure">
     <sql>
       delete from
-        catissue_permissible_value
-      where
-        public_id='2003996' and value='High Anterior Resection';
+        catissue_permissible_value 
+      where 
+        public_id = '2003996';
     </sql>
-  </changeSet>
+  </changeSet>  
   
-  <changeSet author="mdnasim" id="Added 'Not Specified' and 'High Anterior Resection' pv's for collection procedure">
-    <sql>
-      insert into catissue_permissible_value 
-        (identifier, concept_code, definition, parent_identifier, value, public_id, sortorder)
-      values 
-        (getNextPvId(), '', '', NULL, 'High Anterior Resection', '2003996', 0),
-        (getNextPvId(), '', '', NULL, 'Not Specified', '2003996', 0);
-    </sql>
+  <changeSet author="marwahan" id="Loading permissible values for collection_procedure">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        select
+          case when (count(*) > 0) then 1 else 0 end
+        from
+          catissue_permissible_value
+        where
+          public_id = '2003996'
+      </sqlCheck>
+    </preConditions>
+    <loadData file="classpath:com/krishagni/openspecimen/uoa/3.1/collection_procedure.csv" tableName="catissue_permissible_value">
+      <column name="identifier" type="NUMERIC"/>
+    </loadData>
   </changeSet>
 </databaseChangeLog>

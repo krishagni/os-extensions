@@ -85,6 +85,11 @@
       </div>
     </os-inline-edit>
   </li>
+  
+  <div ng-if="!!cpr.participant.extensionDetail">
+    <div os-extension-overview ext-object="cpr.participant.extensionDetail" show-column="2">
+    </div>
+  </div>
 
   <li class="item">
     <strong class="key key-sm" translate="participant.other_cps">Other Protocols:</strong>
