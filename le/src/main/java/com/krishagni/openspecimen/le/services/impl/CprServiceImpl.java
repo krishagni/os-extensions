@@ -21,6 +21,7 @@ import com.krishagni.catissueplus.core.common.errors.ErrorType;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
+import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.openspecimen.le.events.BulkParticipantRegDetail;
 import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
@@ -29,9 +30,16 @@ public class CprServiceImpl implements CprService {
 	
 	private DaoFactory daoFactory;
 	
+	private LabelGenerator labelGenerator;
+	
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
+	
+	public void setLabelGenerator(LabelGenerator labelGenerator) {
+		this.labelGenerator = labelGenerator;
+	}
+
 
 	@Override
 	@PlusTransactional	
@@ -78,11 +86,6 @@ public class CprServiceImpl implements CprService {
 			return null;
 		}
 
-		if (!cp.isValidPpid(ppid)) {
-			ose.addError(CprErrorCode.INVALID_PPID, ppid);
-			return null;
-		}
-		
 		Participant participant = daoFactory.getParticipantDao().getByEmpi(empi);
 		if (participant == null) {
 			participant = new Participant();
@@ -113,6 +116,8 @@ public class CprServiceImpl implements CprService {
 			regDate = Calendar.getInstance().getTime();
 		}			
 		cpr.setRegistrationDate(regDate);
+		
+		ensureValidAndUniquePpid(cpr, ose);
 			
 		if (participant.getId() == null) {
 			daoFactory.getParticipantDao().saveOrUpdate(participant);
@@ -121,5 +126,38 @@ public class CprServiceImpl implements CprService {
 		AccessCtrlMgr.getInstance().ensureUpdateCprRights(cpr);		
 		daoFactory.getCprDao().saveOrUpdate(cpr);
 		return ParticipantRegDetail.from(cpr);
+	}
+	
+	private void ensureValidAndUniquePpid(CollectionProtocolRegistration cpr, OpenSpecimenException ose) {
+		CollectionProtocol cp = cpr.getCollectionProtocol();
+		boolean ppidReq = cp.isManualPpidEnabled() || StringUtils.isBlank(cp.getPpidFormat());
+		
+		String ppid = cpr.getPpid();
+		if (StringUtils.isBlank(ppid)) {
+			if (ppidReq) {
+				ose.addError(CprErrorCode.PPID_REQUIRED);
+			}
+			
+			return;
+		}
+		
+		if (StringUtils.isNotBlank(cp.getPpidFormat())) {
+			//
+			// PPID format is specified
+			//
+			if (!cp.isManualPpidEnabled()) {
+				ose.addError(CprErrorCode.MANUAL_PPID_NOT_ALLOWED);
+				return;
+			}
+			
+			if (!labelGenerator.validate(cp.getPpidFormat(), cpr, ppid)) {
+				ose.addError(CprErrorCode.INVALID_PPID, ppid);
+				return;
+			}
+		}
+		
+		if (daoFactory.getCprDao().getCprByPpid(cp.getId(), ppid) != null) {
+			ose.addError(CprErrorCode.DUP_PPID, ppid);
+		}
 	}
 }

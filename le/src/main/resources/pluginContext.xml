@@ -21,6 +21,7 @@
   
   <bean id="cprService" class="com.krishagni.openspecimen.le.services.impl.CprServiceImpl">
     <property name="daoFactory"  ref="biospecimenDaoFactory"/>
+    <property name="labelGenerator" ref="ppidGenerator"/>
   </bean>
 
   <bean id="specimenCollSvc" class="com.krishagni.openspecimen.le.services.impl.SpecimenCollectionServiceImpl">
