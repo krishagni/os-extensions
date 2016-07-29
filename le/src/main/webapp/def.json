@@ -1,6 +1,6 @@
 {
   "styles": [
-    "le/css/app.css"
+    "le/styles/app.@style_hash@.css"
   ],
 
   "scripts": [

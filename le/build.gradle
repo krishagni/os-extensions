@@ -25,15 +25,18 @@ jar {
 
       into 'META-INF/resources/le'
 
-      def scriptHash = "-1"
+      def scriptHash = "-1", styleHash = "-1"
       new File('./src/main/webapp/dist/').eachFileRecurse(FILES) {
         if (it.name.startsWith("scripts") && it.name.endsWith("js")) {
           def parts = it.name.split(/\./);
           scriptHash = parts[1]
+        } else if (it.name.startsWith("app") && it.name.endsWith("css")) {
+          def parts = it.name.split(/\./)
+          styleHash = parts[1]
         }
       }
 
-      filter(ReplaceTokens, tokens: [script_hash: scriptHash])
+      filter(ReplaceTokens, tokens: [script_hash: scriptHash, style_hash: styleHash])
     }
   }
 }
