@@ -1,20 +1,18 @@
 package com.krishagni.openspecimen.cchs.dao.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.repository.impl.DaoFactoryImpl;
-import com.krishagni.catissueplus.core.common.PlusTransactional;
-import com.krishagni.catissueplus.core.common.repository.AbstractDao;
+import com.krishagni.openspecimen.cchs.dao.SpecModByParticpantDao;
 import com.krishagni.openspecimen.cchs.events.SpecModByParticpantDetail;
 
 
-public class SpecModByParticpantDaoImpl extends AbstractDao<SpecModByParticpantDetail> implements SpecModByParticpantDao{
-
+public class SpecModByParticpantDaoImpl implements SpecModByParticpantDao {
 	private DaoFactory daoFactory;
 
 	public void setDaoFactory(DaoFactory daoFactory) {
@@ -25,41 +23,25 @@ public class SpecModByParticpantDaoImpl extends AbstractDao<SpecModByParticpantD
 		return ((DaoFactoryImpl) daoFactory).getSessionFactory().getCurrentSession();
 	}
 
-	@PlusTransactional
 	@Override
-	public List<SpecModByParticpantDetail> getExportDetails(Date startDate, Date endDate) {
+	public List<SpecModByParticpantDetail> getSpecModByParticipantDetails(Date startDate, Date endDate) {
 
-		List<Object[]> list = getCurrentSession().
-				createSQLQuery(GET_EXPORT_RULES_SQL).
-				setDate("startDate", startDate).
-				setDate("endDate", endDate).
-				list();
-
-		List<SpecModByParticpantDetail> result = new ArrayList<SpecModByParticpantDetail>();
-
-		for(Object[] obj: list) {
-		  result.add(populateExportDetail(obj));
-		}
-
-		return result;
-	}
-
-	@Override
-	public Date getDate(Long id) {
-		List<Object[]> scheduledJob=getCurrentSession()
-				.createSQLQuery(GET_LAST_EXECUTED_JOB)
-				.setInteger("ID", Math.toIntExact(id))
+		List<Object[]> list = getCurrentSession().createSQLQuery(GET_SPEC_MOD_BY_PARTICIPANTS)
+				.setTimestamp("startDate", startDate)
+				.setTimestamp("endDate", endDate)
 				.list();
 
-		Object[] reqJobDetail = scheduledJob.get(0);
-
-		Date date= getDateFromJob(reqJobDetail);
-		return  date;
+		return list.stream().map(obj -> populateExportDetail(obj)).collect(Collectors.toList());
 	}
 
-	private Date getDateFromJob(Object[] obj) {
-		Date date = getDate(obj[4]);
-		return  date;
+	@Override
+	public Date getDateFromJob(Long jobId) {
+		List<Object> scheduledJob=getCurrentSession().createSQLQuery(GET_LAST_JOB_RUN_DATE)
+				.setLong("id", jobId)
+				.list();
+
+		Date lastJobRunDate= getDate(scheduledJob.get(0));
+		return  lastJobRunDate;
 	}
 
 	private SpecModByParticpantDetail populateExportDetail(Object[] obj) {
@@ -96,23 +78,23 @@ public class SpecModByParticpantDaoImpl extends AbstractDao<SpecModByParticpantD
 		  return  null;
 	}
 
-	public static final String GET_EXPORT_RULES_SQL =
+	public static final String GET_SPEC_MOD_BY_PARTICIPANTS =
 		"select "+
-		  "specimen.identifier SPECIMEN_ID, participant.identifier PARTICIPANT_ID, participant.FIRST_NAME, "+
+		  "specimen.IDENTIFIER SPECIMEN_ID, participant.IDENTIFIER PARTICIPANT_ID, participant.FIRST_NAME, "+
 		  "participant.MIDDLE_NAME, participant.LAST_NAME, participant.BIRTH_DATE, medical.MEDICAL_RECORD_NUMBER, "+
 		  "specimen.TISSUE_SITE, specimen.CREATED_ON, participant.GENDER "+
 		"from "+
-		  "catissue_participant participant "+
-	 	  "left join catissue_part_medical_id medical on medical.PARTICIPANT_id = participant.IDENTIFIER "+
-		  "join catissue_coll_prot_reg reg on reg.PARTICIPANT_ID = participant.IDENTIFIER "+
-		  "join catissue_specimen_coll_group  grp on grp.COLLECTION_PROTOCOL_REG_ID = reg.IDENTIFIER "+
-		  "join catissue_specimen specimen on specimen.SPECIMEN_COLLECTION_GROUP_ID = grp.IDENTIFIER "+
-		  "join catissue_specimen_aud aud on aud.IDENTIFIER = specimen.IDENTIFIER "+
-		  "join os_revisions rev on aud.REV = rev.REV "+
+		  "CATISSUE_PARTICIPANT participant "+
+	 	  "left join CATISSUE_PART_MEDICAL_ID medical on medical.PARTICIPANT_ID = participant.IDENTIFIER "+
+		  "join CATISSUE_COLL_PROT_REG reg on reg.PARTICIPANT_ID = participant.IDENTIFIER "+
+		  "join CATISSUE_SPECIMEN_COLL_GROUP  grp on grp.COLLECTION_PROTOCOL_REG_ID = reg.IDENTIFIER "+
+		  "join CATISSUE_SPECIMEN specimen on specimen.SPECIMEN_COLLECTION_GROUP_ID = grp.IDENTIFIER "+
+		  "join CATISSUE_SPECIMEN_AUD aud on aud.IDENTIFIER = specimen.IDENTIFIER "+
+		  "join OS_REVISIONS rev on aud.REV = rev.REV "+
 		"where "+
 		  "rev.REVTSTMP between :startDate and :endDate ";
 
 
-	public static final String GET_LAST_EXECUTED_JOB =
-	  "select * from os_scheduled_job_runs where STATUS ='SUCCEEDED' AND SCHEDULED_JOB_ID=:ID ORDER BY IDENTIFIER DESC LIMIT 1";
+	public static final String GET_LAST_JOB_RUN_DATE =
+		"select FINISHED_AT from OS_SCHEDULED_JOB_RUNS where STATUS ='SUCCEEDED' and SCHEDULED_JOB_ID=:id order by IDENTIFIER desc limit 1";
 }

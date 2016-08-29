@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -22,7 +24,7 @@ import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
 import com.krishagni.catissueplus.core.common.util.CsvWriter;
 import com.krishagni.catissueplus.core.common.util.MessageUtil;
 import com.krishagni.catissueplus.core.common.util.Utility;
-import com.krishagni.openspecimen.cchs.dao.impl.SpecModByParticpantDao;
+import com.krishagni.openspecimen.cchs.dao.SpecModByParticpantDao;
 import com.krishagni.openspecimen.cchs.events.SpecModByParticpantDetail;
 
 @Configurable
@@ -47,14 +49,14 @@ public class SpecModByParticipantJob implements ScheduledTask {
 	@PlusTransactional
 	public void doJob(ScheduledJobRun scheduledJobRun) throws Exception {
 		Long id=scheduledJobRun.getScheduledJob().getId();
-		Date startDate = exportDao.getDate(id);
-		Date endDate = Calendar.getInstance().getTime();
+		Date startDate = exportDao.getDateFromJob(id);
+		Date endDate = scheduledJobRun.getStartedAt();
 
 		getExportDetail(startDate,endDate);
 	}
 
 	private ResponseEvent<File> getExportDetail(Date startDate, Date endDate) {
-		List<SpecModByParticpantDetail> exportDetailsList= exportDao.getExportDetails(startDate,endDate);
+		List<SpecModByParticpantDetail> exportDetailsList= exportDao.getSpecModByParticipantDetails(startDate,endDate);
 		String dataDir =cfg.getDataDir();
 		File file=sendToPrint(exportDetailsList, dataDir, endDate);
 
@@ -62,12 +64,11 @@ public class SpecModByParticipantJob implements ScheduledTask {
 	}
 
 	private File sendToPrint(List<SpecModByParticpantDetail> list, String path, Date date) {
-		SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
 		CsvWriter csvWriter = null;
 
 		try {
-			String  dateOfFile = Utility.getDateString(date);
-			File tempFile = new File(path,"export-details-record"+dateOfFile+".csv");
+			String dateForCsvName= DateFormatUtils.format(date,"yyyyMMddHHmm");
+			File tempFile = new File(path,"export-details-record"+dateForCsvName+".csv");
 			csvWriter = CsvFileWriter.createCsvFileWriter(tempFile);
 
 			csvWriter.writeNext(new String[] {
