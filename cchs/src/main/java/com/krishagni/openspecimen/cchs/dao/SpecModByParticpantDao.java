@@ -8,5 +8,5 @@ import com.krishagni.openspecimen.cchs.events.SpecModByParticpantDetail;
 public interface SpecModByParticpantDao {
 	public List<SpecModByParticpantDetail> getSpecModByParticipantDetails(Date startDate, Date endDate);
 
-	public Date getDateFromJob(Long id);
+	public Date lastJobRunDateFromJobId(Long id);
 }

@@ -1,5 +1,6 @@
 package com.krishagni.openspecimen.cchs.dao.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import org.hibernate.Session;
 
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.repository.impl.DaoFactoryImpl;
+import com.krishagni.catissueplus.core.common.util.Utility;
 import com.krishagni.openspecimen.cchs.dao.SpecModByParticpantDao;
 import com.krishagni.openspecimen.cchs.events.SpecModByParticpantDetail;
 
@@ -35,10 +37,19 @@ public class SpecModByParticpantDaoImpl implements SpecModByParticpantDao {
 	}
 
 	@Override
-	public Date getDateFromJob(Long jobId) {
+	public Date lastJobRunDateFromJobId(Long jobId) {
 		List<Object> scheduledJob=getCurrentSession().createSQLQuery(GET_LAST_JOB_RUN_DATE)
 				.setLong("id", jobId)
 				.list();
+
+		if(scheduledJob.size()==0)
+		{
+			Date today = Calendar.getInstance().getTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+			return Utility.chopTime(cal.getTime());
+		}
 
 		Date lastJobRunDate= getDate(scheduledJob.get(0));
 		return  lastJobRunDate;
@@ -65,8 +76,8 @@ public class SpecModByParticpantDaoImpl implements SpecModByParticpantDao {
 		return obj != null ? obj.toString() : "";
 	}
 
-	private long getNumber(Object obj) {
-	   return (long) Integer.valueOf(getString(obj));
+	private Long getNumber(Object obj) {
+	   return  Long.valueOf(getString(obj));
 	}
 
 	private Date getDate(Object obj) {
@@ -74,8 +85,8 @@ public class SpecModByParticpantDaoImpl implements SpecModByParticpantDao {
 		  Date date = (Date) obj;
 		  return  date;
 		}
-		else
-		  return  null;
+
+		return  null;
 	}
 
 	public static final String GET_SPEC_MOD_BY_PARTICIPANTS =

@@ -1,15 +1,13 @@
 package com.krishagni.openspecimen.cchs.service.impl;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -33,42 +31,28 @@ public class SpecModByParticipantJob implements ScheduledTask {
 	private DaoFactory daoFactory;
 
 	@Autowired
-	private SpecModByParticpantDao exportDao;
-
-	public void setDaoFactory(DaoFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
-
-	public void setExportDao(SpecModByParticpantDao exportDao) {
-		this.exportDao = exportDao;
-	}
-
+	private SpecModByParticpantDao specModDao;
 	private ConfigUtil cfg= ConfigUtil.getInstance();
 
-	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun scheduledJobRun) throws Exception {
+		saveSpecModDetails(scheduledJobRun);
+	}
+
+	private void saveSpecModDetails(ScheduledJobRun scheduledJobRun) {
 		Long id=scheduledJobRun.getScheduledJob().getId();
-		Date startDate = exportDao.getDateFromJob(id);
+		Date startDate = specModDao.lastJobRunDateFromJobId(id);
 		Date endDate = scheduledJobRun.getStartedAt();
-
-		getExportDetail(startDate,endDate);
-	}
-
-	private ResponseEvent<File> getExportDetail(Date startDate, Date endDate) {
-		List<SpecModByParticpantDetail> exportDetailsList= exportDao.getSpecModByParticipantDetails(startDate,endDate);
+		List<SpecModByParticpantDetail> specModDetailsList= specModDao.getSpecModByParticipantDetails(startDate,endDate);
 		String dataDir =cfg.getDataDir();
-		File file=sendToPrint(exportDetailsList, dataDir, endDate);
-
-		return ResponseEvent.response(file);
+		sendToPrint(specModDetailsList, dataDir, endDate);
 	}
 
-	private File sendToPrint(List<SpecModByParticpantDetail> list, String path, Date date) {
+	private void sendToPrint(List<SpecModByParticpantDetail> list, String path, Date date) {
 		CsvWriter csvWriter = null;
-
 		try {
 			String dateForCsvName= DateFormatUtils.format(date,"yyyyMMddHHmm");
-			File tempFile = new File(path,"export-details-record"+dateForCsvName+".csv");
+			File tempFile = new File(path,"spec-Mod-Details"+dateForCsvName+".csv");
 			csvWriter = CsvFileWriter.createCsvFileWriter(tempFile);
 
 			csvWriter.writeNext(new String[] {
@@ -88,7 +72,6 @@ public class SpecModByParticipantJob implements ScheduledTask {
 				csvWriter.writeNext(getRecord(detail));
 			}
 
-			return tempFile;
 		} catch (Exception e) {
 			throw OpenSpecimenException.serverError(e);
 		} finally {
@@ -107,11 +90,17 @@ public class SpecModByParticipantJob implements ScheduledTask {
 		data.add(detail.getFirstName());
 		data.add(detail.getMiddleName());
 		data.add((detail.getLastName()));
-		data.add(String.valueOf(detail.getBirthDate()));
 		data.add(detail.getMedRecNo());
 		data.add(detail.getTissueSite());
-		data.add(String.valueOf(detail.getCollectionDate()));
 		data.add(detail.getGender());
+
+		if(detail.getBirthDate()!= null) {
+			data.add(Utility.getDateString(detail.getBirthDate()));
+		}
+
+		if(detail.getCollectionDate()!=null) {
+			data.add(Utility.getDateString(detail.getCollectionDate()));
+		}
 
 		return data.toArray(new String[0]);
 	}

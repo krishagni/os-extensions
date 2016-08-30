@@ -18,8 +18,13 @@
     http://www.springframework.org/schema/context/spring-context-3.2.xsd
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-  <bean id="exportDao" class="com.krishagni.openspecimen.cchs.dao.impl.SpecModByParticpantDaoImpl">
+  <bean id="specModDao" class="com.krishagni.openspecimen.cchs.dao.impl.SpecModByParticpantDaoImpl">
     <property name="daoFactory"  ref="biospecimenDaoFactory"/>
+  </bean>
+
+  <bean id="cchs-liquibase" class="liquibase.integration.spring.SpringLiquibase">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="changeLog" value="classpath:db/seed-data.xml"/>
   </bean>
 
 </beans>
