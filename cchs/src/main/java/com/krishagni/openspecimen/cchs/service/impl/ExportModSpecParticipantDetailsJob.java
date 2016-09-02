@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -16,59 +15,61 @@ import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
-import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
 import com.krishagni.catissueplus.core.common.util.CsvWriter;
 import com.krishagni.catissueplus.core.common.util.MessageUtil;
 import com.krishagni.catissueplus.core.common.util.Utility;
-import com.krishagni.openspecimen.cchs.dao.SpecModByParticpantDao;
-import com.krishagni.openspecimen.cchs.events.SpecModByParticpantDetail;
+import com.krishagni.openspecimen.cchs.dao.ModSpecParticpantDao;
+import com.krishagni.openspecimen.cchs.events.ModSpecParticipantDetail;
 
 @Configurable
-public class SpecModByParticipantJob implements ScheduledTask {
+public class ExportModSpecParticipantDetailsJob implements ScheduledTask {
+
 	@Autowired
 	private DaoFactory daoFactory;
 
 	@Autowired
-	private SpecModByParticpantDao specModDao;
-	private ConfigUtil cfg= ConfigUtil.getInstance();
+	private ModSpecParticpantDao specModDao;
+
+	private ConfigUtil cfg = ConfigUtil.getInstance();
 
 	@PlusTransactional
 	public void doJob(ScheduledJobRun scheduledJobRun) throws Exception {
-		saveSpecModDetails(scheduledJobRun);
+		saveModSpecParticipantDetails(scheduledJobRun);
 	}
 
-	private void saveSpecModDetails(ScheduledJobRun scheduledJobRun) {
-		Long id=scheduledJobRun.getScheduledJob().getId();
-		Date startDate = specModDao.lastJobRunDateFromJobId(id);
+	private void saveModSpecParticipantDetails(ScheduledJobRun scheduledJobRun) {
+		Long id = scheduledJobRun.getScheduledJob().getId();
+		Date startDate = specModDao.getLastJobRunDate(id);
 		Date endDate = scheduledJobRun.getStartedAt();
-		List<SpecModByParticpantDetail> specModDetailsList= specModDao.getSpecModByParticipantDetails(startDate,endDate);
-		String dataDir =cfg.getDataDir();
-		sendToPrint(specModDetailsList, dataDir, endDate);
+		List<ModSpecParticipantDetail> modSpecParticipantDetailsList = specModDao.getModSpecParticipantDetails(startDate,endDate);
+		String dataDir = cfg.getDataDir();
+		sendToPrint(modSpecParticipantDetailsList, dataDir, endDate);
 	}
 
-	private void sendToPrint(List<SpecModByParticpantDetail> list, String path, Date date) {
+	private void sendToPrint(List<ModSpecParticipantDetail> list, String path, Date date) {
 		CsvWriter csvWriter = null;
 		try {
-			String dateForCsvName= DateFormatUtils.format(date,"yyyyMMddHHmm");
-			File tempFile = new File(path,"spec-Mod-Details"+dateForCsvName+".csv");
+			String dateForCsvName = DateFormatUtils.format(date,"yyyyMMdd");
+			File tempFile = new File(path,"CaTissue"+dateForCsvName+".csv");
 			csvWriter = CsvFileWriter.createCsvFileWriter(tempFile);
 
 			csvWriter.writeNext(new String[] {
-			  msg("specimen_id"),
 			  msg("participant_id"),
+			  msg("medical_rec_no"),
+			  msg("last_name"),
 			  msg("first_name"),
 			  msg("middle_name"),
-			  msg("last_name"),
 			  msg("birth_date"),
-			  msg("medical_rec_no"),
+			  msg("gender"),
+			  msg("specimen_id"),
 			  msg("tissue_site"),
-			  msg("created_on"),
-			  msg("gender")
+			  msg("collection_date")
+
 			});
 
-			for (SpecModByParticpantDetail detail: list) {
+			for (ModSpecParticipantDetail detail: list) {
 				csvWriter.writeNext(getRecord(detail));
 			}
 
@@ -83,23 +84,29 @@ public class SpecModByParticipantJob implements ScheduledTask {
 		return MessageUtil.getInstance().getMessage(key);
 	}
 
-	private String[] getRecord(SpecModByParticpantDetail detail) {
+	private String[] getRecord(ModSpecParticipantDetail detail) {
 		List<String> data = new ArrayList<String>();
-		data.add(String.valueOf(detail.getSpecimenId()));
 		data.add(String.valueOf(detail.getParticipantId()));
+		data.add(detail.getMedicalRecNo());
+		data.add((detail.getLastName()));
 		data.add(detail.getFirstName());
 		data.add(detail.getMiddleName());
-		data.add((detail.getLastName()));
-		data.add(detail.getMedRecNo());
-		data.add(detail.getTissueSite());
-		data.add(detail.getGender());
-
-		if(detail.getBirthDate()!= null) {
+		if (detail.getBirthDate() != null) {
 			data.add(Utility.getDateString(detail.getBirthDate()));
 		}
+		else {
+			data.add(null);
+		}
 
-		if(detail.getCollectionDate()!=null) {
+		data.add(detail.getGender());
+		data.add(String.valueOf(detail.getSpecimenId()));
+		data.add(detail.getTissueSite());
+
+		if (detail.getCollectionDate() != null) {
 			data.add(Utility.getDateString(detail.getCollectionDate()));
+		}
+		else {
+			data.add(null);
 		}
 
 		return data.toArray(new String[0]);

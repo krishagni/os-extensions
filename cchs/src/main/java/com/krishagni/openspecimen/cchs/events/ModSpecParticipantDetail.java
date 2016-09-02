@@ -2,12 +2,13 @@ package com.krishagni.openspecimen.cchs.events;
 
 import java.util.Date;
 
-public class SpecModByParticpantDetail {
+public class ModSpecParticipantDetail {
+
 	private Long participantId;
 
 	private Long specimenId;
 
-	private String medRecNo;
+	private String medicalRecNo;
 
 	private String firstName;
 
@@ -39,13 +40,9 @@ public class SpecModByParticpantDetail {
 		this.specimenId = specimenId;
 	}
 
-	public String getMedRecNo() {
-		return medRecNo;
-	}
+	public String getMedicalRecNo() { return medicalRecNo; }
 
-	public void setMedRecNo(String medRecNo) {
-		this.medRecNo = medRecNo;
-	}
+	public void setMedicalRecNo(String medicalRecNo) { this.medicalRecNo = medicalRecNo; }
 
 	public String getFirstName() {
 		return firstName;

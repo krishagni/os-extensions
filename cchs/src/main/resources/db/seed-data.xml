@@ -5,7 +5,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-  <changeSet author="pjoshi" id="Creating scheduled job for exporting specimen and participant data" dbms="mysql">
+  <changeSet author="pjoshi" id="Scheduled job for exporting modified specimen and participant detail" dbms="mysql">
     <sql>
       select identifier into @userId from catissue_user where login_name = '$system';
       
@@ -13,8 +13,8 @@
         (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week, 
         scheduled_day_of_month, activity_status, repeat_schedule, type, command, task_impl_fqn, rt_args_provided, rt_args_help_text)
       values
-        (default, 'Spec Mod by Participant', @userId, now(), null, 30, 00, 'MONDAY',
-        null, 'Active', 'WEEKLY', 'INTERNAL', null, 'com.krishagni.openspecimen.cchs.service.impl.SpecModByParticipantJob', 0, null);
+        (default, 'Export modified spec participant details job', @userId, now(), null, 30, 00, 'MONDAY',
+        null, 'Active', 'WEEKLY', 'INTERNAL', null, 'com.krishagni.openspecimen.cchs.service.impl.ExportModSpecParticipantDetailsJob', 0, null);
     </sql>
   </changeSet>
 
