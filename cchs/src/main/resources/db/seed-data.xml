@@ -18,4 +18,23 @@
     </sql>
   </changeSet>
 
+  <changeSet author="pjoshi" id="Insert CCHS module ">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (default, 'cchs', 'CCHS Module');
+    </sql>
+  </changeSet>
+
+  <changeSet author="pjoshi" id="Get the path for CCHS directory">
+    <sql>
+      call add_cfg_prop(
+      'cchs', 'export_dir',
+      'export_dir', 'export_dir_desc',
+      'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>

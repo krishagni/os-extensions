@@ -45,6 +45,7 @@ public class ExportModSpecParticipantDetailsJob implements ScheduledTask {
 		Date endDate = scheduledJobRun.getStartedAt();
 		List<ModSpecParticipantDetail> modSpecParticipantDetailsList = specModDao.getModSpecParticipantDetails(startDate,endDate);
 		String dataDir = cfg.getDataDir();
+		dataDir = ConfigUtil.getInstance().getStrSetting(CCHS_MODULE, EXPORT_DIR, dataDir);
 		sendToPrint(modSpecParticipantDetailsList, dataDir, endDate);
 	}
 
@@ -111,4 +112,8 @@ public class ExportModSpecParticipantDetailsJob implements ScheduledTask {
 
 		return data.toArray(new String[0]);
 	}
+
+	private final String CCHS_MODULE = "cchs";
+
+	private final String EXPORT_DIR = "export_dir";
 }
