@@ -1,4 +1,4 @@
-osApp.providers
+angular.module("os.plugins.jhu")
   .controller('JhuSprListCtrl', function($scope, $rootScope, $state, $http, ApiUrls) {
     var url = ApiUrls.getBaseUrl() + 'jhu/';
     function init() {

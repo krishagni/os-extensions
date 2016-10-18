@@ -1,4 +1,4 @@
-osApp.providers
+angular.module("os.plugins.jhu")
   .controller('jhuSprDetailCtrl', function($state, $scope, $rootScope, sprDetail) {
     function init() {
       $scope.sprDetail = sprDetail;
