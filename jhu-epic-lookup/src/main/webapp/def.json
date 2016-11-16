@@ -1,0 +1,5 @@
+{
+  "scripts": [
+    "jhu-epic-lookup/scripts/scripts.@script_hash@.js"
+  ]
+}
