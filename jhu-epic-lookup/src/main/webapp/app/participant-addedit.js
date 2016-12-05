@@ -9,13 +9,30 @@ angular.module('os.plugins.jhu-epic-lookup')
 
       var hideFn = $interval(
         function() {
-          console.log("Attempt to hide SSN...");
+          if (!$scope.partCtx.twoStepReg) {
+            //Hiding MPI field
+            if ($scope.cpr.participant.source != 'EPIC') {
+              var empiInputEl = $document.find('input[name="empi"]');
+              empiInputEl.parent().parent().hide();
+              if (empiInputEl.length > 0) {
+//              $interval.cancel(hideFn);
+              }
+            }
+          }
           var uidInputEl = $document.find('input[name="uid"]');
           uidInputEl.parent().parent().hide();
           if (uidInputEl.length > 0) {
-            console.log ("Cancel...");
-            $interval.cancel(hideFn);
+           // $interval.cancel(hideFn);
+          }
+
+        //Hiding MRN Site
+          if ($scope.cpr.participant.source != 'EPIC') {
+            var pmiInputEl = $document.find('div[id="pmiForm"]');
+            pmiInputEl.hide();
+            if (pmiInputEl.length > 0) {
+              $interval.cancel(hideFn);
+            }
           }
         }, 100, 0, false);
-    }
+      }
   );
