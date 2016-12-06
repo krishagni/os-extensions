@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:p="http://www.springframework.org/schema/p"
-  xmlns:c="http://www.springframework.org/schema/c"
-  xmlns:util="http://www.springframework.org/schema/util"
-  xmlns:tx="http://www.springframework.org/schema/tx"
-  xmlns:aop="http://www.springframework.org/schema/aop"
-  xmlns:mvc="http://www.springframework.org/schema/mvc"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
-    http://www.springframework.org/schema/aop 
-    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
-    http://www.springframework.org/schema/context 
-    http://www.springframework.org/schema/context/spring-context-3.2.xsd
-    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
   <bean id="jhu-epic-liquibase" class="liquibase.integration.spring.SpringLiquibase">
     <property name="dataSource" ref="dataSource"/>
@@ -24,7 +10,9 @@
   </bean> 
   
   <bean id="epicParticipantLookup" class="com.krishagni.os.jhuepic.EpicParticipantLookup">
-    <property name="osParticipantLookup" ref="localDbParticipantLookup"/>
+    <property name="osDbLookup" ref="localDbParticipantLookup"/>
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
+    <property name="cfgSvc" ref="cfgSvc"/>
+    <property name="participantSvc" ref="participantSvc"/>
   </bean>
 </beans>

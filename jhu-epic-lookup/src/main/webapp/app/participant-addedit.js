@@ -9,23 +9,37 @@ angular.module('os.plugins.jhu-epic-lookup')
 
       var hideFn = $interval(
         function() {
+          //
+          // UID field is not used
+          //
+          var uidInputEl = $document.find('input[name="uid"]');
+          uidInputEl.parent().parent().hide();
+
           if (!$scope.partCtx.twoStepReg) {
-            //Hiding MPI field
-            if ($scope.cpr.participant.source != 'EPIC') {
+            //
+            // Hide MPI field in regular workflow for participants
+            // not sourced from EPIC
+            //
+            if (!empiHidden && $scope.cpr.participant.source != 'EPIC') {
               var empiInputEl = $document.find('input[name="empi"]');
               empiInputEl.parent().parent().hide();
             }
           }
-          var uidInputEl = $document.find('input[name="uid"]');
-          uidInputEl.parent().parent().hide();
 
-        //Hiding MRN Site
+          //
+          // No MRNs for non-EPIC participants
+          //
           if ($scope.cpr.participant.source != 'EPIC') {
             var pmiInputEl = $document.find('div[id="pmiForm"]');
             pmiInputEl.hide();
           }
 
-          $interval.cancel(hideFn);
+          if (uidInputEl.length > 0) {
+            //
+            // Cancel only when we are sure all required fields are hidden
+            //
+            $interval.cancel(hideFn);
+          }
         }, 100, 0, false);
-      }
+    }
   );

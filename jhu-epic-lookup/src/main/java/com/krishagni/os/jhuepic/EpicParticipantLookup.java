@@ -1,23 +1,16 @@
 package com.krishagni.os.jhuepic;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,11 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
@@ -41,7 +32,6 @@ import com.krishagni.catissueplus.core.biospecimen.matching.LocalDbParticipantLo
 import com.krishagni.catissueplus.core.biospecimen.matching.ParticipantLookupLogic;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.ParticipantService;
-import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.PvAttributes;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
@@ -50,29 +40,28 @@ import com.krishagni.catissueplus.core.common.service.ConfigChangeListener;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 
-@Configurable
 public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChangeListener, InitializingBean {
 
 	private static Log logger = LogFactory.getLog(EpicParticipantLookup.class);
-	
-	@Autowired
-	private LocalDbParticipantLookupImpl osParticipantLookup;
-	
-	@Autowired
+
+	private LocalDbParticipantLookupImpl osDbLookup;
+
 	private DaoFactory daoFactory;
-	
-	@Autowired
+
 	private ConfigurationService cfgSvc;
 
-	@Autowired
 	private ParticipantService participantSvc;
 
-	public void setOsParticipantLookup(LocalDbParticipantLookupImpl osParticipantLookup) {
-		this.osParticipantLookup = osParticipantLookup;
+	public void setOsDbLookup(LocalDbParticipantLookupImpl osDbLookup) {
+		this.osDbLookup = osDbLookup;
 	}
 
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
+	}
+
+	public void setCfgSvc(ConfigurationService cfgSvc) {
+		this.cfgSvc = cfgSvc;
 	}
 
 	public void setParticipantSvc(ParticipantService participantSvc) {
@@ -81,14 +70,12 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	@Override
 	public void onConfigChange(String name, String value) {
-		if (name.equals("two_step_patient_reg") && Boolean.valueOf(value)) {
-			String baseUrl = ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, "epic_base_url", "");
-			String clientId = ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, "epic_client_id", "");
-			String clientSecret = ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, "epic_client_secret", "");
+		if (!name.equals("two_step_patient_reg") || !Boolean.valueOf(value)) {
+			return;
+		}
 
-			if (StringUtils.isAnyBlank(baseUrl, clientId, clientSecret)) {
-				throw OpenSpecimenException.userError(EpicErrorCode.API_DETAILS_CANNOT_EMPTY);
-			}
+		if (StringUtils.isAnyBlank(getApiUrl(), getClientId(), getClientKey())) {
+			throw OpenSpecimenException.userError(EpicErrorCode.API_DETAILS_EMPTY);
 		}
 	}
 
@@ -100,140 +87,146 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 	@Override
 	public List<MatchedParticipant> getMatchingParticipants(ParticipantDetail detail) {
 		if (StringUtils.isBlank(detail.getEmpi())) {
-			return osParticipantLookup.getMatchingParticipants(detail);
+			return osDbLookup.getMatchingParticipants(detail);
 		}
 
-		ParticipantDetail epicPart = getMatchingFromEpic(detail.getEmpi());
-		if (epicPart == null) {
-			return Collections.EMPTY_LIST;
+		ParticipantDetail epicParticipant = getParticipantFromEpic(detail.getEmpi());
+		if (epicParticipant == null) {
+			return Collections.emptyList();
 		}
 
-		List<MatchedParticipant> localMatchingList = osParticipantLookup.getMatchingParticipants(epicPart);
-
-		ParticipantDetail localPart = localMatchingList.isEmpty() ? null : localMatchingList.iterator().next().getParticipant();
-
-		return Collections.singletonList(new MatchedParticipant(update(epicPart, localPart), Collections.singletonList("empi")));
+		ParticipantDetail localParticipant = getLocalParticipant(epicParticipant);
+		ParticipantDetail result = merge(epicParticipant, localParticipant);
+		return Collections.singletonList(new MatchedParticipant(result, Collections.singletonList("empi")));
 	}
 
-	private ParticipantDetail getMatchingFromEpic(String empi) {
+	private ParticipantDetail getParticipantFromEpic(String empi) {
 		String baseUrl = ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, "epic_base_url", "");
-		String clientId = ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, "epic_client_id", "");
-		String clientSecret = ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, "epic_client_secret", "");
 
 		RestTemplate template = new RestTemplate();
+
 		HttpHeaders headers = new HttpHeaders();
-	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	    headers.set("Accept-Encoding", "gzip,deflate");
-	    headers.set("client_id", clientId);
-	    headers.set("client_secret", clientSecret);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.set("Accept-Encoding", "gzip,deflate");
+		headers.set("client_id", getClientId());
+		headers.set("client_secret", getClientKey());
 
-	    HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-	    ResponseEntity<String> result = null;
+		HttpEntity<?> entity = new HttpEntity<>(headers);
 
-	    try {
-	    	result = template.exchange(baseUrl + empi, HttpMethod.GET, entity, String.class);
-	    } catch (Exception e) {
-	    	logger.error("No resutls found");
-	    	return null;
-	    }
-
-	    if (!result.getStatusCode().equals(HttpStatus.OK)) {
-	    	return null;
-	    }
-
-		return getParticipantdetails(result.getBody(), empi);
-	}
-
-	private ParticipantDetail getParticipantdetails(String response, String empi) {
-		JsonElement jelement = new JsonParser().parse(response);
-		JsonArray arr = jelement.getAsJsonArray();
-		Iterator i = arr.iterator();
-		ParticipantDetail epicPart = null;
-		while (i.hasNext()) {
-
-			epicPart = new ParticipantDetail();
-			JsonObject partJson = (JsonObject) i.next();
-			JsonObject name = (JsonObject) partJson.get("NameComponents");
-			epicPart.setFirstName(name.get("FirstName").getAsString());
-			epicPart.setLastName(name.get("LastName").getAsString());
-
-			String birthDate = partJson.get("DateOfBirth").getAsString();
-			if (StringUtils.isNotBlank(birthDate)) {
-				try {
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-					epicPart.setBirthDate(formatter.parse(partJson.get("DateOfBirth").getAsString()));
-				} catch (ParseException e) {
-					throw OpenSpecimenException.serverError(e);
-				}
-			}
-
-			epicPart.setGender(getMappedValue(PvAttributes.GENDER, EpicErrorCode.GENDER_MAPPING_NOT_FOUND, partJson.get("Sex").getAsString()));
-			epicPart.setVitalStatus(getMappedValue(PvAttributes.VITAL_STATUS, EpicErrorCode.VITAL_STAT_MAPPING_NOT_FOUND, partJson.get("Status").getAsString()));
-			epicPart.setEthnicity(getMappedValue(PvAttributes.ETHNICITY, EpicErrorCode.ETHNICITY_MAPPING_NOT_FOUND, partJson.get("EthnicGroup").getAsString()));
-			epicPart.setEmpi(empi);
-
-			JsonArray raceJson = partJson.get("Race").getAsJsonArray();
-			Iterator epicRaceItr = raceJson.iterator();
-			Set<String> races = new HashSet<>();
-			while (epicRaceItr.hasNext()) {
-				JsonPrimitive race = (JsonPrimitive)epicRaceItr.next();
-				races.add(getMappedValue(PvAttributes.RACE, EpicErrorCode.RACE_MAPPING_NOT_FOUND, race.getAsString()));
-			}
-
-			epicPart.setRaces(races);
-
-			List<PmiDetail> pmiList = new ArrayList<>();
-			JsonArray pmisJson = partJson.get("IDs").getAsJsonArray();
-			Iterator pmiItr = pmisJson.iterator();
-			while (pmiItr.hasNext()) {
-				PmiDetail pmiDetail = new PmiDetail();
-				JsonObject pmi = (JsonObject) pmiItr.next();
-				pmiDetail.setMrn(pmi.get("ID").getAsString());
-				String siteName = pmi.get("Type").getAsString();
-				Site site = daoFactory.getSiteDao().getSiteByCode(siteName);
-				if (site == null) {
-					logger.error("No site found with code: " + siteName);
-					throw OpenSpecimenException.serverError(EpicErrorCode.MATHCING_SITE_NOT_FOUND, siteName);
-				}
-				if ("EMRN".equals(siteName)) {
-					epicPart.setEmpi(pmiDetail.getMrn());
-				}
-				pmiDetail.setSiteName(site.getName());
-				pmiList.add(pmiDetail);
-			}
-			epicPart.setPmis(pmiList);
-			epicPart.setSource("EPIC");
-		}
-		return epicPart;
-	}
-
-	@PlusTransactional
-	private ParticipantDetail update(ParticipantDetail epicPart, ParticipantDetail localPart) {
-		if (localPart == null) {
-			return epicPart;
+		ResponseEntity<Map[]> result = null;
+		try {
+			result = template.exchange(baseUrl + empi, HttpMethod.GET, entity, Map[].class);
+		} catch (Exception e) {
+			logger.error("Error obtaining participant details", e);
+			throw OpenSpecimenException.userError(EpicErrorCode.API_CALL_FAILED, e.getMessage());
 		}
 
-		BeanUtils.copyProperties(epicPart, localPart, new String[] {"id", "middleName", "sexGenotype", "uid", "activityStatus", "deathDate", "cprs"});
-		ResponseEvent<ParticipantDetail> response = participantSvc.updateParticipant(new RequestEvent<ParticipantDetail>(localPart));
+		if (!result.getStatusCode().equals(HttpStatus.OK)) {
+			return null;
+		}
+
+		return getEpicParticipantDetail(result.getBody(), empi);
+	}
+
+	private ParticipantDetail getEpicParticipantDetail(Map[] result, String empi) {
+		if (result == null || result.length == 0) {
+			return null;
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.PASCAL_CASE_TO_CAMEL_CASE);
+		EpicPatient epicPatient = mapper.convertValue(result[0], EpicPatient.class);
+
+		ParticipantDetail participant = new ParticipantDetail();
+		participant.setFirstName(epicPatient.getFirstName());
+		participant.setLastName(epicPatient.getLastName());
+		participant.setBirthDate(epicPatient.getDateOfBirth());
+		participant.setGender(getMappedValue(PvAttributes.GENDER, epicPatient.getSex()));
+		participant.setVitalStatus(getMappedValue(PvAttributes.VITAL_STATUS, epicPatient.getStatus()));
+		participant.setEthnicity(getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup()));
+		participant.setEmpi(empi);
+		participant.setSource("EPIC");
+
+		if (epicPatient.getRace() != null && epicPatient.getRace().length > 0) {
+			participant.setRaces(Stream.of(epicPatient.getRace())
+				.map(race -> getMappedValue(PvAttributes.RACE, race))
+				.collect(Collectors.toSet()));
+		}
+
+		if (CollectionUtils.isNotEmpty(epicPatient.getIds())) {
+			participant.setPmis(epicPatient.getIds().stream()
+					.map(id -> {
+						PmiDetail pmi = new PmiDetail();
+						pmi.setMrn(id.getId());
+
+						Site site = daoFactory.getSiteDao().getSiteByCode(id.getType());
+						if (site == null) {
+							throw OpenSpecimenException.userError(EpicErrorCode.MATHCING_SITE_NOT_FOUND, id.getType());
+						}
+
+						pmi.setSiteName(site.getName());
+						return pmi;
+					}).collect(Collectors.toList()));
+		}
+
+		return participant;
+	}
+
+	private ParticipantDetail getLocalParticipant(ParticipantDetail detail) {
+		MatchedParticipant localMatch = osDbLookup.getMatchingParticipants(detail).stream()
+			.filter(lm -> lm.getMatchedAttrs().contains("empi"))
+			.findFirst().orElse(null);
+		return localMatch != null ? localMatch.getParticipant() : null;
+	}
+
+	private ParticipantDetail merge(ParticipantDetail epicParticipant, ParticipantDetail localParticipant) {
+		if (localParticipant == null) {
+			return epicParticipant;
+		}
+
+//		BeanUtils.copyProperties(epicParticipant, localParticipant, new String[] {"id", "middleName", "sexGenotype", "uid", "activityStatus", "deathDate", "cprs"});
+
+		epicParticipant.setId(localParticipant.getId());
+		ResponseEvent<ParticipantDetail> response = participantSvc.patchParticipant(new RequestEvent<>(epicParticipant));
 		response.throwErrorIfUnsuccessful();
-
 		return response.getPayload();
 	}
 
-	private String getMappedValue(String attribute, EpicErrorCode errorcode, String value) {
+	private String getMappedValue(String attribute, String value) {
 		if (StringUtils.isBlank(value)) {
-			return "";
+			return null;
 		}
-		List<PermissibleValue> pvs = daoFactory.getPermissibleValueDao().getByPropertyKeyValue(attribute, EPIC_OS_PV_MAPPING_KEY, value);
+
+		List<PermissibleValue> pvs = daoFactory.getPermissibleValueDao().getByPropertyKeyValue(attribute, EPIC_VALUE, value);
 		if (CollectionUtils.isEmpty(pvs)) {
-			throw OpenSpecimenException.serverError(errorcode, value);
+			throw OpenSpecimenException.userError(EpicErrorCode.PV_NOT_MAPPED, attribute, value);
 		}
 
 		return pvs.iterator().next().getValue();
 	}
 
+	private String getApiUrl() {
+		return ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, API_URL, "");
+	}
+
+	private String getClientId() {
+		return ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, CLIENT_ID, "");
+	}
+
+	private String getClientKey() {
+		return ConfigUtil.getInstance().getStrSetting(JHU_EPIC_MODULE, CLIENT_KEY, "");
+	}
+
+
 	private static final String JHU_EPIC_MODULE = "plugin_jhu_epic";
 
-	private static final String EPIC_OS_PV_MAPPING_KEY = "epic_os_mapping";
+	private static final String API_URL = "epic_base_url";
+
+	private static final String CLIENT_ID = "epic_client_id";
+
+	private static final String CLIENT_KEY = "epic_client_secret";
+
+	private static final String EPIC_VALUE = "epic_value";
 
 }

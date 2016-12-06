@@ -1,14 +1,15 @@
-package com.krishagni.os.jhuepic.events;
+package com.krishagni.os.jhuepic;
 
 import java.util.Date;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EpicPatient {
-
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Date DateOfBirth;
 	
@@ -17,7 +18,10 @@ public class EpicPatient {
 	private String[] Race;
 	
 	private String EthnicGroup;
-	
+
+	private String Status;
+
+	@JsonProperty("IDs")
 	private List<PmiDetail> IDs;
 	
 	private NameComponents NameComponents;
@@ -54,6 +58,22 @@ public class EpicPatient {
 		this.EthnicGroup = ethnicGroup;
 	}
 
+	public String getStatus() {
+		return Status;
+	}
+
+	public void setStatus(String status) {
+		Status = status;
+	}
+
+	public List<PmiDetail> getIds() {
+		return IDs;
+	}
+
+	public void setIds(List<PmiDetail> iDs) {
+		IDs = iDs;
+	}
+
 	public NameComponents getNameComponents() {
 		return NameComponents;
 	}
@@ -61,29 +81,61 @@ public class EpicPatient {
 	public void setNameComponents(NameComponents nameComponents) {
 		this.NameComponents = nameComponents;
 	}
+
+	public String getFirstName() {
+		return NameComponents != null ? NameComponents.getFirstName() : null;
+	}
+
+	public String getLastName() {
+		return NameComponents != null ? NameComponents.getLastName() : null;
+	}
 	
-	public List<PmiDetail> getIDs() {
-		return IDs;
-	}
+	public static class NameComponents {
+		private String LastName;
 
-	public void setIDs(List<PmiDetail> iDs) {
-		IDs = iDs;
-	}
+		private String FirstName;
 
-	class NameComponents {
-		String LastName;
-		String FirstName;
 		public String getLastName() {
 			return LastName;
 		}
+
 		public void setLastName(String lastName) {
 			this.LastName = lastName;
 		}
+
 		public String getFirstName() {
 			return FirstName;
 		}
+
 		public void setFirstName(String firstName) {
 			this.FirstName = firstName;
 		}
+	}
+
+	public static class PmiDetail {
+		@JsonProperty("ID")
+		private String ID;
+
+		private String Type;
+
+		public String getId() {
+			return ID;
+		}
+
+		public void setId(String iD) {
+			ID = iD;
+		}
+
+		public String getType() {
+			return Type;
+		}
+
+		public void setType(String type) {
+			Type = type;
+		}
+	}
+
+	public String toString() {
+		return getNameComponents().getFirstName() + "-" + getNameComponents().getLastName();
 	}
 }
