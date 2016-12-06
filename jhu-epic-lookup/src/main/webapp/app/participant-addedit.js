@@ -20,7 +20,7 @@ angular.module('os.plugins.jhu-epic-lookup')
             // Hide MPI field in regular workflow for participants
             // not sourced from EPIC
             //
-            if (!empiHidden && $scope.cpr.participant.source != 'EPIC') {
+            if ($scope.cpr.participant.source != 'EPIC') {
               var empiInputEl = $document.find('input[name="empi"]');
               empiInputEl.parent().parent().hide();
             }
