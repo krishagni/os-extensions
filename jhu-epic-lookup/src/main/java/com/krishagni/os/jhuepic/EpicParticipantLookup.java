@@ -162,7 +162,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 						Site site = daoFactory.getSiteDao().getSiteByCode(id.getType());
 						if (site == null) {
-							throw OpenSpecimenException.userError(EpicErrorCode.MATHCING_SITE_NOT_FOUND, id.getType());
+							throw OpenSpecimenException.userError(EpicErrorCode.MATCHING_SITE_NOT_FOUND, id.getType());
 						}
 
 						pmi.setSiteName(site.getName());
