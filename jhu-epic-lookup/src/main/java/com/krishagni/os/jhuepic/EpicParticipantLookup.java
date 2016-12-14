@@ -141,9 +141,10 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		ParticipantDetail participant = new ParticipantDetail();
 		participant.setFirstName(epicPatient.getFirstName());
 		participant.setLastName(epicPatient.getLastName());
+		participant.setMiddleName(epicPatient.getMiddleName());
 		participant.setBirthDate(epicPatient.getDateOfBirth());
 		participant.setGender(getMappedValue(PvAttributes.GENDER, epicPatient.getSex()));
-		participant.setVitalStatus(getMappedValue(PvAttributes.VITAL_STATUS, epicPatient.getStatus()));
+//		participant.setVitalStatus(getMappedValue(PvAttributes.VITAL_STATUS, epicPatient.getStatus()));
 		participant.setEthnicity(getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup()));
 		participant.setEmpi(empi);
 		participant.setSource("EPIC");

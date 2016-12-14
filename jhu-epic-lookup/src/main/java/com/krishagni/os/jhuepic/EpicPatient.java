@@ -89,11 +89,17 @@ public class EpicPatient {
 	public String getLastName() {
 		return NameComponents != null ? NameComponents.getLastName() : null;
 	}
-	
+
+	public String getMiddleName() {
+		return NameComponents != null ? NameComponents.getMiddleName() : null;
+	}
+
 	public static class NameComponents {
 		private String LastName;
 
 		private String FirstName;
+
+		private String MiddleName;
 
 		public String getLastName() {
 			return LastName;
@@ -110,6 +116,15 @@ public class EpicPatient {
 		public void setFirstName(String firstName) {
 			this.FirstName = firstName;
 		}
+
+		public String getMiddleName() {
+			return MiddleName;
+		}
+
+		public void setMiddleName(String middleName) {
+			MiddleName = middleName;
+		}
+
 	}
 
 	public static class PmiDetail {
