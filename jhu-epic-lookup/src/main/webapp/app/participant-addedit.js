@@ -1,11 +1,7 @@
 angular.module('os.plugins.jhu-epic-lookup')
   .controller('jhuEpicParticipantAddEditCtrl',
     function($scope, $interval, $document) {
-      if ($scope.partCtx.twoStepReg) {
         $scope.partCtx.includeSiteTypes = ['EPIC'];
-      } else {
-        $scope.partCtx.excludeSiteTypes = ['EPIC'];
-      }
 
       var hideFn = $interval(
         function() {
@@ -20,7 +16,7 @@ angular.module('os.plugins.jhu-epic-lookup')
             // Hide MPI field in regular workflow for participants
             // not sourced from EPIC
             //
-            if ($scope.cpr.participant.source != 'EPIC') {
+            if ($scope.cpr.participant.source != 'EPIC' && !$scope.cpr.participant.id) {
               var empiInputEl = $document.find('input[name="empi"]');
               empiInputEl.parent().parent().hide();
             }
@@ -29,7 +25,7 @@ angular.module('os.plugins.jhu-epic-lookup')
           //
           // No MRNs for non-EPIC participants
           //
-          if ($scope.cpr.participant.source != 'EPIC') {
+          if ($scope.cpr.participant.source != 'EPIC' && !$scope.cpr.participant.id) {
             var pmiInputEl = $document.find('div[id="pmiForm"]');
             pmiInputEl.hide();
           }
