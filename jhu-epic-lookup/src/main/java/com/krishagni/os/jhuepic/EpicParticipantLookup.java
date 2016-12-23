@@ -1,8 +1,11 @@
 package com.krishagni.os.jhuepic;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,12 +28,17 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
+import com.krishagni.catissueplus.core.biospecimen.domain.Participant;
+import com.krishagni.catissueplus.core.biospecimen.events.CprSummary;
 import com.krishagni.catissueplus.core.biospecimen.events.MatchedParticipant;
 import com.krishagni.catissueplus.core.biospecimen.events.ParticipantDetail;
+import com.krishagni.catissueplus.core.biospecimen.events.ParticipantSummary;
 import com.krishagni.catissueplus.core.biospecimen.events.PmiDetail;
 import com.krishagni.catissueplus.core.biospecimen.matching.LocalDbParticipantLookupImpl;
 import com.krishagni.catissueplus.core.biospecimen.matching.ParticipantLookupLogic;
+import com.krishagni.catissueplus.core.biospecimen.repository.CprListCriteria;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
+import com.krishagni.catissueplus.core.biospecimen.services.CollectionProtocolService;
 import com.krishagni.catissueplus.core.biospecimen.services.ParticipantService;
 import com.krishagni.catissueplus.core.common.PvAttributes;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
@@ -52,6 +60,8 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	private ParticipantService participantSvc;
 
+	private CollectionProtocolService cpSvc;
+
 	public void setOsDbLookup(LocalDbParticipantLookupImpl osDbLookup) {
 		this.osDbLookup = osDbLookup;
 	}
@@ -66,6 +76,10 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	public void setParticipantSvc(ParticipantService participantSvc) {
 		this.participantSvc = participantSvc;
+	}
+
+	public void setCpSvc(CollectionProtocolService cpSvc) {
+		this.cpSvc = cpSvc;
 	}
 
 	@Override
@@ -86,18 +100,77 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	@Override
 	public List<MatchedParticipant> getMatchingParticipants(ParticipantDetail detail) {
-		if (StringUtils.isBlank(detail.getEmpi())) {
+		if (StringUtils.isBlank(detail.getEmpi()) && CollectionUtils.isEmpty(detail.getPmis())) {
 			return osDbLookup.getMatchingParticipants(detail);
 		}
 
-		ParticipantDetail epicParticipant = getParticipantFromEpic(detail.getEmpi());
-		if (epicParticipant == null) {
-			return Collections.emptyList();
+		List<ParticipantDetail> epicMatchingList = new ArrayList<>();
+
+		List<ParticipantDetail> localMatchingList = getLocalMatching(detail);
+		if (CollectionUtils.isEmpty(localMatchingList)) {
+			//If no local match found and eMPI is entered, then lookup into EPIC with eMPI
+			if (StringUtils.isNotBlank(detail.getEmpi())) {
+				ParticipantDetail epicParticipant = getParticipantFromEpic(detail.getEmpi());
+				if (epicParticipant != null) {
+					epicMatchingList.add(epicParticipant);
+				}
+				//If no eMPI entered then lookup into EPIC with the first MRN
+			} else {
+				ParticipantDetail epicParticipant = getParticipantFromEpic(detail.getPmis().iterator().next().getMrn());
+				if (epicParticipant != null) {
+					epicMatchingList.add(epicParticipant);
+				}
+			}
+			//If local matching found then iterate and lookup in EPIC, if match found add in epicMatchingList
+		} else {
+			for (ParticipantDetail participantDetail : localMatchingList) {
+				ParticipantDetail epicParticipant = getParticipantFromEpic(participantDetail.getEmpi());
+				if (epicParticipant != null) {
+					ParticipantDetail localParticipant = getLocalParticipant(epicParticipant);
+					ParticipantDetail result = merge(epicParticipant, localParticipant);
+					epicMatchingList.add(result);
+				}
+			}
 		}
 
-		ParticipantDetail localParticipant = getLocalParticipant(epicParticipant);
-		ParticipantDetail result = merge(epicParticipant, localParticipant);
-		return Collections.singletonList(new MatchedParticipant(result, Collections.singletonList("empi")));
+		List<MatchedParticipant> matchedParticipants = new ArrayList<>();
+		for (ParticipantDetail participantDetail : epicMatchingList) {
+			matchedParticipants.add(new MatchedParticipant(participantDetail, Collections.singletonList("empi")));
+		}
+		return matchedParticipants;
+	}
+
+	private List<ParticipantDetail> getLocalMatching(ParticipantDetail detail) {
+		//In the eMPI field user can enter eMPI or MRN
+		//If eMPI entered then search local DB for patients by eMPI and MRN
+		//If no eMPI entered then lookup by PMI
+		if (StringUtils.isNotBlank(detail.getEmpi())) {
+			return getLocalMatchingByEmpiMrn(detail);
+		} else {
+			return getLocalMatchingByPmi(detail);
+		}
+	}
+
+	private List<ParticipantDetail> getLocalMatchingByEmpiMrn(ParticipantDetail detail) {
+		CprListCriteria crit = new CprListCriteria().participantId(detail.getEmpi());
+		ResponseEvent<List<CprSummary>> result = cpSvc.getRegisteredParticipants(new RequestEvent<CprListCriteria>(crit));
+		result.throwErrorIfUnsuccessful();
+
+		return getCprSummaries(result.getPayload(), detail);
+	}
+
+	private List<ParticipantDetail> getLocalMatchingByPmi(ParticipantDetail detail) {
+		List<ParticipantDetail> matchingList = new ArrayList<>();
+
+		List<Participant> result = daoFactory.getParticipantDao().getByPmis(detail.getPmis());
+		if (CollectionUtils.isNotEmpty(result)) {
+			for (Participant participant : result) {
+				if(StringUtils.isNotBlank(participant.getEmpi())) {
+					matchingList.add(ParticipantDetail.from(participant, false));
+				}
+			}
+		}
+		return matchingList;
 	}
 
 	private ParticipantDetail getParticipantFromEpic(String empi) {
@@ -117,8 +190,9 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		try {
 			result = template.exchange(baseUrl + empi, HttpMethod.GET, entity, Map[].class);
 		} catch (Exception e) {
+			//Log the error and return null to show no matching found from EPIC
 			logger.error("Error obtaining participant details", e);
-			throw OpenSpecimenException.userError(EpicErrorCode.API_CALL_FAILED, e.getMessage());
+			return null;
 		}
 
 		if (!result.getStatusCode().equals(HttpStatus.OK)) {
@@ -164,6 +238,8 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 						Site site = daoFactory.getSiteDao().getSiteByCode(id.getType());
 						if (site == null) {
 							throw OpenSpecimenException.userError(EpicErrorCode.MATCHING_SITE_NOT_FOUND, id.getType());
+						} else if (id.getType().equals("Enterprise Id")) {
+							participant.setEmpi(pmi.getMrn());
 						}
 
 						pmi.setSiteName(site.getName());
@@ -186,14 +262,34 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 			return epicParticipant;
 		}
 
-//		BeanUtils.copyProperties(epicParticipant, localParticipant, new String[] {"id", "middleName", "sexGenotype", "uid", "activityStatus", "deathDate", "cprs"});
-
 		epicParticipant.setId(localParticipant.getId());
 		ResponseEvent<ParticipantDetail> response = participantSvc.patchParticipant(new RequestEvent<>(epicParticipant));
 		response.throwErrorIfUnsuccessful();
 		return response.getPayload();
 	}
 
+	private List<ParticipantDetail> getCprSummaries(List<CprSummary> partList, ParticipantDetail detail) {
+		List<ParticipantDetail> matchingList = new ArrayList<>();
+		Set<Long> ids = new HashSet<>();
+		for (CprSummary cprSummary : partList) {
+			ParticipantSummary summary = cprSummary.getParticipant();
+			if (StringUtils.isNotBlank(summary.getEmpi()) && !ids.contains(summary.getId())) {
+				ParticipantDetail part = new ParticipantDetail();
+				part.setId(summary.getId());
+				part.setEmpi(summary.getEmpi());
+				if (detail.getEmpi().equals(cprSummary.getParticipant().getEmpi())) {
+					matchingList.clear();
+					matchingList.add(part);
+					break;
+				}
+
+				matchingList.add(part);
+				ids.add(part.getId());
+			}
+		}
+
+		return matchingList;
+	}
 	private String getMappedValue(String attribute, String value) {
 		if (StringUtils.isBlank(value)) {
 			return null;

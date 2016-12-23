@@ -14,5 +14,6 @@
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
     <property name="cfgSvc" ref="cfgSvc"/>
     <property name="participantSvc" ref="participantSvc"/>
+    <property name="cpSvc" ref="cpSvc"/>
   </bean>
 </beans>

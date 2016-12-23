@@ -21,7 +21,6 @@ angular.module('os.plugins.jhu-epic-lookup')
               empiInputEl.parent().parent().hide();
             }
           }
-
           //
           // No MRNs for non-EPIC participants
           //
