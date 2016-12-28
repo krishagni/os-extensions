@@ -23,7 +23,7 @@ public class ParticipantLookupDao {
 	@SuppressWarnings("unchecked")
 	public List<Participant> getByEmpiMrn(String empi) {
 		return sessionFactory.getCurrentSession()
-			.createQuery(GET_PARTICIPANTS_BY_EMPI_MRN_HQL)
+			.createQuery(GET_BY_EMPI_MRN_HQL)
 			.setString("empi", empi)
 			.setString("mrn", empi)
 			.list();
@@ -68,7 +68,7 @@ public class ParticipantLookupDao {
 		return query.add(junction);
 	}
 	
-	private static final String GET_PARTICIPANTS_BY_EMPI_MRN_HQL =
+	private static final String GET_BY_EMPI_MRN_HQL =
 			" select " +
 			"   distinct p " +
 			" from " +
