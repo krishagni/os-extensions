@@ -1,7 +1,25 @@
 angular.module('os.plugins.jhu-epic-lookup')
   .controller('jhuEpicParticipantAddEditCtrl',
-    function($scope, $interval, $document) {
-        $scope.partCtx.includeSiteTypes = ['EPIC'];
+    function($scope, $q, $interval, $document, Participant, Alerts) {
+      $scope.partCtx.includeSiteTypes = ['EPIC'];
+
+      var participant = $scope.cpr.participant;
+      var matchingFn = participant.getMatchingParticipants;
+
+      participant.getMatchingParticipants = function() {
+        var copy = new Participant(participant);
+        angular.extend(copy, {getMatchingParticipants: matchingFn});
+        var matchPromise = $q.defer();
+        return copy.getMatchingParticipants({returnThis: true}).then(
+          function(matches) {
+           if ((!matches || matches.length == 0) && (!!participant.empi || !!participant.mrn)) {
+             Alerts.error("i18n key for : No matching participant {empi | mrn}");
+             $q.reject("i18n key for : No matching participant {empi | mrn}");
+           }
+
+           return matches.filter(function(match) {return !participant.id || participant.id != match.participant.id});
+         });
+      }
 
       var hideFn = $interval(
         function() {
