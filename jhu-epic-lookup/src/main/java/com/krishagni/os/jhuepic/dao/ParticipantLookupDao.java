@@ -12,7 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import com.krishagni.catissueplus.core.biospecimen.domain.Participant;
 import com.krishagni.catissueplus.core.biospecimen.events.PmiDetail;
 
-public class EpicLookupDao {
+public class ParticipantLookupDao {
 
 	private SessionFactory sessionFactory;
 	
@@ -21,16 +21,16 @@ public class EpicLookupDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Participant> getLocalMatchingByEmpiMrn(String empi) {
+	public List<Participant> getByEmpiMrn(String empi) {
 		return sessionFactory.getCurrentSession()
-				.createQuery(GET_MATCHING_BY_EMPI_MRN)
-				.setString("empi", empi)
-				.setString("mrn", empi)
-				.list();
+			.createQuery(GET_PARTICIPANTS_BY_EMPI_MRN_HQL)
+			.setString("empi", empi)
+			.setString("mrn", empi)
+			.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Participant> getLocalMatchingByPmi(List<PmiDetail> pmis) {
+	public List<Participant> getByPmi(List<PmiDetail> pmis) {
 		Criteria query = getByPmisQuery(pmis);
 		if (query == null) {
 			return Collections.emptyList();
@@ -40,23 +40,23 @@ public class EpicLookupDao {
 	}
 	
 	private Criteria getByPmisQuery(List<PmiDetail> pmis) {
-		Criteria query = sessionFactory.getCurrentSession().createCriteria(Participant.class)
-				.createAlias("pmis", "pmi")
-				.createAlias("pmi.site", "site");
-		
-		Disjunction junction = Restrictions.disjunction();
-		
+		Criteria query = sessionFactory.getCurrentSession()
+			.createCriteria(Participant.class)
+			.createAlias("pmis", "pmi")
+			.createAlias("pmi.site", "site")
+			.add(Restrictions.isNotNull("empi"));
+
 		boolean added = false;
+		Disjunction junction = Restrictions.disjunction();
 		for (PmiDetail pmi : pmis) {
 			if (StringUtils.isBlank(pmi.getSiteName()) || StringUtils.isBlank(pmi.getMrn())) {
 				continue;
 			}
 			
 			junction.add(
-					Restrictions.and(Restrictions.isNotNull("empi"),
-					Restrictions.and(
-							Restrictions.eq("pmi.medicalRecordNumber", pmi.getMrn()),
-							Restrictions.eq("site.name", pmi.getSiteName()))));
+				Restrictions.and(
+					Restrictions.eq("pmi.medicalRecordNumber", pmi.getMrn()),
+					Restrictions.eq("site.name", pmi.getSiteName())));
 			
 			added = true;
 		}
@@ -64,15 +64,18 @@ public class EpicLookupDao {
 		if (!added) {
 			return null;
 		}
-		return query.add(junction);						
-		
+
+		return query.add(junction);
 	}
 	
-	private String GET_MATCHING_BY_EMPI_MRN = 
-			" select distinct p from " +
+	private static final String GET_PARTICIPANTS_BY_EMPI_MRN_HQL =
+			" select " +
+			"   distinct p " +
+			" from " +
 			"   com.krishagni.catissueplus.core.biospecimen.domain.Participant p " +
 			"   left join p.pmis pmi " +
 			" where " +
-			"   p.empi is not null and (p.empi = :empi or pmi.medicalRecordNumber = :mrn)";
+			"   p.empi is not null and " +
+			"  (p.empi = :empi or pmi.medicalRecordNumber = :mrn)";
 	
 }

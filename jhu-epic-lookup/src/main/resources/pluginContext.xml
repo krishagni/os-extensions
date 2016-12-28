@@ -14,10 +14,10 @@
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
     <property name="cfgSvc" ref="cfgSvc"/>
     <property name="participantSvc" ref="participantSvc"/>
-    <property name="epicLookUpDao" ref="epicLookUpDao"/>
-  </bean>
-
-   <bean id="epicLookUpDao" class="com.krishagni.os.jhuepic.dao.EpicLookupDao">
-     <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="participantLookUpDao">
+      <bean class="com.krishagni.os.jhuepic.dao.ParticipantLookupDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+      </bean>
+    </property>
   </bean>
 </beans>

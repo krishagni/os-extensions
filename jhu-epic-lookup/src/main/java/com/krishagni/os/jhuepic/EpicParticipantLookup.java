@@ -1,7 +1,6 @@
 package com.krishagni.os.jhuepic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,7 @@ import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.service.ConfigChangeListener;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
-import com.krishagni.os.jhuepic.dao.EpicLookupDao;
+import com.krishagni.os.jhuepic.dao.ParticipantLookupDao;
 
 public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChangeListener, InitializingBean {
 
@@ -56,7 +55,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	private ParticipantService participantSvc;
 
-	private EpicLookupDao epicLookUpDao;
+	private ParticipantLookupDao participantLookUpDao;
 
 	public void setOsDbLookup(LocalDbParticipantLookupImpl osDbLookup) {
 		this.osDbLookup = osDbLookup;
@@ -74,8 +73,8 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		this.participantSvc = participantSvc;
 	}
 
-	public void setEpicLookUpDao(EpicLookupDao epicLookUpDao) {
-		this.epicLookUpDao = epicLookUpDao;
+	public void setParticipantLookUpDao(ParticipantLookupDao participantLookUpDao) {
+		this.participantLookUpDao = participantLookUpDao;
 	}
 
 	@Override
@@ -100,26 +99,34 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 			return osDbLookup.getMatchingParticipants(detail);
 		}
 
-		List<ParticipantDetail> epicMatchingList = new ArrayList<>();
+		//
+		// Retrieve list of participants from local OS database that match either eMPI or MRN
+		//
+		List<ParticipantDetail> localParticipants = getLocalParticipants(detail);
 
-		List<ParticipantDetail> localMatchingList = getLocalMatching(detail);
-		if (CollectionUtils.isEmpty(localMatchingList)) {
-			//If no local match found and eMPI is entered, then lookup into EPIC with eMPI
+		List<ParticipantDetail> epicMatchingList = new ArrayList<>();
+		if (CollectionUtils.isEmpty(localParticipants)) {
+			ParticipantDetail epicParticipant;
 			if (StringUtils.isNotBlank(detail.getEmpi())) {
-				ParticipantDetail epicParticipant = getParticipantFromEpic(detail.getEmpi());
-				if (epicParticipant != null) {
-					epicMatchingList.add(epicParticipant);
-				}
-				//If no eMPI entered then lookup into EPIC with the first MRN
+				//
+				// If no local match found and eMPI is entered, then lookup into EPIC with eMPI
+				//
+				epicParticipant = getParticipantFromEpic(detail.getEmpi());
 			} else {
-				ParticipantDetail epicParticipant = getParticipantFromEpic(detail.getPmis().iterator().next().getMrn());
-				if (epicParticipant != null) {
-					epicMatchingList.add(epicParticipant);
-				}
+				//
+				// If no eMPI entered then lookup into EPIC with the first MRN
+				//
+				epicParticipant = getParticipantFromEpic(detail.getPmis().iterator().next().getMrn());
 			}
-			//If local matching found then iterate and lookup in EPIC, if match found add in epicMatchingList
+
+			if (epicParticipant != null) {
+				epicMatchingList.add(epicParticipant);
+			}
 		} else {
-			for (ParticipantDetail localParticipant : localMatchingList) {
+			//
+			// Iterate and lookup for info for each local match in EPIC
+			//
+			for (ParticipantDetail localParticipant : localParticipants) {
 				ParticipantDetail epicParticipant = getParticipantFromEpic(localParticipant.getEmpi());
 				if (epicParticipant != null && epicParticipant.getEmpi().equals(localParticipant.getEmpi())) {
 					ParticipantDetail result = merge(epicParticipant, localParticipant);
@@ -128,44 +135,47 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 			}
 		}
 
-		List<MatchedParticipant> matchedParticipants = new ArrayList<>();
-		for (ParticipantDetail participantDetail : epicMatchingList) {
-			matchedParticipants.add(new MatchedParticipant(participantDetail, Collections.singletonList("empi")));
-		}
-		return matchedParticipants;
+		return epicMatchingList.stream()
+			.map(participant -> new MatchedParticipant(participant, Collections.singletonList("empi")))
+			.collect(Collectors.toList());
 	}
 
-	private List<ParticipantDetail> getLocalMatching(ParticipantDetail detail) {
-		//In the eMPI field user can enter eMPI or MRN
-		//If eMPI entered then search local DB for patients by eMPI and MRN
-		//If no eMPI entered then lookup by PMI
+	private List<ParticipantDetail> getLocalParticipants(ParticipantDetail detail) {
 		if (StringUtils.isNotBlank(detail.getEmpi())) {
-			return getLocalMatchingByEmpiMrn(detail);//local DAO to fetch participant by eMPI and MRN
+			//
+			// The search text inputted by user could refer to either eMPI or MRN;
+			// therefore search for participants whose eMPI or MRN matches
+			// input search text
+			//
+			return getParticipantsByEmpiMrn(detail);
 		} else {
-			return getLocalMatchingByPmi(detail);//local DAO to fetch participant by PMI where eMPI is not null
+			return getParticipantsByPmi(detail);
 		}
 	}
 
-	private List<ParticipantDetail> getLocalMatchingByEmpiMrn(ParticipantDetail detail) {
-		List<Participant> result = epicLookUpDao.getLocalMatchingByEmpiMrn(detail.getEmpi());
-
-		if (CollectionUtils.isEmpty(result)) {
+	private List<ParticipantDetail> getParticipantsByEmpiMrn(ParticipantDetail detail) {
+		List<Participant> participants = participantLookUpDao.getByEmpiMrn(detail.getEmpi());
+		if (CollectionUtils.isEmpty(participants)) {
 			return Collections.emptyList();
 		}
-		List<ParticipantDetail> localMatching = ParticipantDetail.from(result, false);
 
-		ParticipantDetail exactEmpiMatch = localMatching.stream().filter(p -> detail.getEmpi().equals(p.getEmpi())).findFirst().orElse(null);
+		Participant exactMatch = participants.stream()
+			.filter(p -> detail.getEmpi().equals(p.getEmpi()))
+			.findFirst().orElse(null);
+		if (exactMatch != null) {
+			return Collections.singletonList(ParticipantDetail.from(exactMatch, false));
+		}
 
-		return exactEmpiMatch == null ? localMatching : Arrays.asList(exactEmpiMatch);
+		return ParticipantDetail.from(participants, false);
 	}
 
-	private List<ParticipantDetail> getLocalMatchingByPmi(ParticipantDetail detail) {
-
-		List<Participant> localMatching = epicLookUpDao.getLocalMatchingByPmi(detail.getPmis());
-		if (CollectionUtils.isEmpty(localMatching)) {
+	private List<ParticipantDetail> getParticipantsByPmi(ParticipantDetail detail) {
+		List<Participant> participants = participantLookUpDao.getByPmi(detail.getPmis());
+		if (CollectionUtils.isEmpty(participants)) {
 			return Collections.emptyList();
 		}
-		return ParticipantDetail.from(localMatching, false);
+
+		return ParticipantDetail.from(participants, false);
 	}
 
 	private ParticipantDetail getParticipantFromEpic(String empi) {
@@ -185,9 +195,9 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		try {
 			result = template.exchange(baseUrl + empi, HttpMethod.GET, entity, Map[].class);
 		} catch (Exception e) {
-			//Log the error and return null to show no matching found from EPIC
+			// Log the error and return null to show no matching found from EPIC
 			logger.error("Error obtaining participant details", e);
-			return null;
+			throw OpenSpecimenException.userError(EpicErrorCode.API_CALL_FAILED, e.getMessage());
 		}
 
 		if (!result.getStatusCode().equals(HttpStatus.OK)) {
@@ -225,20 +235,22 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 		if (CollectionUtils.isNotEmpty(epicPatient.getIds())) {
 			participant.setPmis(epicPatient.getIds().stream()
-					.map(id -> {
-						PmiDetail pmi = new PmiDetail();
-						pmi.setMrn(id.getId());
+				.map(id -> {
+					PmiDetail pmi = new PmiDetail();
+					pmi.setMrn(id.getId());
 
-						Site site = daoFactory.getSiteDao().getSiteByCode(id.getType());
-						if (site == null) {
-							throw OpenSpecimenException.userError(EpicErrorCode.MATCHING_SITE_NOT_FOUND, id.getType());
-						} else if (id.getType().equals("Enterprise Id")) {
-							participant.setEmpi(pmi.getMrn());
-						}
+					Site site = daoFactory.getSiteDao().getSiteByCode(id.getType());
+					if (site == null) {
+						throw OpenSpecimenException.userError(EpicErrorCode.MATCHING_SITE_NOT_FOUND, id.getType());
+					}
 
-						pmi.setSiteName(site.getName());
-						return pmi;
-					}).collect(Collectors.toList()));
+					if (id.getType().equals("Enterprise Id")) {
+						participant.setEmpi(pmi.getMrn());
+					}
+
+					pmi.setSiteName(site.getName());
+					return pmi;
+				}).collect(Collectors.toList()));
 		}
 
 		return participant;
