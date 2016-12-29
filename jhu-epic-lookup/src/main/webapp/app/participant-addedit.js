@@ -7,18 +7,20 @@ angular.module('os.plugins.jhu-epic-lookup')
       var matchingFn = participant.getMatchingParticipants;
 
       participant.getMatchingParticipants = function() {
-        if(!participant.empi && !participant.mrn) {
-          return;
+        if (!participant.empi && !participant.mrn) {
+          var d = $q.defer();
+          d.resolve([]);
+          return d.promise;
         }
 
         return matchingFn.apply(participant, [{returnThis: true}]).then(
           function(matches) {
-            if ((!matches || matches.length == 0)) {
+            if (!matches || matches.length == 0) {
               Alerts.error('participant.no_matching_epic_participant');
               return $q.reject();
             }
 
-           return matches.filter(function(match) {return !participant.id || participant.id != match.participant.id});
+            return matches.filter(function(match) {return !participant.id || participant.id != match.participant.id});
          });
       }
 
