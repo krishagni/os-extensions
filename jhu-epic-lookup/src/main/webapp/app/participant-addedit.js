@@ -7,10 +7,13 @@ angular.module('os.plugins.jhu-epic-lookup')
       var matchingFn = participant.getMatchingParticipants;
 
       participant.getMatchingParticipants = function() {
-        var copy = angular.extend(new Participant(participant), {getMatchingParticipants: matchingFn});
-        return copy.getMatchingParticipants({returnThis: true}).then(
+        if(!participant.empi && !participant.mrn) {
+          return;
+        }
+
+        return matchingFn.apply(participant, [{returnThis: true}]).then(
           function(matches) {
-            if ((!matches || matches.length == 0) && (!!participant.empi || !!participant.mrn)) {
+            if ((!matches || matches.length == 0)) {
               Alerts.error('participant.no_matching_epic_participant');
               return $q.reject();
             }
