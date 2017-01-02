@@ -7,12 +7,14 @@ angular.module('os.plugins.jhu-epic-lookup')
       var matchingFn = participant.getMatchingParticipants;
 
       participant.getMatchingParticipants = function() {
-        //User should not be allowed to create/update a participant with eMPI not present in EPIC
-        //If no match found in EPIC for the given eMPI/MRN, throw error
-        //If no eMPI/MRN entered, system should do the local lookup and display the local matches
         return matchingFn.apply(participant, [{returnThis: true}]).then(
           function(matches) {
-            if ((!!participant.empi || hasMrn(participant)) && !matches || matches.length == 0) {
+            var hasEmpiOrMrn = !!participant.empi || hasMrn(participant);
+            if (hasEmpiOrMrn && !matches || matches.length == 0) {
+              //
+              // Prohibit users from registering participants with
+              // non-existing eMPI/MRN in EPIC
+              //
               Alerts.error('participant.no_matching_epic_participant');
               return $q.reject();
             }
@@ -39,6 +41,7 @@ angular.module('os.plugins.jhu-epic-lookup')
               empiInputEl.parent().parent().hide();
             }
           }
+
           //
           // No MRNs for non-EPIC participants
           //
@@ -56,10 +59,11 @@ angular.module('os.plugins.jhu-epic-lookup')
         }, 100, 0, false);
 
       function hasMrn(participant) {
-        return participant.pmis.filter(
+        return participant.pmis && participant.pmis.filter(
           function(pmi) {
             return !!pmi.mrn;
-          }).length > 0;
+          }
+        ).length > 0;
       }
     }
   );
