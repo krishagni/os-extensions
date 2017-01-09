@@ -1,7 +1,27 @@
 angular.module('os.plugins.jhu-epic-lookup')
   .controller('jhuEpicParticipantAddEditCtrl',
-    function($scope, $interval, $document) {
-        $scope.partCtx.includeSiteTypes = ['EPIC'];
+    function($scope, $q, $interval, $document, Participant, Alerts) {
+      $scope.partCtx.includeSiteTypes = ['EPIC'];
+
+      var participant = $scope.cpr.participant;
+      var matchingFn = participant.getMatchingParticipants;
+
+      participant.getMatchingParticipants = function() {
+        return matchingFn.apply(participant, [{returnThis: true}]).then(
+          function(matches) {
+            var hasEmpiOrMrn = !!participant.empi || hasMrn(participant);
+            if (hasEmpiOrMrn && !matches || matches.length == 0) {
+              //
+              // Prohibit users from registering participants with
+              // non-existing eMPI/MRN in EPIC
+              //
+              Alerts.error('participant.no_matching_epic_participant');
+              return $q.reject();
+            }
+
+            return matches.filter(function(match) {return !participant.id || participant.id != match.participant.id});
+         });
+      }
 
       var hideFn = $interval(
         function() {
@@ -21,6 +41,7 @@ angular.module('os.plugins.jhu-epic-lookup')
               empiInputEl.parent().parent().hide();
             }
           }
+
           //
           // No MRNs for non-EPIC participants
           //
@@ -36,5 +57,13 @@ angular.module('os.plugins.jhu-epic-lookup')
             $interval.cancel(hideFn);
           }
         }, 100, 0, false);
+
+      function hasMrn(participant) {
+        return participant.pmis && participant.pmis.filter(
+          function(pmi) {
+            return !!pmi.mrn;
+          }
+        ).length > 0;
+      }
     }
   );
