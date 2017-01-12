@@ -137,7 +137,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		}
 
 		return epicMatchingList.stream()
-			.map(participant -> new MatchedParticipant(participant, Collections.singletonList("empi")))
+			.map(participant -> new MatchedParticipant(participant, Collections.singletonList("pmi")))
 			.collect(Collectors.toList());
 	}
 
