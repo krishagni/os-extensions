@@ -18,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -128,7 +129,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 			//
 			for (ParticipantDetail localParticipant : localParticipants) {
 				ParticipantDetail epicParticipant = getParticipantFromEpic(localParticipant.getEmpi());
-				if (epicParticipant != null && epicParticipant.getEmpi().equals(localParticipant.getEmpi())) {
+				if (epicParticipant != null && StringUtils.equals(epicParticipant.getEmpi(), localParticipant.getEmpi())) {
 					ParticipantDetail result = merge(epicParticipant, localParticipant);
 					epicMatchingList.add(result);
 				}
@@ -194,6 +195,8 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		ResponseEntity<Map[]> result = null;
 		try {
 			result = template.exchange(baseUrl + empi, HttpMethod.GET, entity, Map[].class);
+		} catch (HttpStatusCodeException apiError) {
+			throw OpenSpecimenException.userError(EpicErrorCode.API_CALL_FAILED, getErrorMsg(apiError));
 		} catch (Exception e) {
 			// Log the error and return null to show no matching found from EPIC
 			logger.error("Error obtaining participant details", e);
@@ -224,7 +227,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		participant.setBirthDate(epicPatient.getDateOfBirth());
 		participant.setGender(getMappedValue(PvAttributes.GENDER, epicPatient.getSex()));
 		participant.setEthnicity(getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup()));
-		participant.setEmpi(empi);
+		//participant.setEmpi(empi);
 		participant.setSource("EPIC");
 
 		if (epicPatient.getRace() != null && epicPatient.getRace().length > 0) {
@@ -278,6 +281,20 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		}
 
 		return pvs.iterator().next().getValue();
+	}
+
+	private String getErrorMsg(HttpStatusCodeException error) {
+		String respBody = error.getResponseBodyAsString();
+		if (StringUtils.isBlank(respBody)) {
+			return error.getMessage();
+		} else {
+			try {
+				Map<String, String> respMap = new ObjectMapper().readValue(respBody, Map.class);
+				return respMap.get("message");
+			} catch (Exception e) {
+				return error.getMessage();
+			}
+		}
 	}
 
 	private String getApiUrl() {
