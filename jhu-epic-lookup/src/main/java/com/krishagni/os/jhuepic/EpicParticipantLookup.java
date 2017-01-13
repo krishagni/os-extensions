@@ -247,7 +247,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 						throw OpenSpecimenException.userError(EpicErrorCode.MATCHING_SITE_NOT_FOUND, id.getType());
 					}
 
-					if (id.getType().equals("Enterprise Id")) {
+					if (StringUtils.equals(site.getName(), "Enterprise ID")) {
 						participant.setEmpi(pmi.getMrn());
 					}
 
