@@ -14,7 +14,7 @@ jar {
   }
 
   doFirst {
-    from ('./src/main/webapp/dist/') {
+    from ('./src/main/webapp/app/') {
       include '**/**'
  
       into 'META-INF/resources/vcb'
