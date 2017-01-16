@@ -57,7 +57,5 @@ task grunt_clean(type: Exec) {
   commandLine grunt_cmd, 'clean'
 }
 
-clean.dependsOn grunt_clean
 
-jar.dependsOn grunt_build
 build.dependsOn jar

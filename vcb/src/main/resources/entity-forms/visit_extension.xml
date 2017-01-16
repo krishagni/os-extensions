@@ -16,7 +16,7 @@
             from
               catissue_permissible_value pv
             where
-              pv.public_id = 'Tissue_Site_PID'
+              pv.public_id = 'anatomic_site'
 
             union
 
@@ -26,7 +26,7 @@
               catissue_permissible_value pv
               inner join catissue_permissible_value subpv on subpv.parent_identifier = pv.identifier
             where
-              pv.public_id = 'Tissue_Site_PID'
+              pv.public_id = 'anatomic_site'
 
             union
 
@@ -37,7 +37,7 @@
               inner join catissue_permissible_value subpv on subpv.parent_identifier = pv.identifier
               inner join catissue_permissible_value subpv1 on subpv1.parent_identifier = subpv.identifier
             where
-              pv.public_id = 'Tissue_Site_PID'
+              pv.public_id = 'anatomic_site'
 
             order by
               value
