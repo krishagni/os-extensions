@@ -88,11 +88,10 @@
 
           <div class="form-group">
             <label class="col-xs-3 control-label" translate="participant.ethnicity">Ethnicity</label>
-            <div class="col-xs-9">
-              <label class="radio-inline" ng-repeat="ethnicity in ethnicities">
-                <input type="radio" name="ethnicity" ng-model="cpr.participant.ethnicity" ng-value="ethnicity"> 
-                <span>{{ethnicity}}</span>
-              </label>
+            <div class="col-xs-6">
+              <os-pvs name="ethnicity" ng-model="cpr.participant.ethnicity" attribute="ethnicity"
+                placeholder="{{'participant.ethnicity' | translate}}">
+              </os-pvs>
             </div>
           </div>
 
@@ -119,7 +118,9 @@
           <div class="form-group">
             <label class="col-xs-3 control-label" translate="participant.race">Race</label>
             <div class="col-xs-6">
-              <os-select multiple ng-model="cpr.participant.races" list="races"></os-select>
+              <os-pvs multiple ng-model="cpr.participant.races" attribute="race"
+                placeholder="{{'participant.select_race' | translate}}">
+              </os-pvs>
             </div>
           </div>
         </div> <!-- End of Show Adv Demographics -->
