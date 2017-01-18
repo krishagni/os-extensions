@@ -36,6 +36,10 @@ public class CprDetail {
 	private String barcode;
 
 	private String irbID;
+	
+	private String shortTitle;
+	
+	private Boolean isUpdatable;
 
 	public String getIrbID() {
 		return irbID;
@@ -147,6 +151,22 @@ public class CprDetail {
 
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
+	}
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+	public Boolean isUpdatable() {
+		return isUpdatable;
+	}
+
+	public void setIsUpdatable(Boolean isUpdatable) {
+		this.isUpdatable = isUpdatable;
 	}
 
 }

@@ -32,8 +32,16 @@ public class EpicParticipantDetail {
 	private Date deathDate;
 
 	private String ethnicity;
+	
+	private Boolean isUpdatable;
+	
+	private Boolean isCprUpdatable;
+	
+	private Boolean isMrnUpdatable;
+	
+	private Boolean isConsentsUpdatable;
 
-	private List<PmiDetail> pmiDetails = new ArrayList<PmiDetail>();
+	private List<EpicPmiDetail> pmiDetails = new ArrayList<EpicPmiDetail>();
 
 	private List<String> raceList = new ArrayList<String>();
 
@@ -141,11 +149,11 @@ public class EpicParticipantDetail {
 		this.ethnicity = ethnicity;
 	}
 
-	public List<PmiDetail> getPmiDetails() {
+	public List<EpicPmiDetail> getPmiDetails() {
 		return pmiDetails;
 	}
 
-	public void setPmiDetails(List<PmiDetail> pmiDetails) {
+	public void setPmiDetails(List<EpicPmiDetail> pmiDetails) {
 		this.pmiDetails = pmiDetails;
 	}
 
@@ -155,6 +163,38 @@ public class EpicParticipantDetail {
 
 	public void setRaceList(List<String> raceList) {
 		this.raceList = raceList;
+	}
+
+	public Boolean isUpdatable() {
+		return isUpdatable;
+	}
+	
+	public void setIsUpdatable(Boolean isUpdatable) {
+		this.isUpdatable = isUpdatable;
+	}
+
+	public Boolean isCprUpdatable() {
+		return isCprUpdatable;
+	}
+	
+	public void setIsCprUpdatable(Boolean isCprUpdatable) {
+		this.isCprUpdatable = isCprUpdatable;
+	}
+	
+	public Boolean isMrnUpdatable() {
+		return isMrnUpdatable;
+	}
+	
+	public void setIsMrnUpdatable(Boolean isMrnUpdatable) {
+		this.isMrnUpdatable = isMrnUpdatable;
+	}
+
+	public Boolean isConsentsUpdatable() {
+		return isConsentsUpdatable;
+	}
+
+	public void setIsConsentsUpdatable(Boolean isConsentsUpdatable) {
+		this.isConsentsUpdatable = isConsentsUpdatable;
 	}
 
 }

@@ -4,7 +4,151 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+ 
+  <property name="bit.type" value="bit" dbms="mysql" />
+  <property name="bit.type" value="number(1,0)" dbms="oracle" />
 
+  <property name="boolean.type" value="boolean" dbms="mysql" />
+  <property name="boolean.type" value="number(1,0)" dbms="oracle" />
+
+  <property name="int.type" value="bigint" dbms="mysql" />
+  <property name="int.type" value="number(19,0)" dbms="oracle" />
+
+  <property name="mediumint.type" value="mediumint" dbms="mysql" />
+  <property name="mediumint.type" value="number(7,0)" dbms="oracle" />
+
+  <property name="smallint.type" value="smallint" dbms="mysql" />
+  <property name="smallint.type" value="number(5,0)" dbms="oracle" />
+
+  <property name="tinyint.type" value="tinyint" dbms="mysql"/>
+  <property name="tinyint.type" value="number(3, 0)" dbms="oracle"/>
+
+  <property name="text.type" value="varchar" dbms="mysql" />
+  <property name="text.type" value="varchar2" dbms="oracle" />
+
+  <property name="double.type" value="double"/>
+
+  <property name="autoIncrement" value="true" dbms="mysql"/>
+  <property name="autoIncrement" value="false" dbms="oracle"/>
+
+  <property name="timestamp.type" value="timestamp" dbms="oracle" />
+  <property name="timestamp.type" value="timestamp" dbms="mysql" />
+
+  <property name="nullable.ts.type" value="timestamp null" dbms="mysql" />
+  <property name="nullable.ts.type" value="timestamp" dbms="oracle" />
+
+  <property name="clob.type" value="text" dbms="mysql"/>
+  <property name="clob.type" value="clob" dbms="oracle"/>
+
+  <property name="decimal.type" value="decimal" dbms="mysql"/>
+  <property name="decimal.type" value="number" dbms="oracle"/>
+  
+  <property name="now" value="now()"   dbms="mysql"/>
+  <property name="now" value="sysdate" dbms="oracle"/>
+  
+  <property name="date.type" value="date" dbms="mysql" />
+  <property name="date.type" value="date" dbms="oracle" />
+  
+  <!-- 
+      This was added for creating the staging DB schema locally. Client already had this schema, so no need to run on client server.
+      Please uncomment the below section while deploying locally.  
+  -->
+<!--   
+  <changeSet author="nmarwaha" id="Creating staging tables for EPIC">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="STAGING_CATISSUE_PATIENT"/>
+      </not>
+    </preConditions>
+
+    <createTable tableName="STAGING_CATISSUE_PATIENT">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)" />
+      <column name="PART_SOURCE" type="${text.type}(250)" />
+      <column name="FIRST_NAME" type="${text.type}(250)"/>
+      <column name="MIDDLE_NAME" type="${text.type}(250)"/>
+      <column name="LAST_NAME" type="${text.type}(250)"/>
+      <column name="DATE_OF_BIRTH" type="date"/>
+      <column name="ETHNICITY" type="${text.type}(250)"/>
+      <column name="GENDER" type="${text.type}(250)"/>
+      <column name="VITAL_STATUS" type="${text.type}(250)"/>
+      <column name="DEATH_DATE" type="date"/>
+      <column name="STATUS" type="${text.type}(250)"/>
+      <column name="PAT_UPDATE_DATE" type="date"/>
+      <column name="UPDATE_FLAG" type="${boolean.type}"/>
+    </createTable>
+
+    <createTable tableName="STAGING_CATISSUE_PAT_ENROLL">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)" />
+      <column name="PART_SOURCE" type="${text.type}(250)" />
+      <column name="IRB_ID" type="${text.type}(250)" />
+      <column name="REGISTRATION_DATE" type="date" />
+      <column name="CONSENT_RECV_DATE" type="date" />
+      <column name="CONSENT_DATE" type="date"/>
+      <column name="RSH_PROJECT" type="${text.type}(250)"/>
+      <column name="UPDATE_FLAG" type="${boolean.type}"/>
+      <column name="SHORT_TITLE" type="${text.type}(250)"/>
+    </createTable>
+
+    <createTable tableName="STAGING_CATISSUE_RACE">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="PART_SOURCE" type="${text.type}(250)"/>
+      <column name="RACE_VALUE" type="${text.type}(250)"/>
+    </createTable>
+
+    <createTable tableName="STAGING_CATISSUE_MRN">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="PART_SOURCE" type="${text.type}(250)"/>
+      <column name="FACILITY_TYPE_ID" type="${int.type}"/>
+      <column name="SITE_NAME" type="${text.type}(250)"/>
+      <column name="MRN_VALUE" type="${text.type}(250)"/>
+      <column name="NEW_MRN_VALUE" type="${text.type}(250)"/>
+      <column name="UPDATE_FLAG" type="${boolean.type}"/>
+    </createTable>
+
+    <createTable tableName="STAGING_CATISSUE_CONSENTS">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="PART_SOURCE" type="${text.type}(250)"/>
+      <column name="CONSENT_TYPE" type="${text.type}(250)"/>
+      <column name="CONSENT_STAT_CODE" type="${int.type}"/>
+      <column name="CONSENT_STATEMENT" type="${text.type}(2000)" />
+      <column name="CONSENT_RESPONSE" type="${text.type}(250)"/>
+      <column name="IRB_ID" type="${text.type}(250)"/>
+      <column name="SHORT_TITLE" type="${text.type}(250)"/>
+      <column name="UPDATE_FLAG" type="${boolean.type}"/>
+    </createTable>
+
+    <createTable tableName="STAGING_PART_ID_HISTORY">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="PART_SOURCE" type="${text.type}(250)"/>
+      <column name="NEW_PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="CHANGE_TYPE" type="${text.type}(250)"/>
+    </createTable>
+
+    <createTable tableName="STAGING_PARTICIPANT_AUDIT">
+      <column name="PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="PART_SOURCE" type="${text.type}(250)"/>
+      <column name="UPDATED_ON" type="date" />
+      <column name="STATUS" type="${text.type}(250)"/>
+      <column name="COMMENTS" type="${text.type}(2000)"/>
+      <column name="CUSTOM_MESSAGE" type="${text.type}(2000)"/>
+    </createTable>
+
+    <createTable tableName="STAGING_JOB_AUDIT">
+      <column name="RUN_ON" type="date"/>
+      <column name="ADDED_COUNT" type="${int.type}"/>
+      <column name="EDITED_COUNT" type="${int.type}"/>
+      <column name="FAILED_COUNT" type="${int.type}"/>
+    </createTable>
+
+    <createTable tableName="STAGING_PART_INFO_MAPPING">
+      <column name="CATISSUE_PART_ID" type="${int.type}"/>
+      <column name="PART_SOURCE_ID" type="${text.type}(250)"/>
+      <column name="PART_SOURCE" type="${text.type}(250)"/>
+      <column name="MRN_VALUE" type="${text.type}(250)"/>
+      <column name="MAPPING_DATE" type="date"/>
+    </createTable>
+  </changeSet>
+-->
   <changeSet author="nmarwaha" id="Creating scheduled job for EPIC migraiton">
     <sql>
       insert into 
@@ -16,4 +160,79 @@
     </sql>
   </changeSet>
 
+  <changeSet author="nmarwaha" id="Adding EPIC specific configuration parameters">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values 
+        (os_modules_seq.nextval, 'plugin_epic', 'EPIC custom module plugin');
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'admin_email_id', 
+        'admin_email_id', 'admin_email_id_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'admin_auth_domain', 
+        'admin_auth_domain', 'admin_auth_domain_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'database_server', 
+        'database_server', 'database_server_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'database_port', 
+        'database_port', 'database_port_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'database_name', 
+        'database_name', 'database_name_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'database_user', 
+        'database_user', 'database_user_desc', 
+        'STRING', ''
+      );
+    </sql>
+    
+    <sql>
+      call add_cfg_prop(
+        'plugin_epic', 'database_password', 
+        'database_password', 'database_password_desc', 
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="nmarwaha" id="Updating is_secure flag to 1 for epic database password">
+    <sql>
+       update 
+         os_cfg_props 
+       set 
+         is_secure = 1 
+       where 
+         name = 'database_password' and module_id = (select identifier from os_modules where name = 'plugin_epic')
+    </sql>
+  </changeSet>
 </databaseChangeLog>

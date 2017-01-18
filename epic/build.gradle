@@ -7,7 +7,7 @@ apply plugin: 'eclipse'
 
 jar {
   baseName = 'os-epic'
-  version =  '1.0.0'
+  version =  '1.2.0'
 
   manifest {
     attributes("os-plugin-name": "epic")
