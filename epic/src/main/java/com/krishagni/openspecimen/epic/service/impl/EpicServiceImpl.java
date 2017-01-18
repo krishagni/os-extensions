@@ -331,6 +331,11 @@ public class EpicServiceImpl implements EpicService {
 		List<ConsentDetail> consents = epicDao.getConsents(connection, epicPart.getId(), epicPart.getSource(), detail.getId());
 		
 		for (ConsentDetail consentDetail : consents) {
+			List<CprDetail> list = epicDao.getCprDetails(connection, epicPart.getId(), epicPart.getSource(), false);
+			if (CollectionUtils.isNotEmpty(list)) {
+				consentDetail.setConsentSignatureDate(list.stream().findFirst().get().getConsentSignatureDate());
+			}
+
 			ResponseEvent<ConsentDetail> consentResult = cprSvc.saveConsents(getRequest(consentDetail));
 			consentResult.throwErrorIfUnsuccessful();
 		}
