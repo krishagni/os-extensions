@@ -37,11 +37,14 @@
     <property name="daoFactory"  ref="biospecimenDaoFactory"/>
   </bean> 
   
-  <bean id="migrateSprs" class="com.krishagni.openspecimen.sgh.init.MigrateSurgicalPathologyReports">
+  <!--
+      Commenting migrate spr as its done and one time..
+      From v3.3 its failing because its referring some DE tables, which got deleted in cleanup -->
+  <!--bean id="migrateSprs" class="com.krishagni.openspecimen.sgh.init.MigrateSurgicalPathologyReports">
     <property name="txnMgr" ref="transactionManager"/>
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
     <property name="cfgSvc" ref="cfgSvc"/>
-  </bean>
+  </bean-->
   
   <bean id="tridPrintSvc" class="com.krishagni.openspecimen.sgh.services.impl.TridPrintSvcImpl">
     <property name="cfgSvc" ref="cfgSvc"/>
