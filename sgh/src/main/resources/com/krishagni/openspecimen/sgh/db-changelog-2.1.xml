@@ -939,12 +939,12 @@
     <sql>
       insert into os_dp_coordinators 
         select 
-          rec_ntry.object_id, de_coord.de_a_3 
+          rec_entry.object_id, de_coord.de_a_3 
         from 
           catissue_form_record_entry rec_entry 
           join catissue_form_context ctxt on ctxt.identifier = rec_entry.form_ctxt_id 
           join dyextn_containers de_cont on de_cont.identifier = ctxt.container_id 
-          join DE_E_11251 de_coord on de_coord.identifier = rec_ntry.record_id 
+          join DE_E_11176 de_coord on de_coord.identifier = rec_entry.record_id 
         where 
           de_cont.name = 'distributionProtocol_extension'
     </sql>
