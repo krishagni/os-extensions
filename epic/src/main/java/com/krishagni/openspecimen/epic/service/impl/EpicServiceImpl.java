@@ -134,6 +134,7 @@ public class EpicServiceImpl implements EpicService {
 						isDisabled = false;
 						epicPart.setOsId(pId);
 					}
+
 					String partSrcId = epicPart.getId();
 					String catPartSrcId = String.valueOf(epicPart.getOsId());
 					String source = epicPart.getSource();
@@ -221,17 +222,17 @@ public class EpicServiceImpl implements EpicService {
 		List<CprDetail> cprList = epicDao.getCprDetails(connection, epicPart.getId(), epicPart.getSource(), true);
 		
 		
-		if(detail.getId() == null) {
+		if (detail.getId() == null) {
 			logger.debug("isAdd, getting ID by MRN");
 			Long participantId = epicDao.getParticipantIdFromMrn(connection, epicPart);
 			detail.setId(participantId);
 		}
-		
+
 		boolean isAdd = detail.getId() == null ? true : false;
-		
-		if(!isAdd) {
+
+		if (!isAdd) {
 			Participant participant = epicDao.getParticipant(detail.getId());
-			if(participant == null || !participant.isActive()) {
+			if (participant == null || !participant.isActive()) {
 				logger.debug("MRN already exist, Participant is Disabled/Closed");
 				isDisabled = true;
 				pId = detail.getId();
@@ -277,6 +278,7 @@ public class EpicServiceImpl implements EpicService {
 			if(cprId != null) {
 				logger.debug("Participant already registered, hence skipping the registration.");
 			}
+
 			if(cprId == null) {
 				if(isAdd) {
 					logger.debug("Creating participant............");
@@ -292,6 +294,8 @@ public class EpicServiceImpl implements EpicService {
 				ResponseEvent<CollectionProtocolRegistrationDetail> result = cprSvc.createRegistration(getRequest(cpr));
 				result.throwErrorIfUnsuccessful();
 				detail = result.getPayload().getParticipant();
+
+				updateConsentDate(result.getPayload().getId(), cprDetail.getConsentSignatureDate());
 			}
 		}
 		
@@ -325,6 +329,14 @@ public class EpicServiceImpl implements EpicService {
 		logger.debug("Epic building custom message : " + customMsg);
 		return successMessage + ":custom" + customMsg;
 
+	}
+
+	private void updateConsentDate(Long cprId, Date consentDate) {
+		ConsentDetail detail = new ConsentDetail();
+		detail.setCprId(cprId);
+		detail.setConsentSignatureDate(consentDate);
+
+		cprSvc.saveConsents(getRequest(detail));
 	}
 
 	private void updateConsents(EpicParticipantDetail epicPart, ParticipantDetail detail) throws SQLException {
