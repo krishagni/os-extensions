@@ -220,33 +220,33 @@ public class EpicDaoImpl implements EpicDao {
 		return cprDetails;
 	}
 
-//	@Override
-//	public List<CprDetail> getCprDetailsWithoutFlag(Connection conn, String sourcePartId, String partSource)
-//			throws SQLException {
-//		PreparedStatement statement = null;
-//		ResultSet rs = null;
-//		List<CprDetail> cprDetails = new ArrayList<CprDetail>();
-//		try {
-//			statement = conn.prepareStatement(getCprDetailWithoutFlag);
-//			statement.setString(1, sourcePartId);
-//			statement.setString(2, partSource);
-//			rs = statement.executeQuery();
-//			while (rs.next()) {
-//				CprDetail detail = new CprDetail();
-//				detail.setRegistrationDate(getDate(rs.getObject(1)));
-//				detail.setConsentSignatureDate(getDate(rs.getObject(2)));
-//				detail.setIrbID(getString(rs.getObject(3)));
-//				detail.setShortTitle(getString(rs.getObject(4)));
-//				detail.setConsentResponseList(
-//						getConsentDetails(conn, sourcePartId, partSource, detail.getIrbID(), detail.getShortTitle()));
-//				cprDetails.add(detail);
-//			}
-//		} finally {
-//			closeStatement(statement);
-//			closeResultSet(rs);
-//		}
-//		return cprDetails;
-//	}
+	//TODO: Instead CprDetail return CprSummary by creating new class.
+	@Override
+	public List<CprDetail> getCprSummary(Connection conn, String sourcePartId, String partSource, String cpShortTitle)
+			throws SQLException {
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		List<CprDetail> cprDetails = new ArrayList<CprDetail>();
+		try {
+			statement = conn.prepareStatement(GET_CPR_BY_PART_ID_AND_CP_SHORT_TITLE);
+			statement.setString(1, sourcePartId);
+			statement.setString(2, partSource);
+			statement.setString(3, cpShortTitle);
+			rs = statement.executeQuery();
+			while (rs.next()) {
+				CprDetail detail = new CprDetail();
+				detail.setRegistrationDate(getDate(rs.getObject(1)));
+				detail.setConsentSignatureDate(getDate(rs.getObject(2)));
+				detail.setIrbID(getString(rs.getObject(3)));
+				detail.setShortTitle(getString(rs.getObject(4)));
+				cprDetails.add(detail);
+			}
+		} finally {
+			closeStatement(statement);
+			closeResultSet(rs);
+		}
+		return cprDetails;
+	}
 
 	@Override
 	public List<ConsentDetail> getConsents(Connection conn, String sourcePartId, String partSource, Long participantId)
@@ -263,11 +263,17 @@ public class EpicDaoImpl implements EpicDao {
 				String irbId = getString(rs.getObject(1));
 				String shortTitle = getString(rs.getObject(2));
 
-				ConsentDetail consentDetail = new ConsentDetail();
-				consentDetail.setCprId(getCprId(participantId, getCpIdByIrbId(irbId, shortTitle)));
-				consentDetail
-						.setConsentTierResponses(getConsentDetails(conn, sourcePartId, partSource, irbId, shortTitle));
-				list.add(consentDetail);
+				ConsentDetail detail = new ConsentDetail();
+				detail.setCprId(getCprId(participantId, getCpIdByIrbId(irbId, shortTitle)));
+
+				List<CprDetail> cprs = getCprSummary(conn, sourcePartId, partSource, shortTitle);
+				if (!cprs.isEmpty()) {
+					Date consentDate = cprs.get(cprs.size() - 1).getConsentSignatureDate();
+					detail.setConsentSignatureDate(consentDate);
+				}
+
+				detail.setConsentTierResponses(getConsentDetails(conn, sourcePartId, partSource, irbId, shortTitle));
+				list.add(detail);
 			}
 		} finally {
 			closeStatement(statement);
@@ -455,12 +461,12 @@ public class EpicDaoImpl implements EpicDao {
 		// For MySQL
 
 		// epicParticipantDetail.setIsUpdatable(Boolean.valueOf(getString(rs.getObject(16))));
-		// epicParticipantDetail.setIsCprUpdatable(Boolean.valueOf(getString(rs.getObject(17))));
-		// epicParticipantDetail.setIsMrnUpdatable(Boolean.valueOf(getString(rs.getObject(18))));
-		// epicParticipantDetail.setIsConsentsUpdatable(Boolean.valueOf(getString(rs.getObject(19))));
+/*		 epicParticipantDetail.setIsCprUpdatable(Boolean.valueOf(getString(rs.getObject(17))));
+		 epicParticipantDetail.setIsMrnUpdatable(Boolean.valueOf(getString(rs.getObject(18))));
+		epicParticipantDetail.setIsConsentsUpdatable(Boolean.valueOf(getString(rs.getObject(19))));*/
 
-		// epicParticipantDetail.setPmiDetails(getPmis(conn,
-		// epicParticipantDetail.getId(), epicParticipantDetail.getSource()));
+		//epicParticipantDetail.setPmiDetails(getPmis(conn,
+		//epicParticipantDetail.getId(), epicParticipantDetail.getSource()));
 
 		return epicParticipantDetail;
 	}
@@ -534,6 +540,11 @@ public class EpicDaoImpl implements EpicDao {
 			+ "  enroll.REGISTRATION_DATE, enroll.CONSENT_DATE, enroll.IRB_ID, enroll.SHORT_TITLE " + "from "
 			+ "  STAGING_CATISSUE_PAT_ENROLL enroll " + "where "
 			+ "  enroll.PART_SOURCE_ID = ? and enroll.PART_SOURCE = ?";
+
+	private final String GET_CPR_BY_PART_ID_AND_CP_SHORT_TITLE = "select "
+		+ "  enroll.REGISTRATION_DATE, enroll.CONSENT_DATE, enroll.IRB_ID, enroll.SHORT_TITLE " + "from "
+		+ "  STAGING_CATISSUE_PAT_ENROLL enroll " + "where "
+		+ "  enroll.PART_SOURCE_ID = ? and enroll.PART_SOURCE = ? and enroll.SHORT_TITLE = ?";
 
 	private final String getMrnDetails = "select " + "  mrn.SITE_NAME, mrn.MRN_VALUE, mrn.NEW_MRN_VALUE " + "from "
 			+ "  STAGING_CATISSUE_MRN mrn " + "where "

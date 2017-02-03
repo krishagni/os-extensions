@@ -36,8 +36,9 @@ public interface EpicDao {
 	public List<CprDetail> getCprDetails(Connection connection, String sourcePartId, String partSource, boolean updateFlag)
 			throws SQLException;
 
-//	public List<CprDetail> getCprDetailsWithoutFlag(Connection conn, String sourcePartId, String partSource)
-//			throws SQLException;
+	public List<CprDetail> getCprSummary(Connection connection, String sourcePartId, String partSource, String cpShortTitle)
+		throws SQLException;
+
 
 	public List<ConsentDetail> getConsents(Connection conn, String sourcePartId, String partSource, Long participantId)
 			throws SQLException;
