@@ -20,4 +20,12 @@
       </bean>
     </property>
   </bean>
+
+  <bean id="epicImportParticipantForms" class="com.krishagni.os.jhuepic.ImportParticipantForm">
+    <property name="txnMgr" ref="transactionManager"/>
+    <property name="userDao" ref="userDao"/>
+    <property name="daoFactory" ref="deDaoFactory"/>
+    <property name="deInitializer" ref="deInitializer"/>
+    <property name="templateService" ref="templateService"/>
+  </bean>
 </beans>
