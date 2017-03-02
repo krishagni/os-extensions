@@ -1,27 +1,10 @@
 angular.module('os.plugins.jhu-epic-lookup')
   .controller('jhuEpicParticipantAddEditCtrl',
-    function($scope, $q, $interval, $document, Participant, Alerts) {
+    function($scope, $interval, $document, Participant, jhuEpicParticipantUtil) {
       $scope.partCtx.includeSiteTypes = ['EPIC'];
 
       var participant = $scope.cpr.participant;
-      var matchingFn = participant.getMatchingParticipants;
-
-      participant.getMatchingParticipants = function() {
-        return matchingFn.apply(participant, [{returnThis: true}]).then(
-          function(matches) {
-            var hasEmpiOrMrn = !!participant.empi || hasMrn(participant);
-            if (hasEmpiOrMrn && !matches || matches.length == 0) {
-              //
-              // Prohibit users from registering participants with
-              // non-existing eMPI/MRN in EPIC
-              //
-              Alerts.error('participant.no_matching_epic_participant');
-              return $q.reject();
-            }
-
-            return matches.filter(function(match) {return !participant.id || participant.id != match.participant.id});
-         });
-      }
+      jhuEpicParticipantUtil.addMatchParticipantsFn(participant);
 
       var hideFn = $interval(
         function() {
@@ -58,12 +41,5 @@ angular.module('os.plugins.jhu-epic-lookup')
           }
         }, 100, 0, false);
 
-      function hasMrn(participant) {
-        return participant.pmis && participant.pmis.filter(
-          function(pmi) {
-            return !!pmi.mrn;
-          }
-        ).length > 0;
-      }
     }
   );
