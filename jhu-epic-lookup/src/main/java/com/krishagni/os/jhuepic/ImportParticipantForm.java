@@ -11,7 +11,7 @@ import krishagni.catissueplus.beans.FormContextBean;
 public class ImportParticipantForm extends ImportForms {
 	@Override
 	protected Collection<String> listFormFiles() throws IOException {
-		return Collections.singleton("/com/krishagni/os/jhuepic/external-mrn.xml");
+		return Collections.singleton(CUSTOM_PARTICIPANT_FORM);
 	}
 
 	@Override
@@ -44,4 +44,6 @@ public class ImportParticipantForm extends ImportForms {
 	public boolean isCreateTable() {
 		return true;
 	}
+
+	private static final String CUSTOM_PARTICIPANT_FORM = "/com/krishagni/os/jhuepic/external-mrn.xml";
 }

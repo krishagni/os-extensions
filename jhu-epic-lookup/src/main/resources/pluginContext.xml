@@ -28,4 +28,8 @@
     <property name="deInitializer" ref="deInitializer"/>
     <property name="templateService" ref="templateService"/>
   </bean>
+
+  <bean id="epicPluginInitialiser" class="com.krishagni.os.jhuepic.PluginInitializer">
+    <property name="cfgSvc" ref="cfgSvc"/>
+  </bean>
 </beans>
