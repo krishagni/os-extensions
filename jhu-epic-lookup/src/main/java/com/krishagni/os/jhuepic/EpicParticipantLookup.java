@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -218,6 +219,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.PASCAL_CASE_TO_CAMEL_CASE);
+		mapper.setTimeZone(TimeZone.getDefault());
 		EpicPatient epicPatient = mapper.convertValue(result[0], EpicPatient.class);
 
 		ParticipantDetail participant = new ParticipantDetail();
