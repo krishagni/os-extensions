@@ -1,6 +1,6 @@
 {
   "menu": {
-    "collection_protocols": "Studies",
+    "collection_protocols": "Sample Collection",
     "specimen_lists": "Sample Lists",
     "cp_desc": "Create, update SOP of visits and samples",
     "dp_desc": "Create, update procedures for distributing samples",
@@ -9,24 +9,24 @@
   },
 
   "cp": {
-    "list": "Studies",
-    "create_cp_title": "Create Study",
-    "import_cp_title": "Import Study",
+    "list": "Sample Collection",
+    "create_cp_title": "Create Collection",
+    "import_cp_title": "Import Collection",
     "cp_def_file": "Study Definition File",
-    "no_cpes": "There are no Study events to show. Please create an event by clicking on Add Event...",
-    "confirm_delete_event": "Study Event and its sample requirements will be deleted. Are you sure you want to proceed?",
-    "title": "Study Name",
+    "no_cpes": "There are no Sample Collection events to show. Please create an event by clicking on Add Event...",
+    "confirm_delete_event": "Sample Collection Event and its sample requirements will be deleted. Are you sure you want to proceed?",
+    "title": "Sample Collection Name",
     "coordinators": "Contact information",
-    "ethics_approval_id": "Study ID",
-    "specimen_label_fmt": "Sample ID Format",
+    "ethics_approval_id": "Sample Collection ID",
+    "specimen_label_fmt": "Sample Collection ID Format",
     "derivative_label_fmt": "Derivative ID Format",
     "aliquot_label_fmt": "Aliquot ID Format",
     "spec_labels": "Sample IDs",
     "confirm_delete_event": "Collection Protocol Event and its sample requirements will be deleted. Are you sure you want to proceed?",
     "tooltip": {
       "view_details": "Click to view/edit Study details",
-      "add": "Click to add new Study",
-      "edit": "Click to edit Study",
+      "add": "Click to add new Sample Collection",
+      "edit": "Click to edit Sample Collection",
       "collected_specimens_count": "Count of Collected Samples",
       "search": "Click to search Studies"
     },
