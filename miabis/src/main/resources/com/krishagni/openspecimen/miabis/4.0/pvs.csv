@@ -1,10 +1,10 @@
 IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
-getNextPvId(),,,null,African,Ethnicity_PID,0
-getNextPvId(),,,null,Caucasian,Ethnicity_PID,0
-getNextPvId(),,,null,Pacific Islander,Ethnicity_PID,0
-getNextPvId(),,,null,East Asian,Ethnicity_PID,0
-getNextPvId(),,,null,Native American,Ethnicity_PID,0
-getNextPvId(),,,null,Other,Ethnicity_PID,0
+getNextPvId(),,,null,African,ethnicity,0
+getNextPvId(),,,null,Caucasian,ethnicity,0
+getNextPvId(),,,null,Pacific Islander,ethnicity,0
+getNextPvId(),,,null,East Asian,ethnicity,0
+getNextPvId(),,,null,Native American,ethnicity,0
+getNextPvId(),,,null,Other,ethnicity,0
 getNextPvId(),,,"getPvParentId('specimen_type', 'Molecular')",mRNA,null,0
 getNextPvId(),,,"getPvParentId('specimen_type', 'Molecular')",microRNA,null,0
 getNextPvId(),,,"getPvParentId('specimen_type', 'Cell')",Cell Lines,null,0
