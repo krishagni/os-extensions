@@ -15,7 +15,7 @@
       delete from 
         catissue_permissible_value 
       where 
-        public_id='Ethnicity_PID';
+        public_id='ethnicity';
     </sql>
   </changeSet>
   
