@@ -7,6 +7,6 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
   
-  <include file="com/krishagni/openspecimen/miabis/2.4/seed-data.xml"/>
+  <include file="com/krishagni/openspecimen/miabis/4.0/seed-data.xml"/>
 
 </databaseChangeLog>

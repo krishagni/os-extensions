@@ -21,7 +21,7 @@
   
   <changeSet author="hemantk" id="Permissible_values csv file upload">
     <loadData encoding="UTF-8"
-      file="classpath:com/krishagni/openspecimen/miabis/2.4/pvs.csv"
+      file="classpath:com/krishagni/openspecimen/miabis/4.0/pvs.csv"
       tableName="CATISSUE_PERMISSIBLE_VALUE">
       <column name="identifier" type="NUMERIC"/>
       <column name="parent_identifier" type="NUMERIC"/>
