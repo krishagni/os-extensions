@@ -1,0 +1,11 @@
+{
+  "styles": [
+  ],
+
+  "scripts": [
+    "jhu-epic-lookup/module.js",
+    "jhu-epic-lookup/participant-util.js",
+    "jhu-epic-lookup/participant-addedit.js",
+    "jhu-epic-lookup/participant-refresh.js"
+  ]
+}

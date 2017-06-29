@@ -1,0 +1,24 @@
+<form>
+  <view>
+    <name>externalMRN</name>
+    <caption><![CDATA[External MRN]]></caption>
+    <row>
+      <textField>
+        <name>ST2</name>
+        <udn>externalMRNID</udn>
+        <caption><![CDATA[External MRN ID]]></caption>
+        <phi>false</phi>
+        <mandatory>false</mandatory>
+        <toolTip><![CDATA[]]></toolTip>
+        <showLabel>true</showLabel>
+        <showInGrid>false</showInGrid>
+        <width>8</width>
+        <defaultValue><![CDATA[]]></defaultValue>
+        <url>false</url>
+        <password>false</password>
+      </textField>
+    </row>
+  </view>
+  <skipRules>
+  </skipRules>
+</form>

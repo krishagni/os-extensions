@@ -1,4 +1,5 @@
 {
+
   "settings": {
     "plugin_jhu_epic": {
       "title": "EPIC Module",
@@ -10,9 +11,11 @@
       "epic_client_secret_desc": "Client password to authenticate the API call"
     }
   },
+
   "participant": {
-	  "mpi": "Patient ID",
-	  "no_matching_epic_participant": "No matching participant found"
+    "mpi": "Patient ID",
+    "no_matching_epic_participant": "No matching participant found",
+    "epic_refresh": "Refresh",
+    "epic_refreshed": "Successfully refreshed participant details from EPIC"
   }
-  
 }

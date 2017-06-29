@@ -6,6 +6,12 @@ angular.module('os.plugins.jhu-epic-lookup', ['openspecimen'])
         'page-body': {
           template: 'plugin-ui-resources/jhu-epic-lookup/participant-addedit.html'
         }
+      },
+
+      'participant-detail': {
+        'page-commands': {
+          template: 'plugin-ui-resources/jhu-epic-lookup/participant-refresh.html'
+        }
       }
     });
   });

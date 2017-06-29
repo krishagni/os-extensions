@@ -1,0 +1,10 @@
+<span>
+  <span ng-if="cpr.participant.source == 'EPIC' && !!cpr.participant.empi">
+    <span ng-controller="jhuEpicParticipantRefreshCtrl">
+      <button show-if-allowed="participantResource.updateOpts" class="default" ng-click="jhuEpicRefresh()">
+        <span class="fa fa-refresh"></span>
+        <span translate="participant.epic_refresh">Refresh</span>
+      </button>
+    </span>
+  </span>
+</span>
