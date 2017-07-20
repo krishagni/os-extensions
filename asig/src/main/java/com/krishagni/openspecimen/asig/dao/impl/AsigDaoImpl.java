@@ -198,7 +198,7 @@ public class AsigDaoImpl implements AsigDao{
 	private final String GET_PATIENT_LIST  = 
 			"select " +
 			"  p.patient_id as patient_id, p.clinic_id as clinic_id, p.hospital_url as hospital_url, " + 
-			"  p.status as status, p.patient_consent as patient_consent, c.site_name as site_name, " +
+			"  p.status as status, p.consent as patient_consent, c.site_name as site_name, " +
 			"  p.date_of_status_change as date_of_status_change " +
 			"from " +
 			"  patient_export p" +

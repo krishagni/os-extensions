@@ -197,7 +197,7 @@ public class AsigServiceImpl implements AsigService {
 			boolean isOldObj) {
 		
 		siteDetail.setName(clinicDetail.getDescription());
-		siteDetail.setInstituteName("i");
+		siteDetail.setInstituteName(INSTITUTE_NAME);
 		List<UserSummary> coordinators = new ArrayList<UserSummary>();
 		UserSummary userSummary = new UserSummary();
 		userSummary.setEmailAddress(ADMIN_EMAIL);
@@ -215,7 +215,6 @@ public class AsigServiceImpl implements AsigService {
 		userDetail.setLoginName(asigUserDetail.getLoginName());
 		userDetail.setDomainName("openspecimen");
 		userDetail.setInstituteName(INSTITUTE_NAME);
-		// userDetail.setDeptName(DEPARTMENT_NAME);
 		userDetail.setPhoneNumber(PHONE_NUMBER);
 		
 	}
@@ -271,16 +270,14 @@ public class AsigServiceImpl implements AsigService {
 	private <T> RequestEvent<T> getRequest(T payload) {
 		return new RequestEvent<T>(payload);
 	}
-    
-    private static final String DEPARTMENT_NAME = "IT";
-    
-    private static final String INSTITUTE_NAME = "i";
+        
+    private static final String INSTITUTE_NAME = "MCRI";
     
     private static final String CP_TITLE = "ASIG";
     
     private static final String PHONE_NUMBER = "+61 404622745";
     
-    private static final String ADMIN_EMAIL = "candice.rabusa@svha.org.au";
+    private static final String ADMIN_EMAIL = "abhijeet.thakurdesai@krishagni.com";
     
     private static final String TISSUE_BANKER_ROLE = "Tissue Banker";
     
