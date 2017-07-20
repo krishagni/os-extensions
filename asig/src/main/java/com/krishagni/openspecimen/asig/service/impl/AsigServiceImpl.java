@@ -215,7 +215,7 @@ public class AsigServiceImpl implements AsigService {
 		userDetail.setLoginName(asigUserDetail.getLoginName());
 		userDetail.setDomainName("openspecimen");
 		userDetail.setInstituteName(INSTITUTE_NAME);
-		userDetail.setDeptName(DEPARTMENT_NAME);
+		// userDetail.setDeptName(DEPARTMENT_NAME);
 		userDetail.setPhoneNumber(PHONE_NUMBER);
 		
 	}

@@ -3,6 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import static groovy.io.FileType.FILES
 
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 jar {
@@ -83,6 +84,8 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version:springVersion
   compile group: 'org.springframework', name: 'spring-web', version:springVersion
   compile group: 'org.springframework', name: 'spring-webmvc', version:springVersion
+
+  compile group: 'org.springframework.security.extensions', name: 'spring-security-saml2-core', version:'1.0.0.RELEASE'
 }
 
 compileJava {
