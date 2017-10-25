@@ -1,20 +1,22 @@
 <div>
-  <div os-page-header> 
-    <ul os-breadcrumbs>
-      <li ng-switch on="!!cp.id">
-        <a ng-switch-when="true" ui-sref="cp-detail.overview({cpId: cp.id})">
-          <span>{{cp.shortTitle}}</span>
-        </a>
-        <a ng-switch-default ui-sref="cp-list">
-          <span translate="cp.list">Collection Protocols</span>
-        </a>
-      </li>
-    </ul>
-    <h3> 
-      <span translate="custom_sgh.register_participants">
-        Register Participants
-      </span>
-    </h3>
+  <div os-page-header>
+    <div class="os-page-header-content">
+      <ul os-breadcrumbs>
+        <li ng-switch on="!!cp.id">
+          <a ng-switch-when="true" ui-sref="cp-detail.overview({cpId: cp.id})">
+            <span>{{cp.shortTitle}}</span>
+          </a>
+          <a ng-switch-default ui-sref="cp-list">
+            <span translate="cp.list">Collection Protocols</span>
+          </a>
+        </li>
+      </ul>
+      <h3>
+        <span translate="custom_sgh.register_participants">
+          Register Participants
+        </span>
+      </h3>
+    </div>
   </div>
 
   <div class="container">
