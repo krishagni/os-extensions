@@ -1,24 +1,28 @@
 
 package com.krishagni.openspecimen.asig.dao.impl;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import com.krishagni.openspecimen.asig.events.PatientDetail;
-import com.krishagni.openspecimen.asig.events.ClinicDetail;
-import com.krishagni.openspecimen.asig.events.AsigUserDetail;
-import com.krishagni.openspecimen.asig.dao.AsigDao;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.repository.impl.DaoFactoryImpl;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.Utility;
+import com.krishagni.openspecimen.asig.dao.AsigDao;
+import com.krishagni.openspecimen.asig.events.AsigUserDetail;
+import com.krishagni.openspecimen.asig.events.ClinicDetail;
+import com.krishagni.openspecimen.asig.events.PatientDetail;
 
-public class AsigDaoImpl implements AsigDao{
+public class AsigDaoImpl implements AsigDao {
+	private static final Logger logger = Logger.getLogger(AsigDataImporterDaoImpl.class);
 
 	private DaoFactory daoFactory;
 		
@@ -35,7 +39,7 @@ public class AsigDaoImpl implements AsigDao{
 			
 		List<PatientDetail> result = new ArrayList<PatientDetail>();
 		for (Object[] obj : list) {
-			result.add(populateAsigpatientObj(obj));
+			result.add(populateAsigPatientDetail(obj));
 		}
 		return result;
 	}
@@ -69,34 +73,34 @@ public class AsigDaoImpl implements AsigDao{
 	}
 	
 	@Override
-	public void insertPatientMapping(Long AsigId, Long osId) {
-		insertMapping(AsigId, osId, "Patient");
+	public void insertPatientMapping(Long asigId, Long osId) {
+		insertMapping(asigId, osId, ENTITY_PARTICIPANT);
 	}
 
 	@Override
-	public void insertSiteMapping(Long AsigId, Long osId) {
-		insertMapping(AsigId, osId, "Site");
+	public void insertSiteMapping(Long asigId, Long osId) {
+		insertMapping(asigId, osId, ENTITY_SITE);
 	}
 
 	@Override
-	public void insertUserMapping(Long AsigId, Long osId) {
-		insertMapping(AsigId, osId, "User");
+	public void insertUserMapping(Long asigId, Long osId) {
+		insertMapping(asigId, osId, ENTITY_USER);
 	}
 
 	
 	@Override
 	public Long getOsPatientId(Long asigPatientId) {
-		return getOsId(asigPatientId, "Patient");
+		return getOsId(asigPatientId, ENTITY_PARTICIPANT);
 	}
 
 	@Override
 	public Long getOsSiteId(Long asigSiteId) {
-		return getOsId(asigSiteId, "Site");
+		return getOsId(asigSiteId, ENTITY_SITE);
 	}
 	
 	@Override
 	public Long getOsUserId(Long asigUserId) {
-		return getOsId(asigUserId, "User");
+		return getOsId(asigUserId, ENTITY_USER);
 	}
 	
 	private void insertMapping(Long AsigId, Long osId, String objType) {
@@ -128,22 +132,58 @@ public class AsigDaoImpl implements AsigDao{
 		
 		return result.isEmpty() ? null : result.get(0).toString();
 	}
-	
+
+	@Override
+	public void importData(File file, String entity) {
+		String truncateQuery = null, columns = null, tableName = null;
+		if (entity.equals("clinic")) {
+			truncateQuery = TRUNCATE_CLINIC_TABLE;
+			tableName = "ASIG_CLINICS";
+			columns = "(IDENTIFIER, NAME)";
+		} else if (entity.equals("user")) {
+			truncateQuery = TRUNCATE_USER_TABLE;
+			tableName = "ASIG_USERS";
+			columns = "(IDENTIFIER, CLINIC_ID, FIRST_NAME, LAST_NAME, EMAIL_ADDRESS, LOGIN_NAME)";
+		} else if (entity.equals("patient")) {
+			truncateQuery = TRUNCATE_PATIENT_TABLE;
+			tableName = "ASIG_PATIENTS";
+			columns = "(IDENTIFIER, CLINIC_ID, HOSPITAL_URL, STATUS, @CONSENT, @DATE1, @DATE2) " +
+				"SET CONSENT=cast(@CONSENT as signed), DATE_OF_STATUS_CHANGE=nullif(@DATE1, ''), DATE_OF_LAST_CONTACT=nullif(@DATE2, '')";
+		}
+
+		getCurrentSession().createSQLQuery(truncateQuery).executeUpdate();
+
+		//.execute(truncateQuery);
+
+		logger.info("File Path " + file.getAbsolutePath().toString());
+		String loadQuery = "LOAD DATA LOCAL INFILE '" + file.getAbsolutePath().toString()+
+			"' INTO TABLE " + tableName +
+			" FIELDS TERMINATED BY ','" +
+			" ENCLOSED BY '\"'" +
+			" LINES TERMINATED BY '\r\n'" +
+			" IGNORE 1 LINES " + columns;
+
+		loadQuery = StringEscapeUtils.escapeJava(loadQuery);
+
+		getCurrentSession().createSQLQuery(loadQuery).executeUpdate();
+	}
+
+
 	private Session getCurrentSession() {
 		return ((DaoFactoryImpl) daoFactory).getSessionFactory().getCurrentSession();
 	}
 
-	private PatientDetail populateAsigpatientObj(Object[] obj) {
-		
+	private PatientDetail populateAsigPatientDetail(Object[] obj) {
 		PatientDetail asigPatientDetail = new PatientDetail();
 		
 		asigPatientDetail.setPatientId(getString(obj[0]));
 		asigPatientDetail.setClinicId(Long.parseLong(getString(obj[1])));
-		asigPatientDetail.setHospitalUr(getString(obj[2]));
+		//asigPatientDetail.setHospitalUr(getString(obj[2]));
 		asigPatientDetail.setStatus(getInteger(obj[3]));
 		asigPatientDetail.setConsent((boolean)obj[4]);
 		asigPatientDetail.setSiteName(getString(obj[5]));
 		asigPatientDetail.setDateOfStatusChange(getDate(obj[6]));
+		asigPatientDetail.setLastContactDate(getDate(obj[7]));
 		
 		return asigPatientDetail;
 	}
@@ -159,7 +199,6 @@ public class AsigDaoImpl implements AsigDao{
 	}
 
 	private AsigUserDetail populateAsigUserObj(Object[] obj) {
-	
 		AsigUserDetail asigUserDetail = new AsigUserDetail();
 		asigUserDetail.setUserId((getString(obj[0])));
 		asigUserDetail.setClinicId(Long.parseLong(getString(obj[1])));
@@ -195,28 +234,41 @@ public class AsigDaoImpl implements AsigDao{
 		return obj != null ? (Integer) obj : null;
 	}
 
+	private static final String ENTITY_PARTICIPANT = "Participant";
+
+	private static final String ENTITY_SITE = "Site";
+
+	private static final String ENTITY_USER = "User";
+
 	private final String GET_PATIENT_LIST  = 
 			"select " +
-			"  p.patient_id as patient_id, p.clinic_id as clinic_id, p.hospital_url as hospital_url, " + 
-			"  p.status as status, p.patient_consent as patient_consent, c.site_name as site_name, " +
-			"  p.date_of_status_change as date_of_status_change " +
+			"  p.identifier, p.clinic_id, p.hospital_url, p.status, p.consent, c.name," +
+			"  p.date_of_status_change, p.date_of_last_contact " +
 			"from " +
-			"  patient_export p" +
-			"  left join clinic_export c on c.clinic_id = p.clinic_id ";
+			"  asig_patients p" +
+			"  left join asig_clinics c on c.identifier = p.clinic_id ";
 
 	private final String GET_CLINIC_LIST = 
-			"select * from clinic_export";
+			"select identifier, name from asig_clinics";
 
 	private final String GET_USER_LIST = 
-			"select * from user_export";
+			"select identifier,clinic_id,first_name,last_name,email_address,login_name from asig_users";
 		
 	private final String INSERT_MAPPING = 
-			"insert into ASIG_OS_MAPPING ( ASIG_ID , OS_ID, object_type) values (?,?,?)";
+			"insert into object_mapping (src_id ,os_id, object_type) values (?,?,?)";
 	
 	private final String GET_OS_ID = 
-			"select OS_ID from ASIG_OS_MAPPING where ASIG_ID = ? and object_type = ?";
+			"select os_id from object_mapping where src_id = ? and object_type = ?";
 	
 	private final String GET_SITE_NAME = 
-			"select site_name from clinic_export where clinic_id = ?";
+			"select name from asig_clinics where identifier = ?";
+
+	private static final String TRUNCATE_CLINIC_TABLE = "truncate table asig_clinics";
+
+	private static final String TRUNCATE_USER_TABLE = "truncate table asig_users";
+
+	private static final String TRUNCATE_PATIENT_TABLE = "truncate table asig_patients";
+
+
 	
 }

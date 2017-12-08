@@ -1,5 +1,0 @@
-{
-  "scripts": [
-    "svh/scripts/scripts.@script_hash@.js"
-  ]
-}

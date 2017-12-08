@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="vgaikwad" id="Scheduled job to import Asig data into staging tables" dbms="mysql">
+    <sql>
+      select identifier into @userId from catissue_user where login_name = '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+        scheduled_day_of_month, activity_status, repeat_schedule, type, command, task_impl_fqn, rt_args_provided,
+        rt_args_help_text)
+      values
+        (default, 'Asig data importer', @userId, now(), null, 50 , 23 , null,
+        null, 'Active', 'DAILY', 'INTERNAL', null, 'com.krishagni.openspecimen.asig.tasks.AsigDataImporter', 0, null)
+    </sql>
+  </changeSet>
+
+  <changeSet author="vgaikwad" id="Scheduled job to import Asig data into staging tables" dbms="oracle">
+    <sql endDelimiter="//">
+      declare
+        userId number;
+      begin
+        select identifier into userId from catissue_user where login_name like '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+          scheduled_day_of_month, activity_status, repeat_schedule, type, command, task_impl_fqn, rt_args_provided, rt_args_help_text)
+      values
+        (OS_SCHEDULED_JOBS_SEQ.nextVal, 'Asig data importer', userId, SYSDATE, null, 50, 23, null,
+          null, 'Active', 'DAILY', 'INTERNAL', null, 'com.krishagni.openspecimen.asig.tasks.AsigDataImporter', 0, null);
+      end;
+      //
+    </sql>
+  </changeSet>
+
+  <changeSet author="vgaikwad" id="Scheduled job to synchronize Asig data" dbms="mysql">
+    <sql>
+      select identifier into @userId from catissue_user where login_name = '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+        scheduled_day_of_month, activity_status, repeat_schedule, type, command, task_impl_fqn, rt_args_provided,
+        rt_args_help_text)
+      values
+        (default, 'Asig data synchronizer', @userId, now(), null, 30 , 00 , null,
+        null, 'Active', 'DAILY', 'INTERNAL', null, 'com.krishagni.openspecimen.asig.tasks.AsigDataSynchronizer', 0, null)
+    </sql>
+  </changeSet>
+
+  <changeSet author="vgaikwad" id="Scheduled job to synchronize Asig data" dbms="oracle">
+    <sql endDelimiter="//">
+      declare
+        userId number;
+      begin
+        select identifier into userId from catissue_user where login_name like '$system';
+
+        insert into os_scheduled_jobs
+          (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+          scheduled_day_of_month, activity_status, repeat_schedule, type, command, task_impl_fqn, rt_args_provided, rt_args_help_text)
+        values
+          (OS_SCHEDULED_JOBS_SEQ.nextVal, 'Asig data synchronizer', userId, SYSDATE, null, 30, 00, null,
+          null, 'Active', 'DAILY', 'INTERNAL', null, 'com.krishagni.openspecimen.asig.tasks.AsigDataSynchronizer', 0, null);
+      end;
+      //
+    </sql>
+  </changeSet>
+
+  <changeSet author="vgaikwad" id="Create staging table for clinic">
+    <createTable tableName="ASIG_CLINICS">
+      <column name="IDENTIFIER" type="${int.type}">
+      </column>
+      <column name="NAME" type="${text.type}(255)">
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="vgaikwad" id="Create staging table for user">
+    <createTable tableName="ASIG_USERS">
+      <column name="IDENTIFIER" type="${text.type}(64)">
+      </column>
+      <column name="CLINIC_ID" type="${int.type}">
+      </column>
+      <column name="FIRST_NAME" type="${text.type}(255)">
+      </column>
+      <column name="LAST_NAME" type="${text.type}(255)">
+      </column>
+      <column name="EMAIL_ADDRESS" type="${text.type}(255)">
+      </column>
+      <column name="LOGIN_NAME" type="${text.type}(255)">
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="vgaikwad" id="Create staging table for patient">
+    <createTable tableName="ASIG_PATIENTS">
+      <column name="IDENTIFIER" type="${text.type}(64)">
+      </column>
+      <column name="CLINIC_ID" type="${int.type}">
+      </column>
+      <column name="HOSPITAL_URL" type="${text.type}(255)">
+      </column>
+      <column name="STATUS" type="${mediumint.type}">
+      </column>
+      <column name="CONSENT" type="${boolean.type}">
+      </column>
+      <column name="DATE_OF_STATUS_CHANGE" type="${date.type}">
+      </column>
+      <column name="DATE_OF_LAST_CONTACT" type="${date.type}">
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>

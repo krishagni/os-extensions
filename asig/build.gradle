@@ -13,14 +13,6 @@ jar {
   manifest {
     attributes("os-plugin-name": "asig")
   }
-
-  doFirst {
-    from ('./src/main/webapp/app/') {
-      include '**/**'
- 
-      into 'META-INF/resources/asig'
-    }
-  }
 }
 
 sourceCompatibility = 1.8
