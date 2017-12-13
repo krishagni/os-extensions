@@ -148,7 +148,8 @@ public class AsigDaoImpl implements AsigDao {
 			truncateQuery = TRUNCATE_PATIENT_TABLE;
 			tableName = "ASIG_PATIENTS";
 			columns = "(IDENTIFIER, CLINIC_ID, HOSPITAL_URL, STATUS, @CONSENT, @DATE1, @DATE2) " +
-				"SET CONSENT=cast(@CONSENT as signed), DATE_OF_STATUS_CHANGE=nullif(@DATE1, ''), DATE_OF_LAST_CONTACT=nullif(@DATE2, '')";
+				"SET CONSENT=if(char_length(TRIM(@CONSENT))> 0, cast(@CONSENT as signed), NULL), " +
+				"DATE_OF_STATUS_CHANGE=nullif(@DATE1, ''), DATE_OF_LAST_CONTACT=nullif(@DATE2, '')";
 		}
 
 		getCurrentSession().createSQLQuery(truncateQuery).executeUpdate();
@@ -180,7 +181,7 @@ public class AsigDaoImpl implements AsigDao {
 		asigPatientDetail.setClinicId(Long.parseLong(getString(obj[1])));
 		//asigPatientDetail.setHospitalUr(getString(obj[2]));
 		asigPatientDetail.setStatus(getInteger(obj[3]));
-		asigPatientDetail.setConsent((boolean)obj[4]);
+		asigPatientDetail.setConsent((Boolean) obj[4]);
 		asigPatientDetail.setSiteName(getString(obj[5]));
 		asigPatientDetail.setDateOfStatusChange(getDate(obj[6]));
 		asigPatientDetail.setLastContactDate(getDate(obj[7]));

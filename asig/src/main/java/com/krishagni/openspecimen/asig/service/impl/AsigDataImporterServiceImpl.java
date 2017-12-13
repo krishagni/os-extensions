@@ -109,8 +109,8 @@ public class AsigDataImporterServiceImpl implements AsigDataImporterService {
 				cells.add(getString(patient.getClinicId()));
 				cells.add(patient.getHospitalUr());
 				cells.add(getString(patient.getStatus()));
-				int isConsent = getString(patient.getConsent()).equalsIgnoreCase("true") ? 1 : 0;
-				cells.add(getString(isConsent));
+				Integer consent = getConsent(patient.getConsent());
+				cells.add(getString(consent));
 				cells.add(getString(patient.getDateOfStatusChange()));
 				cells.add(getString(patient.getLastContactDate()));
 				writer.writeNext(cells.toArray(new String[0]));
@@ -120,6 +120,19 @@ public class AsigDataImporterServiceImpl implements AsigDataImporterService {
 		} finally {
 			IOUtils.closeQuietly(writer);
 		}
+	}
+
+	private Integer getConsent(Boolean isConsent) {
+		Integer consent;
+		if (isConsent == null) {
+			consent = null;
+		} else if (isConsent) {
+			consent = 1;
+		} else {
+			consent = 0;
+		}
+
+		return consent;
 	}
 
 	private String[] getClinicsFileHeader() {

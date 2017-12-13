@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.access.BootstrapException;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -217,7 +218,7 @@ public class AsigDataImporterDaoImpl implements AsigDataImporterDao, Initializin
 				patient.setClinicId(rs.getLong("ClinicID"));
 				patient.setHospitalUr(rs.getString("HospitalUR"));
 				patient.setStatus(rs.getInt("Status"));
-				patient.setConsent(rs.getBoolean("PatientConsent"));
+				patient.setConsent(getPatientConsent(rs));
 				patient.setDateOfStatusChange(rs.getDate("StatusChangeDate"));
 				patient.setLastContactDate(rs.getDate("LastContact"));
 				patients.add(patient);
@@ -226,6 +227,14 @@ public class AsigDataImporterDaoImpl implements AsigDataImporterDao, Initializin
 			throw new OpenSpecimenException(e);
 		}
 		return patients;
+	}
+
+	private Boolean getPatientConsent(ResultSet rs) throws SQLException {
+		Boolean patientConsent = rs.getBoolean("PatientConsent");
+		if (rs.wasNull()) {
+			patientConsent = null;
+		}
+		return patientConsent;
 	}
 
 	private static final String GET_CLINIC_DETAILS = "{CALL caTissue_Clinic_Export(?)}";

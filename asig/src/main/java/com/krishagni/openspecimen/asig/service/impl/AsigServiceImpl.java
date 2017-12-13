@@ -250,12 +250,12 @@ public class AsigServiceImpl implements AsigService {
 	private ConsentDetail getConsentDetail(PatientDetail asigPart) {
 		List<ConsentTierResponseDetail> consentTierResponse = new ArrayList<>();
 		ConsentTierResponseDetail consentTierRespObj = new ConsentTierResponseDetail();
-		if (asigPart.getConsent()) {
+		if (asigPart.getConsent() == null) {
+			consentTierRespObj.setResponse("Not Specified");
+		} else if (asigPart.getConsent()) {
 			consentTierRespObj.setResponse("Yes");
 		} else if (!asigPart.getConsent()) {
 			consentTierRespObj.setResponse("No");
-		} else {
-			consentTierRespObj.setResponse("Not Specified");
 		}
 
 		consentTierResponse.add(consentTierRespObj);
