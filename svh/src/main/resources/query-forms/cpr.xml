@@ -43,7 +43,6 @@
         <column>ACTIVITY_STATUS</column>
         <options>
           <option><value>Active</value></option>
-          <option><value>Disabled</value></option>
           <option><value>Closed</value></option>
         </options>
       </dropDown>
@@ -82,7 +81,7 @@
         <udn>id</udn>
         <caption>#getMessage("cpr_id")</caption>
         <column>CPR_ID</column>
-        <recordUrl>#/object-state-params-resolver?stateName=participant-detail.overview&amp;objectName=cpr&amp;key=id&amp;value={{$value}}</recordUrl>
+        <recordUrl>#/object-state-params-resolver?stateName=participant-detail.overview&amp;objectName=collection_protocol_registration&amp;key=id&amp;value={{$value}}</recordUrl>
       </numberField>
     </row>
 
@@ -92,9 +91,10 @@
         <udn>ppid</udn>
         <caption>#getMessage("participant_ppid")</caption>
         <column>PPID</column>
-        <recordUrl>#/object-state-params-resolver?stateName=participant-detail.overview&amp;objectName=cpr&amp;key=id&amp;value={{$cprId}}</recordUrl>
+        <recordUrl>#/object-state-params-resolver?stateName=participant-detail.overview&amp;objectName=collection_protocol_registration&amp;key=id&amp;value={{$cprId}}</recordUrl>
       </textField>
     </row>
+
     <row>
       <subForm>
         <name>scgs</name>
@@ -140,7 +140,7 @@
                 <name>specimenShipments</name>
                 <udn>specimenShipments</udn>
                 <caption>#getMessage("specimen_shipment_items")</caption>
-                <table>OS_SHIPMENT_ITEMS</table>
+                <table>OS_SHIPMENT_SPECIMENS</table>
                 <foreignKey>SPECIMEN_ID</foreignKey>
                 <parentKey>IDENTIFIER</parentKey>
 
@@ -191,13 +191,6 @@
         <foreignKey>CPR_ID</foreignKey>
         <parentKey>CPR_ID</parentKey>
         <row>
-          <textField>
-            <name>consentTierStatement</name>
-            <udn>consentTierStatement</udn>
-            <caption>#getMessage("participant_consent_tier_statement")</caption>
-            <column>STATEMENT</column>
-          </textField>
-
           <dropDown>
             <name>consentResponseStatement</name>
             <udn>consentResponseStatement</udn>
@@ -210,6 +203,7 @@
         </row>
       </subForm>
     </row>
+
     <row>
       <subForm>
         <name>customFields</name>
@@ -234,5 +228,7 @@
         <extnFkCol>RECORD_ID</extnFkCol>
       </subForm>
     </row>
+
+    $querySvc.insertCustomQueryForms('cpr')
   </view>
 </form>
