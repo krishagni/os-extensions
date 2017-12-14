@@ -1,0 +1,21 @@
+<field>
+  <type>date</type>
+  <caption>#getMessage("participant_death_date")</caption>
+  <attribute>deathDate</attribute>
+</field>
+
+<field>
+  <caption>#getMessage("participant_vital_status")</caption>
+  <attribute>vitalStatus</attribute>
+</field>
+
+<record>
+  <caption>#getMessage("participant_pmi")</caption>
+  <attribute>pmis</attribute>
+  <multiple>true</multiple>
+
+  <field>
+    <caption>#getMessage("participant_pmi_site")</caption>
+    <attribute>siteName</attribute>
+  </field>
+</record>
