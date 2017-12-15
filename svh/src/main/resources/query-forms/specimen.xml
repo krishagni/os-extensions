@@ -100,7 +100,7 @@
         </options>
       </dropDown>
     </row>
-    
+
     <row>
       <dropDown>
         <name>type</name>
@@ -137,7 +137,7 @@
         <udn>initialQty</udn>
         <caption>#getMessage("specimen_initial_quantity")</caption>
         <column>INITIAL_QUANTITY</column>
-        <noOfDigitsAfterDecimal>4</noOfDigitsAfterDecimal>
+        <noOfDigitsAfterDecimal>2</noOfDigitsAfterDecimal>
       </numberField>
     </row>
 
@@ -147,7 +147,7 @@
         <udn>availableQty</udn>
         <caption>#getMessage("specimen_available_quantity")</caption>
         <column>AVAILABLE_QUANTITY</column>
-        <noOfDigitsAfterDecimal>4</noOfDigitsAfterDecimal>
+        <noOfDigitsAfterDecimal>2</noOfDigitsAfterDecimal>
       </numberField>
     </row>
 
@@ -157,7 +157,7 @@
         <udn>concentration</udn>
         <caption>#getMessage("specimen_concentration")</caption>
         <column>CONCENTRATION</column>
-        <noOfDigitsAfterDecimal>4</noOfDigitsAfterDecimal>
+        <noOfDigitsAfterDecimal>2</noOfDigitsAfterDecimal>
       </numberField>
     </row>
 
@@ -185,6 +185,7 @@
         <options>
           <option><value>Active</value></option>
           <option><value>Closed</value></option>
+          <option><value>Disabled</value></option>
         </options>
       </dropDown>
     </row>
@@ -223,7 +224,7 @@
             <caption>#getMessage("specimen_spec_position_container_name")</caption>
             <column>CONTAINER_NAME</column>
             <maxLength>255</maxLength>
-            <recordUrl>#/object-state-params-resolver?stateName=container-detail.locations&amp;objectName=container&amp;key=name&amp;value={{$value}}</recordUrl>
+            <recordUrl>#/object-state-params-resolver?stateName=container-detail.locations&amp;objectName=storage_container&amp;key=name&amp;value={{$value}}</recordUrl>
           </textField>
 
           <textField>
@@ -287,7 +288,7 @@
                 <caption>#getMessage("specimen_spec_position_container_root_name")</caption>
                 <column>FREEZER</column>
                 <maxLength>255</maxLength>
-                <recordUrl>#/object-state-params-resolver?stateName=container-detail.overview&amp;objectName=container&amp;key=name&amp;value={{$value}}</recordUrl>
+                <recordUrl>#/object-state-params-resolver?stateName=container-detail.overview&amp;objectName=storage_container&amp;key=name&amp;value={{$value}}</recordUrl>
               </textField>
             </row>
           </subForm>
@@ -330,7 +331,7 @@
             <udn>quantity</udn>
             <caption>#getMessage("specimen_distribution_quantity")</caption>
             <column>QUANTITY</column>
-            <noOfDigitsAfterDecimal>4</noOfDigitsAfterDecimal>
+            <noOfDigitsAfterDecimal>2</noOfDigitsAfterDecimal>
           </numberField>
         </row>
 
@@ -353,7 +354,7 @@
         <name>specimenShipments</name>
         <udn>specimenShipments</udn>
         <caption>#getMessage("specimen_shipment_items")</caption>
-        <table>OS_SHIPMENT_ITEMS</table>
+        <table>OS_SHIPMENT_SPECIMENS</table>
         <foreignKey>SPECIMEN_ID</foreignKey>
         <parentKey>IDENTIFIER</parentKey>
 
