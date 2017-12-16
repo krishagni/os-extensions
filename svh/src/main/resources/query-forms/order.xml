@@ -26,7 +26,7 @@
         <options>
           <sql>select name from os_orders where activity_status != 'Disabled'</sql>
         </options>
-        <recordUrl>#/object-state-params-resolver?stateName=order-detail.overview&amp;objectName=order&amp;key=name&amp;value={{$value}}</recordUrl>
+        <recordUrl>#/object-state-params-resolver?stateName=order-detail.overview&amp;objectName=distribution_order&amp;key=name&amp;value={{$value}}</recordUrl>
       </dropDown>
     </row>
 
@@ -48,7 +48,7 @@
             <options>
               <sql>select title from catissue_distribution_protocol where activity_status = 'Active'</sql>
             </options>
-            <recordUrl>#/object-state-params-resolver?stateName=dp-detail.overview&amp;objectName=distributionProtocol&amp;key=title&amp;value={{$value}}</recordUrl>
+            <recordUrl>#/object-state-params-resolver?stateName=dp-detail.overview&amp;objectName=distribution_protocol&amp;key=title&amp;value={{$value}}</recordUrl>
           </dropDown>
         </row>
       </subForm>
@@ -203,5 +203,7 @@
         </row>
       </subForm>
     </row>
+
+    $querySvc.insertCustomQueryForms('order')
   </view>
 </form>

@@ -21,7 +21,7 @@
         <udn>shortTitle</udn>
         <caption>#getMessage("cp_short_title")</caption>
         <column>SHORT_TITLE</column>
-        <recordUrl>#/object-state-params-resolver?stateName=cp-detail.overview&amp;objectName=cp&amp;key=shortTitle&amp;value={{$value}}</recordUrl>
+        <recordUrl>#/object-state-params-resolver?stateName=cp-detail.overview&amp;objectName=collection_protocol&amp;key=shortTitle&amp;value={{$value}}</recordUrl>
         <options>
           <sql>select distinct SHORT_TITLE from CATISSUE_COLLECTION_PROTOCOL where activity_status != 'Disabled'</sql>
         </options>
