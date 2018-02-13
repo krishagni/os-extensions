@@ -14,7 +14,7 @@ angular.module('os.plugins.jhu-epic-lookup')
           var uidInputEl = $document.find('input[name="uid"]');
           uidInputEl.parent().parent().hide();
 
-          if (!$scope.partCtx.twoStepReg) {
+          if (!$scope.partCtx.twoStep) {
             //
             // Hide MPI field in regular workflow for participants
             // not sourced from EPIC
