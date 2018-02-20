@@ -8,7 +8,7 @@ apply plugin: 'eclipse'
 
 jar {
   baseName = 'os-jhu-epic-lookup'
-  version =  '1.0.0'
+  version =  '4.3.0'
 
   manifest {
     attributes("os-plugin-name": "jhu-epic-lookup")
