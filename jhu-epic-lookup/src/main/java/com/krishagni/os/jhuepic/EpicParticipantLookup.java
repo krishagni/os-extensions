@@ -138,7 +138,13 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		}
 
 		return epicMatchingList.stream()
-			.map(participant -> new MatchedParticipant(participant, Collections.singletonList("pmi")))
+			.map(participant -> {
+				if (participant.getRegisteredCps() == null) {
+					participant.setRegisteredCps(Collections.emptySet());
+				}
+
+				return new MatchedParticipant(participant, Collections.singletonList("pmi"));
+			})
 			.collect(Collectors.toList());
 	}
 
@@ -228,9 +234,14 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		participant.setMiddleName(epicPatient.getMiddleName());
 		participant.setBirthDate(epicPatient.getDateOfBirth());
 		participant.setGender(getMappedValue(PvAttributes.GENDER, epicPatient.getSex()));
-		participant.setEthnicity(getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup()));
 		//participant.setEmpi(empi);
 		participant.setSource("EPIC");
+
+		String ethnicity = getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup());
+		if (StringUtils.isNotBlank(ethnicity)) {
+			participant.setEthnicities(Collections.singleton(ethnicity));
+		}
+
 
 		if (epicPatient.getRace() != null && epicPatient.getRace().length > 0) {
 			participant.setRaces(Stream.of(epicPatient.getRace())
