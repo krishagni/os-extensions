@@ -1,0 +1,41 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.apache.tools.ant.taskdefs.condition.Os
+import static groovy.io.FileType.FILES
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+jar {
+  baseName = 'os-messages'
+  version =  '1.0.0'
+
+  manifest {
+    attributes("os-plugin-name": "os-messages")
+  }
+  
+  
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+jar {
+  baseName = 'os-messages'
+  version = '1.0.0'
+
+  manifest {
+    attributes("os-plugin-name": "plugin")
+  }
+
+  doFirst {
+    from ('./src/main/webapp/app/') {
+      include '**/**'
+
+      into 'META-INF/resources/plugin'
+    }
+  } 
+}
+
+build.dependsOn jar
