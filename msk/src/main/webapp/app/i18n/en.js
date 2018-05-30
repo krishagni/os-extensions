@@ -12,5 +12,17 @@
     "status": {
       "complete": "Banked"
     }
+  },
+
+  "settings": {
+    "mskcc": {
+      "title": "MSKCC",
+      "consents_db_url": "Consents DB URL",
+      "consents_db_url_desc": "Consents database connection URL. The URL should be specified in JDBC format. For example: jdbc:oracle:thin:@host:port:sid",
+      "consents_db_username": "Consents DB Username",
+      "consents_db_username_desc": "Username to use for connecting to consents database",
+      "consents_db_password": "Consents DB Password",
+      "consents_db_password_desc": "Password to use for connecting to consents database"
+    }
   }
 }

@@ -84,7 +84,7 @@ dependencies {
   compile   "org.aspectj:aspectjrt:1.8.6"
   compile   "javax.persistence:persistence-api:1.0.2"
   aspects   "org.springframework:spring-aspects:3.2.13.RELEASE"
-  aspects   fileTree(dir: 'lib', include: ['openspecimen.jar'])
+  aspects   fileTree(dir: '../lib', include: ['openspecimen.jar'])
 
   compile fileTree(dir: 'lib', include: ['DynamicExtensions.jar', 'openspecimen.jar'])
 
@@ -103,6 +103,7 @@ dependencies {
 
   compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.4'
 
+  compile group: 'commons-dbcp', name: 'commons-dbcp', version:'1.4'
   compile group: 'org.hibernate', name: 'hibernate-commons-annotations', version:'3.2.0.Final'
   compile group: 'org.hibernate', name: 'hibernate-core', version:'4.2.18.Final'
 
