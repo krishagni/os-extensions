@@ -1,0 +1,9 @@
+{
+  "styles": [
+  ],
+
+  "scripts": [
+    "washu/module.js",
+    "washu/working-spmns-report.js"
+  ]
+}

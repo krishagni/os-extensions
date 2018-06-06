@@ -1,0 +1,9 @@
+{
+  "styles": [
+    "washu/styles/app.@style_hash@.css"
+  ],
+
+  "scripts": [
+    "washu/scripts/scripts.@script_hash@.js"
+  ]
+}
