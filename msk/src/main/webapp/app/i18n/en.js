@@ -14,6 +14,15 @@
     }
   },
 
+  "msk": {
+    "accession_info": {
+      "title": "Accession Info",
+      "not_available": "Not Available",
+      "no": "No.",
+      "description": "Description"
+    }
+  },
+
   "settings": {
     "mskcc": {
       "title": "MSKCC",

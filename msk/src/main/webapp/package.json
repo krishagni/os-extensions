@@ -1,6 +1,6 @@
 {
   "name": "MSKCC Plugin",
-  "version": "1.0.0",
+  "version": "5.1.0",
   "description": "Custom MSKCC plugin containing MSKCC specific view, resources etc",
   "main": "module.js",
   "scripts": {

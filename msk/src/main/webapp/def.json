@@ -1,0 +1,9 @@
+{
+  "styles": [
+    "msk/styles/app.@style_hash@.css"
+  ],
+
+  "scripts": [
+    "msk/scripts/scripts.@script_hash@.js"
+  ]
+}
