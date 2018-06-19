@@ -14,6 +14,15 @@
     }
   },
 
+  "dp": {
+    "short_title": "ID",
+    "receiving_site": "Department"
+  },
+
+  "orders": {
+    "receiving_site": "Department"
+  },
+
   "msk": {
     "accession_info": {
       "title": "Accession Info",
