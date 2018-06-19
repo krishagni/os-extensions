@@ -36,9 +36,9 @@ angular.module('os.plugins.msk', [])
                 return;
               }
 
-              var partItems = observation.split(':', 2);
+              var partItems = observation.split(':');
               if (partItems.length > 1) {
-                $scope.info.parts.push({num: partItems[0], desc: partItems[1]});
+                $scope.info.parts.push({num: partItems[0], desc: partItems.slice(1).join(':')});
               } else if (partItems.length > 0) {
                 $scope.info.parts.push({desc: partItems[0]});
               }
