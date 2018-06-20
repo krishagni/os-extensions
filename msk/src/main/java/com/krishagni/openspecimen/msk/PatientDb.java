@@ -3,6 +3,7 @@ package com.krishagni.openspecimen.msk;
 import java.io.Closeable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -73,10 +74,6 @@ public class PatientDb implements Closeable {
 			private Boolean getConsented(ResultSet rs)
 			throws SQLException {
 				String consented = rs.getString(4);
-				if (consented == null) {
-					return null;
-				}
-
 				return StringUtils.equalsIgnoreCase(consented, YES);
 			}
 
@@ -108,7 +105,7 @@ public class PatientDb implements Closeable {
 
 	private static final String GET_BY_MRN_SQL =
 		"select " +
-		"  reg.pt_mrn, reg.prt_id, reg.reg_id, cs.crnt_consent_status_dscrp, " +
+		"  p.pt_mrn, reg.prt_id, reg.reg_id, cs.crnt_consent_status_dscrp, " +
 		"  ps.survival_status_dscrp, q.question_dscrp, a.answer_dscrp " +
 		"from " +
 		"  openspecimen_pt p " +
@@ -121,5 +118,5 @@ public class PatientDb implements Closeable {
 		"where " +
 		"  p.pt_mrn = ? " +
 		"order by " +
-		"  reg.prt_id, cq.question_id";
+		"  reg.prt_id asc, reg.consent_date asc, cq.consent_date asc";
 }

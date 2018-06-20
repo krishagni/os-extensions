@@ -10,12 +10,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Patient {
+	private static final Log logger = LogFactory.getLog(Patient.class);
+
 	//
 	// TODO: pick from config
 	//
-	private static final List<String> PROTOCOLS_WITH_Q = Arrays.asList("06-107");
+	private static final List<String> PROTOCOLS_WITH_Q = Arrays.asList("06-107", "SPC-POE");
 
 	private static final Date CONSENT_WAIVED_UNTIL = april132003();
 
@@ -41,32 +45,52 @@ public class Patient {
 		this.alive = alive;
 	}
 
-	public Collection<ProtocolConsent> getProtocolConsents() {
-		return protocolConsents.values();
-	}
-
 	public void addProtocolConsent(String protocol, String regId, Boolean consented, String question, String answer) {
-		String key = protocol + ":" + regId;
-		ProtocolConsent pc = protocolConsents.get(key);
+		ProtocolConsent pc = protocolConsents.get(protocol);
 		if (pc == null) {
 			pc = new ProtocolConsent();
 			pc.setProtocol(protocol);
-			pc.setRegId(regId);
-			pc.setConsented(consented);
-			protocolConsents.put(key, pc);
+			protocolConsents.put(protocol, pc);
 		}
 
+		pc.setRegId(regId);
+		pc.setConsented(consented);
 		pc.addResponse(question, answer);
 	}
 
 
-	public boolean isConsented(Date visitDate, Collection<String> questions) {
+	public boolean isConsented(Date visitDate, Map<String, Collection<String>> protocolQuestions) {
 		if (!isAlive() && visitDate.before(CONSENT_WAIVED_UNTIL)) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Patient (" + getMrn() + ") is not alive. Visit date is before " + CONSENT_WAIVED_UNTIL);
+			}
+
 			return true;
 		} else if (isAlive()) {
-			for (ProtocolConsent consent : getProtocolConsents()) {
-				if (consent.isConsentedToAny(questions)) {
+			for (Map.Entry<String, Collection<String>> pq : protocolQuestions.entrySet()) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Checking whether patient (" + getMrn() + ") has consented to the protocol: " + pq.getKey());
+				}
+
+				ProtocolConsent pc = protocolConsents.get(pq.getKey());
+				if (pc == null) {
+					if (logger.isDebugEnabled()) {
+						logger.debug("Patient (" + getMrn() + ") consent info not available for the protocol: " + pq.getKey());
+					}
+
+					continue;
+				}
+
+				if (pc.hasConsentedTo(pq.getValue())) {
+					if (logger.isDebugEnabled()) {
+						logger.debug("Patient (" + getMrn() + ") has consented to the protocol: " + pq.getKey());
+					}
+
 					return true;
+				}
+
+				if (logger.isDebugEnabled()) {
+					logger.debug("Patient (" + getMrn() + ") has not consented to the protocol: " + pq.getKey());
 				}
 			}
 		}
@@ -74,6 +98,9 @@ public class Patient {
 		//
 		// TODO: was patient ever approached for consent and declined?
 		//
+		if (logger.isDebugEnabled()) {
+			logger.debug("Patient (" + getMrn() + ") is dead. Visit date is after " + CONSENT_WAIVED_UNTIL);
+		}
 		return false;
 	}
 
@@ -127,6 +154,10 @@ public class Patient {
 		}
 
 		public void addResponse(String question, String response) {
+			if (StringUtils.isBlank(question)) {
+				return;
+			}
+
 			responses.put(question, response);
 		}
 
@@ -134,7 +165,7 @@ public class Patient {
 			return PROTOCOLS_WITH_Q.indexOf(getProtocol()) != -1;
 		}
 
-		public boolean isConsentedToAny(Collection<String> questions) {
+		public boolean hasConsentedTo(Collection<String> questions) {
 			if (!hasQuestions()) {
 				return Boolean.TRUE.equals(getConsented());
 			}
@@ -143,14 +174,7 @@ public class Patient {
 				return false;
 			}
 
-			for (String question : questions) {
-				String response = responses.get(question);
-				if (StringUtils.equalsIgnoreCase(response, YES)) {
-					return true;
-				}
-			}
-
-			return false;
+			return questions.stream().allMatch(q -> StringUtils.equalsIgnoreCase(responses.get(q), YES));
 		}
 	}
 }
