@@ -18,6 +18,13 @@ public class PatientDb implements Closeable {
 	private JdbcTemplate jdbcTemplate;
 
 	public PatientDb() {
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 		ds = new SingleConnectionDataSource(
 			ConfigParams.getUrl(),
 			ConfigParams.getUsername(),

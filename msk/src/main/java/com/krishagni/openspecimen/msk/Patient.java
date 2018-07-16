@@ -60,12 +60,14 @@ public class Patient {
 
 
 	public boolean isConsented(Date visitDate, Map<String, Collection<String>> protocolQuestions) {
+		boolean consented = false;
+
 		if (!isAlive() && visitDate.before(CONSENT_WAIVED_UNTIL)) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Patient (" + getMrn() + ") is not alive. Visit date is before " + CONSENT_WAIVED_UNTIL);
 			}
 
-			return true;
+			consented = true;
 		} else if (isAlive()) {
 			for (Map.Entry<String, Collection<String>> pq : protocolQuestions.entrySet()) {
 				if (logger.isDebugEnabled()) {
@@ -86,22 +88,28 @@ public class Patient {
 						logger.debug("Patient (" + getMrn() + ") has consented to the protocol: " + pq.getKey());
 					}
 
-					return true;
+					consented = true;
+					break;
 				}
 
 				if (logger.isDebugEnabled()) {
 					logger.debug("Patient (" + getMrn() + ") has not consented to the protocol: " + pq.getKey());
 				}
 			}
+
+			//
+			// No consents configured... therefore assume the patient has consented.
+			//
+			if (!consented && protocolQuestions.isEmpty()) {
+				consented = true;
+			}
+		} else {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Patient (" + getMrn() + ") is dead. Visit date is after " + CONSENT_WAIVED_UNTIL);
+			}
 		}
 
-		//
-		// TODO: was patient ever approached for consent and declined?
-		//
-		if (logger.isDebugEnabled()) {
-			logger.debug("Patient (" + getMrn() + ") is dead. Visit date is after " + CONSENT_WAIVED_UNTIL);
-		}
-		return false;
+		return consented;
 	}
 
 	private static Date april132003() {
