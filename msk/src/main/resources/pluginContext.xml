@@ -12,4 +12,8 @@
   <bean id="mskPluginInitializer" class="com.krishagni.openspecimen.msk.PluginInitializer">
     <property name="orderSvc" ref="distributionOrderService"/>
   </bean>
+
+  <bean class="com.krishagni.openspecimen.msk.VisitDatesValidation"/>
+
+  <bean class="com.krishagni.openspecimen.msk.SpecimenDatesValidation"/>
 </beans>

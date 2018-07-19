@@ -58,7 +58,7 @@ public class ConsentValidator implements DistributionValidator {
 			for (Specimen specimen : specimens) {
 				String mrn = specimen.getRegistration().getParticipant().getEmpi();
 				if (StringUtils.isBlank(mrn)) {
-					List<String> noMrnLabels = errorsMap.computeIfAbsent(ConsentError.NO_MRN, this::newList);
+					List<String> noMrnLabels = errorsMap.computeIfAbsent(MskError.NO_MRN, this::newList);
 					noMrnLabels.add(specimen.getLabel());
 					continue;
 				}
@@ -80,7 +80,7 @@ public class ConsentValidator implements DistributionValidator {
 
 				patient = patients.get(mrn);
 				if (patient == null) {
-					List<String> noPatientLabels = errorsMap.computeIfAbsent(ConsentError.PATIENT_NOT_FOUND, this::newList);
+					List<String> noPatientLabels = errorsMap.computeIfAbsent(MskError.PATIENT_NOT_FOUND, this::newList);
 					noPatientLabels.add(specimen.getLabel());
 					continue;
 				}

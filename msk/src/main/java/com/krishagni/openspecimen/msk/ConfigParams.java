@@ -16,15 +16,15 @@ public class ConfigParams {
 	private static String PASSWORD = "consents_db_password";
 
 	public static String getUrl() {
-		return getValue(URL, ConsentError.DB_URL_NOT_SPECIFIED);
+		return getValue(URL, MskError.DB_URL_NOT_SPECIFIED);
 	}
 
 	public static String getUsername() {
-		return getValue(USERNAME, ConsentError.DB_USER_NOT_SPECIFIED);
+		return getValue(USERNAME, MskError.DB_USER_NOT_SPECIFIED);
 	}
 
 	public static String getPassword() {
-		return getValue(PASSWORD, ConsentError.DB_PASSWD_NOT_SPECIFIED);
+		return getValue(PASSWORD, MskError.DB_PASSWD_NOT_SPECIFIED);
 	}
 
 	private static String getValue(String propName, ErrorCode errorCode) {
