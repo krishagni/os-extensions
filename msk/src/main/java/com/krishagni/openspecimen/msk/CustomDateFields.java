@@ -9,6 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.krishagni.catissueplus.core.biospecimen.domain.BaseExtensionEntity;
+import com.krishagni.catissueplus.core.common.errors.CommonErrorCode;
+import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.util.Utility;
 import com.krishagni.catissueplus.core.de.domain.DeObject;
 
@@ -72,8 +74,16 @@ public class CustomDateFields {
 			return null;
 		} else if (attr.getValue() instanceof Date) {
 			return (Date) attr.getValue();
+		} else if (attr.getValue() instanceof Number) {
+			return new Date(((Number) attr.getValue()).longValue());
+		} else if (attr.getValue() instanceof String) {
+			try {
+				return new Date(Long.parseLong((String)attr.getValue()));
+			} catch (Exception e) {
+				throw OpenSpecimenException.userError(CommonErrorCode.INVALID_INPUT, attr.getValue());
+			}
 		} else {
-			return new Date(Long.parseLong((String)attr.getValue()));
+			throw OpenSpecimenException.userError(CommonErrorCode.INVALID_INPUT, attr.getValue());
 		}
 	}
 }
