@@ -4,6 +4,7 @@
 
   "scripts": [
     "washu/module.js",
-    "washu/working-spmns-report.js"
+    "washu/working-spmns-report.js",
+    "washu/working-order-report.js"
   ]
 }

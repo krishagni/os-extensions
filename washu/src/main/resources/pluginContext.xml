@@ -6,6 +6,9 @@
 
   <bean id="washuRptGen" class="com.krishagni.openspecimen.washu.services.impl.ReportGeneratorImpl">
     <property name="listSvc" ref="specimenListSvc"/>
+    <property name="querySvc" ref="querySvc"/>
+    <property name="daoFactory" ref="biospecimenDaoFactory"/>
+    <property name="deDaoFactory" ref="deDaoFactory"/>
   </bean>
 
 </beans>

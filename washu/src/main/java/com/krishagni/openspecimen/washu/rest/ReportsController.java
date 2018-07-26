@@ -29,6 +29,13 @@ public class ReportsController {
 		return response(rptsGenerator.exportWorkingSpecimensReport(request(new EntityQueryCriteria(listId))));
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value="/order-report")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public QueryDataExportResult exportOrderReport(@RequestParam(value = "orderId") Long orderId) {
+		return response(rptsGenerator.exportOrderReport(request(new EntityQueryCriteria(orderId))));
+	}
+
 	private <T> RequestEvent<T> request(T payload) {
 		return new RequestEvent<>(payload);
 	}

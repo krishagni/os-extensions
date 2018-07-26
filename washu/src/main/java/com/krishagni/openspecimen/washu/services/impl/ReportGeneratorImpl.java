@@ -3,6 +3,7 @@ package com.krishagni.openspecimen.washu.services.impl;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.function.BiConsumer;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -13,35 +14,115 @@ import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import com.krishagni.catissueplus.core.administrative.domain.DistributionOrder;
+import com.krishagni.catissueplus.core.administrative.domain.factory.DistributionOrderErrorCode;
+import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.SpecimenListService;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
+import com.krishagni.catissueplus.core.common.access.AccessCtrlMgr;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.EntityQueryCriteria;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.util.AuthUtil;
+import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.Utility;
+import com.krishagni.catissueplus.core.de.domain.Filter;
+import com.krishagni.catissueplus.core.de.domain.SavedQuery;
+import com.krishagni.catissueplus.core.de.events.ExecuteQueryEventOp;
 import com.krishagni.catissueplus.core.de.events.QueryDataExportResult;
+import com.krishagni.catissueplus.core.de.services.QueryService;
 import com.krishagni.openspecimen.washu.services.ReportGenerator;
 
 import edu.common.dynamicextensions.query.QueryResultData;
+import edu.common.dynamicextensions.query.WideRowMode;
 
 public class ReportGeneratorImpl implements ReportGenerator  {
 
 	private SpecimenListService listSvc;
 
+	private QueryService querySvc;
+
+	private DaoFactory daoFactory;
+
+	private com.krishagni.catissueplus.core.de.repository.DaoFactory deDaoFactory;
+
 	public void setListSvc(SpecimenListService listSvc) {
 		this.listSvc = listSvc;
+	}
+
+	public void setQuerySvc(QueryService querySvc) {
+		this.querySvc = querySvc;
+	}
+
+	public void setDaoFactory(DaoFactory daoFactory) {
+		this.daoFactory = daoFactory;
+	}
+
+	public void setDeDaoFactory(com.krishagni.catissueplus.core.de.repository.DaoFactory deDaoFactory) {
+		this.deDaoFactory = deDaoFactory;
 	}
 
 	@Override
 	@PlusTransactional
 	public ResponseEvent<QueryDataExportResult> exportWorkingSpecimensReport(RequestEvent<EntityQueryCriteria> req) {
-		QueryDataExportResult result = listSvc.exportSpecimenList(req.getPayload(), this::exportToXlsx);
-		return ResponseEvent.response(result);
+		try {
+			QueryDataExportResult result = listSvc.exportSpecimenList(req.getPayload(), this::exportSpecimenListToXlsx);
+			return ResponseEvent.response(result);
+		} catch (OpenSpecimenException ose) {
+			return ResponseEvent.error(ose);
+		} catch (Exception e) {
+			return ResponseEvent.serverError(e);
+		}
 	}
 
-	private void exportToXlsx(QueryResultData data, OutputStream out) {
+	@Override
+	@PlusTransactional
+	public ResponseEvent<QueryDataExportResult> exportOrderReport(RequestEvent<EntityQueryCriteria> req) {
+		try {
+			EntityQueryCriteria crit = req.getPayload();
+			DistributionOrder order = daoFactory.getDistributionOrderDao().getById(crit.getId());
+			if (order == null) {
+				return ResponseEvent.userError(DistributionOrderErrorCode.NOT_FOUND, crit.getId());
+			}
+
+			AccessCtrlMgr.getInstance().ensureReadDistributionOrderRights(order);
+
+			SavedQuery reportQuery = getOrderReportQuery(order);
+			Filter filter = new Filter();
+			filter.setField("Specimen.specimenOrders.id");
+			filter.setOp(Filter.Op.EQ);
+			filter.setValues(new String[]{order.getId().toString()});
+
+			ExecuteQueryEventOp queryOp = new ExecuteQueryEventOp();
+			queryOp.setDrivingForm("Participant");
+			queryOp.setAql(reportQuery.getAql(new Filter[]{filter}));
+			queryOp.setWideRowMode(WideRowMode.DEEP.name());
+			queryOp.setRunType("Export");
+
+			return ResponseEvent.response(querySvc.exportQueryData(queryOp, exportOrderReportToXlsxFn(order)));
+		} catch (OpenSpecimenException ose) {
+			return ResponseEvent.error(ose);
+		} catch (Exception e) {
+			return ResponseEvent.serverError(e);
+		}
+	}
+
+	private SavedQuery getOrderReportQuery(DistributionOrder order) {
+		SavedQuery query = order.getDistributionProtocol().getReport();
+		if (query != null) {
+			return query;
+		}
+
+		Integer queryId = ConfigUtil.getInstance().getIntSetting("common", "distribution_report_query", -1);
+		if (queryId == -1) {
+			return null;
+		}
+
+		return deDaoFactory.getSavedQueryDao().getQuery(queryId.longValue());
+	}
+
+	private void exportSpecimenListToXlsx(QueryResultData data, OutputStream out) {
 		SXSSFWorkbook workbook = new SXSSFWorkbook();
 
 		try {
@@ -139,6 +220,159 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				we.printStackTrace();
 			}
 		}
+	}
+
+	private BiConsumer<QueryResultData, OutputStream> exportOrderReportToXlsxFn(DistributionOrder order) {
+		return (data, out) -> {
+			SXSSFWorkbook workbook = new SXSSFWorkbook();
+
+			try {
+				SXSSFSheet sheet = workbook.createSheet("Order " + order.getId());
+				sheet.trackAllColumnsForAutoSizing();
+
+				CellStyle hdTitleLabel = hdTitleLabelStyle(workbook);
+				CellStyle hdTitleValue = hdTitleValueStyle(workbook);
+				CellStyle hdSubTitleLabel = hdSubTitleLabelStyle(workbook);
+				CellStyle hdSubTitleValue = hdSubTitleValueStyle(workbook);
+
+				SXSSFRow hr = sheet.createRow(0);
+				CellUtil.createCell(hr, 0, "Order Name:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getName(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Exported On:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(1);
+				CellUtil.createCell(hr, 0, "Order ID:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getId().toString(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Exported By:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(2);
+				CellUtil.createCell(hr, 0, "Distribution Protocol:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getDistributionProtocol().getShortTitle(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
+
+				hr = sheet.createRow(3);
+				CellUtil.createCell(hr, 0, "Signature & Date:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, "", hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
+
+				hr = sheet.createRow(4);
+				CellUtil.createCell(hr, 0, "Requestor's Name:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getRequester().formattedName(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Distribution Site:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, "TODO", hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(5);
+				CellUtil.createCell(hr, 0, "Requested Date:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, Utility.getDateTimeString(order.getCreationDate()), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Distribution ID:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, "TODO", hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(6);
+				CellUtil.createCell(hr, 0, "Requestor's Address:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getRequester().getAddress(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Distributor's Address:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, order.getDistributor().getAddress(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(7);
+				CellUtil.createCell(hr, 0, "Requestor's Phone:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getRequester().getPhoneNumber(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Distributor's Phone:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, order.getDistributor().getPhoneNumber(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(8);
+				CellUtil.createCell(hr, 0, "Requestor's Email:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, order.getRequester().getEmailAddress(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Distributor's Email:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, order.getDistributor().getEmailAddress(), hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(9);
+				CellUtil.createCell(hr, 0, "Requestor's Comment:", hdTitleLabel);
+				CellUtil.createCell(hr, 1, "", hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
+				CellUtil.createCell(hr, 6, "Distributor's Comment:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, "", hdTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+
+				hr = sheet.createRow(10);
+
+				hr = sheet.createRow(11);
+				String[] columnLabels = data.getColumnLabels();
+				CellUtil.createCell(hr, 0, "Sample Quantity Units:", hdSubTitleLabel);
+				CellUtil.createCell(hr, 1, "Cell = cell count/number, Fluid/Tissue Lysate/Cell Lysate = ml, Molecular = ug, Tissue Block/Slide = Count, All Other Tissue = gm", hdSubTitleValue);
+				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, columnLabels.length > 11 ? columnLabels.length - 1 : 11));
+
+				sheet.flushRows();
+
+				hr = sheet.createRow(12);
+
+				SXSSFRow dataRow = sheet.createRow(13);
+				int colNum = 0;
+				for (String columnLabel : columnLabels) {
+					CellUtil.createCell(dataRow, colNum++, columnLabel, hdSubTitleLabel);
+				}
+
+				sheet.flushRows();
+
+				int rowNum = 14;
+				Iterator<String[]> rows = data.stringifiedRowIterator();
+				while (rows.hasNext()) {
+					dataRow = sheet.createRow(rowNum++);
+					colNum = 0;
+					for (String item : rows.next()) {
+						CellUtil.createCell(dataRow, colNum++, item, hdSubTitleValue);
+					}
+
+					if ((rowNum - 14) % 10 == 0) {
+						sheet.flushRows();
+					}
+				}
+
+				sheet.flushRows();
+
+				int numOfColumns = columnLabels.length;
+				if (numOfColumns < 12) {
+					numOfColumns = 12;
+				}
+
+				for (int i = 0; i < numOfColumns; ++i) {
+					sheet.autoSizeColumn(i);
+				}
+
+				workbook.write(out);
+			} catch (Exception e) {
+				throw OpenSpecimenException.serverError(e);
+			} finally {
+				try {
+					workbook.close();
+				} catch (Exception we) {
+					we.printStackTrace();
+				}
+			}
+		};
 	}
 
 	private static CellStyle hdTitleLabelStyle(SXSSFWorkbook workbook) {

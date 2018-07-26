@@ -7,4 +7,6 @@ import com.krishagni.catissueplus.core.de.events.QueryDataExportResult;
 
 public interface ReportGenerator {
 	ResponseEvent<QueryDataExportResult> exportWorkingSpecimensReport(RequestEvent<EntityQueryCriteria> req);
+
+	ResponseEvent<QueryDataExportResult> exportOrderReport(RequestEvent<EntityQueryCriteria> req);
 }
