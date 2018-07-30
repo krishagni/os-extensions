@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.function.BiConsumer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -15,6 +16,8 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.krishagni.catissueplus.core.administrative.domain.DistributionOrder;
+import com.krishagni.catissueplus.core.administrative.domain.DistributionProtocol;
+import com.krishagni.catissueplus.core.administrative.domain.DpDistributionSite;
 import com.krishagni.catissueplus.core.administrative.domain.factory.DistributionOrderErrorCode;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.SpecimenListService;
@@ -269,7 +272,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
 
 				CellUtil.createCell(hr, 6, "Distribution Site:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, "TODO", hdTitleValue);
+				CellUtil.createCell(hr, 7, getDistributionSites(order), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
 				hr = sheet.createRow(5);
@@ -277,8 +280,9 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 1, Utility.getDateTimeString(order.getCreationDate()), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
 
-				CellUtil.createCell(hr, 6, "Distribution ID:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, "TODO", hdTitleValue);
+				String distDate = order.getExecutionDate() != null ? Utility.getDateTimeString(order.getExecutionDate()) : StringUtils.EMPTY;
+				CellUtil.createCell(hr, 6, "Distribution Date:", hdTitleLabel);
+				CellUtil.createCell(hr, 7, distDate, hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
 				hr = sheet.createRow(6);
@@ -373,6 +377,27 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				}
 			}
 		};
+	}
+
+	private String getDistributionSites(DistributionOrder order) {
+		DistributionProtocol dp = order.getDistributionProtocol();
+		StringBuilder sites = new StringBuilder();
+
+		for (DpDistributionSite dpSite : dp.getDistributingSites()) {
+			if (dpSite.getSite() == null) {
+				sites.append("All");
+			} else {
+				sites.append(dpSite.getSite().getName());
+			}
+
+			sites.append(" (").append(dpSite.getInstitute().getName()).append("), ");
+		}
+
+		if (sites.length() > 0) {
+			sites.delete(sites.length() - 2, sites.length());
+		}
+
+		return sites.toString();
 	}
 
 	private static CellStyle hdTitleLabelStyle(SXSSFWorkbook workbook) {
