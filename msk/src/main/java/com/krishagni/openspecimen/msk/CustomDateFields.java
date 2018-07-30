@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import com.krishagni.catissueplus.core.biospecimen.domain.BaseExtensionEntity;
 import com.krishagni.catissueplus.core.common.errors.CommonErrorCode;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
+import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.Utility;
 import com.krishagni.catissueplus.core.de.domain.DeObject;
 
@@ -28,8 +29,9 @@ public class CustomDateFields {
 	private String accessionedDate = "accessionDate";
 
 	private CustomDateFields() {
-		File file = new File(DATE_FIELD_NAMES);
+		File file = new File(ConfigUtil.getInstance().getDataDir() + File.separator + DATE_FIELD_NAMES);
 		if (!file.exists()) {
+			logger.info("Custom date field property names file do not exist.");
 			return;
 		}
 
