@@ -86,22 +86,23 @@ public class PatientDb implements Closeable {
 
 			private boolean isAlive(ResultSet rs)
 			throws SQLException {
-				String alive = rs.getString(5);
-				if (alive == null) {
+				Date survivalDt = rs.getDate(5);
+				String alive = rs.getString(6);
+				if (alive == null && survivalDt == null) {
 					return true;
 				}
 
-				return !StringUtils.equalsIgnoreCase(alive, DEAD);
+				return !StringUtils.equalsIgnoreCase(alive, DEAD) && (survivalDt == null);
 			}
 
 			private String getQuestion(ResultSet rs)
 			throws SQLException {
-				return rs.getString(6);
+				return rs.getString(7);
 			}
 
 			private String getAnswer(ResultSet rs)
 			throws SQLException {
-				return rs.getString(7);
+				return rs.getString(8);
 			}
 		});
 	}
@@ -113,7 +114,7 @@ public class PatientDb implements Closeable {
 	private static final String GET_BY_MRN_SQL =
 		"select " +
 		"  p.pt_mrn, reg.prt_id, reg.reg_id, cs.crnt_consent_status_dscrp, " +
-		"  ps.survival_status_dscrp, q.question_dscrp, a.answer_dscrp " +
+		"  p.survival_date, ps.survival_status_dscrp, q.question_dscrp, a.answer_dscrp " +
 		"from " +
 		"  openspecimen_pt p " +
 		"  left join openspecimen_survival_status ps on ps.survival_status = p.survival_status " +
