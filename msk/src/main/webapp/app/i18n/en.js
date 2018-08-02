@@ -16,11 +16,16 @@
 
   "dp": {
     "short_title": "ID",
-    "receiving_site": "Department"
+    "receiving_site": "Department",
+    "distribution_order": {
+      "pathology_status": "Category"
+    }
   },
 
   "orders": {
-    "receiving_site": "Department"
+    "receiving_site": "Department",
+    "site": "Department",
+    "dp": "ID"
   },
 
   "msk": {
