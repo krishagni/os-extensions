@@ -58,8 +58,8 @@
   <changeSet author="ktg" id="Setting to specify export job' export job database connection URL">
     <sql>
       call add_cfg_prop(
-        'mskcc', 'consents_db_export_job_url',
-        'consents_db_export_job_url', 'consents_db_export_url_desc',
+        'mskcc', 'db_export_job_url',
+        'db_export_job_url', 'db_export_url_desc',
         'STRING', ''
       );
     </sql>
@@ -68,8 +68,8 @@
   <changeSet author="ktg" id="Setting to specify export job' export job database username">
     <sql>
       call add_cfg_prop(
-        'mskcc', 'consents_db_export_job_username',
-        'consents_db_export_job_username', 'consents_db_export_username_desc',
+        'mskcc', 'db_export_job_username',
+        'db_export_job_username', 'db_export_username_desc',
         'STRING', ''
       );
     </sql>
@@ -78,8 +78,8 @@
   <changeSet author="ktg" id="Setting to specify export job' export job database password">
     <sql>
       call add_secured_cfg_prop(
-        'mskcc', 'consents_db_export_job_password',
-        'consents_db_export_job_password', 'consents_db_export_password_desc',
+        'mskcc', 'db_export_job_password',
+        'db_export_job_password', 'db_export_password_desc',
         'STRING', ''
       );
     </sql>
@@ -88,8 +88,38 @@
   <changeSet author="ktg" id="Setting to specify export job' export job database directory">
     <sql>
       call add_cfg_prop(
-        'mskcc', 'consents_db_export_job_dir',
-        'consents_db_export_job_dir', 'consents_db_export_dir_desc',
+        'mskcc', 'db_export_job_dir',
+        'db_export_job_dir', 'db_export_dir_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job sftp hostname">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'export_job_sftp_hostname',
+        'export_job_sftp_hostname', 'export_sftp_hostname_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job sftp username">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'export_job_sftp_username',
+        'export_job_sftp_username', 'export_sftp_username_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job sftp password">
+    <sql>
+      call add_secured_cfg_prop(
+        'mskcc', 'export_job_sftp_password',
+        'export_job_sftp_password', 'export_sftp_password_desc',
         'STRING', ''
       );
     </sql>

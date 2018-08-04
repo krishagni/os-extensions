@@ -65,7 +65,7 @@ public class ExportJobDriver implements ScheduledTask {
 	private void ensureFolderIsAccessible()  {
 		File source = getExportFolder();
 		
-		if (StringUtils.isEmpty(remoteHost) || StringUtils.isEmpty(remoteUsername) || StringUtils.isEmpty(remotePassword)) {
+		if (StringUtils.isEmpty(ConfigParams.getExportSFTPHostname()) || StringUtils.isEmpty(ConfigParams.getExportSFTPUsername()) || StringUtils.isEmpty(ConfigParams.getExportSFTPPassword())) {
 			this.dbDataDir = source.getAbsolutePath();
 		} else {
 			this.dbDataDir = ConfigParams.getExportDBDir();
@@ -75,7 +75,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private void putFileOnRemote(String localPath, String remotePath) {
-		SshSession ssh = new SshSession(remoteHost, remoteUsername, remotePassword);
+		SshSession ssh = new SshSession(ConfigParams.getExportSFTPHostname(), ConfigParams.getExportSFTPUsername(), ConfigParams.getExportSFTPPassword());
 		ssh.connect();
 
 		SftpUtil sftp = ssh.newSftp();
@@ -262,8 +262,4 @@ public class ExportJobDriver implements ScheduledTask {
 			"TBD_ADDTL_PROCESS_TECH_NAME = @col17,\n" + 
 			"TBD_ADDTL_PROCESS_TEMPERATURE_DESC = @col18;";
 	}
-	
-	private final static String remoteHost = "";
-	private final static String remoteUsername = "";
-	private final static String remotePassword = "";
 }
