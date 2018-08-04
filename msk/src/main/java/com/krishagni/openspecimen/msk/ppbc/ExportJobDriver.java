@@ -19,6 +19,9 @@ import com.krishagni.catissueplus.core.common.util.SftpUtil;
 import com.krishagni.catissueplus.core.common.util.SshSession;
 import com.krishagni.openspecimen.msk.ConfigParams;
 
+import edu.common.dynamicextensions.nutility.IoUtil;
+import edu.common.dynamicextensions.util.ZipUtility;
+
 public class ExportJobDriver implements ScheduledTask {
 	private static final Log logger = LogFactory.getLog(ExportJobDriver.class);
 	
@@ -39,7 +42,7 @@ public class ExportJobDriver implements ScheduledTask {
 		
 		ensureFolderIsAccessible();
 		loadToDatabase();
-		cleanUpTempFiles();
+		// cleanUpTempFiles();
 	}
 
 	private void loadToDatabase() {
@@ -68,9 +71,10 @@ public class ExportJobDriver implements ScheduledTask {
 		if (StringUtils.isEmpty(ConfigParams.getExportSFTPHostname()) || StringUtils.isEmpty(ConfigParams.getExportSFTPUsername()) || StringUtils.isEmpty(ConfigParams.getExportSFTPPassword())) {
 			this.dbDataDir = source.getAbsolutePath();
 		} else {
+			IoUtil.zipFiles(source.getAbsolutePath(), ConfigUtil.getInstance().getDataDir() + File.separatorChar + "ExportedCsv.zip");
 			this.dbDataDir = ConfigParams.getExportDBDir();
 			File destination = new File(dbDataDir);
-		    putFileOnRemote(source.getAbsolutePath(), destination.getAbsolutePath());
+		    putFileOnRemote(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "ExportedCsv.zip", destination.getAbsolutePath());
 		}
 	}
 	
@@ -80,7 +84,9 @@ public class ExportJobDriver implements ScheduledTask {
 
 		SftpUtil sftp = ssh.newSftp();
 		sftp.put(localPath, remotePath);
-
+		
+		ZipUtility.extractZipToDestination(remotePath + File.separatorChar + "ExportedCsv.zip", remotePath);
+		
 		sftp.close();
 		ssh.close();
 	}
