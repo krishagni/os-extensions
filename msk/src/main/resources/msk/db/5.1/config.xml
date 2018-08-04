@@ -54,4 +54,44 @@
       );
     </sql>
   </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job database connection URL">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'consents_db_export_job_url',
+        'consents_db_export_job_url', 'consents_db_export_url_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job database username">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'consents_db_export_job_username',
+        'consents_db_export_job_username', 'consents_db_export_username_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job database password">
+    <sql>
+      call add_secured_cfg_prop(
+        'mskcc', 'consents_db_export_job_password',
+        'consents_db_export_job_password', 'consents_db_export_password_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+  
+  <changeSet author="ktg" id="Setting to specify export job' export job database directory">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'consents_db_export_job_dir',
+        'consents_db_export_job_dir', 'consents_db_export_dir_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
 </databaseChangeLog>

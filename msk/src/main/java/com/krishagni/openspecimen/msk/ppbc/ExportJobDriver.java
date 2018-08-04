@@ -17,23 +17,17 @@ import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.SftpUtil;
 import com.krishagni.catissueplus.core.common.util.SshSession;
+import com.krishagni.openspecimen.msk.ConfigParams;
 
 public class ExportJobDriver implements ScheduledTask {
 	private static final Log logger = LogFactory.getLog(ExportJobDriver.class);
-	
-	private static final String[] csvFilenames = new String[] {
-			"Accession.csv", 
-			"Specimen_Request.csv", 
-			"Distribution.csv", 
-			"Details.csv", 
-			"Specimen_Request_Details.csv"
-	};
 	
 	private ScheduledTask[] tasks = {
 			   new DistributionProtocolExport(),
 			   new ParticipantExport()
 			};
 	
+	private String dbDataDir;
 	
 	@Override
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
@@ -49,62 +43,33 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 
 	private void loadToDatabase() {
-		for (String file : csvFilenames) {
-			loadToDatabase(file);
-		}
-	}
-
-	private void loadToDatabase(String filename) {
-		switch (filename) {
-			case "Distribution.csv":
-				executeLoadDataQuery(distributionSqlQuery);
-				break;
-			
-			case "Accession.csv":
-				executeLoadDataQuery(accessionSqlQuery);
-				break;
-			
-			case "Details.csv":
-				executeLoadDataQuery(detailsSqlQuery);
-				break;
-				
-			case "Specimen_Request.csv":
-				executeLoadDataQuery(specimenRequestSqlQuery);
-				break;
-				
-			case "Specimen_Request_Details.csv":
-				executeLoadDataQuery(specimenRequestDetailsSqlQuery);
-				break;
-				
-			default:
-				logger.error("Cannot load into DB - Unknown file: " + filename);
-		}
+		executeLoadDataQuery(getDistributionSqlQuery());
+		executeLoadDataQuery(getAccessionSqlQuery());
+		executeLoadDataQuery(getDetailsSqlQuery());
+		executeLoadDataQuery(getSpecimenRequestSqlQuery());
+		executeLoadDataQuery(getSpecimenRequestDetailsSqlQuery());
 	}
 
 	private void executeLoadDataQuery(String query) {
-		SingleConnectionDataSource scds = new SingleConnectionDataSource("jdbc:mysql://localhost:3306/loadfromcsv","swapnil","root", true);
+		SingleConnectionDataSource scds = new SingleConnectionDataSource(
+				ConfigParams.getExportDBUrl(),
+				ConfigParams.getExportDBUsername(),
+				ConfigParams.getExportDBPassword(),
+				true);
+		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(scds);
 		jdbcTemplate.execute(query);
-		
 		scds.destroy();
 	}
 	
 	private void ensureFolderIsAccessible()  {
-		File destination = new File(dbDataDir);
 		File source = getExportFolder();
 		
 		if (StringUtils.isEmpty(remoteHost) || StringUtils.isEmpty(remoteUsername) || StringUtils.isEmpty(remotePassword)) {
-		    	FileUtils.listFiles(source, null, false).forEach(
-		    			file -> {
-							try {
-								FileUtils.copyFileToDirectory(file, destination);
-							} catch (IOException e) {
-								logger.error("Error while copying csv file from source to destination directory", e);
-							}
-						}
-		    	);
+			this.dbDataDir = source.getAbsolutePath();
 		} else {
-			// IoUtil.zip
+			this.dbDataDir = ConfigParams.getExportDBDir();
+			File destination = new File(dbDataDir);
 		    putFileOnRemote(source.getAbsolutePath(), destination.getAbsolutePath());
 		}
 	}
@@ -122,15 +87,7 @@ public class ExportJobDriver implements ScheduledTask {
 	
 	private void cleanUpTempFiles() {
 		try {
-			// Zip the OSDataDir/export folder
 			FileUtils.deleteDirectory(getExportFolder());
-			
-			if (StringUtils.isEmpty(remoteHost) || StringUtils.isEmpty(remoteUsername) || StringUtils.isEmpty(remotePassword)) {
-				for (String file : csvFilenames) {
-					FileUtils.deleteQuietly(new File(dbDataDir, file));
-				}
-			}
-			
 		} catch (IOException e) {
 			logger.error("Error cleaning up temporary files", e);
 		}
@@ -141,11 +98,8 @@ public class ExportJobDriver implements ScheduledTask {
 		return new File(ConfigUtil.getInstance().getDataDir(), folderName);
 	}
 	
-	private final static String dbDataDir = "/usr/local/var/mysql";
-	private final static String remoteHost = "";
-	private final static String remoteUsername = "";
-	private final static String remotePassword = "";
-	private final static String specimenRequestSqlQuery = "LOAD DATA INFILE '/usr/local/var/mysql/Specimen_Request.csv'\n" + 
+	private String getSpecimenRequestSqlQuery() {
+		return "LOAD DATA INFILE '" + this.dbDataDir + "/Specimen_Request.csv'\n" + 
 			"IGNORE INTO TABLE Specimen_Request\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -182,8 +136,10 @@ public class ExportJobDriver implements ScheduledTask {
 			"TBR_MIN_SIZE_DESC = @col26,\n" + 
 			"TBR_STS_DESC = @col27,\n" + 
 			"TBR_SPECIAL_HANDLING_DESC = @col28;";
+	}
 	
-	private final static String distributionSqlQuery = "LOAD DATA INFILE '/usr/local/var/mysql/Distribution.csv'\n" + 
+	private String getDistributionSqlQuery() {
+		return "LOAD DATA INFILE '" + this.dbDataDir + "/Distribution.csv'\n" + 
 			"IGNORE INTO TABLE Distribution\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -196,8 +152,10 @@ public class ExportJobDriver implements ScheduledTask {
 			"TBDS_BILLING_AMT = @col4,\n" + 
 			"SPECIMEN_LABEL = @col5,\n" + 
 			"TBDS_BILLING_DT = STR_TO_DATE(@col6, '%b %d, %Y %H:%i');";
+	}
 	
-	private final static String specimenRequestDetailsSqlQuery = "LOAD DATA INFILE '/usr/local/var/mysql/Specimen_Request_Details.csv'\n" + 
+	private String getSpecimenRequestDetailsSqlQuery() {
+		return "LOAD DATA INFILE '" + this.dbDataDir + "/Specimen_Request_Details.csv'\n" + 
 			"IGNORE INTO TABLE SPECIMEN_REQUEST_DETAILS\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -221,8 +179,10 @@ public class ExportJobDriver implements ScheduledTask {
 			"TBRD_QUALITY_DESC = @col13,\n" + 
 			"TBRD_UNIT_DESC = @col14,\n" + 
 			"TBRD_NOTES = @col15;";
+	}
 	
-	private final static String accessionSqlQuery = "LOAD DATA INFILE '/usr/local/var/mysql/Accession.csv'\n" + 
+	private String getAccessionSqlQuery() {
+		return "LOAD DATA INFILE '" + this.dbDataDir + "/Accession.csv'\n" + 
 			"IGNORE INTO TABLE ACCESSION\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -272,8 +232,10 @@ public class ExportJobDriver implements ScheduledTask {
 			"TBA_HISTOLOGY_SUB2_DESC = @col37,\n" + 
 			"TBA_HISTOLOGY_SUB3_DESC = @col38,\n" + 
 			"TBA_HARVEST_PA_NAME = @col39;";
+	}
 	
-	private final static String detailsSqlQuery = "LOAD DATA INFILE '/usr/local/var/mysql/details.csv'\n" + 
+	private String getDetailsSqlQuery() {
+		return "LOAD DATA INFILE '" + this.dbDataDir + "/Details.csv'\n" + 
 			"IGNORE INTO TABLE DETAILS\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -299,4 +261,9 @@ public class ExportJobDriver implements ScheduledTask {
 			"TBD_ADDTL_PROCESS_DT = STR_TO_DATE(@col16, '%b %d, %Y %H:%i'),\n" + 
 			"TBD_ADDTL_PROCESS_TECH_NAME = @col17,\n" + 
 			"TBD_ADDTL_PROCESS_TEMPERATURE_DESC = @col18;";
+	}
+	
+	private final static String remoteHost = "";
+	private final static String remoteUsername = "";
+	private final static String remotePassword = "";
 }

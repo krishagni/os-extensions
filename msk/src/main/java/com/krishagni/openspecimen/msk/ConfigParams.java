@@ -14,6 +14,14 @@ public class ConfigParams {
 	private static String USERNAME = "consents_db_username";
 
 	private static String PASSWORD = "consents_db_password";
+	
+	private static String EXPORT_JOB_DB_URL = "consents_db_export_job_url";
+	
+	private static String EXPORT_JOB_DB_USERNAME = "consents_db_export_job_username";
+	
+	private static String EXPORT_JOB_DB_PASSWORD = "consents_db_export_job_password";
+	
+	private static String EXPORT_JOB_DB_DIR = "consents_db_export_job_dir";
 
 	public static String getUrl() {
 		return getValue(URL, MskError.DB_URL_NOT_SPECIFIED);
@@ -25,6 +33,22 @@ public class ConfigParams {
 
 	public static String getPassword() {
 		return getValue(PASSWORD, MskError.DB_PASSWD_NOT_SPECIFIED);
+	}
+	
+	public static String getExportDBUrl() {
+		return getValue(EXPORT_JOB_DB_URL, MskError.DB_EXPORT_JOB_URL_NOT_SPECIFIED);
+	}
+	
+	public static String getExportDBUsername() {
+		return getValue(EXPORT_JOB_DB_USERNAME, MskError.DB_EXPORT_JOB_USERNAME_NOT_SPECIFIED);
+	}
+	
+	public static String getExportDBPassword() {
+		return getValue(EXPORT_JOB_DB_PASSWORD, MskError.DB_EXPORT_JOB_PASSWORD_NOT_SPECIFIED);
+	}
+	
+	public static String getExportDBDir() {
+		return getValue(EXPORT_JOB_DB_DIR, MskError.DB_EXPORT_JOB_DIR_NOT_SPECIFIED);
 	}
 
 	private static String getValue(String propName, ErrorCode errorCode) {
