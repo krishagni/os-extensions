@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,40 +14,21 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
-import com.krishagni.catissueplus.core.common.util.SftpUtil;
-import com.krishagni.catissueplus.core.common.util.SshSession;
 import com.krishagni.openspecimen.msk.ConfigParams;
 
 import edu.common.dynamicextensions.nutility.IoUtil;
-import edu.common.dynamicextensions.util.ZipUtility;
 
 public class ExportJobDriver implements ScheduledTask {
 	private static final Log logger = LogFactory.getLog(ExportJobDriver.class);
-	
-	private ScheduledTask[] tasks = {
-			   new DistributionProtocolExport(),
-			   new ParticipantExport()
-			};
-	
-	private String dbDataDir;
 	
 	@Override
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
 		getExportFolder().mkdir();
 		
-		for (ScheduledTask task : tasks) {
-			task.doJob(jobRun);
-		}
+		new DistributionProtocolExport().doJob(jobRun);
+		new ParticipantExport().doJob(jobRun);
 		
 		IoUtil.zipFiles(getExportFolder().getAbsolutePath(), ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName());
-		
-		if (isSqlLocal()) {
-			// Set DB data dir to $OS_DATA_DIR/exportFolder 
-			this.dbDataDir = getExportFolder().getAbsolutePath();
-		} else {
-			this.dbDataDir = ConfigParams.getExportDBDir();
-			putFileOnRemote(ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName(), ConfigParams.getExportDBDir());
-		}
 		
 		loadToDatabase();
 		cleanUpTempFiles();
@@ -79,58 +59,9 @@ public class ExportJobDriver implements ScheduledTask {
 		return "ExportedCSV_" + timestamp + ".zip";
 	}
 	
-	private void putFileOnRemote(String localPath, String remotePath) {
-		SshSession ssh = new SshSession(
-				ConfigParams.getExportSFTPHostname(), 
-				ConfigParams.getExportSFTPUsername(), 
-				ConfigParams.getExportSFTPPassword());
-		ssh.connect();
-		SftpUtil sftp = ssh.newSftp();
-
-		sftp.put(localPath, remotePath);
-		
-		ZipUtility.extractZipToDestination(remotePath + File.separatorChar + getZipFileName(), remotePath);
-		
-		sftp.close();
-		ssh.close();
-	}
-	
-	private boolean isSqlLocal() {
-		if (StringUtils.isEmpty(ConfigParams.getExportSFTPHostname()) || 
-			StringUtils.isEmpty(ConfigParams.getExportSFTPUsername()) || 
-			StringUtils.isEmpty(ConfigParams.getExportSFTPPassword())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	private void removeFileFromRemote(String remotePath, String fileName) {
-		SshSession ssh = new SshSession(
-				ConfigParams.getExportSFTPHostname(), 
-				ConfigParams.getExportSFTPUsername(), 
-				ConfigParams.getExportSFTPPassword());
-		
-		ssh.connect();
-		SftpUtil sftp = ssh.newSftp();
-		
-		sftp.rm(remotePath + File.separatorChar + fileName);
-		
-		sftp.close();
-		ssh.close();
-	}
-	
 	private void cleanUpTempFiles() {
 		try {
 			FileUtils.deleteDirectory(getExportFolder());
-			
-			if (!isSqlLocal()) {
-				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Accession.csv");
-				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Details.csv");
-				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Distribution.csv");
-				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Specimen_Request.csv");
-				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Specimen_Request_Details.csv");
-			}
 		} catch (IOException e) {
 			logger.error("Error cleaning up temporary files", e);
 		}
@@ -142,7 +73,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getSpecimenRequestSqlQuery() {
-		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Specimen_Request.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + getExportFolder().getAbsolutePath() + "/Specimen_Request.csv'\n" + 
 			"IGNORE INTO TABLE Specimen_Request\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -182,7 +113,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getDistributionSqlQuery() {
-		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Distribution.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + getExportFolder().getAbsolutePath() + "/Distribution.csv'\n" + 
 			"IGNORE INTO TABLE Distribution\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -198,7 +129,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getSpecimenRequestDetailsSqlQuery() {
-		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Specimen_Request_Details.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + getExportFolder().getAbsolutePath() + "/Specimen_Request_Details.csv'\n" + 
 			"IGNORE INTO TABLE SPECIMEN_REQUEST_DETAILS\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -225,7 +156,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getAccessionSqlQuery() {
-		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Accession.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + getExportFolder().getAbsolutePath() + "/Accession.csv'\n" + 
 			"IGNORE INTO TABLE ACCESSION\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -278,7 +209,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getDetailsSqlQuery() {
-		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Details.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + getExportFolder().getAbsolutePath() + "/Details.csv'\n" + 
 			"IGNORE INTO TABLE DETAILS\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
