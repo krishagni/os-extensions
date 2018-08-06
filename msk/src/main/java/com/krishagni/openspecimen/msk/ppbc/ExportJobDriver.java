@@ -40,7 +40,16 @@ public class ExportJobDriver implements ScheduledTask {
 			task.doJob(jobRun);
 		}
 		
-		ensureFolderIsAccessible();
+		IoUtil.zipFiles(getExportFolder().getAbsolutePath(), ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName());
+		
+		if (isSqlLocal()) {
+			// Set DB data dir to $OS_DATA_DIR/exportFolder 
+			this.dbDataDir = getExportFolder().getAbsolutePath();
+		} else {
+			this.dbDataDir = ConfigParams.getExportDBDir();
+			putFileOnRemote(ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName(), ConfigParams.getExportDBDir());
+		}
+		
 		loadToDatabase();
 		cleanUpTempFiles();
 	}
@@ -63,20 +72,6 @@ public class ExportJobDriver implements ScheduledTask {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(scds);
 		jdbcTemplate.execute(query);
 		scds.destroy();
-	}
-	
-	private void ensureFolderIsAccessible()  {
-		File source = getExportFolder();
-		this.dbDataDir = source.getAbsolutePath();
-		
-		if (isSqlLocal()) {
-			this.dbDataDir = source.getAbsolutePath();
-		} else {
-			IoUtil.zipFiles(source.getAbsolutePath(), ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName());
-			// this.dbDataDir = ConfigParams.getExportDBDir();
-			// File destination = new File(dbDataDir);
-		    // putFileOnRemote(ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName(), destination.getAbsolutePath());
-		}
 	}
 	
 	private String getZipFileName() {
