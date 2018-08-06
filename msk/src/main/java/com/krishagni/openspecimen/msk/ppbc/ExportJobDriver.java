@@ -42,7 +42,7 @@ public class ExportJobDriver implements ScheduledTask {
 		
 		ensureFolderIsAccessible();
 		loadToDatabase();
-		// cleanUpTempFiles();
+		cleanUpTempFiles();
 	}
 
 	private void loadToDatabase() {
@@ -67,25 +67,59 @@ public class ExportJobDriver implements ScheduledTask {
 	
 	private void ensureFolderIsAccessible()  {
 		File source = getExportFolder();
+		this.dbDataDir = source.getAbsolutePath();
 		
-		if (StringUtils.isEmpty(ConfigParams.getExportSFTPHostname()) || StringUtils.isEmpty(ConfigParams.getExportSFTPUsername()) || StringUtils.isEmpty(ConfigParams.getExportSFTPPassword())) {
+		if (isSqlLocal()) {
 			this.dbDataDir = source.getAbsolutePath();
 		} else {
-			IoUtil.zipFiles(source.getAbsolutePath(), ConfigUtil.getInstance().getDataDir() + File.separatorChar + "ExportedCsv.zip");
-			this.dbDataDir = ConfigParams.getExportDBDir();
-			File destination = new File(dbDataDir);
-		    putFileOnRemote(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "ExportedCsv.zip", destination.getAbsolutePath());
+			IoUtil.zipFiles(source.getAbsolutePath(), ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName());
+			// this.dbDataDir = ConfigParams.getExportDBDir();
+			// File destination = new File(dbDataDir);
+		    // putFileOnRemote(ConfigUtil.getInstance().getDataDir() + File.separatorChar + getZipFileName(), destination.getAbsolutePath());
 		}
 	}
 	
+	private String getZipFileName() {
+		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		return "ExportedCSV_" + timestamp + ".zip";
+	}
+	
 	private void putFileOnRemote(String localPath, String remotePath) {
-		SshSession ssh = new SshSession(ConfigParams.getExportSFTPHostname(), ConfigParams.getExportSFTPUsername(), ConfigParams.getExportSFTPPassword());
+		SshSession ssh = new SshSession(
+				ConfigParams.getExportSFTPHostname(), 
+				ConfigParams.getExportSFTPUsername(), 
+				ConfigParams.getExportSFTPPassword());
 		ssh.connect();
-
 		SftpUtil sftp = ssh.newSftp();
+
 		sftp.put(localPath, remotePath);
 		
-		ZipUtility.extractZipToDestination(remotePath + File.separatorChar + "ExportedCsv.zip", remotePath);
+		ZipUtility.extractZipToDestination(remotePath + File.separatorChar + getZipFileName(), remotePath);
+		
+		sftp.close();
+		ssh.close();
+	}
+	
+	private boolean isSqlLocal() {
+		if (StringUtils.isEmpty(ConfigParams.getExportSFTPHostname()) || 
+			StringUtils.isEmpty(ConfigParams.getExportSFTPUsername()) || 
+			StringUtils.isEmpty(ConfigParams.getExportSFTPPassword())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private void removeFileFromRemote(String remotePath, String fileName) {
+		SshSession ssh = new SshSession(
+				ConfigParams.getExportSFTPHostname(), 
+				ConfigParams.getExportSFTPUsername(), 
+				ConfigParams.getExportSFTPPassword());
+		
+		ssh.connect();
+		SftpUtil sftp = ssh.newSftp();
+		
+		sftp.rm(remotePath + File.separatorChar + fileName);
 		
 		sftp.close();
 		ssh.close();
@@ -94,6 +128,14 @@ public class ExportJobDriver implements ScheduledTask {
 	private void cleanUpTempFiles() {
 		try {
 			FileUtils.deleteDirectory(getExportFolder());
+			
+			if (!isSqlLocal()) {
+				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Accession.csv");
+				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Details.csv");
+				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Distribution.csv");
+				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Specimen_Request.csv");
+				// removeFileFromRemote(ConfigParams.getExportDBDir(), "Specimen_Request_Details.csv");
+			}
 		} catch (IOException e) {
 			logger.error("Error cleaning up temporary files", e);
 		}
@@ -105,7 +147,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getSpecimenRequestSqlQuery() {
-		return "LOAD DATA INFILE '" + this.dbDataDir + "/Specimen_Request.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Specimen_Request.csv'\n" + 
 			"IGNORE INTO TABLE Specimen_Request\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -145,7 +187,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getDistributionSqlQuery() {
-		return "LOAD DATA INFILE '" + this.dbDataDir + "/Distribution.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Distribution.csv'\n" + 
 			"IGNORE INTO TABLE Distribution\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -161,7 +203,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getSpecimenRequestDetailsSqlQuery() {
-		return "LOAD DATA INFILE '" + this.dbDataDir + "/Specimen_Request_Details.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Specimen_Request_Details.csv'\n" + 
 			"IGNORE INTO TABLE SPECIMEN_REQUEST_DETAILS\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -188,7 +230,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getAccessionSqlQuery() {
-		return "LOAD DATA INFILE '" + this.dbDataDir + "/Accession.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Accession.csv'\n" + 
 			"IGNORE INTO TABLE ACCESSION\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
@@ -241,7 +283,7 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private String getDetailsSqlQuery() {
-		return "LOAD DATA INFILE '" + this.dbDataDir + "/Details.csv'\n" + 
+		return "LOAD DATA LOCAL INFILE '" + this.dbDataDir + "/Details.csv'\n" + 
 			"IGNORE INTO TABLE DETAILS\n" + 
 			"FIELDS TERMINATED BY ',' ENCLOSED BY '\"'\n" + 
 			"LINES TERMINATED BY '\\n'\n" + 
