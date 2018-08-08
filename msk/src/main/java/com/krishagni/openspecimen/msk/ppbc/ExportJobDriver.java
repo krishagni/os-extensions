@@ -28,6 +28,6 @@ public class ExportJobDriver implements ScheduledTask {
 	}
 	
 	private File getExportFolder() {
-		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "MskExportFolder");
+		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "msk-exports");
 	}
 }

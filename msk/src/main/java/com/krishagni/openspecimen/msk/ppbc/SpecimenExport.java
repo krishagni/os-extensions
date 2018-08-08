@@ -53,7 +53,7 @@ public class SpecimenExport {
     
     private File getExportSubFolder() {
 		String folderName = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "MskExportFolder", folderName);
+		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "msk-exports", folderName);
 	}
     
     public String[] getRow(Specimen specimen) {

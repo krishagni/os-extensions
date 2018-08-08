@@ -35,7 +35,7 @@ public class ParticipantExport implements ScheduledTask {
 
     @Autowired
     private DaoFactory daoFactory;
-   
+
     @Override
     public void doJob(ScheduledJobRun jobRun) {
         exportParticipants();
@@ -87,7 +87,7 @@ public class ParticipantExport implements ScheduledTask {
     
     private File getExportSubFolder() {
 		String folderName = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "MskExportFolder", folderName);
+		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "msk-exports", folderName);
 	}
     
     private static List<String> splitToMultiple(String inputString, int maxSize, String delimiter) {
