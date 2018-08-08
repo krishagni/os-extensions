@@ -15,7 +15,7 @@ angular.module('os.plugins.washu')
 
     $scope.downloadReport = function() {
       var generator = new function() {
-        this.name = $scope.$parent.ctx && $scope.$parent.ctx.list.name;
+        this.name = $scope.$parent.ctx && $scope.$parent.ctx.list.getDisplayName();
 
         this.generateReport = function() {
           var params = {listId: $stateParams.listId};
