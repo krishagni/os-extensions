@@ -142,9 +142,13 @@ public class DistributionProtocolExport implements ScheduledTask {
 	}
 
 	private CsvFileWriter getDpCSVWriter() {
-		String exportFolder = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-		File outputFile = new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + exportFolder, "Specimen_Request" + ".csv");
+		File outputFile = new File(getExportSubFolder(), "Specimen_Request" + ".csv");
 		return CsvFileWriter.createCsvFileWriter(outputFile);
+	}
+	
+	private File getExportSubFolder() {
+		String folderName = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "MskExportFolder", folderName);
 	}
 
 	private String[] getDpHeader() {
@@ -303,8 +307,7 @@ public class DistributionProtocolExport implements ScheduledTask {
 	}
 
 	private CsvFileWriter getDpRCSVWriter() {
-		String exportFolder = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-		File outputFile = new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + exportFolder, "Specimen_Request_Details" + ".csv");
+		File outputFile = new File(getExportSubFolder(), "Specimen_Request_Details" + ".csv");
 		return CsvFileWriter.createCsvFileWriter(outputFile);
 	}
 
@@ -335,8 +338,7 @@ public class DistributionProtocolExport implements ScheduledTask {
 	///////////////////////
 	
 	private CsvFileWriter getDoCSVWriter() {
-		String exportFolder = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-		File outputFile = new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + exportFolder, "Distribution" + ".csv");
+		File outputFile = new File(getExportSubFolder(), "Distribution" + ".csv");
 		return CsvFileWriter.createCsvFileWriter(outputFile);
 	}
 	

@@ -81,10 +81,14 @@ public class ParticipantExport implements ScheduledTask {
     }
     
     private CsvFileWriter getCSVWriter() {
-    	String exportFolder = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        File file = new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + exportFolder, "Accession" + ".csv");
+        File file = new File(getExportSubFolder(), "Accession" + ".csv");
         return CsvFileWriter.createCsvFileWriter(file);
     }
+    
+    private File getExportSubFolder() {
+		String folderName = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "MskExportFolder", folderName);
+	}
     
     private static List<String> splitToMultiple(String inputString, int maxSize, String delimiter) {
     	if (inputString == null) {

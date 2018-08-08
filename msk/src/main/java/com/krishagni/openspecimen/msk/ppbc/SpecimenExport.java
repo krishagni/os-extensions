@@ -47,10 +47,14 @@ public class SpecimenExport {
     }
     
     private CsvFileWriter getCSVWriter() {
-    	String exportFolder = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        File file = new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + exportFolder, "Details" + ".csv");
+        File file = new File(getExportSubFolder(), "Details" + ".csv");
         return CsvFileWriter.createCsvFileWriter(file);
     }
+    
+    private File getExportSubFolder() {
+		String folderName = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+		return new File(ConfigUtil.getInstance().getDataDir() + File.separatorChar + "MskExportFolder", folderName);
+	}
     
     public String[] getRow(Specimen specimen) {
     	List<String> row = new ArrayList<>();
