@@ -15,20 +15,6 @@ public class ConfigParams {
 
 	private static String PASSWORD = "consents_db_password";
 	
-	private static String EXPORT_JOB_DB_URL = "db_export_job_url";
-	
-	private static String EXPORT_JOB_DB_USERNAME = "db_export_job_username";
-	
-	private static String EXPORT_JOB_DB_PASSWORD = "db_export_job_password";
-	
-	private static String EXPORT_JOB_DB_DIR = "db_export_job_dir";
-	
-	private static String EXPORT_JOB_SFTP_HOSTNAME = "export_job_sftp_hostname";
-	
-	private static String EXPORT_JOB_SFTP_USERNAME = "export_job_sftp_username";
-	
-	private static String EXPORT_JOB_SFTP_PASSWORD = "export_job_sftp_password";
-
 	public static String getUrl() {
 		return getValue(URL, MskError.DB_URL_NOT_SPECIFIED);
 	}
@@ -41,34 +27,6 @@ public class ConfigParams {
 		return getValue(PASSWORD, MskError.DB_PASSWD_NOT_SPECIFIED);
 	}
 	
-	public static String getExportDBUrl() {
-		return getValue(EXPORT_JOB_DB_URL, MskError.DB_EXPORT_JOB_URL_NOT_SPECIFIED);
-	}
-	
-	public static String getExportDBUsername() {
-		return getValue(EXPORT_JOB_DB_USERNAME, MskError.DB_EXPORT_JOB_USERNAME_NOT_SPECIFIED);
-	}
-	
-	public static String getExportDBPassword() {
-		return getValue(EXPORT_JOB_DB_PASSWORD, MskError.DB_EXPORT_JOB_PASSWORD_NOT_SPECIFIED);
-	}
-	
-	public static String getExportDBDir() {
-		return getValue(EXPORT_JOB_DB_DIR, MskError.DB_EXPORT_JOB_DIR_NOT_SPECIFIED);
-	}
-	
-	public static String getExportSFTPHostname() {
-		return getValue(EXPORT_JOB_SFTP_HOSTNAME, MskError.EXPORT_JOB_SFTP_HOSTNAME_NOT_SPECIFIED);
-	}
-	
-	public static String getExportSFTPUsername() {
-		return getValue(EXPORT_JOB_SFTP_USERNAME, MskError.EXPORT_JOB_SFTP_USERNAME_NOT_SPECIFIED);
-	}
-	
-	public static String getExportSFTPPassword() {
-		return getValue(EXPORT_JOB_SFTP_PASSWORD, MskError.EXPORT_JOB_SFTP_PASSWORD_NOT_SPECIFIED);
-	}
-
 	private static String getValue(String propName, ErrorCode errorCode) {
 		String value = ConfigUtil.getInstance().getStrSetting(MODULE, propName, null);
 		return ensureNotBlank(value, errorCode);
