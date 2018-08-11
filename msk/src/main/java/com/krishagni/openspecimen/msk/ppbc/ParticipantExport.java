@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,16 @@ import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.biospecimen.repository.CprListCriteria;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
+import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
+import com.krishagni.catissueplus.core.de.events.FormRecordCriteria;
+import com.krishagni.catissueplus.core.de.events.FormRecordSummary;
+import com.krishagni.catissueplus.core.de.events.FormRecordsList;
+import com.krishagni.catissueplus.core.de.events.GetFormRecordsListOp;
+import com.krishagni.catissueplus.core.de.services.FormService;
+
+import edu.common.dynamicextensions.napi.FormData;
 
 @Configurable
 public class ParticipantExport implements ScheduledTask {
@@ -35,6 +45,9 @@ public class ParticipantExport implements ScheduledTask {
 
     @Autowired
     private DaoFactory daoFactory;
+    
+    @Autowired
+    FormService formSvc;
 
     @Override
     public void doJob(ScheduledJobRun jobRun) {
@@ -168,8 +181,8 @@ public class ParticipantExport implements ScheduledTask {
        	    csvFileWriter.writeNext(props.toArray(new String[props.size()]));
     	}
     }
-    
-    private void handleSpecimens(Set<Specimen> specimenList, List<String> specimenProps, CsvFileWriter csvFileWriter, SpecimenExport specimenExport) {
+
+	private void handleSpecimens(Set<Specimen> specimenList, List<String> specimenProps, CsvFileWriter csvFileWriter, SpecimenExport specimenExport) {
     	
     	for (Specimen specimen : specimenList) {
 	    	if (specimen.isPrimary()) {
@@ -197,7 +210,8 @@ public class ParticipantExport implements ScheduledTask {
     	props.add(visit.getSurgicalPathologyNumber()); 
     	props.add(visit.getComments());
     	props.addAll(getCustomField(visit));
-		
+    	props.addAll(getVisitFormValues(visit.getId()));    	
+    	
     	return props;
     }
     
@@ -224,6 +238,52 @@ public class ParticipantExport implements ScheduledTask {
     	row.add((String) (customFieldValueMap.getOrDefault("OCT (T)","")));
     	
     	return row;
+    }
+    
+    private Map<String, List<FormData>> getRecords(Long visitId) {
+        GetFormRecordsListOp opDetail = new GetFormRecordsListOp();
+        opDetail.setEntityType("SpecimenCollectionGroup");
+        opDetail.setObjectId(visitId);
+        
+        List<FormRecordsList> formRecordsList = formSvc.getFormRecords(new RequestEvent<GetFormRecordsListOp>(opDetail)).getPayload();
+        Map<String, List<FormData>> result = new HashMap<>();
+        
+        for (FormRecordsList formRecords : formRecordsList) {
+        	List<FormData> formDataList = new ArrayList<>();
+        	for (FormRecordSummary record : formRecords.getRecords()) {
+               		FormRecordCriteria crit = new FormRecordCriteria();
+               		crit.setFormId(formRecords.getId());
+               		crit.setRecordId(record.getRecordId());
+               		FormData data = formSvc.getFormData(new RequestEvent<FormRecordCriteria>(crit)).getPayload().getFormData();
+               		formDataList.add(data);
+            	}
+        	result.put(formRecords.getName(), dataList);
+        }
+	return result;
+    }
+    
+    public List<String> getVisitFormValues(Long visitId) {
+        Map<String, List<FormData>> records = getRecords(visitId);
+        List<String> props = new ArrayList<>();
+
+        if (records.isEmpty()) {
+        	String[] blankProps = new String[] {"", "", "", "", "", "", ""};
+        	return Arrays.asList(blankProps);
+        }
+             
+        for (Map.Entry<String, List<FormData>> record : records.entrySet()) {
+    		for (FormData listValue : record.getValue()) {
+    			Map<String, Object> fieldNameValue = listValue.getFieldNameValueMap(true);
+    			props.add((String) (fieldNameValue.getOrDefault("procurementAge", "")));
+    			props.add((String) (fieldNameValue.getOrDefault("stagingSystemID", "")));
+    			props.add((String) (fieldNameValue.getOrDefault("stagingSystem", "")));
+    			props.add((String) (fieldNameValue.getOrDefault("gStage", "")));
+    			props.add((String) (fieldNameValue.getOrDefault("tStage", "")));
+    			props.add((String) (fieldNameValue.getOrDefault("nStage", "")));
+    			props.add((String) (fieldNameValue.getOrDefault("mStage", "")));
+    		}
+    	}
+	return props;        
     }
     
     ///////////////////
@@ -297,6 +357,13 @@ public class ParticipantExport implements ScheduledTask {
                 "TBD_NUN_T",
                 "TBD_OCT_N",
                 "TBD_OCT_T",
+                "TBA_PROCUREMENT_AGE",
+                "TBA_STG_SYSID",
+                "TBA_STG_SYSTEM_DESC",
+                "TBA_PATH_G_STG",
+                "TBA_PATH_T_STG",
+                "TBA_PATH_N_STG",
+                "TBA_PATH_M_STG",
                 
                 // Specimen Headers
                 "PARENT_SPECIMEN_LABEL",
