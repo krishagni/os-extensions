@@ -257,7 +257,7 @@ public class ParticipantExport implements ScheduledTask {
                		FormData data = formSvc.getFormData(new RequestEvent<FormRecordCriteria>(crit)).getPayload().getFormData();
                		formDataList.add(data);
             	}
-        	result.put(formRecords.getName(), dataList);
+        	result.put(formRecords.getName(), formDataList);
         }
 	return result;
     }
