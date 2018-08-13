@@ -1,5 +1,7 @@
 package com.krishagni.openspecimen.washu.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.krishagni.catissueplus.core.biospecimen.repository.SpecimenListCriteria;
 import com.krishagni.catissueplus.core.common.events.EntityQueryCriteria;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
@@ -25,8 +28,15 @@ public class ReportsController {
 	@RequestMapping(method = RequestMethod.GET, value="/working-specimens")
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public QueryDataExportResult exportWorkingSpecimensReport(@RequestParam(value = "listId") Long listId) {
-		return response(rptsGenerator.exportWorkingSpecimensReport(request(new EntityQueryCriteria(listId))));
+	public QueryDataExportResult exportWorkingSpecimensReport(
+		@RequestParam(value = "listId")
+		Long listId,
+
+		@RequestParam(value = "specimenId", required = false)
+		List<Long> specimenIds) {
+
+		SpecimenListCriteria crit = new SpecimenListCriteria().specimenListId(listId).ids(specimenIds);
+		return response(rptsGenerator.exportWorkingSpecimensReport(request(crit)));
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/order-report")

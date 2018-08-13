@@ -19,6 +19,11 @@ angular.module('os.plugins.washu')
 
         this.generateReport = function() {
           var params = {listId: $stateParams.listId};
+          var selectedSpmns = $scope.$parent.ctx && $scope.$parent.ctx.listCtrl.getSelectedItems();
+          if (selectedSpmns && selectedSpmns.length > 0) {
+            params.specimenId = selectedSpmns.map(function(spmn) { return spmn.hidden.specimenId; });
+          }
+
           return $http.get(ApiUrls.getBaseUrl() + 'washu-reports/working-specimens', {params: params}).then(
             function(resp) {
               return resp.data;

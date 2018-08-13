@@ -3,6 +3,7 @@ package com.krishagni.openspecimen.washu.services.impl;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +21,7 @@ import com.krishagni.catissueplus.core.administrative.domain.DistributionProtoco
 import com.krishagni.catissueplus.core.administrative.domain.DpDistributionSite;
 import com.krishagni.catissueplus.core.administrative.domain.factory.DistributionOrderErrorCode;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
+import com.krishagni.catissueplus.core.biospecimen.repository.SpecimenListCriteria;
 import com.krishagni.catissueplus.core.biospecimen.services.SpecimenListService;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.access.AccessCtrlMgr;
@@ -68,7 +70,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 
 	@Override
 	@PlusTransactional
-	public ResponseEvent<QueryDataExportResult> exportWorkingSpecimensReport(RequestEvent<EntityQueryCriteria> req) {
+	public ResponseEvent<QueryDataExportResult> exportWorkingSpecimensReport(RequestEvent<SpecimenListCriteria> req) {
 		try {
 			QueryDataExportResult result = listSvc.exportSpecimenList(req.getPayload(), this::exportSpecimenListToXlsx);
 			return ResponseEvent.response(result);
@@ -238,7 +240,8 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellStyle hdSubTitleLabel = hdSubTitleLabelStyle(workbook);
 				CellStyle hdSubTitleValue = hdSubTitleValueStyle(workbook);
 
-				SXSSFRow hr = sheet.createRow(0);
+				int rowNum = -1;
+				SXSSFRow hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Order Name:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getName(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -247,7 +250,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(1);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Order ID:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getId().toString(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -256,17 +259,17 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(2);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Distribution Protocol:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getDistributionProtocol().getShortTitle(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
 
-				hr = sheet.createRow(3);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Signature & Date:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, "", hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
 
-				hr = sheet.createRow(4);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Name:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().formattedName(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -275,7 +278,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, getDistributionSites(order), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(5);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requested Date:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, Utility.getDateTimeString(order.getCreationDate()), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -285,7 +288,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, distDate, hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(6);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Address:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().getAddress(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -294,7 +297,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, order.getDistributor().getAddress(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(7);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Phone:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().getPhoneNumber(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -303,7 +306,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, order.getDistributor().getPhoneNumber(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(8);
+				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Email:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().getEmailAddress(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
@@ -312,18 +315,36 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				CellUtil.createCell(hr, 7, order.getDistributor().getEmailAddress(), hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(9);
-				CellUtil.createCell(hr, 0, "Requestor's Comment:", hdTitleLabel);
+				hr = sheet.createRow(++rowNum);
+				CellUtil.createCell(hr, 0, "", hdTitleLabel);
 				CellUtil.createCell(hr, 1, "", hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+
 
 				CellUtil.createCell(hr, 6, "Distributor's Comment:", hdTitleLabel);
 				CellUtil.createCell(hr, 7, "", hdTitleValue);
 				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
 
-				hr = sheet.createRow(10);
+				if (order.getExtension() != null) {
+					Map<String, String> labelValueMap = order.getExtension().getLabelValueMap();
+					int attrsCount = 0;
+					for (Map.Entry<String, String> labelValue : labelValueMap.entrySet()) {
+						int colNum = (attrsCount % 2);
+						if (colNum == 0) {
+							hr = sheet.createRow(++rowNum);
+						}
 
-				hr = sheet.createRow(11);
+						CellUtil.createCell(hr, colNum * 6,     labelValue.getKey(), hdTitleLabel);
+						CellUtil.createCell(hr, colNum * 6 + 1, labelValue.getValue(), hdTitleValue);
+						sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), colNum * 6 + 1, colNum * 6 + 5));
+						++attrsCount;
+					}
+				}
+
+				// empty row
+				sheet.createRow(++rowNum);
+
+				hr = sheet.createRow(++rowNum);
 				String[] columnLabels = data.getColumnLabels();
 				CellUtil.createCell(hr, 0, "Sample Quantity Units:", hdSubTitleLabel);
 				CellUtil.createCell(hr, 1, "Cell = cell count/number, Fluid/Tissue Lysate/Cell Lysate = ml, Molecular = ug, Tissue Block/Slide = Count, All Other Tissue = gm", hdSubTitleValue);
@@ -331,9 +352,10 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 
 				sheet.flushRows();
 
-				hr = sheet.createRow(12);
+				// empty row
+				sheet.createRow(++rowNum);
 
-				SXSSFRow dataRow = sheet.createRow(13);
+				SXSSFRow dataRow = sheet.createRow(++rowNum);
 				int colNum = 0;
 				for (String columnLabel : columnLabels) {
 					CellUtil.createCell(dataRow, colNum++, columnLabel, hdSubTitleLabel);
@@ -341,16 +363,15 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 
 				sheet.flushRows();
 
-				int rowNum = 14;
 				Iterator<String[]> rows = data.stringifiedRowIterator();
 				while (rows.hasNext()) {
-					dataRow = sheet.createRow(rowNum++);
+					dataRow = sheet.createRow(++rowNum);
 					colNum = 0;
 					for (String item : rows.next()) {
 						CellUtil.createCell(dataRow, colNum++, item, hdSubTitleValue);
 					}
 
-					if ((rowNum - 14) % 10 == 0) {
+					if (rowNum  % 10 == 0) {
 						sheet.flushRows();
 					}
 				}
