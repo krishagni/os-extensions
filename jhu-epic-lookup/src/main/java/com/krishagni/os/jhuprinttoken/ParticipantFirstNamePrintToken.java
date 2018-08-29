@@ -3,10 +3,10 @@ package com.krishagni.os.jhuprinttoken;
 import org.apache.commons.lang.StringUtils;
 
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
-import com.krishagni.catissueplus.core.biospecimen.label.specimen.AbstractSpecimenLabelToken;
+import com.krishagni.catissueplus.core.common.domain.AbstractLabelTmplToken;
 import com.krishagni.catissueplus.core.common.domain.LabelTmplToken;
 
-public class ParticipantFirstNamePrintToken extends AbstractSpecimenLabelToken implements LabelTmplToken {
+public class ParticipantFirstNamePrintToken extends AbstractLabelTmplToken implements LabelTmplToken {
 
 	@Override
 	public String getName() {
@@ -16,20 +16,12 @@ public class ParticipantFirstNamePrintToken extends AbstractSpecimenLabelToken i
 	@Override
 	public String getReplacement(Object object) {
 		Specimen specimen = (Specimen) object;
+		String name = specimen.getRegistration().getParticipant().getFirstName();
 		
-		while (specimen.getParentSpecimen() != null) {
-            		specimen = specimen.getParentSpecimen();
-        	}
-		
-		if (StringUtils.isBlank(specimen.getRegistration().getParticipant().getFirstName())) {
+		if (StringUtils.isBlank(name)) {
 			return StringUtils.EMPTY;
 		}
 		
-		return specimen.getRegistration().getParticipant().getFirstName();
-	}
-
-	@Override
-	public String getLabel(Specimen specimen) {
-		return "";
+		return name;
 	}
 }
