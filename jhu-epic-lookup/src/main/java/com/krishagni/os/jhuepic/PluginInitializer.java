@@ -10,19 +10,29 @@ import org.springframework.beans.factory.InitializingBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krishagni.catissueplus.core.biospecimen.WorkflowUtil;
 import com.krishagni.catissueplus.core.biospecimen.domain.CpWorkflowConfig;
+import com.krishagni.catissueplus.core.common.domain.LabelTmplTokenRegistrar;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
+import com.krishagni.os.jhuprinttoken.ParticipantFirstNamePrintToken;
 
 public class PluginInitializer implements InitializingBean {
 	private static final Log logger = LogFactory.getLog(PluginInitializer.class);
 
 	private ConfigurationService cfgSvc;
+	
+	private LabelTmplTokenRegistrar labelTokensRegistrar;
 
 	public void setCfgSvc(ConfigurationService cfgSvc) {
 		this.cfgSvc = cfgSvc;
 	}
+	
+	public void setLabelTokensRegistrar(LabelTmplTokenRegistrar labelTokensRegistrar) {
+		this.labelTokensRegistrar = labelTokensRegistrar;
+	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		labelTokensRegistrar.register(new ParticipantFirstNamePrintToken());
+		
 		CpWorkflowConfig sysWorkflows = WorkflowUtil.getInstance().getSysWorkflows();
 		CpWorkflowConfig.Workflow workflow = sysWorkflows.getWorkflows().get("locked-fields");
 		if (workflow == null) {
@@ -38,6 +48,6 @@ public class PluginInitializer implements InitializingBean {
 			}
 		}
 	}
-
+	
 	private static final String LOCKED_FIELDS_CFG = "/com/krishagni/os/jhuepic/locked-fields.json";
 }
