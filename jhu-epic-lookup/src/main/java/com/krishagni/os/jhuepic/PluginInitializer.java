@@ -12,7 +12,16 @@ import com.krishagni.catissueplus.core.biospecimen.WorkflowUtil;
 import com.krishagni.catissueplus.core.biospecimen.domain.CpWorkflowConfig;
 import com.krishagni.catissueplus.core.common.domain.LabelTmplTokenRegistrar;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
+import com.krishagni.os.jhuprinttoken.CollectionProtocolPIPrintToken;
+import com.krishagni.os.jhuprinttoken.ParticipantDOBPrintToken;
 import com.krishagni.os.jhuprinttoken.ParticipantFirstNamePrintToken;
+import com.krishagni.os.jhuprinttoken.ParticipantGenderPrintToken;
+import com.krishagni.os.jhuprinttoken.ParticipantLastNamePrintToken;
+import com.krishagni.os.jhuprinttoken.ParticipantRacePrintToken;
+import com.krishagni.os.jhuprinttoken.VisitEventLabelPrintToken;
+import com.krishagni.os.jhuprinttoken.VisitEventPointPrintToken;
+import com.krishagni.os.jhuprinttoken.VisitEventPointUnitPrintToken;
+import com.krishagni.os.jhuprinttoken.VisitSurgPathPrintToken;
 
 public class PluginInitializer implements InitializingBean {
 	private static final Log logger = LogFactory.getLog(PluginInitializer.class);
@@ -32,6 +41,15 @@ public class PluginInitializer implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		labelTokensRegistrar.register(new ParticipantFirstNamePrintToken());
+		labelTokensRegistrar.register(new ParticipantLastNamePrintToken());
+		labelTokensRegistrar.register(new ParticipantDOBPrintToken());
+		labelTokensRegistrar.register(new ParticipantGenderPrintToken());
+		labelTokensRegistrar.register(new ParticipantRacePrintToken());
+		labelTokensRegistrar.register(new VisitEventLabelPrintToken());
+		labelTokensRegistrar.register(new VisitSurgPathPrintToken());
+		labelTokensRegistrar.register(new VisitEventPointPrintToken());
+		labelTokensRegistrar.register(new VisitEventPointUnitPrintToken());
+		labelTokensRegistrar.register(new CollectionProtocolPIPrintToken());
 		
 		CpWorkflowConfig sysWorkflows = WorkflowUtil.getInstance().getSysWorkflows();
 		CpWorkflowConfig.Workflow workflow = sysWorkflows.getWorkflows().get("locked-fields");
