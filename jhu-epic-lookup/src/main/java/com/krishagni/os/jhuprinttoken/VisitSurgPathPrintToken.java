@@ -9,7 +9,7 @@ public class VisitSurgPathPrintToken extends AbstractLabelTmplToken implements L
 
 	@Override
 	public String getName() {
-		return "visit_surg_path";
+		return "jhu_visit_surg_path";
 	}
 
 	@Override

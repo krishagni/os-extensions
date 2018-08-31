@@ -1,10 +1,10 @@
 package com.krishagni.os.jhuprinttoken;
 
+import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
+import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.common.domain.AbstractLabelTmplToken;
 import com.krishagni.catissueplus.core.common.domain.LabelTmplToken;
 
@@ -12,17 +12,28 @@ public class ParticipantRacePrintToken extends AbstractLabelTmplToken implements
 
 	@Override
 	public String getName() {
-		return "participant_race";
+		return "jhu_participant_race";
 	}
 
 	@Override
 	public String getReplacement(Object object) {
-		Specimen specimen = (Specimen) object;
+		Set<String> raceSet = null;
 		
-		Set<String> raceSet = specimen.getRegistration().getParticipant().getRaces();
-		String races = raceSet.size() > 0 ? raceSet.toString() : "";
+		if (object instanceof Visit) {
+			raceSet = ((Visit)object).getRegistration().getParticipant().getRaces();
+		} else if (object instanceof Specimen) {
+			raceSet = ((Specimen)object).getRegistration().getParticipant().getRaces();
+		}
 		
-		return StringUtils.isNotBlank(races) ? races : StringUtils.EMPTY;
+		return raceSet.size() > 0 ? raceSetJoiner(raceSet) : "";
+	}
+
+	private String raceSetJoiner(Set<String> raceSet) {
+		Iterator<String> iterator = raceSet.iterator();
+		StringBuilder races = new StringBuilder(iterator.next());
+		iterator.forEachRemaining(race -> races.append(", ").append(race));
+		
+		return races.toString();
 	}
 	
 }

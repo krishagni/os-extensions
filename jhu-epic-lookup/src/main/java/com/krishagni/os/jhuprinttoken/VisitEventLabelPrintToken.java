@@ -1,5 +1,6 @@
 package com.krishagni.os.jhuprinttoken;
 
+import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolEvent;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.common.domain.AbstractLabelTmplToken;
@@ -9,15 +10,19 @@ public class VisitEventLabelPrintToken extends AbstractLabelTmplToken implements
 
 	@Override
 	public String getName() {
-		return "visit_event_label";
+		return "jhu_visit_event_label";
 	}
 
 	@Override
 	public String getReplacement(Object object) {
+		CollectionProtocolEvent cpEvent = null;
+		
 		if (object instanceof Visit) {
-			return ((Visit)object).getCpEvent().getEventLabel();
+			cpEvent = ((Visit)object).getCpEvent();
+			return cpEvent != null ? cpEvent.getEventLabel() : "";
 		} else if (object instanceof Specimen) {
-			return ((Specimen)object).getVisit().getCpEvent().getEventLabel();
+			cpEvent = ((Specimen)object).getVisit().getCpEvent();
+			return cpEvent != null ? cpEvent.getEventLabel() : "";
 		}
 		
 		return "";
