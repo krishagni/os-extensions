@@ -10,21 +10,18 @@ public class CollectionProtocolPIPrintToken extends AbstractLabelTmplToken imple
 
 	@Override
 	public String getName() {
-		return "collection_protocol_principal_investigator";
+		return "jhu_cp_pi";
 	}
 
-	@Override
 	public String getReplacement(Object object) {
-		User pI;
+		User pI = null;
 		
 		if (object instanceof Visit) {
 			pI = ((Visit)object).getCollectionProtocol().getPrincipalInvestigator();
-			//return pI.getFirstName() + " " + pI.getLastName();
-			return "Can't Access";
+			return pI.formattedName();
 		} else if (object instanceof Specimen) {
 			pI = ((Specimen)object).getCollectionProtocol().getPrincipalInvestigator();
-			//return pI.getFirstName() + " " + pI.getLastName();
-			return "Can't Access";
+			return pI.formattedName();
 		}
 		
 		return "";
