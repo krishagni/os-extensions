@@ -14,7 +14,7 @@ public class ConfigParams {
 	private static String USERNAME = "consents_db_username";
 
 	private static String PASSWORD = "consents_db_password";
-	
+
 	public static String getUrl() {
 		return getValue(URL, MskError.DB_URL_NOT_SPECIFIED);
 	}
@@ -26,7 +26,7 @@ public class ConfigParams {
 	public static String getPassword() {
 		return getValue(PASSWORD, MskError.DB_PASSWD_NOT_SPECIFIED);
 	}
-	
+
 	private static String getValue(String propName, ErrorCode errorCode) {
 		String value = ConfigUtil.getInstance().getStrSetting(MODULE, propName, null);
 		return ensureNotBlank(value, errorCode);

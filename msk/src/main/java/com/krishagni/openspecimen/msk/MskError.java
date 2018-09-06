@@ -12,7 +12,7 @@ public enum MskError implements ErrorCode  {
 	DB_USER_NOT_SPECIFIED,
 
 	DB_PASSWD_NOT_SPECIFIED,
-	
+
 	PROC_DT_NE_PATH_DT,
 
 	PROC_DT_LT_OP_DT,
