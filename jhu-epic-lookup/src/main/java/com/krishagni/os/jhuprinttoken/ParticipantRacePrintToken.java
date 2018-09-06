@@ -22,12 +22,10 @@ public class ParticipantRacePrintToken extends AbstractLabelTmplToken implements
 		
 		if (object instanceof Visit) {
 			raceSet = ((Visit)object).getRegistration().getParticipant().getRaces();
-			return Utility.nullSafeStream(raceSet).collect(Collectors.joining(","));
 		} else if (object instanceof Specimen) {
 			raceSet = ((Specimen)object).getRegistration().getParticipant().getRaces();
-			return Utility.nullSafeStream(raceSet).collect(Collectors.joining(","));
 		}
 		
-		return "";
+		return Utility.nullSafeStream(raceSet).collect(Collectors.joining(","));
 	}
 }
