@@ -66,6 +66,5 @@ public class PluginInitializer implements InitializingBean {
 			}
 		}
 	}
-	
 	private static final String LOCKED_FIELDS_CFG = "/com/krishagni/os/jhuepic/locked-fields.json";
 }
