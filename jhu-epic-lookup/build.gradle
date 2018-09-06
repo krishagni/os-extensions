@@ -104,6 +104,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version:springVersion
   compile group: 'org.springframework', name: 'spring-web', version:springVersion
   compile group: 'org.springframework', name: 'spring-webmvc', version:springVersion
+  compile group: 'org.springframework.security', name: 'spring-security-core', version: '3.2.7.RELEASE'
 }
 
 compileJava {

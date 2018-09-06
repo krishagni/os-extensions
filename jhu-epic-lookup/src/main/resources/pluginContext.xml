@@ -31,5 +31,6 @@
 
   <bean id="epicPluginInitialiser" class="com.krishagni.os.jhuepic.PluginInitializer">
     <property name="cfgSvc" ref="cfgSvc"/>
+    <property name="labelTokensRegistrar" ref="specimenPrintLabelTokensRegistrar"/>
   </bean>
 </beans>
