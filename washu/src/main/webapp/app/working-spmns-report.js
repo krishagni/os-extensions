@@ -15,10 +15,15 @@ angular.module('os.plugins.washu')
 
     $scope.downloadReport = function() {
       var generator = new function() {
-        this.name = $scope.$parent.ctx && $scope.$parent.ctx.list.name;
+        this.name = $scope.$parent.ctx && $scope.$parent.ctx.list.getDisplayName();
 
         this.generateReport = function() {
           var params = {listId: $stateParams.listId};
+          var selectedSpmns = $scope.$parent.ctx && $scope.$parent.ctx.listCtrl.getSelectedItems();
+          if (selectedSpmns && selectedSpmns.length > 0) {
+            params.specimenId = selectedSpmns.map(function(spmn) { return spmn.hidden.specimenId; });
+          }
+
           return $http.get(ApiUrls.getBaseUrl() + 'washu-reports/working-specimens', {params: params}).then(
             function(resp) {
               return resp.data;

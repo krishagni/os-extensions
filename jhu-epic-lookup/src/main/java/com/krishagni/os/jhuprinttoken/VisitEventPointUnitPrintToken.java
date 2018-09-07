@@ -25,4 +25,5 @@ public class VisitEventPointUnitPrintToken extends AbstractLabelTmplToken implem
 		
 		return cpEvent != null && cpEvent.getEventPointUnit() != null ? cpEvent.getEventPointUnit().toString() : "";
 	}
+
 }

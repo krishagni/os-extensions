@@ -24,6 +24,7 @@ public class VisitEventLabelPrintToken extends AbstractLabelTmplToken implements
 		}
 		
 		return cpEvent != null ? cpEvent.getEventLabel() : "";
+
 	}
 
 }
