@@ -19,13 +19,12 @@ public class VisitEventLabelPrintToken extends AbstractLabelTmplToken implements
 		
 		if (object instanceof Visit) {
 			cpEvent = ((Visit)object).getCpEvent();
-			return cpEvent != null ? cpEvent.getEventLabel() : "";
 		} else if (object instanceof Specimen) {
 			cpEvent = ((Specimen)object).getVisit().getCpEvent();
-			return cpEvent != null ? cpEvent.getEventLabel() : "";
 		}
 		
-		return "";
+		return cpEvent != null ? cpEvent.getEventLabel() : "";
+
 	}
 
 }

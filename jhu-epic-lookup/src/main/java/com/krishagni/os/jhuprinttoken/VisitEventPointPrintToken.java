@@ -23,11 +23,7 @@ public class VisitEventPointPrintToken extends AbstractLabelTmplToken implements
 			cpEvent = ((Specimen)object).getVisit().getCpEvent();
 		}
 		
-		if (cpEvent != null) {
-			return cpEvent.getEventPoint() != null ? cpEvent.getEventPoint().toString() : "";
-		} else {
-			return "";
-		}
+		return cpEvent != null && cpEvent.getEventPoint() != null ? cpEvent.getEventPoint().toString() : "";
 	}
 
 }
