@@ -10,8 +10,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.PrintSetup;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -132,7 +136,14 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 
 		try {
 			SXSSFSheet sheet = workbook.createSheet("Specimens");
-			sheet.trackAllColumnsForAutoSizing();
+			sheet.setDefaultColumnWidth(10);
+			sheet.setColumnWidth(0, 8000);
+			sheet.setAutobreaks(true);
+			sheet.setFitToPage(true);
+
+			PrintSetup ps = sheet.getPrintSetup();
+			ps.setLandscape(true);
+			ps.setFitWidth((short) 1);
 
 			CellStyle hdTitleLabel = hdTitleLabelStyle(workbook);
 			CellStyle hdTitleValue = hdTitleValueStyle(workbook);
@@ -142,48 +153,54 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			SXSSFRow hr = sheet.createRow(0);
 			CellUtil.createCell(hr, 0, "TPC Project Request#:", hdTitleLabel);
 			CellUtil.createCell(hr, 1, "", hdTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+			mergeCells(sheet, hr.getRowNum(), 1, 5);
 
 			CellUtil.createCell(hr, 6, "Exported On", hdTitleLabel);
 			CellUtil.createCell(hr, 7, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+			mergeCells(sheet, hr.getRowNum(), 7, 11);
 
 			hr = sheet.createRow(1);
 			CellUtil.createCell(hr, 0, "Specimens Pulled By (Initials / Date):", hdTitleLabel);
 			CellUtil.createCell(hr, 1, "", hdTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+			mergeCells(sheet, hr.getRowNum(), 1, 5);
 
 			CellUtil.createCell(hr, 6, "Exported By", hdTitleLabel);
 			CellUtil.createCell(hr, 7, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+			mergeCells(sheet, hr.getRowNum(), 7, 11);
 
 			hr = sheet.createRow(2);
 			CellUtil.createCell(hr, 0, "Specimens Refiled By (Initials / Date):", hdTitleLabel);
 			CellUtil.createCell(hr, 1, "", hdTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
+			mergeCells(sheet, hr.getRowNum(), 1, 11);
 
 			hr = sheet.createRow(3);
 			CellUtil.createCell(hr, 0, "Sample Available Quantity Units:", hdSubTitleLabel);
 			CellUtil.createCell(hr, 1, "Cell = cell count/number, Fluid/Tissue Lysate/Cell Lysate = ml, Molecular = ug, Tissue Block/Slide = Count, All Other Tissue = gm", hdSubTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, data.getColumnLabels().length > 11 ? data.getColumnLabels().length - 1 : 11));
+			mergeCells(sheet, hr.getRowNum(), 1, 11);
 
 			hr = sheet.createRow(4);
 			CellUtil.createCell(hr, 0, "Refill Legend:", hdSubTitleLabel);
 			CellUtil.createCell(hr, 1, "Y = Yes, N-E = No-Exhausted, N-D = No-Distributed", hdSubTitleValue);
-			sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, data.getColumnLabels().length > 11 ? data.getColumnLabels().length - 1 : 11));
+			mergeCells(sheet, hr.getRowNum(), 1, 11);
 
 			sheet.flushRows();
 
 			hr = sheet.createRow(5);
 
+			CellStyle thStyle = hdSubTitleLabelStyle(workbook);
+			thStyle.setAlignment(HorizontalAlignment.CENTER);
+
+			CellStyle tdStyle = hdSubTitleValueStyle(workbook);
+			tdStyle.setAlignment(HorizontalAlignment.CENTER);
+
 			SXSSFRow dataRow = sheet.createRow(6);
 			int colNum = 0;
 			for (String columnLabel : data.getColumnLabels()) {
-				CellUtil.createCell(dataRow, colNum++, columnLabel, hdSubTitleLabel);
+				CellUtil.createCell(dataRow, colNum++, columnLabel, thStyle);
 			}
 
-			CellUtil.createCell(dataRow, colNum++, "Pulled (Y, N)", hdSubTitleLabel);
-			CellUtil.createCell(dataRow, colNum++, "Refiled (Y, N-E, N-D)", hdSubTitleLabel);
+			CellUtil.createCell(dataRow, colNum++, "Pulled (Y, N)", thStyle);
+			CellUtil.createCell(dataRow, colNum++, "Refiled (Y, N-E, N-D)", thStyle);
 
 			sheet.flushRows();
 
@@ -193,7 +210,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				dataRow = sheet.createRow(rowNum++);
 				colNum = 0;
 				for (String item : rows.next()) {
-					CellUtil.createCell(dataRow, colNum++, item, hdSubTitleValue);
+					CellUtil.createCell(dataRow, colNum++, item, tdStyle);
 				}
 
 				CellUtil.createCell(dataRow, colNum++, "", hdSubTitleValue);
@@ -205,16 +222,6 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			}
 
 			sheet.flushRows();
-
-			int numOfColumns = data.getColumnLabels().length;
-			if (numOfColumns < 12) {
-				numOfColumns = 12;
-			}
-
-			for (int i = 0; i < numOfColumns; ++i) {
-				sheet.autoSizeColumn(i);
-			}
-
 			workbook.write(out);
 		} catch (Exception e) {
 			throw OpenSpecimenException.serverError(e);
@@ -233,7 +240,14 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 
 			try {
 				SXSSFSheet sheet = workbook.createSheet("Order " + order.getId());
-				sheet.trackAllColumnsForAutoSizing();
+				sheet.setDefaultColumnWidth(10);
+				sheet.setColumnWidth(0, 10000);
+				sheet.setAutobreaks(true);
+				sheet.setFitToPage(true);
+
+				PrintSetup ps = sheet.getPrintSetup();
+				ps.setLandscape(true);
+				ps.setFitWidth((short) 1);
 
 				CellStyle hdTitleLabel = hdTitleLabelStyle(workbook);
 				CellStyle hdTitleValue = hdTitleValueStyle(workbook);
@@ -244,86 +258,95 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				SXSSFRow hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Order Name:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getName(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				CellUtil.createCell(hr, 6, "Exported On:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Order ID:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getId().toString(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				CellUtil.createCell(hr, 6, "Exported By:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Distribution Protocol:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getDistributionProtocol().getShortTitle(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
+				mergeCells(sheet, hr.getRowNum(), 1, 12);
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Signature & Date:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, "", hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 11));
+				mergeCells(sheet, hr.getRowNum(), hr.getRowNum() + 2, 0, 12);
+				rowNum += 2;
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Name:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().formattedName(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				CellUtil.createCell(hr, 6, "Distribution Site:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, getDistributionSites(order), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, getDistributionSites(order), hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requested Date:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, Utility.getDateTimeString(order.getCreationDate()), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				String distDate = order.getExecutionDate() != null ? Utility.getDateTimeString(order.getExecutionDate()) : StringUtils.EMPTY;
 				CellUtil.createCell(hr, 6, "Distribution Date:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, distDate, hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, distDate, hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Address:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().getAddress(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				CellUtil.createCell(hr, 6, "Distributor's Address:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, order.getDistributor().getAddress(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, order.getDistributor().getAddress(), hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Phone:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().getPhoneNumber(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				CellUtil.createCell(hr, 6, "Distributor's Phone:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, order.getDistributor().getPhoneNumber(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, order.getDistributor().getPhoneNumber(), hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "Requestor's Email:", hdTitleLabel);
 				CellUtil.createCell(hr, 1, order.getRequester().getEmailAddress(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 				CellUtil.createCell(hr, 6, "Distributor's Email:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, order.getDistributor().getEmailAddress(), hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, order.getDistributor().getEmailAddress(), hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				hr = sheet.createRow(++rowNum);
 				CellUtil.createCell(hr, 0, "", hdTitleLabel);
 				CellUtil.createCell(hr, 1, "", hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, 5));
+				mergeLeftValueColumns(sheet, hr.getRowNum());
 
 
 				CellUtil.createCell(hr, 6, "Distributor's Comment:", hdTitleLabel);
-				CellUtil.createCell(hr, 7, "", hdTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 7, 11));
+				mergeRightLabelColumns(sheet, hr.getRowNum());
+				CellUtil.createCell(hr, 8, "", hdTitleValue);
+				mergeRightValueColumns(sheet, hr.getRowNum());
 
 				if (order.getExtension() != null) {
 					Map<String, String> labelValueMap = order.getExtension().getLabelValueMap();
@@ -332,33 +355,41 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 						int colNum = (attrsCount % 2);
 						if (colNum == 0) {
 							hr = sheet.createRow(++rowNum);
+							CellUtil.createCell(hr, 0, labelValue.getKey(), hdTitleLabel);
+							CellUtil.createCell(hr, 1, labelValue.getValue(), hdTitleValue);
+							mergeLeftValueColumns(sheet, hr.getRowNum());
+						} else {
+							CellUtil.createCell(hr, 6, labelValue.getKey(), hdTitleLabel);
+							mergeRightLabelColumns(sheet, hr.getRowNum());
+							CellUtil.createCell(hr, 8, labelValue.getValue(), hdTitleValue);
+							mergeRightValueColumns(sheet, hr.getRowNum());
 						}
 
-						CellUtil.createCell(hr, colNum * 6,     labelValue.getKey(), hdTitleLabel);
-						CellUtil.createCell(hr, colNum * 6 + 1, labelValue.getValue(), hdTitleValue);
-						sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), colNum * 6 + 1, colNum * 6 + 5));
 						++attrsCount;
 					}
 				}
-
-				// empty row
-				sheet.createRow(++rowNum);
 
 				hr = sheet.createRow(++rowNum);
 				String[] columnLabels = data.getColumnLabels();
 				CellUtil.createCell(hr, 0, "Sample Quantity Units:", hdSubTitleLabel);
 				CellUtil.createCell(hr, 1, "Cell = cell count/number, Fluid/Tissue Lysate/Cell Lysate = ml, Molecular = ug, Tissue Block/Slide = Count, All Other Tissue = gm", hdSubTitleValue);
-				sheet.addMergedRegion(new CellRangeAddress(hr.getRowNum(), hr.getRowNum(), 1, columnLabels.length > 11 ? columnLabels.length - 1 : 11));
+				mergeCells(sheet, hr.getRowNum(), 1, 12);
 
 				sheet.flushRows();
 
 				// empty row
 				sheet.createRow(++rowNum);
 
+				CellStyle thStyle = hdSubTitleLabelStyle(workbook);
+				thStyle.setAlignment(HorizontalAlignment.CENTER);
+
+				CellStyle tdStyle = hdSubTitleValueStyle(workbook);
+				tdStyle.setAlignment(HorizontalAlignment.CENTER);
+
 				SXSSFRow dataRow = sheet.createRow(++rowNum);
 				int colNum = 0;
 				for (String columnLabel : columnLabels) {
-					CellUtil.createCell(dataRow, colNum++, columnLabel, hdSubTitleLabel);
+					CellUtil.createCell(dataRow, colNum++, columnLabel, thStyle);
 				}
 
 				sheet.flushRows();
@@ -368,7 +399,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 					dataRow = sheet.createRow(++rowNum);
 					colNum = 0;
 					for (String item : rows.next()) {
-						CellUtil.createCell(dataRow, colNum++, item, hdSubTitleValue);
+						CellUtil.createCell(dataRow, colNum++, item, tdStyle);
 					}
 
 					if (rowNum  % 10 == 0) {
@@ -377,16 +408,6 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 				}
 
 				sheet.flushRows();
-
-				int numOfColumns = columnLabels.length;
-				if (numOfColumns < 12) {
-					numOfColumns = 12;
-				}
-
-				for (int i = 0; i < numOfColumns; ++i) {
-					sheet.autoSizeColumn(i);
-				}
-
 				workbook.write(out);
 			} catch (Exception e) {
 				throw OpenSpecimenException.serverError(e);
@@ -421,12 +442,37 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 		return sites.toString();
 	}
 
+	private static void mergeLeftValueColumns(SXSSFSheet sheet, int row) {
+		mergeCells(sheet, row, 1, 5);
+	}
+
+	private static void mergeRightLabelColumns(SXSSFSheet sheet, int row) {
+		mergeCells(sheet, row, 6, 7);
+	}
+
+	private static void mergeRightValueColumns(SXSSFSheet sheet, int row) {
+		mergeCells(sheet, row, 8, 12);
+	}
+
+	private static void mergeCells(SXSSFSheet sheet, int row, int startCol, int endCol) {
+		mergeCells(sheet, row, row, startCol, endCol);
+	}
+
+	private static void mergeCells(SXSSFSheet sheet, int startRow, int endRow, int startCol, int endCol) {
+		CellRangeAddress region = new CellRangeAddress(startRow, endRow, startCol, endCol);
+		sheet.addMergedRegion(region);
+		RegionUtil.setBorderTop(BorderStyle.THIN, region, sheet);
+		RegionUtil.setBorderRight(BorderStyle.THIN, region, sheet);
+		RegionUtil.setBorderBottom(BorderStyle.THIN, region, sheet);
+		RegionUtil.setBorderLeft(BorderStyle.THIN, region, sheet);
+	}
+
 	private static CellStyle hdTitleLabelStyle(SXSSFWorkbook workbook) {
-		return createCellStyle(workbook, "Arial", 12, true);
+		return createCellStyle(workbook, "Arial", 10, true);
 	}
 
 	private static CellStyle hdTitleValueStyle(SXSSFWorkbook workbook) {
-		return createCellStyle(workbook, "Arial", 12, false);
+		return createCellStyle(workbook, "Arial", 10, false);
 	}
 
 	private static CellStyle hdSubTitleLabelStyle(SXSSFWorkbook workbook) {
@@ -445,7 +491,9 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 		font.setFontHeightInPoints((short) fontSize);
 		font.setBold(bold);
 		style.setFont(font);
+		style.setWrapText(true); // parameterize
 
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
 		return addCellBorders(style);
 	}
 
