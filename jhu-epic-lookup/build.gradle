@@ -7,7 +7,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 jar {
-  baseName = 'os-jhu-epic-lookup'
+  baseName = 'os-jhu'
   version =  '4.3.0'
 
   manifest {
