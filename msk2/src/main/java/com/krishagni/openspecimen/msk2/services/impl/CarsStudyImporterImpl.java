@@ -144,6 +144,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		cpDetail.setCpSites(Collections.singletonList(cpSite));
 
 		cpDetail = response(cpSvc.createCollectionProtocol(request(cpDetail)));
+		saveExtId(CollectionProtocol.class, inputStudy.getIrbNumber(), cpDetail.getId());
 
 		for (TimepointDetail timepoint : inputStudy.getTimepoints()) {
 			createEvent(cpDetail.getId(), timepoint);
