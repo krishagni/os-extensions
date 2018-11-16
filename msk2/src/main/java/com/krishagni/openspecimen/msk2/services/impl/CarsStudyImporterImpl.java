@@ -43,27 +43,23 @@ import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.events.UserSummary;
-import com.krishagni.catissueplus.core.common.util.AuthUtil;
 import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
 import com.krishagni.catissueplus.core.common.util.EmailUtil;
 import com.krishagni.catissueplus.core.common.util.Status;
 import com.krishagni.catissueplus.core.common.util.Utility;
+import com.krishagni.catissueplus.core.importer.domain.ImportJob;
 import com.krishagni.openspecimen.msk2.domain.CarsErrorCode;
-import com.krishagni.openspecimen.msk2.domain.CarsStudyImportJob;
 import com.krishagni.openspecimen.msk2.events.CarsStudyDetail;
 import com.krishagni.openspecimen.msk2.events.CollectionDetail;
 import com.krishagni.openspecimen.msk2.events.ImportLogDetail;
 import com.krishagni.openspecimen.msk2.events.TimepointDetail;
-import com.krishagni.openspecimen.msk2.repository.CarsStudyImportJobDao;
 import com.krishagni.openspecimen.msk2.repository.CarsStudyReader;
 import com.krishagni.openspecimen.msk2.repository.impl.CarsStudyReaderImpl;
 import com.krishagni.openspecimen.msk2.services.CarsStudyImporter;
 
 public class CarsStudyImporterImpl implements CarsStudyImporter {
 	private static final Log logger = LogFactory.getLog(CarsStudyImporterImpl.class);
-
-	private CarsStudyImportJobDao importJobDao;
 
 	private DaoFactory daoFactory;
 
@@ -72,10 +68,6 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	private SiteService siteSvc;
 
 	private CollectionProtocolService cpSvc;
-
-	public void setImportJobDao(CarsStudyImportJobDao importJobDao) {
-		this.importJobDao = importJobDao;
-	}
 
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -95,18 +87,23 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	@Override
 	public void importStudies() {
-		Date startTime = Calendar.getInstance().getTime();
-		Date lastUpdated = getLastestJobRunDate();
+		ImportJob latestJob = CarsImportJobUtil.getInstance().getLatestJob(IMPORTER_NAME);
+		if (latestJob != null && latestJob.isInProgress()) {
+			logger.error("A prior submitted CARS biospecimen importer job is in progress: " + latestJob.getId());
+			return;
+		}
 
+		ImportJob importJob = CarsImportJobUtil.getInstance().createJob(IMPORTER_NAME);
+		File importLogFile = getImportLogFile(importJob);
+
+		int totalStudies = 0, failedStudies = 0;
 		CarsStudyReader reader = null;
 		CsvFileWriter importLogWriter = null;
-
 		try {
+			Date lastUpdated = latestJob != null ? latestJob.getEndTime() : null;
 			reader = new CarsStudyReaderImpl(getCarsDbUrl(), getCarsDbUser(), getCarsDbPassword());
-			File importLogFile = getImportLogFile();
 			importLogWriter = createImportLogWriter(importLogFile);
 
-			int totalStudies = 0, failedStudies = 0;
 			CarsStudyDetail study;
 			while ((study = reader.next()) != null) {
 				try {
@@ -119,34 +116,14 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 					logImportDetail(study, importLogWriter);
 				}
 			}
-
-			CarsStudyImportJob job = saveJobRun(startTime, totalStudies, failedStudies, importLogFile);
-			notifyUsers(job);
 		} catch (Exception e) {
 			logger.error("Error importing CARS studies", e);
 		} finally {
 			IOUtils.closeQuietly(reader);
 			IOUtils.closeQuietly(importLogWriter);
+			CarsImportJobUtil.getInstance().finishJob(importJob, totalStudies, failedStudies, null); // TODO;
+			notifyUsers(importJob, importLogFile);
 		}
-	}
-
-	@PlusTransactional
-	private Date getLastestJobRunDate() {
-		CarsStudyImportJob lastJob = importJobDao.getLatestJob();
-		return lastJob != null ? lastJob.getEndTime() : null;
-	}
-
-	@PlusTransactional
-	private CarsStudyImportJob saveJobRun(Date startTime, int numStudies, int failedStudies, File errorLogsFile) {
-		CarsStudyImportJob currentJob = new CarsStudyImportJob();
-		currentJob.setStartTime(startTime);
-		currentJob.setEndTime(Calendar.getInstance().getTime());
-		currentJob.setNoOfStudies(numStudies);
-		currentJob.setFailedStudies(failedStudies);
-		currentJob.setLogsFile(errorLogsFile);
-		currentJob.setRunBy(AuthUtil.getCurrentUser());
-		importJobDao.saveOrUpdate(currentJob);
-		return currentJob;
 	}
 
 	@PlusTransactional
@@ -423,13 +400,23 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return daoFactory.getCollectionProtocolDao().getCpByShortTitle(shortTitle);
 	}
 
-	private File getImportLogFile() {
+	private File getImportLogFile(ImportJob job) {
 		String filename = "report-" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime()) + ".csv";
-		return new File(getImportLogsDir(), filename);
+		return new File(getImportLogsDir(job), filename);
 	}
 
-	private File getImportLogsDir() {
-		File dir = new File(ConfigUtil.getInstance().getDataDir(), IMPORT_LOGS_DIR);
+	private File getImportLogsDir(ImportJob job) {
+		File dir = new File(ConfigUtil.getInstance().getDataDir(), "bulk-import");
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+
+		dir = new File(dir, "jobs");
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+
+		dir = new File(dir, job.getId().toString());
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
@@ -484,8 +471,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 			.collect(Collectors.joining(";"));
 	}
 	
-	private void notifyUsers(CarsStudyImportJob job) {
-		String date = Utility.getDateString(job.getStartTime());
+	private void notifyUsers(ImportJob job, File logsFile) {
+		String date = Utility.getDateString(job.getCreationTime());
 
 		Map<String, Object> emailProps = new HashMap<>();
 		emailProps.put("$subject", new String[] { date });
@@ -493,13 +480,13 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		emailProps.put("ccAdmin", false);
 
 		emailProps.put("jobId",         job.getId());
-		emailProps.put("startTime",     job.getStartTime());
+		emailProps.put("startTime",     job.getCreationTime());
 		emailProps.put("endTime",       job.getEndTime());
-		emailProps.put("totalStudies",  job.getNoOfStudies());
-		emailProps.put("failedStudies", job.getFailedStudies());
-		emailProps.put("passedStudies", job.getNoOfStudies() - job.getFailedStudies());
+		emailProps.put("totalStudies",  job.getTotalRecords());
+		emailProps.put("failedStudies", job.getFailedRecords());
+		emailProps.put("passedStudies", job.getTotalRecords() - job.getFailedRecords());
 
-		File[] attachments = new File[] { job.getLogsFile() };
+		File[] attachments = new File[] { logsFile };
 		for (User user : getNotifUsers()) {
 			emailProps.put("rcpt", user);
 			EmailUtil.getInstance().sendEmail(MSK2_CARS_IMPORT_JOB, new String[] {user.getEmailAddress()}, attachments, emailProps);
@@ -538,6 +525,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		resp.throwErrorIfUnsuccessful();
 		return resp.getPayload();
 	}
+
+	private static final String IMPORTER_NAME = "msk2_cars_study_importer";
 
 	private static final String MODULE = "mskcc2";
 

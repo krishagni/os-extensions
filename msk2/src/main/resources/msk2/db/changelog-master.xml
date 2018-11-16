@@ -8,6 +8,5 @@
 
   <include file="db/data-type-definitions.xml"/>
 
-  <include file="msk2/db/5.2/schema.xml"/>
   <include file="msk2/db/5.2/config.xml"/>
 </databaseChangeLog>

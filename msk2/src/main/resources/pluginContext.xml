@@ -11,15 +11,15 @@
 
   <bean class="com.krishagni.openspecimen.msk2.PluginInitializer"/>
 
-  <bean id="msk2StudyImportJobDao" class="com.krishagni.openspecimen.msk2.repository.impl.CarsStudyImportJobDaoImpl">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
-
   <bean id="msk2StudyImporter" class="com.krishagni.openspecimen.msk2.services.impl.CarsStudyImporterImpl">
-    <property name="importJobDao" ref="msk2StudyImportJobDao"/>
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
     <property name="userSvc" ref="userSvc"/>
     <property name="siteSvc" ref="siteService"/>
     <property name="cpSvc" ref="cpSvc"/>
+  </bean>
+  
+  <bean id="msk2BiospecimenImporter" class="com.krishagni.openspecimen.msk2.services.impl.CarsBiospecimenImporterImpl">
+    <property name="daoFactory" ref="biospecimenDaoFactory"/>
+    <property name="cprSvc" ref="cprSvc"/>
   </bean>
 </beans>
