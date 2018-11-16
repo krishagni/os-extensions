@@ -19,7 +19,7 @@
                 <table>
                   <tr>
                     <td> Job ID </td>
-                    <td> : $jobID </td>
+                    <td> : $jobId </td>
                   </tr>
                   <tr>
                     <td> Start Time </td>
@@ -46,7 +46,7 @@
             </tr>
             <p style="margin:10px 0 0 0">
               <br><br>
-                Please find exception log attached with this mail.
+                Please find error log attached with this mail.
               <br>
             </p>
           </tbody>
