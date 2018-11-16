@@ -25,6 +25,7 @@ import com.krishagni.catissueplus.core.administrative.events.SiteDetail;
 import com.krishagni.catissueplus.core.administrative.events.UserDetail;
 import com.krishagni.catissueplus.core.administrative.services.SiteService;
 import com.krishagni.catissueplus.core.administrative.services.UserService;
+import com.krishagni.catissueplus.core.biospecimen.domain.AliquotSpecimensRequirement;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolEvent;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
@@ -292,6 +293,15 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		SpecimenRequirementDetail sr = toSr(eventId, collection);
 		sr = response(cpSvc.addSpecimenRequirement(request(sr)), collection);
 		saveExtId(SpecimenRequirement.class, collection.getId(), sr.getId());
+
+		AliquotSpecimensRequirement aliquotReq = new AliquotSpecimensRequirement();
+		aliquotReq.setCpShortTitle(sr.getCpShortTitle());
+		aliquotReq.setEventLabel(sr.getEventLabel());
+		aliquotReq.setNoOfAliquots(1);
+		aliquotReq.setQtyPerAliquot(sr.getInitialQty());
+		aliquotReq.setParentSrId(sr.getId());
+		response(cpSvc.createAliquots(request(aliquotReq)), collection);
+
 		return sr;
 	}
 
