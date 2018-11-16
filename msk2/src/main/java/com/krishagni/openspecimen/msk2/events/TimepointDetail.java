@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TimepointDetail {
+public class TimepointDetail extends ImportLogDetail {
 	private String id;
 
 	private String name;

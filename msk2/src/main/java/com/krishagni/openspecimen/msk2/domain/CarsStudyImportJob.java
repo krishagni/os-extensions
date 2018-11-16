@@ -1,5 +1,6 @@
 package com.krishagni.openspecimen.msk2.domain;
 
+import java.io.File;
 import java.util.Date;
 
 import com.krishagni.catissueplus.core.administrative.domain.User;
@@ -11,6 +12,10 @@ public class CarsStudyImportJob extends BaseEntity {
 	private Date endTime;
 
 	private int noOfStudies;
+
+	private int failedStudies;
+
+	private File logsFile;
 
 	private User runBy;
 
@@ -36,6 +41,22 @@ public class CarsStudyImportJob extends BaseEntity {
 
 	public void setNoOfStudies(int noOfStudies) {
 		this.noOfStudies = noOfStudies;
+	}
+
+	public int getFailedStudies() {
+		return failedStudies;
+	}
+
+	public void setFailedStudies(int failedStudies) {
+		this.failedStudies = failedStudies;
+	}
+
+	public File getLogsFile() {
+		return logsFile;
+	}
+
+	public void setLogsFile(File logsFile) {
+		this.logsFile = logsFile;
 	}
 
 	public User getRunBy() {

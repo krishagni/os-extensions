@@ -2,7 +2,7 @@ package com.krishagni.openspecimen.msk2.events;
 
 import java.util.Date;
 
-public class CollectionDetail {
+public class CollectionDetail extends ImportLogDetail {
 	private String id;
 
 	private String name;
@@ -10,8 +10,6 @@ public class CollectionDetail {
 	private String type;
 
 	private String container;
-
-	private String procedure;
 
 	private Date creationTime;
 
@@ -47,14 +45,6 @@ public class CollectionDetail {
 
 	public void setContainer(String container) {
 		this.container = container;
-	}
-
-	public String getProcedure() {
-		return procedure;
-	}
-
-	public void setProcedure(String procedure) {
-		this.procedure = procedure;
 	}
 
 	public Date getCreationTime() {

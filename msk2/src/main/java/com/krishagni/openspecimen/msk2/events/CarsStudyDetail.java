@@ -3,7 +3,7 @@ package com.krishagni.openspecimen.msk2.events;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarsStudyDetail {
+public class CarsStudyDetail extends ImportLogDetail {
 	private String irbNumber;
 
 	private String facility;

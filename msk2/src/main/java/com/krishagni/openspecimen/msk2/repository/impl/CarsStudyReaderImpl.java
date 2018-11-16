@@ -107,8 +107,8 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 			timepoint.setId(rs.getString("timepointpid"));
 			timepoint.setCycle(rs.getString("cyclename"));
 			timepoint.setName(rs.getString("timepointname"));
-			timepoint.setCreationTime(rs.getTime("timepoint_cr_date"));
-			timepoint.setUpdateTime(rs.getTime("timepoint_update"));
+			timepoint.setCreationTime(rs.getTimestamp("timepoint_cr_date"));
+			timepoint.setUpdateTime(rs.getTimestamp("timepoint_update"));
 			return timepoint;
 		}
 
@@ -119,9 +119,8 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 			collection.setName(rs.getString("procedurename"));
 			collection.setType(rs.getString("specimentype"));
 			collection.setContainer(rs.getString("collectioncontainer"));
-			collection.setProcedure(rs.getString("procedurename"));
-			collection.setCreationTime(rs.getTime("procedure_cr_date"));
-			collection.setUpdateTime(rs.getTime("procedure_update"));
+			collection.setCreationTime(rs.getTimestamp("procedure_cr_date"));
+			collection.setUpdateTime(rs.getTimestamp("procedure_update"));
 			return collection;
 		}
 	}
