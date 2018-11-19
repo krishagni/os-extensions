@@ -101,7 +101,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		CsvFileWriter importLogWriter = null;
 		try {
 			Date lastUpdated = latestJob != null ? latestJob.getEndTime() : null;
-			reader = new CarsStudyReaderImpl(getCarsDbUrl(), getCarsDbUser(), getCarsDbPassword());
+			reader = getStudyReader();
 			importLogWriter = createImportLogWriter(importLogFile);
 
 			CarsStudyDetail study;
@@ -375,27 +375,6 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return appId != null ? appId.getOsId() : null;
 	}
 
-	private String getCarsDbUrl() {
-		return getConfigSetting(DB_URL, CarsErrorCode.DB_URL_REQ);
-	}
-
-	private String getCarsDbUser() {
-		return getConfigSetting(DB_USER, CarsErrorCode.DB_USERNAME_REQ);
-	}
-
-	private String getCarsDbPassword() {
-		return getConfigSetting(DB_PASSWD, CarsErrorCode.DB_PASSWORD_REQ);
-	}
-
-	private String getConfigSetting(String name, ErrorCode errorCode) {
-		String result = ConfigUtil.getInstance().getStrSetting(MODULE, name, null);
-		if (StringUtils.isBlank(result)) {
-			throw OpenSpecimenException.userError(errorCode);
-		}
-
-		return result;
-	}
-
 	private CollectionProtocol getCpFromDb(String shortTitle) {
 		return daoFactory.getCollectionProtocolDao().getCpByShortTitle(shortTitle);
 	}
@@ -509,6 +488,14 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return systemAdmins;
 	}
 
+	private CarsStudyReader getStudyReader() {
+		return new CarsStudyReaderImpl(
+			CarsImportJobUtil.getInstance().getDbUrl(),
+			CarsImportJobUtil.getInstance().getDbUser(),
+			CarsImportJobUtil.getInstance().getDbPassword()
+		);
+	}
+
 	private <T> RequestEvent<T> request(T payload) {
 		return new RequestEvent<>(payload);
 	}
@@ -526,25 +513,15 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return resp.getPayload();
 	}
 
-	private static final String IMPORTER_NAME = "msk2_cars_study_importer";
-
-	private static final String MODULE = "mskcc2";
+	private static final String IMPORTER_NAME = "mskcc2_cars_study_importer";
 
 	private static final String EXT_APP_NAME = "CARS";
-
-	private static final String DB_URL = "cars_db_url";
-
-	private static final String DB_USER = "cars_db_username";
-
-	private static final String DB_PASSWD = "cars_db_password";
 
 	private static final String DEF_INSTITUTE = "MSKCC";
 
 	private static final String DEF_DOMAIN = "openspecimen";
 
 	private final static String MSK2_CARS_IMPORT_JOB = "msk2_cars_import_job";
-
-	private final static String IMPORT_LOGS_DIR = "msk2-cars-imports";
 
 	private final static String[] IMPORT_LOGS_FILE_COLUMNS = {
 		"IrbNumber", "Facility", "PiAddress",

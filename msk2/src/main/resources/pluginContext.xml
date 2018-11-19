@@ -21,5 +21,6 @@
   <bean id="msk2BiospecimenImporter" class="com.krishagni.openspecimen.msk2.services.impl.CarsBiospecimenImporterImpl">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
     <property name="cprSvc" ref="cprSvc"/>
+    <property name="msgLogSvc" ref="msgLogSvc"/>
   </bean>
 </beans>

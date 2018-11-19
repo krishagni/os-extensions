@@ -11,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.krishagni.catissueplus.core.common.PlusTransactional;
+import com.krishagni.catissueplus.core.common.errors.ErrorCode;
+import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.util.AuthUtil;
+import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.catissueplus.core.importer.domain.ImportJob;
 import com.krishagni.catissueplus.core.importer.repository.ImportJobDao;
 import com.krishagni.catissueplus.core.importer.repository.ListImportJobsCriteria;
+import com.krishagni.openspecimen.msk2.domain.CarsErrorCode;
 
 @Configurable
 public class CarsImportJobUtil {
@@ -106,4 +110,33 @@ public class CarsImportJobUtil {
 
 		importJobDao.saveOrUpdate(job);
 	}
+
+	public String getDbUrl() {
+		return getConfigSetting(DB_URL, CarsErrorCode.DB_URL_REQ);
+	}
+
+	public String getDbUser() {
+		return getConfigSetting(DB_USER, CarsErrorCode.DB_USERNAME_REQ);
+	}
+
+	public String getDbPassword() {
+		return getConfigSetting(DB_PASSWD, CarsErrorCode.DB_PASSWORD_REQ);
+	}
+
+	private String getConfigSetting(String name, ErrorCode errorCode) {
+		String result = ConfigUtil.getInstance().getStrSetting(MODULE, name, null);
+		if (StringUtils.isBlank(result)) {
+			throw OpenSpecimenException.userError(errorCode);
+		}
+
+		return result;
+	}
+
+	private static final String MODULE = "mskcc2";
+
+	private static final String DB_URL = "cars_db_url";
+
+	private static final String DB_USER = "cars_db_username";
+
+	private static final String DB_PASSWD = "cars_db_password";
 }

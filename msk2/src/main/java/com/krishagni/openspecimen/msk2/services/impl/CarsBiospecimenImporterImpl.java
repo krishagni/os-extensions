@@ -8,7 +8,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolRegistration;
 import com.krishagni.catissueplus.core.biospecimen.domain.Participant;
 import com.krishagni.catissueplus.core.biospecimen.events.CollectionProtocolRegistrationDetail;
@@ -17,24 +19,26 @@ import com.krishagni.catissueplus.core.biospecimen.events.PmiDetail;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.CollectionProtocolRegistrationService;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
-import com.krishagni.catissueplus.core.common.errors.ErrorCode;
-import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
+import com.krishagni.catissueplus.core.common.domain.MessageLog;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
-import com.krishagni.catissueplus.core.common.util.ConfigUtil;
+import com.krishagni.catissueplus.core.common.service.MessageHandler;
+import com.krishagni.catissueplus.core.common.service.MessageLogService;
+import com.krishagni.catissueplus.core.common.util.Utility;
 import com.krishagni.catissueplus.core.importer.domain.ImportJob;
-import com.krishagni.openspecimen.msk2.domain.CarsErrorCode;
 import com.krishagni.openspecimen.msk2.events.CarsBiospecimenDetail;
 import com.krishagni.openspecimen.msk2.repository.CarsBiospecimenReader;
 import com.krishagni.openspecimen.msk2.repository.impl.CarsBiospecimenReaderImpl;
 import com.krishagni.openspecimen.msk2.services.CarsBiospecimenImporter;
 
-public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
+public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, InitializingBean, MessageHandler {
 	private static final Log logger = LogFactory.getLog(CarsBiospecimenImporterImpl.class);
 	
 	private CollectionProtocolRegistrationService cprSvc;
 	
 	private DaoFactory daoFactory;
+
+	private MessageLogService msgLogSvc;
 
 	public void setCprSvc(CollectionProtocolRegistrationService cprSvc) {
 		this.cprSvc = cprSvc;
@@ -42,6 +46,10 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
 
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
+	}
+
+	public void setMsgLogSvc(MessageLogService msgLogSvc) {
+		this.msgLogSvc = msgLogSvc;
 	}
 
 	public void importParticipants() {
@@ -62,21 +70,18 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
 		int totalRecords = 0, failedRecords = 0;
 		CarsBiospecimenReader reader = null;
 		try {
-			reader = new CarsBiospecimenReaderImpl(getCarsDbUrl(), getCarsDbUser(), getCarsDbPassword(), lastUpdated);
+			reader = getBiospecimenReader(lastUpdated);
 			
 			CarsBiospecimenDetail biospecimen;
 			while ((biospecimen = reader.next()) != null) {
 				++totalRecords;
+				Long recordId = importBiospecimen(null, biospecimen);
+				if (currRunLastUpdated == null || (biospecimen.getLastUpdated() != null && biospecimen.getLastUpdated().after(currRunLastUpdated))) {
+					currRunLastUpdated = biospecimen.getLastUpdated();
+				}
 
-				try {
-					importBiospecimen(biospecimen);
-				} catch (OpenSpecimenException ose) {
-					logger.error("Error while importing a participant:", ose);
+				if (recordId == null) {
 					++failedRecords;
-				} finally {
-					if (currRunLastUpdated == null || (biospecimen.getLastUpdated() != null && biospecimen.getLastUpdated().after(currRunLastUpdated))) {
-						currRunLastUpdated = biospecimen.getLastUpdated();
-					}
 				}
 			}
 		} catch (Exception e) {
@@ -87,12 +92,49 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
 		}
 	}
 
+	@Override
+	public String process(MessageLog log) {
+		try {
+			CarsBiospecimenDetail input = new ObjectMapper().readValue(log.getMessage(), CarsBiospecimenDetail.class);
+			Long recordId = importBiospecimen(log, input);
+			return recordId != null ? recordId.toString() : null;
+		} catch (Exception e) {
+			throw new RuntimeException("Error processing the CARS biospecimen record message: " + log.getMessage(), e);
+		}
+	}
+
 	@PlusTransactional
-	private void importBiospecimen(CarsBiospecimenDetail detail) {
-		createCpr(detail);
+	private Long importBiospecimen(MessageLog log, CarsBiospecimenDetail detail) {
+		String error = null;
+		Long recordId = null;
+
+		try {
+			recordId = createCpr(detail);
+		} catch (Throwable t) {
+			logger.error("Error while importing a participant:", t);
+			error = Utility.getErrorMessage(t);
+		} finally {
+			logMessage(detail, log, recordId, error);
+		}
+
+		return recordId;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		msgLogSvc.registerHandler("CARS", this);
+	}
+
+	private CarsBiospecimenReader getBiospecimenReader(Date lastUpdated) {
+		return new CarsBiospecimenReaderImpl(
+			CarsImportJobUtil.getInstance().getDbUrl(),
+			CarsImportJobUtil.getInstance().getDbUser(),
+			CarsImportJobUtil.getInstance().getDbPassword(),
+			lastUpdated
+		);
 	}
 	
-	private void createCpr(CarsBiospecimenDetail detail) {
+	private Long createCpr(CarsBiospecimenDetail detail) {
 		CollectionProtocolRegistrationDetail cprDetail = toCpr(detail);
 		Participant dbParticipant = getParticipantFromDb(cprDetail.getParticipant().getPmis());
 		if (dbParticipant != null) {
@@ -102,9 +144,9 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
 		CollectionProtocolRegistration dbCpr = getCprFromDb(cprDetail);
 		if (dbCpr != null) {
 			cprDetail.setId(dbCpr.getId());
-			response(cprSvc.updateRegistration(request(cprDetail)));
+			return response(cprSvc.updateRegistration(request(cprDetail))).getId();
 		} else {
-			response(cprSvc.createRegistration(request(cprDetail)));
+			return response(cprSvc.createRegistration(request(cprDetail))).getId();
 		}
 	}
 	
@@ -138,26 +180,35 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
 	private CollectionProtocolRegistration getCprFromDb(CollectionProtocolRegistrationDetail cprDetail) {
 		return daoFactory.getCprDao().getCprByCpShortTitleAndPpid(cprDetail.getCpShortTitle(), cprDetail.getPpid());
 	}
-	
-	private String getCarsDbUrl() {
-		return getConfigSetting(DB_URL, CarsErrorCode.DB_URL_REQ);
-	}
 
-	private String getCarsDbUser() {
-		return getConfigSetting(DB_USER, CarsErrorCode.DB_USERNAME_REQ);
-	}
-
-	private String getCarsDbPassword() {
-		return getConfigSetting(DB_PASSWD, CarsErrorCode.DB_PASSWORD_REQ);
-	}
-
-	private String getConfigSetting(String name, ErrorCode errorCode) {
-		String result = ConfigUtil.getInstance().getStrSetting(MODULE, name, null);
-		if (StringUtils.isBlank(result)) {
-			throw OpenSpecimenException.userError(errorCode);
+	private void logMessage(CarsBiospecimenDetail input, MessageLog log, Long recordId, String error) {
+		Date currentTime = Calendar.getInstance().getTime();
+		if (log == null) {
+			log = new MessageLog();
+			log.setExternalApp("CARS");
+			log.setType("biospecimen");
+			log.setMessage(toString(input));
+			log.setReceiveTime(currentTime);
 		}
 
-		return result;
+		log.setRecordId(recordId != null ? recordId.toString() : null);
+		log.setStatus(StringUtils.isBlank(error) ? MessageLog.Status.SUCCESS : MessageLog.Status.FAIL);
+		log.setProcessStatus(recordId != null ? MessageLog.ProcessStatus.PROCESSED : MessageLog.ProcessStatus.PENDING);
+		log.setProcessTime(currentTime);
+		log.setError(error);
+
+		if (log.getId() == null) {
+			daoFactory.getMessageLogDao().saveOrUpdate(log);
+		}
+	}
+
+	private String toString(CarsBiospecimenDetail detail) {
+		try {
+			return new ObjectMapper().writeValueAsString(detail);
+		} catch (Exception e) {
+			throw new RuntimeException("Error converting CARS biospecimen record to JSON", e);
+		}
+
 	}
 
 	private <T> RequestEvent<T> request(T payload) {
@@ -169,13 +220,5 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter {
 		return resp.getPayload();
 	}
 
-	private static final String IMPORTER_NAME = "msk2_cars_biospecimen_importer";
-
-	private static final String MODULE = "mskcc2";
-
-	private static final String DB_URL = "cars_db_url";
-
-	private static final String DB_USER = "cars_db_username";
-
-	private static final String DB_PASSWD = "cars_db_password";
+	private static final String IMPORTER_NAME = "mskcc2_cars_biospecimen_importer";
 }
