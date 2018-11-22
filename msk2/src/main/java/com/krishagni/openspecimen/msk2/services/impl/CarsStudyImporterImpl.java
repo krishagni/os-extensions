@@ -267,7 +267,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 		if (!existingSr.getSpecimenType().equalsIgnoreCase(collection.getType())) {
 			existingSr.close();
-			srId.setOsId(-1 * existingSr.getId());
+			srId.setExternalId(srId.getExternalId() + "_" + System.currentTimeMillis());
 			createRequirement(existingSr.getCollectionProtocolEvent().getId(), collection);
 			return;
 		}
