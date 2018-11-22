@@ -23,6 +23,7 @@ import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.administrative.domain.User;
 import com.krishagni.catissueplus.core.administrative.events.SiteDetail;
 import com.krishagni.catissueplus.core.administrative.events.UserDetail;
+import com.krishagni.catissueplus.core.administrative.repository.SiteListCriteria;
 import com.krishagni.catissueplus.core.administrative.services.SiteService;
 import com.krishagni.catissueplus.core.administrative.services.UserService;
 import com.krishagni.catissueplus.core.biospecimen.domain.AliquotSpecimensRequirement;
@@ -65,8 +66,6 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	private UserService userSvc;
 
-	private SiteService siteSvc;
-
 	private CollectionProtocolService cpSvc;
 
 	public void setDaoFactory(DaoFactory daoFactory) {
@@ -75,10 +74,6 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	public void setUserSvc(UserService userSvc) {
 		this.userSvc = userSvc;
-	}
-
-	public void setSiteSvc(SiteService siteSvc) {
-		this.siteSvc = siteSvc;
 	}
 
 	public void setCpSvc(CollectionProtocolService cpSvc) {
@@ -138,8 +133,6 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	private void createCp(CarsStudyDetail inputStudy) {
 		Long piId = createUserIfAbsent(inputStudy.getPiAddress(), inputStudy);
-		createSiteIfAbsent(inputStudy.getFacility(), inputStudy);
-
 		UserSummary pi = new UserSummary();
 		pi.setId(piId);
 
@@ -147,10 +140,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		cpDetail.setShortTitle(inputStudy.getIrbNumber());
 		cpDetail.setTitle(inputStudy.getIrbNumber());
 		cpDetail.setPrincipalInvestigator(pi);
-
-		CollectionProtocolSiteDetail cpSite = new CollectionProtocolSiteDetail();
-		cpSite.setSiteName(inputStudy.getFacility());
-		cpDetail.setCpSites(Collections.singletonList(cpSite));
+		cpDetail.setCpSites(getCpSites());
 
 		cpDetail = response(cpSvc.createCollectionProtocol(request(cpDetail)), inputStudy);
 		saveExtId(CollectionProtocol.class, inputStudy.getIrbNumber(), cpDetail.getId());
@@ -167,11 +157,11 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 			.collect(Collectors.toMap(CollectionProtocolEvent::getId, cpe -> cpe));
 
 		for (TimepointDetail timepoint : inputStudy.getTimepoints()) {
-			Long eventId = getOsIdFromExtId(CollectionProtocolEvent.class, timepoint.getId());
-			if (eventId == null) {
+			ExternalAppId eventId = getOsIdFromExtId(CollectionProtocolEvent.class, timepoint.getId());
+			if (eventId == null || eventId.getOsId() == null) {
 				createEvent(existingCp.getShortTitle(), timepoint);
 			} else {
-				CollectionProtocolEvent existingEvent = cpEvents.remove(eventId);
+				CollectionProtocolEvent existingEvent = cpEvents.remove(eventId.getOsId());
 				updateEvent(lastUpdated, existingEvent, timepoint);
 			}
 		}
@@ -180,32 +170,19 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	}
 
 	private void updateCp(CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
-		boolean siteChanged = existingCp.getRepositories().stream()
-			.noneMatch(s -> s.getName().equalsIgnoreCase(inputStudy.getFacility()));
-
 		boolean piChanged = !existingCp.getPrincipalInvestigator()
 			.getEmailAddress().equalsIgnoreCase(inputStudy.getPiAddress());
 
-		if (!siteChanged && !piChanged) {
+		if (!piChanged) {
 			return;
 		}
 
 		CollectionProtocolDetail cpDetail = CollectionProtocolDetail.from(existingCp);
-		if (siteChanged) {
-			createSiteIfAbsent(inputStudy.getFacility(), inputStudy);
+		Long piId = createUserIfAbsent(inputStudy.getPiAddress(), inputStudy);
 
-			CollectionProtocolSiteDetail cpSite = new CollectionProtocolSiteDetail();
-			cpSite.setSiteName(inputStudy.getFacility());
-			cpDetail.getCpSites().add(cpSite);
-		}
-
-		if (piChanged) {
-			Long piId = createUserIfAbsent(inputStudy.getPiAddress(), inputStudy);
-
-			UserSummary pi = new UserSummary();
-			pi.setId(piId);
-			cpDetail.setPrincipalInvestigator(pi);
-		}
+		UserSummary pi = new UserSummary();
+		pi.setId(piId);
+		cpDetail.setPrincipalInvestigator(pi);
 
 		response(cpSvc.updateCollectionProtocol(request(cpDetail)), inputStudy);
 	}
@@ -231,12 +208,12 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 			.collect(Collectors.toMap(SpecimenRequirement::getId, sr -> sr));
 
 		for (CollectionDetail collection : timepoint.getCollections()) {
-			Long srId = getOsIdFromExtId(SpecimenRequirement.class, collection.getId());
-			if (srId == null) {
+			ExternalAppId srId = getOsIdFromExtId(SpecimenRequirement.class, collection.getId());
+			if (srId == null || srId.getOsId() == null) {
 				createRequirement(existingEvent.getId(), collection);
 			} else {
-				SpecimenRequirement existingSr = requirements.remove(srId);
-				updateRequirement(lastUpdated, existingSr, collection);
+				SpecimenRequirement existingSr = requirements.remove(srId.getOsId());
+				updateRequirement(lastUpdated, srId, existingSr, collection);
 			}
 		}
 
@@ -277,13 +254,21 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		aliquotReq.setNoOfAliquots(1);
 		aliquotReq.setQtyPerAliquot(sr.getInitialQty());
 		aliquotReq.setParentSrId(sr.getId());
+		aliquotReq.setStorageType("Manual");
 		response(cpSvc.createAliquots(request(aliquotReq)), collection);
 
 		return sr;
 	}
 
-	private void updateRequirement(Date lastUpdated, SpecimenRequirement existingSr, CollectionDetail collection) {
+	private void updateRequirement(Date lastUpdated, ExternalAppId srId, SpecimenRequirement existingSr, CollectionDetail collection) {
 		if (lastUpdated != null && !lastUpdated.before(collection.getUpdateTime())) {
+			return;
+		}
+
+		if (!existingSr.getSpecimenType().equalsIgnoreCase(collection.getType())) {
+			existingSr.close();
+			srId.setOsId(-1 * existingSr.getId());
+			createRequirement(existingSr.getCollectionProtocolEvent().getId(), collection);
 			return;
 		}
 
@@ -317,7 +302,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		sr.setName(collection.getName());
 		sr.setSpecimenClass(getSpecimenClass(collection.getType()));
 		sr.setType(collection.getType());
-		sr.setInitialQty(BigDecimal.ZERO);
+		sr.setInitialQty(null);
 		sr.setCollectionContainer(collection.getContainer());
 		sr.setCollectionProcedure(Specimen.NOT_SPECIFIED);
 		sr.setAnatomicSite(Specimen.NOT_SPECIFIED);
@@ -347,18 +332,13 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return response(userSvc.createUser(request(input)), log).getId();
 	}
 
-	private Long createSiteIfAbsent(String siteName, ImportLogDetail log) {
-		Site existingSite = daoFactory.getSiteDao().getSiteByName(siteName);
-		return (existingSite == null) ? createSite(siteName, log) : existingSite.getId();
-	}
-
-	private Long createSite(String name, ImportLogDetail log) {
-		SiteDetail site = new SiteDetail();
-		site.setName(name);
-		site.setInstituteName(DEF_INSTITUTE);
-		site.setType("Collection Site");
-
-		return response(siteSvc.createSite(request(site)), log).getId();
+	private List<CollectionProtocolSiteDetail> getCpSites() {
+		List<Site> sites = daoFactory.getSiteDao().getSites(new SiteListCriteria().institute(DEF_INSTITUTE));
+		return sites.stream().map(site -> {
+			CollectionProtocolSiteDetail cpSite = new CollectionProtocolSiteDetail();
+			cpSite.setSiteName(site.getName());
+			return cpSite;
+		}).collect(Collectors.toList());
 	}
 
 	private void saveExtId(Class<?> klass, String extId, Long osId) {
@@ -370,9 +350,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		daoFactory.getExternalAppIdDao().saveOrUpdate(externalAppId);
 	}
 
-	private Long getOsIdFromExtId(Class<?> klass, String extId) {
-		ExternalAppId appId = daoFactory.getExternalAppIdDao().getByExternalId(EXT_APP_NAME, klass.getName(), extId);
-		return appId != null ? appId.getOsId() : null;
+	private ExternalAppId getOsIdFromExtId(Class<?> klass, String extId) {
+		return daoFactory.getExternalAppIdDao().getByExternalId(EXT_APP_NAME, klass.getName(), extId);
 	}
 
 	private CollectionProtocol getCpFromDb(String shortTitle) {

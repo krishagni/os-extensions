@@ -14,7 +14,6 @@
   <bean id="msk2StudyImporter" class="com.krishagni.openspecimen.msk2.services.impl.CarsStudyImporterImpl">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
     <property name="userSvc" ref="userSvc"/>
-    <property name="siteSvc" ref="siteService"/>
     <property name="cpSvc" ref="cpSvc"/>
   </bean>
   
