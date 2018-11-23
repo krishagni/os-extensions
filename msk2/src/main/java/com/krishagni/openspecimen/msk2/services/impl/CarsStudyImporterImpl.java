@@ -103,7 +103,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 					++failedStudies;
 					failed = true;
 				} finally {
-					if (failed || study.isUpdated()) {
+					if (failed || study.isUpdated() || study.hasModifiedTimepoints()) {
 						++totalStudies;
 						logImportDetail(study, failed, importLogWriter);
 					}
@@ -398,9 +398,20 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	private void logImportDetail(CarsStudyDetail study, boolean failed, CsvFileWriter logWriter)
 	throws IOException  {
 		boolean hasErrors = failed; //study.hasErrors();
+		boolean siOnceLogged = false;
 		for (TimepointDetail timepoint : study.getTimepoints()) {
+			boolean tiOnceLogged = false;
 			for (CollectionDetail collection : timepoint.getCollections()) {
-				if (!timepoint.isUpdated() && !collection.isUpdated()) {
+				boolean log = false;
+				if (collection.isUpdated()) {
+					log = true;
+				} else if (timepoint.isUpdated()) {
+					log = !tiOnceLogged;
+				} else if (study.isUpdated()) {
+					log = !siOnceLogged;
+				}
+
+				if (!log) {
 					continue;
 				}
 
@@ -426,6 +437,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 				}
 
 				logWriter.writeNext(row.toArray(new String[0]));
+				siOnceLogged = tiOnceLogged = true;
 			}
 		}
 

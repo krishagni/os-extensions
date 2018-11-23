@@ -72,4 +72,8 @@ public class TimepointDetail extends ImportLogDetail {
 	public boolean hasErrors() {
 		return isErroneous() || collections.stream().anyMatch(CollectionDetail::isErroneous);
 	}
+
+	public boolean hasModifiedCollections() {
+		return collections.stream().anyMatch(CollectionDetail::isUpdated);
+	}
 }

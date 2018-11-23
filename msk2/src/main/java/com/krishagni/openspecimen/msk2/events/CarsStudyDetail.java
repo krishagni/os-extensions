@@ -68,7 +68,7 @@ public class CarsStudyDetail extends ImportLogDetail {
 		return isErroneous() || timepoints.stream().anyMatch(TimepointDetail::hasErrors);
 	}
 
-	public boolean isUpdated() {
-		return super.isUpdated() || timepoints.stream().anyMatch(TimepointDetail::isUpdated);
+	public boolean hasModifiedTimepoints() {
+		return timepoints.stream().anyMatch(t -> t.isUpdated() || t.hasModifiedCollections());
 	}
 }
