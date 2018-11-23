@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 public class ImportLogDetail {
 	private String error = "";
 
+	private boolean updated;
+
 	public String getError() {
 		return error;
 	}
@@ -15,5 +17,13 @@ public class ImportLogDetail {
 
 	public boolean isErroneous() {
 		return StringUtils.isNotBlank(error);
+	}
+
+	public boolean isUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(boolean updated) {
+		this.updated = updated;
 	}
 }

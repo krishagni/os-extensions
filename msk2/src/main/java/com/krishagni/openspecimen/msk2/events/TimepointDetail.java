@@ -68,4 +68,8 @@ public class TimepointDetail extends ImportLogDetail {
 	public void addCollection(CollectionDetail collection) {
 		collections.add(collection);
 	}
+
+	public boolean hasErrors() {
+		return isErroneous() || collections.stream().anyMatch(CollectionDetail::isErroneous);
+	}
 }

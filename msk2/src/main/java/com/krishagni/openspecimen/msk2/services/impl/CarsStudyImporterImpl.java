@@ -2,12 +2,10 @@ package com.krishagni.openspecimen.msk2.services.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +19,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.administrative.domain.User;
-import com.krishagni.catissueplus.core.administrative.events.SiteDetail;
 import com.krishagni.catissueplus.core.administrative.events.UserDetail;
 import com.krishagni.catissueplus.core.administrative.repository.SiteListCriteria;
-import com.krishagni.catissueplus.core.administrative.services.SiteService;
 import com.krishagni.catissueplus.core.administrative.services.UserService;
 import com.krishagni.catissueplus.core.biospecimen.domain.AliquotSpecimensRequirement;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
@@ -39,7 +35,6 @@ import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.services.CollectionProtocolService;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.domain.ExternalAppId;
-import com.krishagni.catissueplus.core.common.errors.ErrorCode;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
@@ -50,7 +45,6 @@ import com.krishagni.catissueplus.core.common.util.EmailUtil;
 import com.krishagni.catissueplus.core.common.util.Status;
 import com.krishagni.catissueplus.core.common.util.Utility;
 import com.krishagni.catissueplus.core.importer.domain.ImportJob;
-import com.krishagni.openspecimen.msk2.domain.CarsErrorCode;
 import com.krishagni.openspecimen.msk2.events.CarsStudyDetail;
 import com.krishagni.openspecimen.msk2.events.CollectionDetail;
 import com.krishagni.openspecimen.msk2.events.ImportLogDetail;
@@ -101,14 +95,18 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 			CarsStudyDetail study;
 			while ((study = reader.next()) != null) {
+				boolean failed = false;
 				try {
 					importStudy(lastUpdated, study);
 				} catch (OpenSpecimenException ose) {
 					logger.error("Error importing CARS study - " + study.getIrbNumber(), ose);
 					++failedStudies;
+					failed = true;
 				} finally {
-					++totalStudies;
-					logImportDetail(study, importLogWriter);
+					if (failed || study.isUpdated()) {
+						++totalStudies;
+						logImportDetail(study, failed, importLogWriter);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -132,7 +130,9 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	}
 
 	private void createCp(CarsStudyDetail inputStudy) {
-		Long piId = createUserIfAbsent(inputStudy.getPiAddress(), inputStudy);
+		inputStudy.setUpdated(true);
+
+		Long piId = createUserIfAbsent(inputStudy);
 		UserSummary pi = new UserSummary();
 		pi.setId(piId);
 
@@ -177,17 +177,19 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 			return;
 		}
 
+		inputStudy.setUpdated(true);
 		CollectionProtocolDetail cpDetail = CollectionProtocolDetail.from(existingCp);
-		Long piId = createUserIfAbsent(inputStudy.getPiAddress(), inputStudy);
+		Long piId = createUserIfAbsent(inputStudy);
 
 		UserSummary pi = new UserSummary();
 		pi.setId(piId);
 		cpDetail.setPrincipalInvestigator(pi);
-
 		response(cpSvc.updateCollectionProtocol(request(cpDetail)), inputStudy);
 	}
 
 	private void createEvent(String cpShortTitle, TimepointDetail timepoint) {
+		timepoint.setUpdated(true);
+
 		CollectionProtocolEventDetail event = toEvent(cpShortTitle, timepoint);
 		event = response(cpSvc.addEvent(request(event)), timepoint);
 		saveExtId(CollectionProtocolEvent.class, timepoint.getId(), event.getId());
@@ -199,6 +201,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	private void updateEvent(Date lastUpdated, CollectionProtocolEvent existingEvent, TimepointDetail timepoint) {
 		if (lastUpdated == null || lastUpdated.before(timepoint.getUpdateTime())) {
+			timepoint.setUpdated(true);
+
 			CollectionProtocolEventDetail event = CollectionProtocolEventDetail.from(existingEvent);
 			event.setEventLabel(toEventLabel(timepoint));
 			response(cpSvc.updateEvent(request(event)), timepoint);
@@ -244,6 +248,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	}
 
 	private SpecimenRequirementDetail createRequirement(Long eventId, CollectionDetail collection) {
+		collection.setUpdated(true);
+
 		SpecimenRequirementDetail sr = toSr(eventId, collection);
 		sr = response(cpSvc.addSpecimenRequirement(request(sr)), collection);
 		saveExtId(SpecimenRequirement.class, collection.getId(), sr.getId());
@@ -265,6 +271,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 			return;
 		}
 
+		collection.setUpdated(true);
 		if (!existingSr.getSpecimenType().equalsIgnoreCase(collection.getType())) {
 			existingSr.close();
 			srId.setExternalId(srId.getExternalId() + "_" + System.currentTimeMillis());
@@ -316,20 +323,20 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return daoFactory.getPermissibleValueDao().getSpecimenClass(type);
 	}
 
-	private Long createUserIfAbsent(String piAddress, ImportLogDetail log) {
-		User existingUser = daoFactory.getUserDao().getUserByEmailAddress(piAddress);
-		return existingUser == null ? createUser(piAddress, log) : existingUser.getId();
+	private Long createUserIfAbsent(CarsStudyDetail inputStudy) {
+		User existingUser = daoFactory.getUserDao().getUserByEmailAddress(inputStudy.getPiAddress());
+		return existingUser == null ? createUser(inputStudy) : existingUser.getId();
 	}
 
-	private Long createUser(String piAddress, ImportLogDetail log) {
+	private Long createUser(CarsStudyDetail inputStudy) {
 		UserDetail input = new UserDetail();
-		input.setEmailAddress(piAddress);
+		input.setFirstName(inputStudy.getPiFirst());
+		input.setLastName(inputStudy.getPiLast());
+		input.setEmailAddress(inputStudy.getPiAddress());
+		input.setLoginName(inputStudy.getPiAddress());
 		input.setDomainName(DEF_DOMAIN);
 		input.setInstituteName(DEF_INSTITUTE);
-
-		String[] parts = piAddress.split("@");
-		input.setLastName(parts[0]);
-		return response(userSvc.createUser(request(input)), log).getId();
+		return response(userSvc.createUser(request(input)), inputStudy).getId();
 	}
 
 	private List<CollectionProtocolSiteDetail> getCpSites() {
@@ -388,10 +395,15 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return writer;
 	}
 
-	private void logImportDetail(CarsStudyDetail study, CsvFileWriter logWriter)
+	private void logImportDetail(CarsStudyDetail study, boolean failed, CsvFileWriter logWriter)
 	throws IOException  {
+		boolean hasErrors = failed; //study.hasErrors();
 		for (TimepointDetail timepoint : study.getTimepoints()) {
 			for (CollectionDetail collection : timepoint.getCollections()) {
+				if (!timepoint.isUpdated() && !collection.isUpdated()) {
+					continue;
+				}
+
 				List<String> row = new ArrayList<>();
 				row.add(study.getIrbNumber());
 				row.add(study.getFacility());
@@ -404,9 +416,10 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 				row.add(collection.getType());
 				row.add(collection.getContainer());
 
-				if (study.isErroneous() || timepoint.isErroneous() || collection.isErroneous()) {
-					row.add("Failed");
-					row.add(getError(study, timepoint, collection));
+				if (hasErrors) {
+					String error = getError(study, timepoint, collection);
+					row.add(error.isEmpty() ? "Skipped" : "Failed");
+					row.add(error);
 				} else {
 					row.add("Success");
 					row.add("");
@@ -504,8 +517,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	private final static String[] IMPORT_LOGS_FILE_COLUMNS = {
 		"IrbNumber", "Facility", "PiAddress",
-		"CycleName", "TimepointName", "ProcedureName",
-		"SpecimenType", "CollectionContainer", "TimepointID",
-		"PVPID", "Status", "Error"
+		"TimepointID", "CycleName", "TimepointName", 
+		"PVPID", "ProcedureName", "SpecimenType", 
+		"CollectionContainer", "Status", "Error"
 	};
 }

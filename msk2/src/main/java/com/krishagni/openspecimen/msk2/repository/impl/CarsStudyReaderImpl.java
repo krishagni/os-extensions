@@ -81,6 +81,8 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 					study.setIrbNumber(rs.getString("irbnumber"));
 					study.setFacility(rs.getString("facility"));
 					study.setPiAddress(rs.getString("piAddress"));
+					study.setPiFirst(rs.getString("piFirst"));
+					study.setPiLast(rs.getString("piLast"));
 				}
 
 				String timepointKey = rs.getString("cyclename") + " " + rs.getString("timepointname");
@@ -102,9 +104,9 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 		}
 
 		private TimepointDetail getTimepoint(ResultSet rs)
-			throws SQLException {
+		throws SQLException {
 			TimepointDetail timepoint = new TimepointDetail();
-			timepoint.setId(rs.getString("timepointpid"));
+			timepoint.setId(rs.getString("timepointid"));
 			timepoint.setCycle(rs.getString("cyclename"));
 			timepoint.setName(rs.getString("timepointname"));
 			timepoint.setCreationTime(rs.getTimestamp("timepoint_cr_date"));
@@ -113,7 +115,7 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 		}
 
 		private CollectionDetail getCollection(ResultSet rs)
-			throws SQLException {
+		throws SQLException {
 			CollectionDetail collection = new CollectionDetail();
 			collection.setId(rs.getString("pvpid"));
 			collection.setName(rs.getString("procedurename"));
@@ -129,8 +131,8 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 
 	private static final String GET_STUDY_DETAILS =
 		"select" +
-		"  irbnumber, piaddress, cyclename, timepointname, procedurename, facility, collectiontypename, " +
-		"  comments, specimentype, collectioncontainer, pvpid, timepointpid, " +
+		"  irbnumber, piaddress, pifirst, pilast, cyclename, timepointname, procedurename, facility, " +
+		"  collectiontypename, comments, specimentype, collectioncontainer, pvpid, timepointid, " +
 		"  timepoint_cr_date, timepoint_update, procedure_cr_date, procedure_update " +
 		"from " +
 		"  cars_details " +

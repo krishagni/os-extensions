@@ -9,9 +9,13 @@ public class CarsStudyDetail extends ImportLogDetail {
 	private String facility;
 
 	private String piAddress;
+	
+	private String piFirst;
+	
+	private String piLast;
 
 	private List<TimepointDetail> timepoints = new ArrayList<>();
-
+	
 	public String getIrbNumber() {
 		return irbNumber;
 	}
@@ -42,5 +46,29 @@ public class CarsStudyDetail extends ImportLogDetail {
 
 	public void setTimepoints(List<TimepointDetail> timepoints) {
 		this.timepoints = timepoints;
+	}
+
+	public String getPiFirst() {
+		return piFirst;
+	}
+
+	public void setPiFirst(String piFirst) {
+		this.piFirst = piFirst;
+	}
+
+	public String getPiLast() {
+		return piLast;
+	}
+
+	public void setPiLast(String piLast) {
+		this.piLast = piLast;
+	}
+
+	public boolean hasErrors() {
+		return isErroneous() || timepoints.stream().anyMatch(TimepointDetail::hasErrors);
+	}
+
+	public boolean isUpdated() {
+		return super.isUpdated() || timepoints.stream().anyMatch(TimepointDetail::isUpdated);
 	}
 }
