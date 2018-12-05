@@ -80,7 +80,7 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 					study = new CarsStudyDetail();
 					study.setIrbNumber(rs.getString("irbnumber"));
 					study.setFacility(rs.getString("facility"));
-					study.setPiAddress(rs.getString("piAddress"));
+					study.setPiAddress(rs.getString("email"));
 					study.setPiFirst(rs.getString("piFirst"));
 					study.setPiLast(rs.getString("piLast"));
 				}
@@ -127,15 +127,15 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 		}
 	}
 
-	private static final String GET_IRB_NUMBERS_SQL = "select distinct irbnumber from cars_details order by irbnumber";
+	private static final String GET_IRB_NUMBERS_SQL = "select distinct irbnumber from OpenSpecimen.VW_OS_COLL_PROT order by irbnumber";
 
 	private static final String GET_STUDY_DETAILS =
 		"select" +
-		"  irbnumber, piaddress, pifirst, pilast, cyclename, timepointname, procedurename, facility, " +
+		"  irbnumber, email, pifirst, pilast, cyclename, timepointname, procedurename, facility, " +
 		"  collectiontypename, comments, specimentype, collectioncontainer, pvpid, timepointid, " +
 		"  timepoint_cr_date, timepoint_update, procedure_cr_date, procedure_update " +
 		"from " +
-		"  cars_details " +
+		"  OpenSpecimen.VW_OS_COLL_PROT " +
 		"where " +
 		"  irbnumber = ? " +
 		"order by " +

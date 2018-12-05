@@ -84,6 +84,10 @@ public class CarsImportJobUtil {
 	}
 
 	public Date getLastUpdated(ImportJob lastJob) {
+		if (lastJob == null) {
+			return null;
+		}
+		
 		String lastUpdated = lastJob.getParams().get("lastUpdated");
 		if (StringUtils.isBlank(lastUpdated)) {
 			return null;

@@ -22,8 +22,6 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 	
 	private List<Pair<String, String>> ppids;
 
-	private List<CarsBiospecimenDetail> currentParticipants;
-
 	private Date updatedAfter;
 	
 	private int currentParticipantIdx;
@@ -60,7 +58,7 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 		String query;
 		if (updatedAfter != null) {
-			query = String.format(GET_PPIDS_SQL, "where status_updated_on > ?");
+			query = String.format(GET_PPIDS_SQL, "and kitprepdate > ?");
 			params.add(updatedAfter);
 		} else {
 			query = String.format(GET_PPIDS_SQL, "");
@@ -68,7 +66,7 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 		return jdbcTemplate.query(
 			query,
-			params.toArray(new String[0]),
+			params.toArray(new Date[0]),
 			new ResultSetExtractor<List<Pair<String, String>>>() {
 				@Override
 				public List<Pair<String, String>> extractData(ResultSet rs)
@@ -76,7 +74,7 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 					List<Pair<String, String>> ppids = new ArrayList<>();
 
 					while (rs.next()) {
-						ppids.add(Pair.make(rs.getString("irbnumber"), rs.getString("treatment")));
+						ppids.add(Pair.make(rs.getString("irbnumber"), rs.getString("patientstudyid")));
 					}
 
 					return ppids;
@@ -91,13 +89,13 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 		String query;
 		if (updatedAfter != null) {
-			query = String.format(GET_PARTICIPANTS_SQL, "and status_updated_on > ?");
+			query = String.format(GET_PARTICIPANTS_SQL, "and kitprepdate > ?");
 			params.add(updatedAfter);
 		} else {
 			query = String.format(GET_PARTICIPANTS_SQL, "");
 		}
 
-		return jdbcTemplate.query(GET_PARTICIPANTS_SQL, params.toArray(new String[0]), new ParticipantDetailExtractor());
+		return jdbcTemplate.query(query, params.toArray(new Object[0]), new ParticipantDetailExtractor());
 	}
 	
 	private class ParticipantDetailExtractor implements ResultSetExtractor<CarsBiospecimenDetail> {
@@ -111,11 +109,11 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 				participant.setIrbNumber(rs.getString("irbnumber"));
 				participant.setFacility(rs.getString("facility"));
-				participant.setTreatment(rs.getString("treatment"));
-				participant.setFirstName(rs.getString("first_name"));
-				participant.setLastName(rs.getString("last_name"));
-				participant.setMrn(rs.getString("mrn"));
-				participant.setLastUpdated(rs.getTimestamp("status_updated_on"));
+				participant.setTreatment(rs.getString("patientstudyid"));
+				participant.setFirstName(rs.getString("firstname"));
+				participant.setLastName(rs.getString("lastname"));
+				participant.setMrn(rs.getString("patientmrn"));
+				participant.setLastUpdated(rs.getTimestamp("kitprepdate"));
 				
 				participants.add(participant);
 			}
@@ -125,18 +123,34 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 	}
 	
 	private final static String GET_PPIDS_SQL =
-		"select distinct irbnumber, treatment from msk2_participants_view %s order by status_updated_on";
+		"select " + 
+		"  irbnumber, patientstudyid " + 
+		"from " + 
+		"  openspecimen.xavier_view_get_requested_collections_v op " + 
+		"where " + 
+		"  kitprepdate in ( " + 
+		"    select " + 
+		"      min(kitprepdate) " + 
+		"    from " + 
+		"      openspecimen.xavier_view_get_requested_collections_v ip " + 
+		"    where " + 
+		"      ip.irbnumber = op.irbnumber and " + 
+		"      ip.patientstudyid = op.patientstudyid " + 
+		"  ) " +
+		" %s	" + 
+		"order by " + 
+		"  kitprepdate";
 	
 	private final static String GET_PARTICIPANTS_SQL =
 		"select " +
-		"  irbnumber, facility, treatment, first_name, " +
-		"  last_name, mrn, status_updated_on " +
+		"  irbnumber, facility, patientstudyid, firstname, " +
+		"  lastname, patientmrn, kitprepdate " +
 		"from " +
-		"  msk2_participants_view " +
+		"  openspecimen.xavier_view_get_requested_collections_v " +
 		"where " +
 		"  irbnumber = ? and " +
-		"  treatment = ? " +
+		"  patientstudyid = ? " +
 		"  %s " +
 		"order by " +
-		"  status_updated_on";
+		"  kitprepdate";
 }
