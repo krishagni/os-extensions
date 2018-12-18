@@ -13,6 +13,12 @@ public class CollectionDetail extends ImportLogDetail {
 
 	private Date creationTime;
 
+	private String comments;
+
+	private int processed;
+
+	private int shipped;
+
 	private Date updateTime;
 
 	public String getId() {
@@ -53,6 +59,30 @@ public class CollectionDetail extends ImportLogDetail {
 
 	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public int getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(int processed) {
+		this.processed = processed;
+	}
+
+	public int getShipped() {
+		return shipped;
+	}
+
+	public void setShipped(int shipped) {
+		this.shipped = shipped;
 	}
 
 	public Date getUpdateTime() {

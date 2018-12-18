@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +88,6 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		CarsStudyReader reader = null;
 		CsvFileWriter importLogWriter = null;
 		try {
-			Date lastUpdated = latestJob != null ? latestJob.getEndTime() : null;
 			reader = getStudyReader();
 			importLogWriter = createImportLogWriter(importLogFile);
 
@@ -97,7 +95,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 			while ((study = reader.next()) != null) {
 				boolean failed = false;
 				try {
-					importStudy(lastUpdated, study);
+					importStudy(study);
 				} catch (OpenSpecimenException ose) {
 					logger.error("Error importing CARS study - " + study.getIrbNumber(), ose);
 					++failedStudies;
@@ -120,12 +118,12 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	}
 
 	@PlusTransactional
-	private void importStudy(Date lastUpdated, CarsStudyDetail inputStudy) {
+	private void importStudy(CarsStudyDetail inputStudy) {
 		CollectionProtocol existingCp = getCpFromDb(inputStudy.getIrbNumber());
 		if (existingCp == null) {
 			createCp(inputStudy);
 		} else {
-			updateCp(lastUpdated, existingCp, inputStudy);
+			updateCp(existingCp, inputStudy);
 		}
 	}
 
@@ -141,6 +139,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		cpDetail.setTitle(inputStudy.getIrbNumber());
 		cpDetail.setPrincipalInvestigator(pi);
 		cpDetail.setCpSites(getCpSites());
+		cpDetail.setPpidFmt("%CP_ID%-%CP_UID%");
 
 		cpDetail = response(cpSvc.createCollectionProtocol(request(cpDetail)), inputStudy);
 		saveExtId(CollectionProtocol.class, inputStudy.getIrbNumber(), cpDetail.getId());
@@ -150,8 +149,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		}
 	}
 
-	private void updateCp(Date lastUpdated, CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
-		updateCp(existingCp, inputStudy);
+	private void updateCp(CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
+		updateCp0(existingCp, inputStudy);
 
 		Map<Long, CollectionProtocolEvent> cpEvents = existingCp.getCollectionProtocolEvents().stream()
 			.collect(Collectors.toMap(CollectionProtocolEvent::getId, cpe -> cpe));
@@ -162,14 +161,14 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 				createEvent(existingCp.getShortTitle(), timepoint);
 			} else {
 				CollectionProtocolEvent existingEvent = cpEvents.remove(eventId.getOsId());
-				updateEvent(lastUpdated, existingEvent, timepoint);
+				updateEvent(existingEvent, timepoint);
 			}
 		}
 
 		cpEvents.values().forEach(this::closeEvent);
 	}
 
-	private void updateCp(CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
+	private void updateCp0(CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
 		boolean piChanged = !existingCp.getPrincipalInvestigator()
 			.getEmailAddress().equalsIgnoreCase(inputStudy.getPiAddress());
 
@@ -199,14 +198,11 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		}
 	}
 
-	private void updateEvent(Date lastUpdated, CollectionProtocolEvent existingEvent, TimepointDetail timepoint) {
-		if (lastUpdated == null || lastUpdated.before(timepoint.getUpdateTime())) {
-			timepoint.setUpdated(true);
-
-			CollectionProtocolEventDetail event = CollectionProtocolEventDetail.from(existingEvent);
-			event.setEventLabel(toEventLabel(timepoint));
-			response(cpSvc.updateEvent(request(event)), timepoint);
-		}
+	private void updateEvent(CollectionProtocolEvent existingEvent, TimepointDetail timepoint) {
+		timepoint.setUpdated(true);
+		CollectionProtocolEventDetail event = CollectionProtocolEventDetail.from(existingEvent);
+		event.setEventLabel(toEventLabel(timepoint));
+		response(cpSvc.updateEvent(request(event)), timepoint);
 
 		Map<Long, SpecimenRequirement> requirements = existingEvent.getTopLevelAnticipatedSpecimens().stream()
 			.collect(Collectors.toMap(SpecimenRequirement::getId, sr -> sr));
@@ -217,7 +213,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 				createRequirement(existingEvent.getId(), collection);
 			} else {
 				SpecimenRequirement existingSr = requirements.remove(srId.getOsId());
-				updateRequirement(lastUpdated, srId, existingSr, collection);
+				updateRequirement(srId, existingSr, collection);
 			}
 		}
 
@@ -266,11 +262,7 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		return sr;
 	}
 
-	private void updateRequirement(Date lastUpdated, ExternalAppId srId, SpecimenRequirement existingSr, CollectionDetail collection) {
-		if (lastUpdated != null && !lastUpdated.before(collection.getUpdateTime())) {
-			return;
-		}
-
+	private void updateRequirement(ExternalAppId srId, SpecimenRequirement existingSr, CollectionDetail collection) {
 		collection.setUpdated(true);
 		if (!existingSr.getSpecimenType().equalsIgnoreCase(collection.getType())) {
 			existingSr.close();
