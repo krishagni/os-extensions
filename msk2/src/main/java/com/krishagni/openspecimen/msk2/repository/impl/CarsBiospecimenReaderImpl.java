@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -73,13 +75,13 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 			query,
 			params.toArray(new Date[0]),
 			(rs) -> {
-				List<Pair<String, String>> patientIds = new ArrayList<>();
+				Set<Pair<String, String>> patientIds = new LinkedHashSet<>();
 
 				while(rs.next()) {
 					patientIds.add(Pair.make(rs.getString("irbnumber"), rs.getString("patientsystemid")));
 				}
 
-				return patientIds;
+				return new ArrayList<>(patientIds);
 			}
 		);
 	}
@@ -181,7 +183,7 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 	private final static String GET_PATIENT_IDS_SQL =
 		"select " + 
-		"  distinct irbnumber, patientsystemid " +
+		"  irbnumber, patientsystemid " +
 		"from " + 
 		"  openspecimen.xavier_view_get_requested_collections_v op " +
 		" %s	" +
