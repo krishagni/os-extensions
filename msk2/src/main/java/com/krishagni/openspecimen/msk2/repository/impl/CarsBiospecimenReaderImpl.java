@@ -63,7 +63,7 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 		String query;
 		if (updatedAfter != null) {
-			query = String.format(GET_PATIENT_IDS_SQL, "and kitprepdate > ?");
+			query = String.format(GET_PATIENT_IDS_SQL, "where kitprepdate > ?");
 			params.add(updatedAfter);
 		} else {
 			query = String.format(GET_PATIENT_IDS_SQL, "");
@@ -181,20 +181,10 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 	private final static String GET_PATIENT_IDS_SQL =
 		"select " + 
-		"  irbnumber, patientsystemid " +
+		"  distinct irbnumber, patientsystemid " +
 		"from " + 
-		"  openspecimen.xavier_view_get_requested_collections_v op " + 
-		"where " + 
-		"  kitprepdate in ( " + 
-		"    select " + 
-		"      min(kitprepdate) " + 
-		"    from " + 
-		"      openspecimen.xavier_view_get_requested_collections_v ip " + 
-		"    where " + 
-		"      ip.irbnumber = op.irbnumber and " + 
-		"      ip.patientsystemid = op.patientsystemid " +
-		"  ) " +
-		" %s	" + 
+		"  openspecimen.xavier_view_get_requested_collections_v op " +
+		" %s	" +
 		"order by " + 
 		"  kitprepdate";
 	
