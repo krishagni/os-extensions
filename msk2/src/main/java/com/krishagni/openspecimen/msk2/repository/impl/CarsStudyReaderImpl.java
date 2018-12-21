@@ -106,7 +106,7 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 		private TimepointDetail getTimepoint(ResultSet rs)
 		throws SQLException {
 			TimepointDetail timepoint = new TimepointDetail();
-			timepoint.setId(rs.getString("timepointid"));
+			timepoint.setId(rs.getString("timepointid2"));
 			timepoint.setCycle(rs.getString("cyclename"));
 			timepoint.setName(rs.getString("timepointname"));
 			timepoint.setCreationTime(rs.getTimestamp("timepoint_cr_date"));
@@ -117,7 +117,7 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 		private CollectionDetail getCollection(ResultSet rs)
 		throws SQLException {
 			CollectionDetail collection = new CollectionDetail();
-			collection.setId(rs.getString("pvpid"));
+			collection.setId(rs.getString("pvpid2"));
 			collection.setName(rs.getString("procedurename"));
 			collection.setType(rs.getString("specimentype"));
 			collection.setContainer(rs.getString("collectioncontainer"));
@@ -127,15 +127,15 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 		}
 	}
 
-	private static final String GET_IRB_NUMBERS_SQL = "select distinct irbnumber from OpenSpecimen.VW_OS_COLL_PROT order by irbnumber";
+	private static final String GET_IRB_NUMBERS_SQL = "select distinct irbnumber from openspecimen.vw_os_coll_prot order by irbnumber";
 
 	private static final String GET_STUDY_DETAILS =
 		"select" +
 		"  irbnumber, email, pifirst, pilast, cyclename, timepointname, procedurename, facility, " +
-		"  collectiontypename, comments, specimentype, collectioncontainer, pvpid, timepointid, " +
+		"  collectiontypename, comments, specimentype, collectioncontainer, pvpid2, timepointid2, " +
 		"  timepoint_cr_date, timepoint_update, procedure_cr_date, procedure_update " +
 		"from " +
-		"  OpenSpecimen.VW_OS_COLL_PROT " +
+		"  openspecimen.vw_os_coll_prot " + 
 		"where " +
 		"  irbnumber = ? " +
 		"order by " +

@@ -141,7 +141,6 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, Ini
 
 	}
 
-	@PlusTransactional
 	private Long importBiospecimen(MessageLog log, CarsBiospecimenDetail detail) {
 		String error = null;
 		Long recordId = null;
@@ -171,7 +170,8 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, Ini
 			lastUpdated
 		);
 	}
-
+	
+	@PlusTransactional
 	private Long saveOrUpdateCpr(CarsBiospecimenDetail detail) {
 		CollectionProtocolRegistrationDetail inputCpr = toCpr(detail);
 		Participant dbParticipant = getParticipantFromDb(inputCpr.getParticipant().getPmis());
@@ -260,6 +260,7 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, Ini
 		participantDetail.setFirstName(detail.getFirstName());
 		participantDetail.setMiddleName(detail.getMiddleName());
 		participantDetail.setLastName(detail.getLastName());
+		participantDetail.setBirthDate(detail.getDob());
 		participantDetail.setPhiAccess(true);
 
 		PmiDetail pmi = new PmiDetail();
@@ -355,7 +356,7 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, Ini
 		return daoFactory.getExternalAppIdDao().getByExternalId(EXT_APP_NAME, klass.getName(), extId);
 	}
 
-
+	@PlusTransactional
 	private void logMessage(CarsBiospecimenDetail input, MessageLog log, Long recordId, String error) {
 		Date currentTime = Calendar.getInstance().getTime();
 		if (log == null) {

@@ -71,19 +71,17 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 			query = String.format(GET_PATIENT_IDS_SQL, "");
 		}
 
-		return jdbcTemplate.query(
-			query,
-			params.toArray(new Date[0]),
-			(rs) -> {
-				Set<Pair<String, String>> patientIds = new LinkedHashSet<>();
-
-				while(rs.next()) {
-					patientIds.add(Pair.make(rs.getString("irbnumber"), rs.getString("patientsystemid")));
-				}
-
-				return new ArrayList<>(patientIds);
+		return jdbcTemplate.query( query, params.toArray(new Date[0]), new ResultSetExtractor<List<Pair<String, String>>>() { 
+			@Override 
+			public List<Pair<String, String>> extractData(ResultSet rs) 
+			throws SQLException, DataAccessException { 
+				Set<Pair<String, String>> patientIds = new LinkedHashSet<>(); 
+				while (rs.next()) { 
+					patientIds.add(Pair.make(rs.getString("irbnumber"), rs.getString("patientsystemid"))); 
+				} 
+				return new ArrayList<>(patientIds); 
 			}
-		);
+		});
 	}
 	
 	private CarsBiospecimenDetail getParticipant(String irbNumber, String patientId, Date updatedAfter) {
@@ -122,13 +120,13 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 				participant.setDob(rs.getDate("dob"));
 				participant.setMrn(rs.getString("patientmrn"));
 
-				String timepointId = rs.getString("timepointid");
+				String timepointId = rs.getString("timepointid2");
 				TimepointDetail timepoint = timepoints.computeIfAbsent(timepointId, (k) -> new TimepointDetail());
-				timepoint.setId(rs.getString("timepointid"));
+				timepoint.setId(rs.getString("timepointid2"));
 				timepoint.setName(rs.getString("collectionrequestbasketid"));
 				timepoint.setCreationTime(rs.getDate("startdate"));
 
-				String collectionId = rs.getString("pvpid");
+				String collectionId = rs.getString("pvpid2");
 				CollectionDetail collection = collections.get(timepointId + "-" + collectionId);
 				if (collection == null) {
 					collection = new CollectionDetail();
@@ -185,8 +183,8 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 		"select " + 
 		"  irbnumber, patientsystemid " +
 		"from " + 
-		"  openspecimen.xavier_view_get_requested_collections_v op " +
-		" %s	" +
+		"  openspecimen.xavier_view_get_requested_collections_v ip " +
+		"  %s	" +
 		"order by " + 
 		"  kitprepdate";
 	
@@ -194,9 +192,9 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 		"select " +
 		"  patientsystemid, irbnumber, patientstudyid, facility, " +
 		"  firstname, lastname, middlename, dob, patientmrn, " +
-		"  timepointid, collectionrequestbasketid, startdate, " +
+		"  timepointid2, collectionrequestbasketid, startdate, " +
 		"  collectionrequestbasketentriesid, time, notes, processed, shipped, " +
-		"  kitprepdate " +
+		"  kitprepdate, pvpid2 " +
 		"from " +
 		"  openspecimen.xavier_view_get_requested_collections_v " +
 		"where " +
