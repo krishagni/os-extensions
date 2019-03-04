@@ -1,0 +1,15 @@
+version: '3'
+services:
+  openspecimen:
+    image: krishagni/openspecimen:<version>
+    env_file:
+    - <config_file>
+    environment:
+    - user=<user>
+    - group=<group>
+    ports:
+    - <http_port>:8080
+    - <ajp_port>:8009
+    volumes:
+    - /etc/localtime:/etc/localtime
+    - /etc/timezone:/etc/timezone

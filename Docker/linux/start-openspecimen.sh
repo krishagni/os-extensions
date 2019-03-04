@@ -125,15 +125,15 @@ run_server() {
   docker stop $name
   docker rm $name
   docker login
-  docker run -d --name=$name \
-    --env-file=$config_file \
-    -e user=$user -e group=$group \
-    -v $data_dir:/usr/local/openspecimen/data \
-    -v /etc/localtime:/etc/localtime \
-    -v /etc/timezone:/etc/timezone \
-    -p $http_port:8080 \
-    -p $ajp_port:8009 \
-    krishagni/openspecimen:$version
+
+  sed -i "s/<version>/$version/g" docker-compose.yml
+  sed -i "s/<config_file>/$config_file/g" docker-compose.yml
+  sed -i "s/<user>/$user/g" docker-compose.yml
+  sed -i "s/<group>/$group/g" docker-compose.yml
+  sed -i "s/<http_port>/$http_port/g" docker-compose.yml
+  sed -i "s/<ajp_port>/$ajp_port/g" docker-compose.yml
+  
+  docker-compose up -d
 }
 
 main() {
