@@ -7,8 +7,7 @@ print_help() {
   echo "--config-template: creates database.properties template file";
   echo "--run: Runs MySQL 5.7 container";
   echo "--config: absolute path of database.properties file";
-  echo "--name: name of OpenSpecimen instance";
-  echo "--version: OpenSpecimen version to run";
+  echo "--name: name of MySQL instance";
 }
 
 create_template() {
