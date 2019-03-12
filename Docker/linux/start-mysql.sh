@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 print_help() {
   pgm=`basename $0`
   echo "Command: $pgm --help --config-template --run --config=<config-properties> --name=<container-name>";
@@ -10,8 +9,8 @@ print_help() {
   echo "--config: absolute path of database.properties file";
   echo "--name: name of OpenSpecimen instance";
   echo "--version: OpenSpecimen version to run";
-
 }
+
 create_template() {
   if [ -f "database.properties" ]; then
     echo "File database.properties is already present in the current directory."
@@ -87,7 +86,6 @@ run_mysql() {
   fi
   
   check_db_props;
-
   docker stop $name
   docker rm $name
 
@@ -104,7 +102,6 @@ run_mysql() {
 }
 
 main() {
-
 for i in "$@"
   do
     case $i in
@@ -142,6 +139,5 @@ for i in "$@"
     print_help;
   fi	
 }
-
 
 main $@;
