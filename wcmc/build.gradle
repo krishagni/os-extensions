@@ -1,0 +1,88 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.apache.tools.ant.taskdefs.condition.Os
+import static groovy.io.FileType.FILES
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+jar {
+  baseName = 'zos-wcmc'
+  version =  '5.2.0'
+
+  manifest {
+    attributes("os-plugin-name": "wcmc")
+  }
+  
+  doFirst {
+    from ('./src/main/webapp/app/') {
+      include '**/**'
+ 
+      into 'META-INF/resources/wcmc'
+    }
+  }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  ajc
+  aspects
+  aspectCompile
+
+  providedCompile
+
+  compile {
+    extendsFrom aspects
+  }
+}
+
+configurations.all {
+  transitive = false
+}
+
+sourceSets {
+  main.compileClasspath += configurations.providedCompile
+  test.compileClasspath += configurations.providedCompile
+  test.runtimeClasspath += configurations.providedCompile
+}
+
+idea {
+  module {
+    scopes.PROVIDED.plus += [configurations.providedCompile]
+  }
+}
+
+def springVersion = "3.2.13.RELEASE"
+
+sourceSets.main.compileClasspath += configurations.providedCompile
+sourceSets.test.compileClasspath += configurations.providedCompile
+sourceSets.test.runtimeClasspath += configurations.providedCompile
+
+compileJava {
+  doLast{
+    ant.taskdef(resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+      classpath: configurations.ajc.asPath)
+
+    ant.iajc(
+      source: 1.8, target: 1.8,
+      destDir: sourceSets.main.output.classesDir.absolutePath,
+      maxmem: "512m", fork: "true",
+      aspectPath: configurations.aspects.asPath,
+      sourceRootCopyFilter: "**/*.java",
+      classpath: "${configurations.compile.asPath};${configurations.providedCompile.asPath};${configurations.aspectCompile.asPath}") {
+      sourceroots {
+        sourceSets.main.java.srcDirs.each {
+          pathelement(location:it.absolutePath)
+        }
+      }
+    }
+  }
+}
+
+build.dependsOn jar
