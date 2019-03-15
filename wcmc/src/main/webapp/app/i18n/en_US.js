@@ -87,7 +87,7 @@
                   "specimen_catalog": "Click to view study specimens"
                 },
                 "buttons": {
-                  "register_n_collect": "Create Events"
+                  "register_n_collect": "Create Event"
                 }
     },
 
@@ -139,7 +139,7 @@
         "create_derivatives": "Create Derivative(s)",
         "cp": "Study",
         "ppid": "Registry ID",
-        "list": "Child Specimens",
+        "list": "Specimens",
         "qty": "Volume",
         "errors": {
 	        "visit_not_completed": "Please complete the event before collecting unplanned specimen",
