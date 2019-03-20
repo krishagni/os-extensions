@@ -140,10 +140,14 @@
         "cp": "Study",
         "ppid": "Registry ID",
         "list": "Specimens",
-        "qty": "Volume",
+        "qty": "Wt/Vol",
+        "initial_qty": "Wt/Vol",
+        "available_qty": "Available Wt/Vol",
+        "qty_per_aliquot": "Wt/Vol per Aliquot",
         "errors": {
 	        "visit_not_completed": "Please complete the event before collecting unplanned specimen",
-	        "select_same_visit_spmns": "Please select specimens of same event"
+	        "select_same_visit_spmns": "Please select specimens of same event",
+          "insufficient_qty": "Total Wt/Vol of aliquot(s) is more than the parent's Wt/Vol. Do you want to proceed?"
 	    },
       "tooltip": {
         "print": "Print IBC Codes"
@@ -219,9 +223,9 @@
           "cp_sop_doc_desc": "System level study SOP Document",
           "sys_cp_rpt_settings_desc": "System level study report settings. These settings are used when CP specific reporting settings are not specified",
           "sys_spmn_cp_rpt_settings_desc": "System level specimen centric study report settings. These settings are used when CP specific reporting settings are not specified. If this setting is also not specified then settings for regular CP reports is used",
-          "mrn_restriction_enabled_desc": "Restrict access to participants based on the user's site(s). By default all participants within a protocol are displayed."
-
-
+          "mrn_restriction_enabled_desc": "Restrict access to participants based on the user's site(s). By default all participants within a protocol are displayed.",
+          "mandatory_aliquot_qty": "Mandatory Aliquot Wt/Vol",
+          "mandatory_aliquot_qty_desc": "Enable to make aliquots Wt/Vol a mandatory field."
 	    },
       "administrative": {
          "allow_spmn_relabeling_desc": "Enable to allow editing of IBC Code when shipments are received.",
@@ -241,12 +245,21 @@
       "receiving_site": " Site",
        "distributing_sites": "Distributing Site(s)",
        "all_sites": "All current and future site(s)",
-       "dist_inst_pre_selected": "Distributing institution {{institution}} already selected in row {{rowNo}}"
+       "dist_inst_pre_selected": "Distributing institution {{institution}} already selected in row {{rowNo}}",
+       "distribution_order": {
+         "target_qty": "Target Wt/Vol",
+         "distributed_qty": "Distributed Wt/Vol",
+         "quantity_specimen": "Wt/Vol Per Specimen"
+       }
    },
     "srs":
     {
     "lbl_fmt_required_for_auto_print": "Pre-printing requires IBC Code format to be specified either at CP level or requirement level",
      "create_aliquots": "Create Aliquot(s)",
+     "initial_qty": "Wt/Vol",
+     "available_qty": "Available Wt/Vol",
+     "qty_per_aliquot": "Wt/Vol per Aliquot",
+     "qty": "Wt/Vol",
       "buttons": {
                 "create_aliquots": "Create Aliquot(s)",
                 "create_derivative": "Create Derivative(s)"
@@ -256,7 +269,7 @@
                  "create_derivatives": "Create Derivative(s)"
               },
       "errors": {
-                "insufficient_qty": "Insufficient parent requirement quantity to create aliquot(s)"
+                "insufficient_qty": "Insufficient parent requirement Wt/Vol to create aliquot(s)"
                 }
     },
 
@@ -278,7 +291,8 @@
   "create_aliquots": "Create Aliquot(s)",
   "create_derivatives": "Create Derivative(s)",
   "no_specimens_to_create_aliquots": "Please select at least one collected parent specimen to create aliquot(s)",
-  "ppid": "Registry ID"
+  "ppid": "Registry ID",
+  "quantity": "Wt/Vol"
 },
 "site":
 {
@@ -326,11 +340,19 @@
       "requestor": "Requester",
       "name": "Title",
       "sender_comments": "Comments",
+      "more_specimens_than_limit": "The order list has more specimens than allowed for editing details using UI. Please consider using bulk import option if you like to specify additional details (Wt/Vol, cost etc) of the specimens to be distributed.",
+      "return_qty": "Return Wt/Vol",
     "spec": {
     "cp": "Study",
     "label": "IBC Code",
+    "quantity": "Wt/Vol",
      "desc": "Specimen Type"
-  }
+  },
+  "errors": {
+      "insufficient_qty": "The distribution Wt/Vol of {{count}} {{ count == 1 ? 'specimen' : 'specimens' }} is more than the available Wt/Vol. Do you want to proceed?",
+      "no_qty_spmns_confirm": "The order contains {{spmnCount}} {{ spmnCount == 1 ? 'specimen' : 'specimens' }} with unspecified or zero available Wt/Vol. Do you want to proceed?",
+      "no_qty_spmns_msg": "The order contains one or more specimens with unspecified or zero available Wt/Vol"
+    }
 },
   "notifications": {
 "email_cp_expiring_notification_desc": "Send reminder emails when study is about to expire.",
@@ -377,11 +399,21 @@
  },
   "shipments": {
      "receiving_institute": "Institution",
-     "multi_site_specimens": "Can't ship specimens from multiple storage site(s)"
+     "multi_site_specimens": "Can't ship specimens from multiple storage site(s)",
+     "spec": {
+       "quantity": "Wt/Vol"
+     }
   },
   "common": {
     "buttons": {
        "submit": "Create"
     }
+  },
+  "form_errors": {
+    "specimenQty": "Invalid quantity",
+    "dist_qty_gt_avail_qty": "Distribution Wt/Vol greater than available",
+    "dist_qty_lt_zero": "Distribution Wt/Vol cannot be less than zero",
+    "ret_qty_gt_dist_qty": "Return Wt/Vol greater than distributed",
+    "ret_qty_le_zero": "Return Wt/Vol cannot be less than or equals zero"
   }
 }
