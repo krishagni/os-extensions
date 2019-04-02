@@ -1,0 +1,85 @@
+#macro(getMessage $code)$messageSource.getMessage($code, null, $locale)#end
+
+<object-schema>
+	<name>miamiSpecimen</name>
+	
+	<record digest="hashDigest">
+		<name>com.krishagni.openspecimen.umiami.SampleDetail</name>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_parent")</caption>
+			<attribute>parent</attribute>
+			<key>true</key>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_name")</caption>
+			<attribute>name</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_matrix_type")</caption>
+			<attribute>matrixType</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_amount")</caption>
+			<attribute>amount</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_local_ext_id")</caption>
+			<attribute>localExtId</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_depleted")</caption>
+			<attribute>depleted</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_conc_by_nano")</caption>
+			<attribute>concByNano</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_conc_by_nano_unit")</caption>
+			<attribute>concByNanoUnit</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_conc_by_other")</caption>
+			<attribute>concByOther</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_conc_by_other_unit")</caption>
+			<attribute>concByOtherUnit</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_conc_by_qubit")</caption>
+			<attribute>concByQubit</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_conc_by_qubit_unit")</caption>
+			<attribute>concByQubitUnit</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_qubit_method")</caption>
+			<attribute>qubitMethod</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_avg_260_280")</caption>
+			<attribute>avg260280</attribute>
+		</field>
+		
+		<field>
+			<caption>#getMessage("miami_specimen_processing_comments")</caption>
+			<attribute>processingComments</attribute>
+		</field>
+	</record>
+</object-schema>
