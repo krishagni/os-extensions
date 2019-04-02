@@ -11,9 +11,9 @@
         "sop_document_file": "ICF Template",
         "store_sprs": "SPRs",
         "anticipated_participant_count": "# Participants",
-        "visit_name_fmt": "Event Name Format",
+        "visit_name_fmt": "Event IBC Code Format",
         "on_visit_completion": "On Event Completion",
-        "visit_names": "Event Names",
+        "visit_names": "Event IBC Codes",
         "visit_print_settings": "Event Print Settings",
         "sop_document": "SOP Document",
         "sop_document_url": "SOP Document URL",
@@ -73,18 +73,27 @@
 
     "participant": {
     	"register_participant": "Create Participant",
+      "id": "MRN / Additional MRN / NIN",
         "visits_count": "Events",
         "spmn_label_or_barcode": "IBC Code / Barcode",
         "collection_protocol": "Study",
         "ppid": "Registry ID",
         "protocol_id": "Registry ID",
         "ppids": "Registry IDs",
+        "birth_date": "DOB",
         "ppids_csv": "Comma separated list of Registry IDs",
+        "mrn": "Additional MRN",
+        "mrn_short": "Additional MRN",
+        "mpi": "MRN",
         "menu" : {
         	"visits": "Events"
         },
         "tooltip": {
                   "specimen_catalog": "Click to view study specimens"
+                },
+                "matching_attr": {
+                  "empi": "MRN",
+                  "pmi": "Additional MRN"
                 },
                 "buttons": {
                   "register_n_collect": "Create Event"
@@ -102,8 +111,8 @@
         "anticipated_visits": "Pending Events",
         "missed_or_not_collected_visits": "Missed/Not Collected Events",
         "visit_status": "Status",
-        "visit_date": "Event Date",
-        "anticipated_visit_date": "Anticipated Event Date",
+        "visit_date": "Procedure Date",
+        "anticipated_visit_date": "Anticipated Procedure Date",
         "visit_site": "Event Site",
         "reason_for_missed_visit": "Reason",
         "unplanned_visit": "Unplanned Event",
@@ -127,8 +136,8 @@
 
     "specimens": {
         "visit_details": "Event Details",
-        "visit_name": "Event Name",
-        "visit_date": "Event Date",
+        "visit_name": "Event IBC Code",
+        "visit_date": "Procedure Date",
         "visit_site": "Event Site",
         "labels_csv": "Comma separated list of IBC Codes",
         "labels_print_job_created": "IBC Codes print job {{jobId}} created successfully",
@@ -140,10 +149,15 @@
         "cp": "Study",
         "ppid": "Registry ID",
         "list": "Specimens",
+        "parent_type": "Parent Specimen Type",
         "qty": "Wt/Vol",
         "initial_qty": "Wt/Vol",
         "available_qty": "Available Wt/Vol",
         "qty_per_aliquot": "Wt/Vol per Aliquot",
+        "type": "Specimen Type",
+        "storage_location": "Location",
+        "biohazards": "Infectious Disease",
+        "count": "# Duplicate(s)",
         "errors": {
 	        "visit_not_completed": "Please complete the event before collecting unplanned specimen",
 	        "select_same_visit_spmns": "Please select specimens of same event",
@@ -186,7 +200,8 @@
         "collection_protocol_registration": "Study Registration",
         "participant_reg": "Study Registration",
         "cp_extension": "Study Custom Fields",
-        "institute": "Institution"
+        "institute": "Institution",
+        "medical_record_number": "Additional MRN"
     },
 
     "bulk_imports": {
@@ -236,7 +251,6 @@
     	"irb_id": "IRB #",
     	"date": "",
     	"coordinators": "Study Coordinator(s)",
-    	"label_fmt": "Study Code",
     	"custom_fields_form": "Custom Fields",
     	"order_report_query": "Query Report",
     	"distributing_sites": "Distribution",
@@ -260,6 +274,7 @@
      "available_qty": "Available Wt/Vol",
      "qty_per_aliquot": "Wt/Vol per Aliquot",
      "qty": "Wt/Vol",
+     "type": "Specimen Type",
       "buttons": {
                 "create_aliquots": "Create Aliquot(s)",
                 "create_derivative": "Create Derivative(s)"
@@ -292,7 +307,8 @@
   "create_derivatives": "Create Derivative(s)",
   "no_specimens_to_create_aliquots": "Please select at least one collected parent specimen to create aliquot(s)",
   "ppid": "Registry ID",
-  "quantity": "Wt/Vol"
+  "quantity": "Wt/Vol",
+  "type": "Specimen Type"
 },
 "site":
 {
