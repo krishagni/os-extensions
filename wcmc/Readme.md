@@ -7,8 +7,7 @@ This plugin code is used to rename the OpenSpecimen core fields.
 Eg: Rename 'Collection Protocol' to 'Studies', Institute to 'Institution', etc.
 
 2. Workflow Files(JSON)
-In OpenSpecimen, the user is able to set the workflow at the system and specific study level.
-The Study specific workflow file is set on test, dev and prod environment for 'Center for Advanced Digestive Disorders'.
+In OpenSpecimen, the super admin or site admin can configure UI screen layout (known as 'workflow') at the system or at specific study level. The study specific workflow file is set on test, dev and prod environment.
 
 Steps to download the Study Level workflow JOSN.
 
