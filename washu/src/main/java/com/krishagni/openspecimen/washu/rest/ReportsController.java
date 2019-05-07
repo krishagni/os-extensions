@@ -1,5 +1,6 @@
 package com.krishagni.openspecimen.washu.rest;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,21 @@ public class ReportsController {
 	@ResponseBody
 	public QueryDataExportResult exportOrderReport(@RequestParam(value = "orderId") Long orderId) {
 		return response(rptsGenerator.exportOrderReport(request(new EntityQueryCriteria(orderId))));
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value="/request-report")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public QueryDataExportResult exportRequestReport(
+		@RequestParam(value = "requestId")
+		Long requestId,
+
+		@RequestParam(value = "specimenId", required = false)
+		List<Long> specimenIds) {
+
+		EntityQueryCriteria crit = new EntityQueryCriteria(requestId);
+		crit.setParams(Collections.singletonMap("specimenIds", specimenIds));
+		return response(rptsGenerator.exportRequestReport(request(crit)));
 	}
 
 	private <T> RequestEvent<T> request(T payload) {

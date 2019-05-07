@@ -10,4 +10,6 @@ public interface ReportGenerator {
 	ResponseEvent<QueryDataExportResult> exportWorkingSpecimensReport(RequestEvent<SpecimenListCriteria> req);
 
 	ResponseEvent<QueryDataExportResult> exportOrderReport(RequestEvent<EntityQueryCriteria> req);
+
+	ResponseEvent<QueryDataExportResult> exportRequestReport(RequestEvent<EntityQueryCriteria> req);
 }

@@ -13,6 +13,11 @@ angular.module('os.plugins.washu', [])
           'more-menu': {
             template: 'plugin-ui-resources/washu/working-order-report.html'
           }
+        },
+        'tracker-request-specimens': {
+          'page-header': {
+            template: 'plugin-ui-resources/washu/working-request-report.html'
+          }
         }
       }
     );

@@ -3,10 +3,11 @@ package com.krishagni.openspecimen.washu.services.impl;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -26,9 +27,11 @@ import com.krishagni.catissueplus.core.administrative.domain.DpDistributionSite;
 import com.krishagni.catissueplus.core.administrative.domain.factory.DistributionOrderErrorCode;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.biospecimen.repository.SpecimenListCriteria;
+import com.krishagni.catissueplus.core.biospecimen.repository.impl.BiospecimenDaoHelper;
 import com.krishagni.catissueplus.core.biospecimen.services.SpecimenListService;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.access.AccessCtrlMgr;
+import com.krishagni.catissueplus.core.common.access.SiteCpPair;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.common.events.EntityQueryCriteria;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
@@ -41,6 +44,7 @@ import com.krishagni.catissueplus.core.de.domain.SavedQuery;
 import com.krishagni.catissueplus.core.de.events.ExecuteQueryEventOp;
 import com.krishagni.catissueplus.core.de.events.QueryDataExportResult;
 import com.krishagni.catissueplus.core.de.services.QueryService;
+import com.krishagni.catissueplus.core.de.services.SavedQueryErrorCode;
 import com.krishagni.openspecimen.washu.services.ReportGenerator;
 
 import edu.common.dynamicextensions.query.QueryResultData;
@@ -110,6 +114,51 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			queryOp.setRunType("Export");
 
 			return ResponseEvent.response(querySvc.exportQueryData(queryOp, exportOrderReportToXlsxFn(order)));
+		} catch (OpenSpecimenException ose) {
+			return ResponseEvent.error(ose);
+		} catch (Exception e) {
+			return ResponseEvent.serverError(e);
+		}
+	}
+
+	@Override
+	@PlusTransactional
+	public ResponseEvent<QueryDataExportResult> exportRequestReport(RequestEvent<EntityQueryCriteria> req) {
+		try {
+			Integer queryId = ConfigUtil.getInstance().getIntSetting("common", "cart_specimens_rpt_query", -1);
+			if (queryId == -1) {
+				return null;
+			}
+
+			SavedQuery query = deDaoFactory.getSavedQueryDao().getQuery(queryId.longValue());
+			if (query == null) {
+				throw OpenSpecimenException.userError(SavedQueryErrorCode.NOT_FOUND, queryId);
+			}
+
+			EntityQueryCriteria crit = req.getPayload();
+			String restriction = "Specimen.tkRequests.id = " + crit.getId();
+			List<Long> specimenIds = null;
+			if (crit.getParams() != null) {
+				specimenIds = (List<Long>) crit.getParams().get("specimenIds");
+			}
+
+			if (specimenIds != null && !specimenIds.isEmpty()) {
+				restriction += " and Specimen.id in (" + StringUtils.join(specimenIds, ",") + ")";
+			}
+
+			List<SiteCpPair> siteCps = AccessCtrlMgr.getInstance().getReadAccessSpecimenSiteCps();
+			String siteCpRestriction = BiospecimenDaoHelper.getInstance().getSiteCpsCondAql(
+				siteCps, AccessCtrlMgr.getInstance().isAccessRestrictedBasedOnMrn());
+			if (StringUtils.isNotBlank(siteCpRestriction)) {
+				restriction += " and " + siteCpRestriction;
+			}
+
+			ExecuteQueryEventOp op = new ExecuteQueryEventOp();
+			op.setDrivingForm("Participant");
+			op.setAql(query.getAql(restriction));
+			op.setWideRowMode(WideRowMode.DEEP.name());
+			op.setRunType("Export");
+			return ResponseEvent.response(querySvc.exportQueryData(op, this::exportSpecimenListToXlsx));
 		} catch (OpenSpecimenException ose) {
 			return ResponseEvent.error(ose);
 		} catch (Exception e) {
