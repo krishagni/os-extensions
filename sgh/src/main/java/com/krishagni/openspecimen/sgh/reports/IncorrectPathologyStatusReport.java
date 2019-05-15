@@ -121,10 +121,10 @@ public class IncorrectPathologyStatusReport implements ScheduledTask {
 			throws HibernateException, ParseException {
 		return sessionFactory.getCurrentSession()
 				.createSQLQuery(INCORRECT_PATH_STATUS_SPECIMEN)
-				.setParameter(1, prefix)
-				.setParameter(2, prefix)
-				.setParameter(3, startDate)
-				.setParameter(4, endDate)
+				.setParameter("prefix", prefix)
+				.setParameter("prefix", prefix)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
 				.list();
 	}
 	
@@ -147,15 +147,15 @@ public class IncorrectPathologyStatusReport implements ScheduledTask {
             "      left join catissue_coll_prot_reg cpr on cpr.identifier = visit.collection_protocol_reg_id " + 
             "      left join catissue_collection_protocol cp on cp.identifier = cpr.collection_protocol_id " + 
             "    where " +
-            "      spec.activity_status != 'Disabled' and spec.lineage = 'New' and spec.label like ? " + 
+            "      spec.activity_status != 'Disabled' and spec.lineage = 'New' and spec.label like :prefix " + 
             "    group by " +
             "      cp.short_title, visit.name, visit.identifier " + 
             "    having " +
             "      count(distinct spec.pathological_status) > 1 " + 
             "  ) vis on vis.identifier = spec.specimen_collection_group_id " + 
             "where " +
-            "  spec.label like ? " +
-            "  and vis.collection_timestamp between concat(?, ' 00:00:00') and concat(?, ' 23:59:59') " +
+            "  spec.label like :prefix " +
+            "  and vis.collection_timestamp between concat(:startDate, ' 00:00:00') and concat(:endDate, ' 23:59:59') " +
             "order by " + 
             "  spec.label ";
 }
