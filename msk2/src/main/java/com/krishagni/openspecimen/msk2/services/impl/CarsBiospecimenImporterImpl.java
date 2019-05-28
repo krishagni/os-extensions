@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolEvent;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolRegistration;
@@ -128,7 +129,8 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, Ini
 	@Override
 	public String process(MessageLog log) {
 		try {
-			CarsBiospecimenDetail input = new ObjectMapper().readValue(log.getMessage(), CarsBiospecimenDetail.class);
+			ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			CarsBiospecimenDetail input = mapper.readValue(log.getMessage(), CarsBiospecimenDetail.class);
 			Long recordId = importBiospecimen(log, input);
 			return recordId != null ? recordId.toString() : null;
 		} catch (Exception e) {
@@ -340,7 +342,7 @@ public class CarsBiospecimenImporterImpl implements CarsBiospecimenImporter, Ini
 	}
 
 	private String getExtSpecimenId(CarsBiospecimenDetail detail, TimepointDetail timepoint, CollectionDetail coll) {
-		return getExtVisitId(detail, timepoint) + "-" + coll.getId().toLowerCase();
+		return getExtVisitId(detail, timepoint) + "-" + coll.getName().toLowerCase();
 	}
 
 	private void saveExtId(Class<?> klass, String extId, Long osId) {

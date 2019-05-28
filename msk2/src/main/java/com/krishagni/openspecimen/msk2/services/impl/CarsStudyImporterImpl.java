@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.krishagni.catissueplus.core.administrative.domain.Institute;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.administrative.domain.User;
 import com.krishagni.catissueplus.core.administrative.events.UserDetail;
@@ -169,6 +170,8 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 	}
 
 	private void updateCp0(CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
+		addNewSites(existingCp, inputStudy);
+		
 		boolean piChanged = !existingCp.getPrincipalInvestigator()
 			.getEmailAddress().equalsIgnoreCase(inputStudy.getPiAddress());
 
@@ -183,6 +186,19 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 		UserSummary pi = new UserSummary();
 		pi.setId(piId);
 		cpDetail.setPrincipalInvestigator(pi);
+		response(cpSvc.updateCollectionProtocol(request(cpDetail)), inputStudy);
+	}
+	
+	private void addNewSites(CollectionProtocol existingCp, CarsStudyDetail inputStudy) {
+		List<Site> sites = daoFactory.getSiteDao().getSites(new SiteListCriteria().institute(DEF_INSTITUTE));
+		if (existingCp.getRepositories().containsAll(sites)) {
+		  // all sites are present in CP sites list
+		  return;
+		}
+
+		inputStudy.setUpdated(true);
+		CollectionProtocolDetail cpDetail = CollectionProtocolDetail.from(existingCp);
+		cpDetail.setCpSites(getCpSites(sites));
 		response(cpSvc.updateCollectionProtocol(request(cpDetail)), inputStudy);
 	}
 
@@ -333,6 +349,10 @@ public class CarsStudyImporterImpl implements CarsStudyImporter {
 
 	private List<CollectionProtocolSiteDetail> getCpSites() {
 		List<Site> sites = daoFactory.getSiteDao().getSites(new SiteListCriteria().institute(DEF_INSTITUTE));
+		return getCpSites(sites);
+	}
+
+	private List<CollectionProtocolSiteDetail> getCpSites(List<Site> sites) {
 		return sites.stream().map(site -> {
 			CollectionProtocolSiteDetail cpSite = new CollectionProtocolSiteDetail();
 			cpSite.setSiteName(site.getName());

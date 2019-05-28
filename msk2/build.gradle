@@ -13,6 +13,14 @@ jar {
   manifest {
     attributes("os-plugin-name": "msk2")
   }
+  
+  doFirst {
+    from ('./src/main/webapp/app/') {
+      include '**/**'
+ 
+      into 'META-INF/resources/msk2'
+    }
+  }
 }
 
 sourceCompatibility = 1.8

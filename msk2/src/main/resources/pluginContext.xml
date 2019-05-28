@@ -9,7 +9,9 @@
     <property name="changeLog" value="classpath:msk2/db/changelog-master.xml"/>
   </bean>
 
-  <bean class="com.krishagni.openspecimen.msk2.PluginInitializer"/>
+  <bean class="com.krishagni.openspecimen.msk2.PluginInitializer">
+    <property name="labelTokensRegistrar" ref="specimenPrintLabelTokensRegistrar"/>
+  </bean>
 
   <bean id="msk2StudyImporter" class="com.krishagni.openspecimen.msk2.services.impl.CarsStudyImporterImpl">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>

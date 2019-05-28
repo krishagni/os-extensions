@@ -80,9 +80,9 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 					study = new CarsStudyDetail();
 					study.setIrbNumber(rs.getString("irbnumber"));
 					study.setFacility(rs.getString("facility"));
-					study.setPiAddress(rs.getString("email"));
-					study.setPiFirst(rs.getString("piFirst"));
-					study.setPiLast(rs.getString("piLast"));
+					study.setPiAddress(rs.getString("email").trim());
+					study.setPiFirst("FirstName");
+					study.setPiLast("LastName");
 				}
 
 				String timepointKey = rs.getString("cyclename") + " " + rs.getString("timepointname");
@@ -109,8 +109,6 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 			timepoint.setId(rs.getString("timepointid2"));
 			timepoint.setCycle(rs.getString("cyclename"));
 			timepoint.setName(rs.getString("timepointname"));
-			timepoint.setCreationTime(rs.getTimestamp("timepoint_cr_date"));
-			timepoint.setUpdateTime(rs.getTimestamp("timepoint_update"));
 			return timepoint;
 		}
 
@@ -121,8 +119,6 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 			collection.setName(rs.getString("procedurename"));
 			collection.setType(rs.getString("specimentype"));
 			collection.setContainer(rs.getString("collectioncontainer"));
-			collection.setCreationTime(rs.getTimestamp("procedure_cr_date"));
-			collection.setUpdateTime(rs.getTimestamp("procedure_update"));
 			return collection;
 		}
 	}
@@ -131,13 +127,10 @@ public class CarsStudyReaderImpl implements CarsStudyReader {
 
 	private static final String GET_STUDY_DETAILS =
 		"select" +
-		"  irbnumber, email, pifirst, pilast, cyclename, timepointname, procedurename, facility, " +
-		"  collectiontypename, comments, specimentype, collectioncontainer, pvpid2, timepointid2, " +
-		"  timepoint_cr_date, timepoint_update, procedure_cr_date, procedure_update " +
+		"  irbnumber, email, cyclename, timepointname, procedurename, facility, " +
+		"  collectiontypename, comments, specimentype, collectioncontainer, pvpid2, timepointid2 " +
 		"from " +
 		"  openspecimen.vw_os_coll_prot " + 
 		"where " +
-		"  irbnumber = ? " +
-		"order by " +
-		"  timepoint_cr_date, procedure_cr_date"; // assuming these date fields rather than string fields
+		"  irbnumber = ? ";
 }

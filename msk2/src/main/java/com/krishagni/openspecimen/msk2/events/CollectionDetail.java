@@ -2,7 +2,13 @@ package com.krishagni.openspecimen.msk2.events;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class CollectionDetail extends ImportLogDetail {
+	private static final String TISSUE = "Tissue";
+
+	private static final String TISSUE_T = "Tissue (T)";
+
 	private String id;
 
 	private String name;
@@ -42,7 +48,7 @@ public class CollectionDetail extends ImportLogDetail {
 	}
 
 	public void setType(String type) {
-		this.type = type;
+		this.type = TISSUE.equals(type) ? TISSUE_T : type;
 	}
 
 	public String getContainer() {

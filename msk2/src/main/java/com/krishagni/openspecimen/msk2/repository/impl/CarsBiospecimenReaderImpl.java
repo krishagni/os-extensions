@@ -2,9 +2,12 @@ package com.krishagni.openspecimen.msk2.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,6 +17,11 @@ import java.util.Set;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import com.krishagni.catissueplus.core.common.Pair;
@@ -36,6 +44,7 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 	public CarsBiospecimenReaderImpl(String url, String username, String password, Date updatedAfter) {
 		dataSource   = new SingleConnectionDataSource(url, username, password, false);
 		jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.setResultsMapCaseInsensitive(true);
 		this.updatedAfter = updatedAfter;
 	}
 	
@@ -65,55 +74,69 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 		String query;
 		if (updatedAfter != null) {
-			query = String.format(GET_PATIENT_IDS_SQL, "where kitprepdate > ?");
+			query = String.format(GET_PATIENT_IDS_SQL, "where updateddate > ? or kitprepdate > ?");
+			params.add(updatedAfter);
 			params.add(updatedAfter);
 		} else {
 			query = String.format(GET_PATIENT_IDS_SQL, "");
 		}
 
-		return jdbcTemplate.query( query, params.toArray(new Date[0]), new ResultSetExtractor<List<Pair<String, String>>>() { 
-			@Override 
-			public List<Pair<String, String>> extractData(ResultSet rs) 
-			throws SQLException, DataAccessException { 
-				Set<Pair<String, String>> patientIds = new LinkedHashSet<>(); 
-				while (rs.next()) { 
-					patientIds.add(Pair.make(rs.getString("irbnumber"), rs.getString("patientsystemid"))); 
-				} 
-				return new ArrayList<>(patientIds); 
+		return jdbcTemplate.query(
+			query,
+			params.toArray(new Date[0]),
+			new ResultSetExtractor<List<Pair<String, String>>>() {
+				@Override
+				public List<Pair<String, String>> extractData(ResultSet rs)
+				throws SQLException, DataAccessException {
+					Set<Pair<String, String>> patientIds = new LinkedHashSet<>();
+					while (rs.next()) {
+						patientIds.add(Pair.make(rs.getString("irbnumber"), rs.getString("patientsystemid")));
+					}
+
+					return new ArrayList<>(patientIds);
+				}
 			}
-		});
+		);
 	}
 	
 	private CarsBiospecimenDetail getParticipant(String irbNumber, String patientId, Date updatedAfter) {
-		List<Object> params = new ArrayList<>();
-		params.add(irbNumber);
-		params.add(patientId);
+		Map<String,Object> params = new HashMap<>();
+		params.put("IRBNUM", irbNumber);
+		params.put("PATIENT_SYSTEMID", patientId);
+		params.put("JOBLASTRUN", (updatedAfter != null ? updatedAfter : getDefaultDate()));
 
-		String query;
-		if (updatedAfter != null) {
-			query = String.format(GET_PARTICIPANTS_SQL, "and kitprepdate > ?");
-			params.add(updatedAfter);
-		} else {
-			query = String.format(GET_PARTICIPANTS_SQL, "");
-		}
+		SimpleJdbcCall proc = new SimpleJdbcCall(jdbcTemplate)
+			.withProcedureName("openspecimen.xavier_proc_get_requested_collections_v")
+			.withoutProcedureColumnMetaDataAccess()
+			.returningResultSet("rows", new ParticipantDetailMapper());
 
-		return jdbcTemplate.query(query, params.toArray(new Object[0]), new ParticipantDetailExtractor());
+		proc.addDeclaredParameter(new SqlParameter("IRBNUM", Types.VARCHAR));
+		proc.addDeclaredParameter(new SqlParameter("PATIENT_SYSTEMID", Types.VARCHAR));
+		proc.addDeclaredParameter(new SqlParameter("JOBLASTRUN", Types.TIMESTAMP));
+
+		SqlParameterSource in = new MapSqlParameterSource(params);
+		List<CarsBiospecimenDetail> detailObject = (List) proc.execute(in).get("rows");
+		return detailObject.get(0);
 	}
 	
-	private class ParticipantDetailExtractor implements ResultSetExtractor<CarsBiospecimenDetail> {
+	private class ParticipantDetailMapper implements RowMapper<CarsBiospecimenDetail> {
+
 		@Override
-		public CarsBiospecimenDetail extractData(ResultSet rs)
-		throws SQLException, DataAccessException {
+		public CarsBiospecimenDetail mapRow(ResultSet rs, int rowNum) 
+		throws SQLException {
 			CarsBiospecimenDetail participant = null;
 			Map<String, TimepointDetail> timepoints = new LinkedHashMap<>();
 			Map<String, CollectionDetail> collections = new LinkedHashMap<>();
 
-			while (rs.next()) {
+			boolean hasRow = true;
+
+			while (hasRow) {
 				participant = new CarsBiospecimenDetail();
 				participant.setPatientId(rs.getString("patientsystemid"));
 				participant.setIrbNumber(rs.getString("irbnumber"));
-				participant.setPatientStudyId(rs.getString("patientstudyid"));
-				participant.setFacility(rs.getString("facility"));
+				String patientStudyId = rs.getString("patientstudyid");
+				participant.setPatientStudyId("NOT_ENTERED".equalsIgnoreCase(patientStudyId) ? null : patientStudyId);
+				participant.setFacility(getString(rs, "facility"));
 				participant.setFirstName(rs.getString("firstname"));
 				participant.setLastName(rs.getString("lastname"));
 				participant.setMiddleName(rs.getString("middlename"));
@@ -122,26 +145,29 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 				String timepointId = rs.getString("timepointid2");
 				TimepointDetail timepoint = timepoints.computeIfAbsent(timepointId, (k) -> new TimepointDetail());
-				timepoint.setId(rs.getString("timepointid2"));
+				timepoint.setId(timepointId);
 				timepoint.setName(rs.getString("collectionrequestbasketid"));
 				timepoint.setCreationTime(rs.getDate("startdate"));
 
 				String collectionId = rs.getString("pvpid2");
-				CollectionDetail collection = collections.get(timepointId + "-" + collectionId);
+				String spmnName = rs.getString("collectionrequestbasketentriesid");
+				CollectionDetail collection = collections.get(rs.getString("irbnumber") + "-" + spmnName);
 				if (collection == null) {
 					collection = new CollectionDetail();
 					collection.setId(collectionId);
 					timepoint.getCollections().add(collection);
-					collections.put(timepointId + "-" + collectionId, collection);
+					collections.put(rs.getString("irbnumber") + "-" + spmnName, collection);
 				}
 
-				collection.setName(rs.getString("collectionrequestbasketentriesid"));
+				collection.setName(spmnName);
 				collection.setCreationTime(getCollectionTime(timepoint.getCreationTime(), rs.getString("time")));
 				collection.setComments(rs.getString("notes"));
 				collection.setProcessed(rs.getInt("processed"));
 				collection.setShipped(rs.getInt("shipped"));
 
-				participant.setLastUpdated(rs.getTimestamp("kitprepdate"));
+				participant.setLastUpdated(rs.getTimestamp("updateddate"));
+
+				hasRow = rs.next();
 			}
 
 			if (participant != null) {
@@ -150,6 +176,15 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 
 			return participant;
 		}
+	}
+	
+	private Date getDefaultDate() {
+		return new GregorianCalendar(1900, 0, 1).getTime();
+	}
+
+	private String getString(ResultSet rs, String columnName) throws SQLException {
+		String result = rs.getString(columnName);
+		return result != null ? result.trim() : null;
 	}
 
 	private Date getCollectionTime(Date visitDate, String time) {
@@ -183,24 +218,8 @@ public class CarsBiospecimenReaderImpl implements CarsBiospecimenReader {
 		"select " + 
 		"  irbnumber, patientsystemid " +
 		"from " + 
-		"  openspecimen.xavier_view_get_requested_collections_v ip " +
+		"  openspecimen.xavier_refresh_get_requested_collections_v_t ip " +
 		"  %s	" +
 		"order by " + 
-		"  kitprepdate";
-	
-	private final static String GET_PARTICIPANTS_SQL =
-		"select " +
-		"  patientsystemid, irbnumber, patientstudyid, facility, " +
-		"  firstname, lastname, middlename, dob, patientmrn, " +
-		"  timepointid2, collectionrequestbasketid, startdate, " +
-		"  collectionrequestbasketentriesid, time, notes, processed, shipped, " +
-		"  kitprepdate, pvpid2 " +
-		"from " +
-		"  openspecimen.xavier_view_get_requested_collections_v " +
-		"where " +
-		"  irbnumber = ? and " +
-		"  patientsystemid = ? " +
-		"  %s " +
-		"order by " +
-		"  kitprepdate";
+		"  updateddate";
 }
