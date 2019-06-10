@@ -43,11 +43,17 @@ public class IncorrectPathologyStatusReport implements ScheduledTask {
 	
 	private static final String OUTPUT_DATE_FORMAT = "yyyy-mm-dd";
 
+	private static final String ENDING_WITH_B_INT_REGEX = ".*(B([0-9]*)?)$";
+
+	private static final String ENDING_WITH_T_REGEX = ".*T$";
+
+	private static final String ENDING_WITH_N_REGEX = ".*N$";
+
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
 		try {
-			specLabelPrefix.addAll(Arrays.asList("%T", "%N"));
+			specLabelPrefix.addAll(Arrays.asList(ENDING_WITH_T_REGEX, ENDING_WITH_N_REGEX, ENDING_WITH_B_INT_REGEX));
 			
 			if (StringUtils.isNotEmpty(jobRun.getRtArgs())) { 
 				dates = jobRun.getRtArgs().split(" ");
@@ -147,14 +153,14 @@ public class IncorrectPathologyStatusReport implements ScheduledTask {
             "      left join catissue_coll_prot_reg cpr on cpr.identifier = visit.collection_protocol_reg_id " + 
             "      left join catissue_collection_protocol cp on cp.identifier = cpr.collection_protocol_id " + 
             "    where " +
-            "      spec.activity_status != 'Disabled' and spec.lineage = 'New' and spec.label like :prefix " + 
+            "      spec.activity_status != 'Disabled' and spec.lineage = 'New' and spec.label regexp :prefix " + 
             "    group by " +
             "      cp.short_title, visit.name, visit.identifier " + 
             "    having " +
             "      count(distinct spec.pathological_status) > 1 " + 
             "  ) vis on vis.identifier = spec.specimen_collection_group_id " + 
             "where " +
-            "  spec.label like :prefix " +
+            "  spec.label regexp :prefix " +
             "  and vis.collection_timestamp between concat(:startDate, ' 00:00:00') and concat(:endDate, ' 23:59:59') " +
             "order by " + 
             "  spec.label ";
