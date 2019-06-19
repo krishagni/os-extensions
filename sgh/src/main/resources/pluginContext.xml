@@ -46,6 +46,9 @@
     <property name="cfgSvc" ref="cfgSvc"/>
   </bean-->
   
+  <bean id="outputCsvFileSvc" class="com.krishagni.openspecimen.sgh.services.impl.OutputCsvFileServiceImpl">
+  </bean>
+
   <bean id="tridPrintSvc" class="com.krishagni.openspecimen.sgh.services.impl.TridPrintSvcImpl">
     <property name="cfgSvc" ref="cfgSvc"/>
     <property name="tridGenerator" ref="tridGenerator"/>
