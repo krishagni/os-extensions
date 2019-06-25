@@ -2,34 +2,21 @@ package com.krishagni.openspecimen.sgh.reports;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
-import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.openspecimen.sgh.report.processor.CustomCsvReportProcessor;
-import com.krishagni.openspecimen.sgh.services.OutputCsvFileService;
 
 @Configurable
 public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor implements ScheduledTask {
-	@Autowired
-	private OutputCsvFileService opCsvFileSvc;
-	
-	@Autowired
-	private DaoFactory daoFactory;
-	
-	private static final Log logger = LogFactory.getLog(IncorrectTissueSiteReport2.class);
-	
 	private static final String SG_REPORT_DIR = "os_report";
 	
 	private static final String INPUT_DATE_FORMAT = "dd-mm-yyyy";
@@ -39,38 +26,36 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		try {
-			String[] dates = {"", ""};
-			dates = getRtArgs(jobRun).split(" ");
-			
-			String file = initFile(getFileName(), SG_REPORT_DIR);
-			opCsvFileSvc.initCsvWriter(file);
-			opCsvFileSvc.writeNext(Arrays.asList(getHeader(dates)));
-			
-			List<Object[]> resultSet = executeQuery(QUERY, getParams(dates));
-			resultSet.forEach(rs -> {
-				opCsvFileSvc.writeNext(Arrays.asList(rs));
-				opCsvFileSvc.incrementResultSize();
-			});
-			
-			opCsvFileSvc.writeNext(Arrays.asList(System.lineSeparator()));
-			opCsvFileSvc.writeNext(Arrays.asList(new String[]{"Total number of incorrect record: " + opCsvFileSvc.getResultSize()}));
-			
-			jobRun.setLogFilePath(file);
-			daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
-		} catch (Exception e) {
-			logger.error("Error occurred while generating 'Incorrect Tissue Site and Side Report'", e);
-		} finally {
-			opCsvFileSvc.closeWriter();
-		}
+		String fileName = getFileName();
+
+		String[] dates = getRtArgs(jobRun).split(" ");
+		String[] header = getHeader(dates);
+
+		Map<String, List<Map<String, Object>>> queriesAndParams = getQueriesAndParamsMap(QUERY, dates);
+
+		super.process(jobRun, fileName, SG_REPORT_DIR, header, queriesAndParams);
 	}
 
-	private Map<String, Object> getParams(String[] dates) throws ParseException {
+	private String getRtArgs(ScheduledJobRun jobRun) {
+		String rtArgs = jobRun.getRtArgs();
+		if (rtArgs != null && !rtArgs.isEmpty()) {
+			return rtArgs;
+		}
+		return null;
+	}
+
+	private Map<String, List<Map<String, Object>>> getQueriesAndParamsMap(String query, String[] dates) throws ParseException {
 		Map<String, Object> params = new HashMap<>();
 		params.put("startDate", parseInputDate(dates[0]));
 		params.put("endDate", parseInputDate(dates[1]));
 		
-		return params;
+		List<Map<String,Object>> paramList = new ArrayList<>();
+		paramList.add(params);
+
+		Map<String, List<Map<String, Object>>> queriesAndParams = new HashMap<>();
+		queriesAndParams.put(query, paramList);
+
+		return queriesAndParams;
 	}
 
 	private String[] getHeader(String[] dates) throws ParseException {
@@ -86,6 +71,10 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 	private String getFileName() {
 		return "Incorrect_tissue_site_and_side_" + Calendar.getInstance().getTimeInMillis() + ".csv";
 	}
+
+//	private Date parseInputDate(String date) throws ParseException {
+//		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
+//	}
 
 	private String parseInputDate(String date) throws ParseException {
 		SimpleDateFormat inputFormat = new SimpleDateFormat(INPUT_DATE_FORMAT);
@@ -124,7 +113,7 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 			"  spmn.label is not null and " +
 			"  spmn.collection_status = 'Collected' and " +
 			"  spmn.activity_status = 'Active' and " +
-			"  s.collection_timestamp between concat(:startDate , ' 00:00:00' ) and concat(:endDate, ' 23:59:59' ) " + 
+			"  s.collection_timestamp between concat( :startDate , ' 00:00:00' ) and concat( :endDate , ' 23:59:59' ) " + 
 			"order by " +
 			"  spmn.label "; 
 

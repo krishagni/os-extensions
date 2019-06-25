@@ -9,31 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
-import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.openspecimen.sgh.report.processor.CustomCsvReportProcessor;
-import com.krishagni.openspecimen.sgh.services.OutputCsvFileService;
 
 @Configurable
 public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor implements ScheduledTask {
-	@Autowired
-	private OutputCsvFileService opCsvFileSvc;
-	
-	@Autowired
-	private DaoFactory daoFactory;
-	
-	private List<String> specLabelPrefix = new ArrayList<>();
-	
-	private String[] dates = new String[] {"", ""};
-	
-	private static final Log logger = LogFactory.getLog(IncorrectPathologyStatusReport2.class);
+	private List<String> specLabelPrefix = new ArrayList<>(Arrays.asList(ENDING_WITH_T_REGEX, ENDING_WITH_N_REGEX, ENDING_WITH_B_INT_REGEX));
 	
 	private static final String SG_REPORT_DIR = "os_report";
 	
@@ -50,53 +35,48 @@ public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor im
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		try {
-			specLabelPrefix.addAll(Arrays.asList(ENDING_WITH_T_REGEX, ENDING_WITH_N_REGEX, ENDING_WITH_B_INT_REGEX));
-			dates = getRtArgs(jobRun).split(" ");
-			
-			String file = initFile(getFileName(), SG_REPORT_DIR);
-			opCsvFileSvc.initCsvWriter(file);
-			opCsvFileSvc.writeNext(Arrays.asList(getHeader()));
-			
-			for (String prefix : specLabelPrefix) {
-				List<Object[]> resultSet = executeQuery(INCORRECT_PATH_STATUS_SPECIMEN, getParams(prefix, parseInputDate(dates[0]), parseInputDate(dates[1])));
-				
-				resultSet.forEach(rs -> {
-					opCsvFileSvc.writeNext(Arrays.asList(rs));
-					opCsvFileSvc.incrementResultSize();
-				});
-				
-				opCsvFileSvc.flush();
-			}
-			
-			opCsvFileSvc.writeNext(Arrays.asList(System.lineSeparator()));
-			opCsvFileSvc.writeNext(Arrays.asList(new String[]{"Total number of incorrect record: " + opCsvFileSvc.getResultSize()}));
-			
-			jobRun.setLogFilePath(file);
-			daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
-		} catch (Exception e) {
-			logger.error("Error occurred while generating 'Incorrect Pathological-Status Report'", e);
-		} finally {
-			opCsvFileSvc.closeWriter();
-		}
+		String fileName = getFileName();
+
+		String[] dates = getRtArgs(jobRun).split(" ");
+		String[] header = getHeader(dates);
+
+		Map<String, List<Map<String, Object>>> queriesAndParams = getQueriesAndParamsMap(INCORRECT_PATH_STATUS_SPECIMEN, dates, specLabelPrefix);
+
+		super.process(jobRun, fileName, SG_REPORT_DIR, header, queriesAndParams);
 	}
-	
-	private Map<String, Object> getParams(String prefix, String startDate, String endDate) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("prefix", prefix);
-		params.put("startDate", startDate);
-		params.put("endDate", endDate);
+
+	private String getRtArgs(ScheduledJobRun jobRun) {
+		String rtArgs = jobRun.getRtArgs();
+		if (rtArgs != null && !rtArgs.isEmpty()) {
+			return rtArgs;
+		}
+		return null;
+	}
+
+	private Map<String, List<Map<String, Object>>> getQueriesAndParamsMap(String query, String[] dates, List<String> specLabelPrefix) throws ParseException {
+		Map<String, List<Map<String, Object>>> queriesAndParams = new HashMap<>();
+		List<Map<String,Object>> paramList = new ArrayList<>();
 		
-		return params;
+		for (String prefix : specLabelPrefix) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("prefix", prefix);
+			params.put("startDate", parseInputDate(dates[0]));
+			params.put("endDate", parseInputDate(dates[1]));
+
+			paramList.add(params);
+		}
+
+		queriesAndParams.put(query, paramList);
+		return queriesAndParams;
 	}
 
 	private String getFileName() {
 		return "Incorrect_Path_Status_" + Calendar.getInstance().getTimeInMillis() + ".csv";
 	}
 	
-	private String[] getHeader() throws ParseException {
+	private String[] getHeader(String[] dates) throws ParseException {
 		return new String[] {
-				"Duration: " + parseInputDate(dates[0]) + " to " + parseInputDate(dates[1])
+				"Duration: " + dates[0] + " to " + dates[1]
 				+ System.lineSeparator()
 				+ "Report for Incorrect Pathological Status: "
 				+ System.lineSeparator()
@@ -104,6 +84,10 @@ public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor im
 		};
 	}
 	
+//	private Date parseInputDate(String date) throws ParseException {
+//		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
+//	}
+
 	private String parseInputDate(String date) throws ParseException {
 		SimpleDateFormat inputFormat = new SimpleDateFormat(INPUT_DATE_FORMAT);
 		SimpleDateFormat outputFormat = new SimpleDateFormat(OUTPUT_DATE_FORMAT);
@@ -134,7 +118,7 @@ public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor im
             "  ) vis on vis.identifier = spec.specimen_collection_group_id " + 
             "where " +
             "  spec.label regexp :prefix " +
-            "  and vis.collection_timestamp between concat(:startDate, ' 00:00:00') and concat(:endDate, ' 23:59:59') " +
+            "  and vis.collection_timestamp between concat( :startDate , ' 00:00:00' ) and concat( :endDate , ' 23:59:59' ) " +
             "order by " + 
             "  spec.label ";
 }
