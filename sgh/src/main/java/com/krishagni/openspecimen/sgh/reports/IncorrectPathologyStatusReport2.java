@@ -1,31 +1,43 @@
 package com.krishagni.openspecimen.sgh.reports;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
+import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 import com.krishagni.openspecimen.sgh.report.processor.CustomCsvReportProcessor;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 @Configurable
 public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor implements ScheduledTask {
+	@Autowired
+	private ConfigurationService cfgSvc;
+
 	private List<String> specLabelPrefix = new ArrayList<>(Arrays.asList(ENDING_WITH_T_REGEX, ENDING_WITH_N_REGEX, ENDING_WITH_B_INT_REGEX));
 	
+	private String[] dates;
+
+	private Date[] parsedDates = new Date[2];
+
 	private static final String SG_REPORT_DIR = "os_report";
 	
-	private static final String INPUT_DATE_FORMAT = "dd-mm-yyyy";
+	private static final String INPUT_DATE_FORMAT = "dd-MM-yyyy";
 	
-	private static final String OUTPUT_DATE_FORMAT = "yyyy-mm-dd";
-
 	private static final String ENDING_WITH_B_INT_REGEX = ".*(B([0-9]*)?)$";
 
 	private static final String ENDING_WITH_T_REGEX = ".*T$";
@@ -35,14 +47,49 @@ public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor im
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		String fileName = getFileName();
+		dates = getRtArgs(jobRun).split(" ");
+		parsedDates[0] = parseInputDate(dates[0]);
+		parsedDates[1] = parseInputDate(dates[1]);
 
-		String[] dates = getRtArgs(jobRun).split(" ");
-		String[] header = getHeader(dates);
+		super.process(jobRun);
+	}
 
-		Map<String, List<Map<String, Object>>> queriesAndParams = getQueriesAndParamsMap(INCORRECT_PATH_STATUS_SPECIMEN, dates, specLabelPrefix);
+	@Override
+	public String getReportPath() {
+		return getDirPath(SG_REPORT_DIR) + File.separator + getFileName();
+	}
 
-		super.process(jobRun, fileName, SG_REPORT_DIR, header, queriesAndParams);
+	@Override
+	public String[] getHeader() {
+		return new String[] {
+				"Duration: " + dates[0] + " to " + dates[1]
+				+ System.lineSeparator()
+				+ "Report for Incorrect Pathological Status: "
+				+ System.lineSeparator()
+				+ "CP Short Title, TRID, Specimen Label, Pathological Status, Tissue Site, Tissue Side"
+		};
+	}
+
+	@Override
+	public Map<String, List<Map<String, Object>>> getQueries() {
+		List<Map<String,Object>> paramList = new ArrayList<>();
+
+		for (String prefix : specLabelPrefix) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("prefix", prefix);
+			params.put("startDate", parsedDates[0]);
+			params.put("endDate", parsedDates[1]);
+
+			paramList.add(params);
+		}
+
+		return Collections.singletonMap(INCORRECT_PATH_STATUS_SPECIMEN, paramList);
+	}
+
+	@Override
+	public void postProcess(CSVWriter writer, int totalRows) {
+		writer.writeNext(new String[]{System.lineSeparator()});
+		writer.writeNext(new String[]{"Total number of incorrect record: " + totalRows});
 	}
 
 	private String getRtArgs(ScheduledJobRun jobRun) {
@@ -53,48 +100,18 @@ public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor im
 		return null;
 	}
 
-	private Map<String, List<Map<String, Object>>> getQueriesAndParamsMap(String query, String[] dates, List<String> specLabelPrefix) throws ParseException {
-		Map<String, List<Map<String, Object>>> queriesAndParams = new HashMap<>();
-		List<Map<String,Object>> paramList = new ArrayList<>();
-		
-		for (String prefix : specLabelPrefix) {
-			Map<String, Object> params = new HashMap<>();
-			params.put("prefix", prefix);
-			params.put("startDate", parseInputDate(dates[0]));
-			params.put("endDate", parseInputDate(dates[1]));
-
-			paramList.add(params);
-		}
-
-		queriesAndParams.put(query, paramList);
-		return queriesAndParams;
+	private String getDirPath(String dirName) {
+		return cfgSvc.getDataDir() + File.separator + dirName;
 	}
 
 	private String getFileName() {
 		return "Incorrect_Path_Status_" + Calendar.getInstance().getTimeInMillis() + ".csv";
 	}
 	
-	private String[] getHeader(String[] dates) throws ParseException {
-		return new String[] {
-				"Duration: " + dates[0] + " to " + dates[1]
-				+ System.lineSeparator()
-				+ "Report for Incorrect Pathological Status: "
-				+ System.lineSeparator()
-				+ "CP Short Title, TRID, Specimen Label, Pathological Status, Tissue Site, Tissue Side"
-		};
+	private Date parseInputDate(String date) throws ParseException {
+		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
 	}
-	
-//	private Date parseInputDate(String date) throws ParseException {
-//		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
-//	}
 
-	private String parseInputDate(String date) throws ParseException {
-		SimpleDateFormat inputFormat = new SimpleDateFormat(INPUT_DATE_FORMAT);
-		SimpleDateFormat outputFormat = new SimpleDateFormat(OUTPUT_DATE_FORMAT);
-		
-		return outputFormat.format(inputFormat.parse(date));
-	}
-	
 	private static final String INCORRECT_PATH_STATUS_SPECIMEN = 
 			"select " + 
             "  vis.cp_short_title, vis.name, spec.label, " +
@@ -118,7 +135,7 @@ public class IncorrectPathologyStatusReport2 extends CustomCsvReportProcessor im
             "  ) vis on vis.identifier = spec.specimen_collection_group_id " + 
             "where " +
             "  spec.label regexp :prefix " +
-            "  and vis.collection_timestamp between concat( :startDate , ' 00:00:00' ) and concat( :endDate , ' 23:59:59' ) " +
+            "  and vis.collection_timestamp between :startDate and :endDate " +
             "order by " + 
             "  spec.label ";
 }

@@ -1,39 +1,85 @@
 package com.krishagni.openspecimen.sgh.reports;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
+import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 import com.krishagni.openspecimen.sgh.report.processor.CustomCsvReportProcessor;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 @Configurable
 public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor implements ScheduledTask {
+	@Autowired
+	private ConfigurationService cfgSvc;
+
 	private static final String SG_REPORT_DIR = "os_report";
 	
-	private static final String INPUT_DATE_FORMAT = "dd-mm-yyyy";
+	private static final String INPUT_DATE_FORMAT = "dd-MM-yyyy";
+
+	private String[] dates;
 	
-	private static final String OUTPUT_DATE_FORMAT = "yyyy-mm-dd";
+	private Date[] parsedDates = new Date[2];
 
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		String fileName = getFileName();
+		dates = getRtArgs(jobRun).split(" ");
+		parsedDates[0] = parseInputDate(dates[0]);
+		parsedDates[1] = parseInputDate(dates[1]);
 
-		String[] dates = getRtArgs(jobRun).split(" ");
-		String[] header = getHeader(dates);
+		process(jobRun);
+	}
 
-		Map<String, List<Map<String, Object>>> queriesAndParams = getQueriesAndParamsMap(QUERY, dates);
+	@Override
+	public String getReportPath() {
+		return getDirPath(SG_REPORT_DIR) + File.separator + getFileName();
+	}
 
-		super.process(jobRun, fileName, SG_REPORT_DIR, header, queriesAndParams);
+	@Override
+	public String[] getHeader() {
+		return new String[] {
+				"Duration: " + dates[0] + " to " + dates[1]
+				+ System.lineSeparator()
+				+ "Report for Incorrect Tissue Site and Side : "
+				+ System.lineSeparator()
+				+ "CP Short Title, TRID, Specimen Label, Tissue Site, Tissue Side"
+		};
+	}
+
+	@Override
+	public Map<String, List<Map<String, Object>>> getQueries() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("startDate", parsedDates[0]);
+		params.put("endDate", parsedDates[1]);
+		
+		List<Map<String,Object>> paramList = new ArrayList<>();
+		paramList.add(params);
+
+		Map<String, List<Map<String, Object>>> queries = new HashMap<>();
+		queries.put(QUERY, paramList);
+
+		return Collections.singletonMap(QUERY, paramList);
+	}
+
+	@Override
+	public void postProcess(CSVWriter writer, int totalRows) {
+		writer.writeNext(new String[]{System.lineSeparator()});
+		writer.writeNext(new String[]{"Total number of incorrect record: " + totalRows});
 	}
 
 	private String getRtArgs(ScheduledJobRun jobRun) {
@@ -44,43 +90,16 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 		return null;
 	}
 
-	private Map<String, List<Map<String, Object>>> getQueriesAndParamsMap(String query, String[] dates) throws ParseException {
-		Map<String, Object> params = new HashMap<>();
-		params.put("startDate", parseInputDate(dates[0]));
-		params.put("endDate", parseInputDate(dates[1]));
-		
-		List<Map<String,Object>> paramList = new ArrayList<>();
-		paramList.add(params);
-
-		Map<String, List<Map<String, Object>>> queriesAndParams = new HashMap<>();
-		queriesAndParams.put(query, paramList);
-
-		return queriesAndParams;
-	}
-
-	private String[] getHeader(String[] dates) throws ParseException {
-		return new String[] {
-				"Duration: " + parseInputDate(dates[0]) + " to " + parseInputDate(dates[1])
-				+ System.lineSeparator()
-				+ "Report for Incorrect Tissue Site and Side : "
-				+ System.lineSeparator()
-				+ "CP Short Title, TRID, Specimen Label, Tissue Site, Tissue Side"
-		};
-	}
-
 	private String getFileName() {
 		return "Incorrect_tissue_site_and_side_" + Calendar.getInstance().getTimeInMillis() + ".csv";
 	}
 
-//	private Date parseInputDate(String date) throws ParseException {
-//		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
-//	}
+	private String getDirPath(String dirName) {
+		return cfgSvc.getDataDir() + File.separator + dirName;
+	}
 
-	private String parseInputDate(String date) throws ParseException {
-		SimpleDateFormat inputFormat = new SimpleDateFormat(INPUT_DATE_FORMAT);
-		SimpleDateFormat outputFormat = new SimpleDateFormat(OUTPUT_DATE_FORMAT);
-		
-		return outputFormat.format(inputFormat.parse(date));
+	private Date parseInputDate(String date) throws ParseException {
+		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
 	}
 
 	private static final String QUERY =
@@ -113,8 +132,7 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 			"  spmn.label is not null and " +
 			"  spmn.collection_status = 'Collected' and " +
 			"  spmn.activity_status = 'Active' and " +
-			"  s.collection_timestamp between concat( :startDate , ' 00:00:00' ) and concat( :endDate , ' 23:59:59' ) " + 
+			"  s.collection_timestamp between :startDate and :endDate " +
 			"order by " +
-			"  spmn.label "; 
-
+			"  spmn.label ";
 }

@@ -1,22 +1,18 @@
 package com.krishagni.openspecimen.sgh.report.processor;
 
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.IOUtils;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
-import com.krishagni.catissueplus.core.common.service.ConfigurationService;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -25,49 +21,50 @@ public abstract class CustomCsvReportProcessor {
 	private SessionFactory sessionFactory;
 	
 	@Autowired
-	private ConfigurationService cfgSvc;
-	
-	@Autowired
 	private DaoFactory daoFactory;
 
-	private CSVWriter csvWriter;
+	private Integer rowCount;
 	
-	private Integer resultSize;
+	public void process(ScheduledJobRun jobRun) throws Exception {
+		String filePath = getReportPath();
+		CSVWriter writer = new CSVWriter(new FileWriter(filePath, true));
 
-	public void process(ScheduledJobRun jobRun, String fileName, String dir, String[] header, Map<String, List<Map<String, Object>>> queriesAndParamsMap) throws IOException {
-		String file = initFile(fileName, dir);
-		initCsvWriter(file);
-		csvWriter.writeNext(header);
+		try {
+			writer.writeNext(getHeader());
+			rowCount = 0;
 
-		List<Object[]> resultSet = new ArrayList<>();
+			Map<String, List<Map<String, Object>>> queries = getQueries();
 
-		queriesAndParamsMap.forEach((query,paramList) -> {
-			paramList.forEach(param -> resultSet.addAll(executeQuery(query, param)));
-		});
+			for (Entry<String, List<Map<String, Object>>> entry : queries.entrySet()) {
+				for (Map<String, Object> params : entry.getValue()) {
+					List<Object[]> rows = executeQuery(entry.getKey(), params);
+					rowCount += rows.size();
 
-		for (Object[] rs : resultSet) {
-			writeNextLine(rs);
-			incrementResultSize();
-
-			if (resultSize % 50 == 0) {
-				flush();
+					writeToCsv(writer, rows);
+					writer.flush();
+				}
 			}
+
+			postProcess(writer, rowCount);
+
+			writer.flush();
+			jobRun.setLogFilePath(filePath);
+			daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
+		} finally {
+			writer.close();
 		}
-
-		csvWriter.writeNext(new String[]{System.lineSeparator()});
-		csvWriter.writeNext(new String[]{"Total number of incorrect record: " + getResultSize()});
-
-		flush();
-		closeWriter();
-		jobRun.setLogFilePath(file);
-		daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
 	}
 
-	private String initFile(String fileName, String dirName) {
-		String dir = dirName != null ? (getDirPath(dirName)) : getDirPath();
-		mkdirIfAbs(dir);
+	public abstract String getReportPath();
 
-		return (dir + File.separator + fileName);
+	public abstract String[] getHeader();
+
+	public abstract Map<String, List<Map<String, Object>>> getQueries();
+
+	public abstract void postProcess(CSVWriter writer, int totalRows);
+
+	private void writeToCsv(CSVWriter writer, List<Object[]> rows) {
+		rows.forEach(row -> writeNextLine(writer, row));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,45 +77,9 @@ public abstract class CustomCsvReportProcessor {
 
 		return qry.list();
 	}
-
-	private void writeNextLine(Object[] rowData) {
-		List<String> data = Arrays.stream(rowData).map(String::valueOf).collect(Collectors.toList());
-		csvWriter.writeNext(data.toArray(new String[0]));
-	}
-
-	private void closeWriter() {
-		IOUtils.closeQuietly(csvWriter);
-	}
-
-	private void initCsvWriter(String file) throws IOException {
-		this.resultSize = 0;
-		csvWriter = new CSVWriter(new FileWriter(file, true));
-	}
-
-	private Integer getResultSize() {
-		return resultSize;
-	}
-
-	private void incrementResultSize() {
-		this.resultSize++;
-	}
-
-	private void flush() throws IOException {
-		csvWriter.flush();
-	}
 	
-	private String getDirPath() {
-		return cfgSvc.getDataDir();
-	}
-
-	private String getDirPath(String dirName) {
-		return cfgSvc.getDataDir() + File.separator + dirName;
-	}
-
-	private void mkdirIfAbs(String dirName) {
-		File dir = new File(dirName);
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
+	private void writeNextLine(CSVWriter writer,Object[] rowData) {
+		List<String> data = Arrays.stream(rowData).map(String::valueOf).collect(Collectors.toList());
+		writer.writeNext(data.toArray(new String[0]));
 	}
 }
