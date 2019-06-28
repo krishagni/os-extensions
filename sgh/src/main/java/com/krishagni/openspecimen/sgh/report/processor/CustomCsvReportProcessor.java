@@ -1,6 +1,7 @@
 package com.krishagni.openspecimen.sgh.report.processor;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
-import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
+import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -20,18 +21,16 @@ public abstract class CustomCsvReportProcessor {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@Autowired
-	private DaoFactory daoFactory;
-
 	private Integer rowCount;
 	
 	public void process(ScheduledJobRun jobRun) throws Exception {
 		String filePath = getReportPath();
-		CSVWriter writer = new CSVWriter(new FileWriter(filePath, true));
+		CsvFileWriter writer = new CsvFileWriter(new CSVWriter(new FileWriter(filePath, true)));
 
 		try {
 			writer.writeNext(getHeader());
 			rowCount = 0;
+			int idx = 0;
 
 			Map<String, List<Map<String, Object>>> queries = getQueries();
 
@@ -40,8 +39,7 @@ public abstract class CustomCsvReportProcessor {
 					List<Object[]> rows = executeQuery(entry.getKey(), params);
 					rowCount += rows.size();
 
-					writeToCsv(writer, rows);
-					writer.flush();
+					writeToCsv(writer, rows, idx);
 				}
 			}
 
@@ -49,7 +47,6 @@ public abstract class CustomCsvReportProcessor {
 
 			writer.flush();
 			jobRun.setLogFilePath(filePath);
-			daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
 		} finally {
 			writer.close();
 		}
@@ -61,10 +58,17 @@ public abstract class CustomCsvReportProcessor {
 
 	public abstract Map<String, List<Map<String, Object>>> getQueries();
 
-	public abstract void postProcess(CSVWriter writer, int totalRows);
+	public abstract void postProcess(CsvFileWriter writer, int totalRows);
 
-	private void writeToCsv(CSVWriter writer, List<Object[]> rows) {
-		rows.forEach(row -> writeNextLine(writer, row));
+	private void writeToCsv(CsvFileWriter writer, List<Object[]> rows, int idx) throws IOException {
+		for (Object[] row : rows) {
+			writeNextLine(writer, row);
+
+			++idx;
+			if (idx % 50 == 0) {
+				writer.flush();
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,7 +82,7 @@ public abstract class CustomCsvReportProcessor {
 		return qry.list();
 	}
 	
-	private void writeNextLine(CSVWriter writer,Object[] rowData) {
+	private void writeNextLine(CsvFileWriter writer,Object[] rowData) {
 		List<String> data = Arrays.stream(rowData).map(String::valueOf).collect(Collectors.toList());
 		writer.writeNext(data.toArray(new String[0]));
 	}

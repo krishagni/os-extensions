@@ -18,9 +18,8 @@ import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
+import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
 import com.krishagni.openspecimen.sgh.report.processor.CustomCsvReportProcessor;
-
-import au.com.bytecode.opencsv.CSVWriter;
 
 @Configurable
 public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor implements ScheduledTask {
@@ -38,7 +37,7 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		dates = getRtArgs(jobRun).split(" ");
+		dates = jobRun.getRtArgs().split(" ");
 		parsedDates[0] = parseInputDate(dates[0]);
 		parsedDates[1] = parseInputDate(dates[1]);
 
@@ -77,17 +76,9 @@ public class IncorrectTissueSiteReport2 extends CustomCsvReportProcessor impleme
 	}
 
 	@Override
-	public void postProcess(CSVWriter writer, int totalRows) {
+	public void postProcess(CsvFileWriter writer, int totalRows) {
 		writer.writeNext(new String[]{System.lineSeparator()});
 		writer.writeNext(new String[]{"Total number of incorrect record: " + totalRows});
-	}
-
-	private String getRtArgs(ScheduledJobRun jobRun) {
-		String rtArgs = jobRun.getRtArgs();
-		if (rtArgs != null && !rtArgs.isEmpty()) {
-			return rtArgs;
-		}
-		return null;
 	}
 
 	private String getFileName() {
