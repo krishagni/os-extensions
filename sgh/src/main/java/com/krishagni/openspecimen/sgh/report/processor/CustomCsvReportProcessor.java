@@ -1,6 +1,6 @@
 package com.krishagni.openspecimen.sgh.report.processor;
 
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -14,23 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.common.util.CsvFileWriter;
-
-import au.com.bytecode.opencsv.CSVWriter;
+import com.krishagni.catissueplus.core.common.util.CsvWriter;
 
 public abstract class CustomCsvReportProcessor {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	private Integer rowCount;
-	
 	public void process(ScheduledJobRun jobRun) throws Exception {
 		String filePath = getReportPath();
-		CsvFileWriter writer = new CsvFileWriter(new CSVWriter(new FileWriter(filePath, true)));
+		CsvWriter writer = CsvFileWriter.createCsvFileWriter(new File(filePath));
 
 		try {
 			writer.writeNext(getHeader());
-			rowCount = 0;
-			int idx = 0;
+			int rowCount = 0;
 
 			Map<String, List<Map<String, Object>>> queries = getQueries();
 
@@ -39,8 +35,9 @@ public abstract class CustomCsvReportProcessor {
 					List<Object[]> rows = executeQuery(entry.getKey(), params);
 					rowCount += rows.size();
 
-					writeToCsv(writer, rows, idx);
+					writeToCsv(writer, rows);
 				}
+				writer.flush();
 			}
 
 			postProcess(writer, rowCount);
@@ -58,14 +55,16 @@ public abstract class CustomCsvReportProcessor {
 
 	public abstract Map<String, List<Map<String, Object>>> getQueries();
 
-	public abstract void postProcess(CsvFileWriter writer, int totalRows);
+	public abstract void postProcess(CsvWriter writer, int totalRows);
 
-	private void writeToCsv(CsvFileWriter writer, List<Object[]> rows, int idx) throws IOException {
+	private void writeToCsv(CsvWriter writer, List<Object[]> rows) throws IOException {
+		int rowCount = 0;
+
 		for (Object[] row : rows) {
 			writeNextLine(writer, row);
 
-			++idx;
-			if (idx % 50 == 0) {
+			++rowCount;
+			if (rowCount % 50 == 0) {
 				writer.flush();
 			}
 		}
@@ -82,7 +81,7 @@ public abstract class CustomCsvReportProcessor {
 		return qry.list();
 	}
 	
-	private void writeNextLine(CsvFileWriter writer,Object[] rowData) {
+	private void writeNextLine(CsvWriter writer,Object[] rowData) {
 		List<String> data = Arrays.stream(rowData).map(String::valueOf).collect(Collectors.toList());
 		writer.writeNext(data.toArray(new String[0]));
 	}

@@ -1,48 +1,42 @@
 package com.krishagni.openspecimen.sgh.reports;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
-import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
-
-import au.com.bytecode.opencsv.CSVWriter;
+import com.krishagni.catissueplus.core.common.util.CsvWriter;
+import com.krishagni.openspecimen.sgh.report.processor.CustomCsvReportProcessor;
 
 @Configurable
-public class IncorrectPathologyStatusReport implements ScheduledTask {
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+public class IncorrectPathologyStatusReport extends CustomCsvReportProcessor implements ScheduledTask {
 	@Autowired
 	private ConfigurationService cfgSvc;
-	
-	@Autowired
-	private DaoFactory daoFactory;
-	
-	private List<String> specLabelPrefix = new ArrayList<>();
-	
-	private String[] dates = new String[] {"", ""};
-	
-	private static final String INPUT_DATE_FORMAT = "dd-mm-yyyy";
-	
-	private static final String OUTPUT_DATE_FORMAT = "yyyy-mm-dd";
 
+	private List<String> specLabelPrefix = new ArrayList<>(Arrays.asList(ENDING_WITH_T_REGEX, ENDING_WITH_N_REGEX, ENDING_WITH_B_INT_REGEX));
+	
+	private String[] dates;
+
+	private Date[] parsedDates = new Date[2];
+
+	private static final String SG_REPORT_DIR = "os_report";
+	
+	private static final String INPUT_DATE_FORMAT = "dd-MM-yyyy";
+	
 	private static final String ENDING_WITH_B_INT_REGEX = ".*(B([0-9]*)?)$";
 
 	private static final String ENDING_WITH_T_REGEX = ".*T$";
@@ -52,91 +46,62 @@ public class IncorrectPathologyStatusReport implements ScheduledTask {
 	@Override
 	@PlusTransactional
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		try {
-			specLabelPrefix.addAll(Arrays.asList(ENDING_WITH_T_REGEX, ENDING_WITH_N_REGEX, ENDING_WITH_B_INT_REGEX));
-			
-			if (StringUtils.isNotEmpty(jobRun.getRtArgs())) { 
-				dates = jobRun.getRtArgs().split(" ");
-			}
-			
-			String fileName = getFileName();
-			CSVWriter csvWriter = new CSVWriter(new FileWriter(fileName, true));
-			writeHeader(csvWriter);
-			
-			int rowIdx = 0;
-			for (String prefix : specLabelPrefix) {
-				List<Object[]> results = executeQuery(prefix, parseInputDate(dates[0]), parseInputDate(dates[1]));
-				writeToCsvFile(csvWriter, results);
-				rowIdx += results.size();
-			}
-			
-			csvWriter.writeNext(new String[]{System.getProperty("line.separator")});
-			csvWriter.writeNext(new String[]{"Total number of incorrect record: " + rowIdx});
-			csvWriter.close();
-			
-			jobRun.setLogFilePath(fileName);
-			daoFactory.getScheduledJobDao().saveOrUpdateJobRun(jobRun);
-		} catch (Exception e) {
-			System.out.println("Error occurred while generating 'Incorrect Pathological-Status Report'");
-			e.printStackTrace();
-		}
-	}
-	
-	private void writeHeader(CSVWriter csvWriter) throws ParseException {
-		csvWriter.writeNext(new String[]{"Duration: " + parseInputDate(dates[0]) + " to " + parseInputDate(dates[1])});
-		csvWriter.writeNext(new String[]{System.getProperty("line.separator")});
-		csvWriter.writeNext(new String[]{"Report for Incorrect Pathological Status: "});
-		csvWriter.writeNext(new String[]{System.getProperty("line.separator")});
-		csvWriter.writeNext(new String[]{"CP Short Title", "TRID", "Specimen Label", "Pathological Status", "Tissue Site", "Tissue Side"});
+		dates = jobRun.getRtArgs().split(" ");
+		parsedDates[0] = parseInputDate(dates[0]);
+		parsedDates[1] = parseInputDate(dates[1]);
+
+		process(jobRun);
 	}
 
-	private void writeToCsvFile(CSVWriter csvWriter, List<Object[]> results) throws IOException {
-		results.forEach(row -> {
-			String cp_short_title = getStringValue(row[0]);
-			String trid = getStringValue(row[1]);
-			String label = getStringValue(row[2]);
-			String path_status = getStringValue(row[3]);
-			String tissue_site = getStringValue(row[4]);
-			String tissue_side = getStringValue(row[5]);
-			
-			csvWriter.writeNext(new String[]{cp_short_title, trid, label, path_status, tissue_site, tissue_side});
-		});
-		
-		csvWriter.flush();
+	@Override
+	public String getReportPath() {
+		return getDirPath(SG_REPORT_DIR) + File.separator + getFileName();
+	}
+
+	@Override
+	public String[] getHeader() {
+		return new String[] {
+				"Duration: " + dates[0] + " to " + dates[1]
+				+ System.lineSeparator()
+				+ "Report for Incorrect Pathological Status: "
+				+ System.lineSeparator()
+				+ "CP Short Title, TRID, Specimen Label, Pathological Status, Tissue Site, Tissue Side"
+		};
+	}
+
+	@Override
+	public Map<String, List<Map<String, Object>>> getQueries() {
+		List<Map<String,Object>> paramList = new ArrayList<>();
+
+		for (String prefix : specLabelPrefix) {
+			Map<String, Object> params = new HashMap<>();
+			params.put("prefix", prefix);
+			params.put("startDate", parsedDates[0]);
+			params.put("endDate", parsedDates[1]);
+
+			paramList.add(params);
+		}
+
+		return Collections.singletonMap(INCORRECT_PATH_STATUS_SPECIMEN, paramList);
+	}
+
+	@Override
+	public void postProcess(CsvWriter writer, int totalRows) {
+		writer.writeNext(new String[]{System.lineSeparator()});
+		writer.writeNext(new String[]{"Total number of incorrect record: " + totalRows});
+	}
+
+	private String getDirPath(String dirName) {
+		return cfgSvc.getDataDir() + File.separator + dirName;
 	}
 
 	private String getFileName() {
-		String location = cfgSvc.getDataDir() + "/os_report";
-		File dir = new File(location);
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
-		
-		return location + "/Incorrect_Path_Status_" + Calendar.getInstance().getTimeInMillis() + ".csv";
-	}
-
-	private String parseInputDate(String date) throws ParseException {
-		SimpleDateFormat inputFormat = new SimpleDateFormat(INPUT_DATE_FORMAT);
-		SimpleDateFormat outputFormat = new SimpleDateFormat(OUTPUT_DATE_FORMAT);
-		
-		return outputFormat.format(inputFormat.parse(date));
+		return "Incorrect_Path_Status_" + Calendar.getInstance().getTimeInMillis() + ".csv";
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<Object[]> executeQuery(String prefix, String startDate, String endDate) 
-			throws HibernateException, ParseException {
-		return sessionFactory.getCurrentSession()
-				.createSQLQuery(INCORRECT_PATH_STATUS_SPECIMEN)
-				.setParameter("prefix", prefix)
-				.setParameter("prefix", prefix)
-				.setParameter("startDate", startDate)
-				.setParameter("endDate", endDate)
-				.list();
+	private Date parseInputDate(String date) throws ParseException {
+		return new SimpleDateFormat(INPUT_DATE_FORMAT).parse(date);
 	}
-	
-	private String getStringValue(Object obj) { 
-		return obj != null ? obj.toString() : null; 
-	} 
 
 	private static final String INCORRECT_PATH_STATUS_SPECIMEN = 
 			"select " + 
@@ -161,7 +126,7 @@ public class IncorrectPathologyStatusReport implements ScheduledTask {
             "  ) vis on vis.identifier = spec.specimen_collection_group_id " + 
             "where " +
             "  spec.label regexp :prefix " +
-            "  and vis.collection_timestamp between concat(:startDate, ' 00:00:00') and concat(:endDate, ' 23:59:59') " +
+            "  and vis.collection_timestamp between :startDate and :endDate " +
             "order by " + 
             "  spec.label ";
 }
