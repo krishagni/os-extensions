@@ -276,6 +276,12 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			throw OpenSpecimenException.serverError(e);
 		} finally {
 			try {
+				data.close();
+			} catch (Exception de) {
+				de.printStackTrace();
+			}
+
+			try {
 				workbook.close();
 			} catch (Exception we) {
 				we.printStackTrace();
@@ -461,6 +467,12 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			} catch (Exception e) {
 				throw OpenSpecimenException.serverError(e);
 			} finally {
+				try {
+					data.close();
+				} catch (Exception de) {
+					de.printStackTrace();
+				}
+
 				try {
 					workbook.close();
 				} catch (Exception we) {
