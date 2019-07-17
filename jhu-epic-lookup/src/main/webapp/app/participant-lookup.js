@@ -2,7 +2,7 @@ angular.module('os.plugins.jhu-epic-lookup')
   .controller('jhuEpicParticipantLookupCtrl',
     function($scope, $controller, cp, cpr, extensionCtxt, hasDict, cpDict, twoStepReg,
       mrnAccessRestriction, addPatientOnLookupFail, lookupFieldsCfg,
-      lockedFields, firstCpEvent) {
+      lockedFields, firstCpEvent, layout, onValueChangeCb, cpEvents) {
 
       var dependencies = {
         $scope: $scope, cp: cp, cpr: cpr, extensionCtxt: extensionCtxt,
@@ -10,7 +10,8 @@ angular.module('os.plugins.jhu-epic-lookup')
         mrnAccessRestriction: mrnAccessRestriction,
         addPatientOnLookupFail: addPatientOnLookupFail,
         lookupFieldsCfg: lookupFieldsCfg, lockedFields: lockedFields, 
-        firstCpEvent: firstCpEvent
+        firstCpEvent: firstCpEvent, layout: layout, onValueChangeCb: onValueChangeCb,
+        cpEvents: cpEvents
       }
 
       var participantAddEditCtrl = $controller('ParticipantAddEditCtrl', dependencies);

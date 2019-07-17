@@ -34,6 +34,17 @@ angular.module('os.plugins.jhu-epic-lookup', ['openspecimen'])
           },
           lookupFieldsCfg: function() {
             return {configured: true, fields: []};
+          },
+          cpEvents: function(cp, cpr, CollectionProtocolEvent) {
+            if (!!cpr.id) {
+              return null;
+            }
+
+            return CollectionProtocolEvent.listFor(cp.id).then(
+              function(events) {
+                return events.filter(function(event) { return event.activityStatus == 'Active'; });
+              }
+            );
           }
         },
         parent: 'participant-root'
