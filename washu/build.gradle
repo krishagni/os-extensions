@@ -8,7 +8,7 @@ apply plugin: 'idea'
 
 task fatJar(type: Jar) {
   baseName = 'zos-washu'
-  version =  '5.1.0'
+  version =  '6.1.0'
 
   manifest {
     attributes("os-plugin-name": "washu")
