@@ -25,5 +25,9 @@
 
   "new_stuff": {
     "title": "New Features!"
+  },
+  
+  "tracker": {
+    "site": "Services Requested From"
   }
 }
