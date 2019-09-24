@@ -1,0 +1,42 @@
+#macro(getMessage $code)$messageSource.getMessage($code, null, $locale)#end
+
+<row>
+	<subForm>
+		<name>usbSpecimenAbbr</name>
+		<udn>usbSpecimenAbbr</udn>
+		<caption>#getMessage("usb_qry_specimen_abbr")</caption>
+		<table>USB_GERM_ABBR_DETAILS</table>
+		<primaryKey>IDENTIFIER</primaryKey>
+		<foreignKey>PATH_ID</foreignKey>
+		<parentKey>PATHOLOGICAL_STATUS_ID</parentKey>
+		<row>
+			<dropDown>
+				<name>germAbbreviation</name>
+				<udn>germAbbreviation</udn>
+				<caption>#getMessage("usb_qry_spmn_abbr_lis_code")</caption>
+				<column>GERM_ABBR</column>
+				<options>
+					<sql>SELECT germ_abbr FROM usb_germ_abbr_details</sql>
+				</options>
+			</dropDown>
+			<dropDown>
+				<name>speciesName</name>
+				<udn>speciesName</udn>
+				<caption>#getMessage("usb_qry_spmn_abbr_species_name")</caption>
+				<column>SPECIES_NAME</column>
+				<options>
+					<sql>SELECT species_name FROM usb_germ_abbr_details</sql>
+				</options>
+			</dropDown>
+			<dropDown>
+				<name>ncbiId</name>
+				<udn>ncbiId</udn>
+				<caption>#getMessage("usb_qry_spmn_abbr_ncbi_id")</caption>
+				<column>NCBI_ID</column>
+				<options>
+					<sql>SELECT ncbi_id FROM usb_germ_abbr_details</sql>
+				</options>
+			</dropDown>
+		</row>
+	</subForm>
+</row>
