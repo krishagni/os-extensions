@@ -10,7 +10,7 @@ import com.krishagni.catissueplus.core.common.domain.AbstractLabelTmplToken;
 import com.krishagni.catissueplus.core.common.domain.LabelTmplToken;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 import com.krishagni.catissueplus.core.de.domain.DeObject;
-import com.krishagni.openspecimen.usb.error.USBPrintTokenErrorCode;
+import com.krishagni.openspecimen.usb.error.PrintTokenErrorCode;
 
 public class SpecimenLISGermCodePrintToken extends AbstractLabelTmplToken implements LabelTmplToken {
 	private final static String LIS_GERM_CODE_UDN_NAME = "usb_lis_germ_code_1";
@@ -20,40 +20,40 @@ public class SpecimenLISGermCodePrintToken extends AbstractLabelTmplToken implem
 	}
 
 	@Override
-    public String getName() {
-        return "usb_specimen_lis_germ_code";
-    }
- 
-    @Override
-    public String getReplacement(Object object) {
-        Specimen spmn = (Specimen) object;
-        return getGermAbbrValue(spmn);
-    }
+	public String getName() {
+		return "usb_specimen_lis_germ_code";
+	}
+
+	@Override
+	public String getReplacement(Object object) {
+		Specimen spmn = (Specimen) object;
+		return getGermAbbrValue(spmn);
+	}
 
 	private String getGermAbbrValue(Specimen spmn) {
 		String attrName = getGermAbbrAttrName(spmn);
-		
+
 		for (Entry<String, Object> entry : spmn.getExtension().getAttrValues().entrySet()) {
 			if (entry.getKey() != null && entry.getKey().equals(attrName)) {
 				return (String) entry.getValue();
 			}
 		}
-		
+
 		return StringUtils.EMPTY;
 	}
 
 	private String getGermAbbrAttrName(Specimen spmn) {
 		return getAttrName(spmn, LIS_GERM_CODE_UDN_NAME)
-			.orElseThrow(() -> 
-			OpenSpecimenException.userError(USBPrintTokenErrorCode.INVALID_LIS_GERM_CODE_UDN, LIS_GERM_CODE_UDN_NAME)
-			);
+				.orElseThrow(() -> 
+				OpenSpecimenException.userError(PrintTokenErrorCode.INVALID_LIS_GERM_CODE_UDN, LIS_GERM_CODE_UDN_NAME)
+						);
 	}
 
 	private Optional<String> getAttrName(Specimen spmn, String attrUdn) {
 		return spmn.getExtension().getAttrs()
-			.stream()
-			.filter(k -> k.getUdn().equals(attrUdn))
-			.map(DeObject.Attr::getName)
-			.findFirst();
+				.stream()
+				.filter(k -> k.getUdn().equals(attrUdn))
+				.map(DeObject.Attr::getName)
+				.findFirst();
 	}
 }
