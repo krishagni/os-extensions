@@ -27,22 +27,23 @@ public class SpecimenLISGermCodePrintToken extends AbstractLabelTmplToken implem
 	@Override
 	public String getReplacement(Object object) {
 		Specimen spmn = (Specimen) object;
-		return getGermAbbrValue(spmn);
+		return getGermCodeValue(spmn);
 	}
 
-	private String getGermAbbrValue(Specimen spmn) {
-		String attrName = getGermAbbrAttrName(spmn);
+	private String getGermCodeValue(Specimen spmn) {
+		String attrName = getGermCodeAttrName(spmn);
 
 		for (Entry<String, Object> entry : spmn.getExtension().getAttrValues().entrySet()) {
 			if (entry.getKey() != null && entry.getKey().equals(attrName)) {
-				return (String) entry.getValue();
+				String germCode = (String) entry.getValue();
+				return entry.getValue() != null ? germCode : StringUtils.EMPTY;
 			}
 		}
 
 		return StringUtils.EMPTY;
 	}
 
-	private String getGermAbbrAttrName(Specimen spmn) {
+	private String getGermCodeAttrName(Specimen spmn) {
 		return getAttrName(spmn, LIS_GERM_CODE_UDN_NAME)
 				.orElseThrow(() -> 
 				OpenSpecimenException.userError(PrintTokenErrorCode.INVALID_LIS_GERM_CODE_UDN, LIS_GERM_CODE_UDN_NAME)

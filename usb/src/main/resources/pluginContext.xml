@@ -21,9 +21,13 @@
 	<bean id="lisGermCodePrintToken" class="com.krishagni.openspecimen.usb.token.SpecimenLISGermCodePrintToken">
   	</bean>
   	
+	<bean id="lisDayNumberPrintToken" class="com.krishagni.openspecimen.usb.token.SpecimenLISDayNumberPrintToken">
+	</bean>
+
 	<bean id="pluginInitializer" class="com.krishagni.openspecimen.usb.init.PluginInitializer">
 	  <property name="specimenPrintLabelTokensRegistrar" ref="specimenPrintLabelTokensRegistrar"/>
 	  <property name="lisGermCodePrintToken" ref="lisGermCodePrintToken"/>
+	  <property name="lisDayNumberPrintToken" ref="lisDayNumberPrintToken"/>
 	</bean>
 
 </beans>
