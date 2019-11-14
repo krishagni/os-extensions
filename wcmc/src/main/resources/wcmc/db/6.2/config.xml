@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="single" id="EPIC intergration configuration settings module" dbms="mysql">
+  	<sql>
+  		insert into os_modules
+  			(identifier, name, description)
+		values
+			(default, 'epic_int', 'EPIC_INT')
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="single" id="EPIC intergration configuration settings module" dbms="oracle">
+  	<sql>
+  		insert into os_modules
+  			(identifier, name, description)
+		values
+			(OS_MODULES_SEQ.nextval, 'epic_int', 'EPIC_INT')
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="single" id="Setting to specify the EPIC db connection URL">
+  	<sql>
+  		call add_cfg_prop(
+  			'epic_int', 'epic_db_url',
+  			'epic_db_url', 'epic_db_url_desc',
+  			'STRING', ''
+  		);
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="single" id="Setting to specify the EPIC db username">
+  	<sql>
+  		call add_cfg_prop(
+  			'epic_int', 'epic_db_username',
+  			'epic_db_username', 'epic_db_username_desc',
+  			'STRING', ''
+  		);
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="single" id="Setting to specify the EPIC db password">
+  	<sql>
+  		call add_secured_cfg_prop(
+  			'epic_int', 'epic_db_pwd',
+  			'epic_db_pwd', 'epic_db_pwd_desc',
+  			'STRING', ''
+  		);
+  	</sql>
+  </changeSet>
+  
+  <changeSet author="single" id="Setting to specify the EPIC target db json mapping file">
+  	<sql>
+  		call add_secured_cfg_prop(
+  			'epic_int', 'epic_json_mapping',
+  			'epic_json_mapping', 'epic_json_mapping_desc',
+  			'STRING', ''
+  		);
+  	</sql>
+  </changeSet>
+</databaseChangeLog>
