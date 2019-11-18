@@ -25,9 +25,9 @@
   <changeSet author="single" id="Setting to specify the Staging participant importer db connection URL">
   	<sql>
   	  call add_cfg_prop(
-  		'staging_importer', 'stg_imp_db_url',
-		'stg_imp_db_url', 'stg_imp_db_url_desc',
-		'STRING', ''
+ 	    'staging_importer', 'stg_imp_db_url',
+	    'stg_imp_db_url', 'stg_imp_db_url_desc',
+	    'STRING', ''
 	  );
   	</sql>
   </changeSet>
@@ -35,9 +35,9 @@
   <changeSet author="single" id="Setting to specify the Staging participant importer db username">
   	<sql>
 	  call add_cfg_prop(
-		'staging_importer', 'stg_imp_db_user',
-		'stg_imp_db_user', 'stg_imp_db_user_desc',
-		'STRING', ''
+	    'staging_importer', 'stg_imp_db_user',
+	    'stg_imp_db_user', 'stg_imp_db_user_desc',
+	    'STRING', ''
   	  );
   	</sql>
   </changeSet>
@@ -45,9 +45,9 @@
   <changeSet author="single" id="Setting to specify the Staging participant importer db password">
   	<sql>
 	  call add_secured_cfg_prop(
-		'staging_importer', 'stg_imp_db_pwd',
-		'stg_imp_db_pwd', 'stg_imp_db_pwd_desc',
-		'STRING', ''
+	    'staging_importer', 'stg_imp_db_pwd',
+	    'stg_imp_db_pwd', 'stg_imp_db_pwd_desc',
+	    'STRING', ''
 	  );
   	</sql>
   </changeSet>
@@ -55,9 +55,9 @@
   <changeSet author="single" id="Setting to specify the Staging participant importer source db json mapping file">
   	<sql>
 	  call add_cfg_prop(
-		'staging_importer', 'stg_imp_json_mapping',
-		'stg_imp_json_mapping', 'stg_imp_json_mapping_desc',
-		'STRING', ''
+	    'staging_importer', 'stg_imp_json_mapping',
+	    'stg_imp_json_mapping', 'stg_imp_json_mapping_desc',
+	    'STRING', ''
 	  );
   	</sql>
   </changeSet>
