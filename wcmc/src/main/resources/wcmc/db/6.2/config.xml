@@ -4,59 +4,59 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-  <changeSet author="single" id="EPIC intergration configuration settings module" dbms="mysql">
+  <changeSet author="single" id="Staging participant importer configuration settings module" dbms="mysql">
   	<sql>
   		insert into os_modules
   			(identifier, name, description)
 		values
-			(default, 'epic_int', 'EPIC_INT')
+			(default, 'staging_importer', 'STAGING_IMPORTER')
   	</sql>
   </changeSet>
   
-  <changeSet author="single" id="EPIC intergration configuration settings module" dbms="oracle">
+  <changeSet author="single" id="Staging participant importer configuration settings module" dbms="oracle">
   	<sql>
   		insert into os_modules
   			(identifier, name, description)
 		values
-			(OS_MODULES_SEQ.nextval, 'epic_int', 'EPIC_INT')
+			(OS_MODULES_SEQ.nextval, 'staging_importer', 'STAGING_IMPORTER')
   	</sql>
   </changeSet>
   
-  <changeSet author="single" id="Setting to specify the EPIC db connection URL">
+  <changeSet author="single" id="Setting to specify the Staging participant importer db connection URL">
   	<sql>
   		call add_cfg_prop(
-  			'epic_int', 'epic_db_url',
-  			'epic_db_url', 'epic_db_url_desc',
+  			'staging_importer', 'stg_imp_db_url',
+  			'stg_imp_db_url', 'stg_imp_db_url_desc',
   			'STRING', ''
   		);
   	</sql>
   </changeSet>
   
-  <changeSet author="single" id="Setting to specify the EPIC db username">
+  <changeSet author="single" id="Setting to specify the Staging participant importer db username">
   	<sql>
   		call add_cfg_prop(
-  			'epic_int', 'epic_db_username',
-  			'epic_db_username', 'epic_db_username_desc',
+  			'staging_importer', 'stg_imp_db_user',
+  			'stg_imp_db_user', 'stg_imp_db_user_desc',
   			'STRING', ''
   		);
   	</sql>
   </changeSet>
   
-  <changeSet author="single" id="Setting to specify the EPIC db password">
+  <changeSet author="single" id="Setting to specify the Staging participant importer db password">
   	<sql>
   		call add_secured_cfg_prop(
-  			'epic_int', 'epic_db_pwd',
-  			'epic_db_pwd', 'epic_db_pwd_desc',
+  			'staging_importer', 'stg_imp_db_pwd',
+  			'stg_imp_db_pwd', 'stg_imp_db_pwd_desc',
   			'STRING', ''
   		);
   	</sql>
   </changeSet>
   
-  <changeSet author="single" id="Setting to specify the EPIC target db json mapping file">
+  <changeSet author="single" id="Setting to specify the Staging participant importer source db json mapping file">
   	<sql>
-  		call add_secured_cfg_prop(
-  			'epic_int', 'epic_json_mapping',
-  			'epic_json_mapping', 'epic_json_mapping_desc',
+  		call add_cfg_prop(
+  			'staging_importer', 'stg_imp_json_mapping',
+  			'stg_imp_json_mapping', 'stg_imp_json_mapping_desc',
   			'STRING', ''
   		);
   	</sql>
