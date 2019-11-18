@@ -6,59 +6,59 @@
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
   <changeSet author="single" id="Staging participant importer configuration settings module" dbms="mysql">
   	<sql>
-  		insert into os_modules
-  			(identifier, name, description)
-		values
-			(default, 'staging_importer', 'STAGING_IMPORTER')
+  	  insert into os_modules
+  	    (identifier, name, description)
+	  values
+	    (default, 'staging_importer', 'STAGING_IMPORTER')
   	</sql>
   </changeSet>
   
   <changeSet author="single" id="Staging participant importer configuration settings module" dbms="oracle">
   	<sql>
-  		insert into os_modules
-  			(identifier, name, description)
-		values
-			(OS_MODULES_SEQ.nextval, 'staging_importer', 'STAGING_IMPORTER')
+  	  insert into os_modules
+  	    (identifier, name, description)
+	  values
+		(OS_MODULES_SEQ.nextval, 'staging_importer', 'STAGING_IMPORTER')
   	</sql>
   </changeSet>
   
   <changeSet author="single" id="Setting to specify the Staging participant importer db connection URL">
   	<sql>
-  		call add_cfg_prop(
-  			'staging_importer', 'stg_imp_db_url',
-  			'stg_imp_db_url', 'stg_imp_db_url_desc',
-  			'STRING', ''
-  		);
+  	  call add_cfg_prop(
+  		'staging_importer', 'stg_imp_db_url',
+		'stg_imp_db_url', 'stg_imp_db_url_desc',
+		'STRING', ''
+	  );
   	</sql>
   </changeSet>
   
   <changeSet author="single" id="Setting to specify the Staging participant importer db username">
   	<sql>
-  		call add_cfg_prop(
-  			'staging_importer', 'stg_imp_db_user',
-  			'stg_imp_db_user', 'stg_imp_db_user_desc',
-  			'STRING', ''
-  		);
+	  call add_cfg_prop(
+		'staging_importer', 'stg_imp_db_user',
+		'stg_imp_db_user', 'stg_imp_db_user_desc',
+		'STRING', ''
+  	  );
   	</sql>
   </changeSet>
   
   <changeSet author="single" id="Setting to specify the Staging participant importer db password">
   	<sql>
-  		call add_secured_cfg_prop(
-  			'staging_importer', 'stg_imp_db_pwd',
-  			'stg_imp_db_pwd', 'stg_imp_db_pwd_desc',
-  			'STRING', ''
-  		);
+	  call add_secured_cfg_prop(
+		'staging_importer', 'stg_imp_db_pwd',
+		'stg_imp_db_pwd', 'stg_imp_db_pwd_desc',
+		'STRING', ''
+	  );
   	</sql>
   </changeSet>
   
   <changeSet author="single" id="Setting to specify the Staging participant importer source db json mapping file">
   	<sql>
-  		call add_cfg_prop(
-  			'staging_importer', 'stg_imp_json_mapping',
-  			'stg_imp_json_mapping', 'stg_imp_json_mapping_desc',
-  			'STRING', ''
-  		);
+	  call add_cfg_prop(
+		'staging_importer', 'stg_imp_json_mapping',
+		'stg_imp_json_mapping', 'stg_imp_json_mapping_desc',
+		'STRING', ''
+	  );
   	</sql>
   </changeSet>
 </databaseChangeLog>
