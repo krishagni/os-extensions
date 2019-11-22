@@ -3,25 +3,17 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-  
-  <bean id="stgImporterLiquibase" class="liquibase.integration.spring.SpringLiquibase">
-    <property name="dataSource" ref="dataSource"/>
-    <property name="changeLog" value="classpath:wcmc/db/changelog-master.xml"/>
-  </bean>
-  
-  <bean id="stagingImporterInterfaceHandler" class="com.krishagni.openspecimen.staging.importer.InterfaceHandler" abstract="true">
-    <property name="daoFactory" ref="biospecimenDaoFactory"/>
-  </bean>
-  
-  <bean id="stagingParticipantImporterTask" class="com.krishagni.openspecimen.staging.importer.job.StagingParticipantImporterTask">
-    <property name="importer" ref="stagingParticipantImporter"/>
-  </bean>
-  
-  <bean id="stagingParticipantImporter" class="com.krishagni.openspecimen.staging.importer.job.StagingParticipantImporter">
+
+  <bean id="externalParticipantsLoader" class="com.openspecimen.ext.participant.loader.ExternalParticipantsLoader">
     <property name="participantSvc" ref="stagedParticipantSvc"/>
   </bean>
-  
-  <bean id="stgImpJobUtil" class="com.krishagni.openspecimen.staging.importer.util.StgImpJobUtil">
+
+  <bean id="externalDbParticipants" class="com.openspecimen.ext.participant.source.impl.ExternalDbParticipants">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
+  </bean>
+
+  <bean id="wcmcParticipantImporterTask" class="com.openspecimen.ext.participant.importer.job.WcmcParticipantImporterTask">
+    <property name="loader" ref="externalParticipantsLoader"/>
+    <property name="wcmcDbParticipants" ref="externalDbParticipants"/>
   </bean>
 </beans>
