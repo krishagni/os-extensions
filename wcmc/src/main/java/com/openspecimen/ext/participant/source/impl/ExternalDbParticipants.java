@@ -2,6 +2,7 @@ package com.openspecimen.ext.participant.source.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -33,7 +35,9 @@ import com.openspecimen.ext.participant.error.ExtPartImpErrorCode;
 import com.openspecimen.ext.participant.source.ExternalParticipantSource;
 
 public class ExternalDbParticipants implements ExternalParticipantSource {
-	private String dbCfgPath;
+	private int startAt, endAt = 0;
+
+	private boolean hasRows = true;
 
 	private DbCfg dbCfg;
 
@@ -51,13 +55,23 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 	}
 
 	public void setDbCfgPath(String dbCfgPath) throws JsonParseException, JsonMappingException, IOException {
-		this.dbCfgPath = dbCfgPath;
 		this.dbCfg = parseJson(dbCfgPath);
+		this.endAt = dbCfg.getBatchSize();
 	}
 
 	@Override
 	public String getName() {
 		return dbCfg.getName();
+	}
+
+	@Override
+	public Boolean hasRows() {
+		return hasRows;
+	}
+
+	@Override
+	public void closeConnection() throws SQLException {
+		this.jdbcTemplate.getDataSource().getConnection().close();
 	}
 
 	@Override
@@ -67,6 +81,13 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		}
 
 		return jdbcTemplate.query(dbCfg.getSql(), 
+			new PreparedStatementSetter() {
+		        public void setValues(PreparedStatement preparedStatement) throws
+		          SQLException {
+		            preparedStatement.setInt(2, startAt);
+		            preparedStatement.setInt(1, endAt);
+		        }
+		      }, 
 			new ResultSetExtractor<List<StagedParticipantDetail>>() {
 				@Override
 				public List<StagedParticipantDetail> extractData(ResultSet rs)
@@ -76,6 +97,10 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 					while (rs.next()) {
 						participants.add(toStagedParticipantDetails(rs, dbCfg.name));
 					}
+
+					hasRows = participants.size() < dbCfg.getBatchSize() ? false : true;
+					startAt = endAt;
+					endAt += dbCfg.getBatchSize();
 
 					return participants;
 				}
@@ -91,17 +116,17 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		StagedParticipantDetail input = new StagedParticipantDetail();
 
 		input.setEmpi(rs.getString("EMPI_ID"));
-		input.setUid(rs.getString("SSN"));
-		input.setEthnicities(getEthnicities(rs.getString("ETHNICITY"), source));
+//		input.setUid(rs.getString("SSN"));
+//		input.setEthnicities(getEthnicities(rs.getString("ETHNICITY"), source));
 		input.setGender(getGender(rs.getString("GENDER"), source));
 		input.setLastName(rs.getString("LAST_NAME"));
 		input.setFirstName(rs.getString("FIRST_NAME"));
 		input.setMiddleName(rs.getString("MIDDLE_NAME"));
 		input.setBirthDate(rs.getDate("BIRTH_DATE"));
-		input.setRaces(getRaces(rs.getString("RACE"), source));
+//		input.setRaces(getRaces(rs.getString("RACE"), source));
 		input.setSource(source);
-		input.setVitalStatus(rs.getString("VITAL_STATUS"));
-		input.setDeathDate(rs.getDate("DEATH_DATE"));
+//		input.setVitalStatus(rs.getString("VITAL_STATUS"));
+//		input.setDeathDate(rs.getDate("DEATH_DATE"));
 
 		return input;
 	}
@@ -149,15 +174,17 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 	}
 
 	private DbCfg parseJson(String dbCfgPath) throws JsonParseException, JsonMappingException, IOException {
-		return new ObjectMapper().readValue(new File(dbCfgPath), DbCfg.class);
+		return new ObjectMapper().readValue(new File(dbCfgPath), ExternalDbParticipants.DbCfg.class);
 	}
 
-	private class DbCfg {
+	private static class DbCfg {
 		String name;
 
 		String dbUrl;
 
 		String sql;
+
+		Integer batchSize;
 
 		public String getName() {
 			return name;
@@ -182,5 +209,15 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		public void setSql(String sql) {
 			this.sql = sql;
 		}
+
+		public Integer getBatchSize() {
+			return batchSize == null ? DEF_BATCH_SIZE : batchSize;
+		}
+
+		public void setBatchSize(Integer batchSize) {
+			this.batchSize = batchSize;
+		}
+
+		private final Integer DEF_BATCH_SIZE = 25;
 	}
 }

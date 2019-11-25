@@ -1,5 +1,6 @@
 package com.openspecimen.ext.participant.loader;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +43,18 @@ public class ExternalParticipantsLoader {
 			.anyMatch(e -> e.equalsIgnoreCase(source.getName()));
 	}
 
-	public void loadParticipants() {
-		sources.forEach(this::loadParticipants);
+	public void loadParticipants() throws SQLException {
+		for (ExternalParticipantSource source : sources) {
+			loadParticipants(source);
+			source.closeConnection();
+		}
 	}
 
 	private void loadParticipants(ExternalParticipantSource source) {
-		for (StagedParticipantDetail detail : source.getParticipants()) {
-			participantSvc.saveOrUpdateParticipant(RequestEvent.wrap(detail));
+		while (source.hasRows()) {
+			for (StagedParticipantDetail detail : source.getParticipants()) {
+				participantSvc.saveOrUpdateParticipant(RequestEvent.wrap(detail));
+			}
 		}
 	}
 }

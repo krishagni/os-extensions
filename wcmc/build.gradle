@@ -102,6 +102,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version:springVersion
 
   compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.2.7.RELEASE'
+  compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '7.4.1.jre8'
 }
 
 sourceSets.main.compileClasspath += configurations.providedCompile
