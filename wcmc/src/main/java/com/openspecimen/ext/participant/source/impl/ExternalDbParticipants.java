@@ -6,12 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,11 +32,13 @@ import com.openspecimen.ext.participant.source.ExternalParticipantSource;
 public class ExternalDbParticipants implements ExternalParticipantSource {
 	private int startAt, endAt = 0;
 
-	private boolean hasRows = true;
-
 	private DbCfg dbCfg;
 
+	private String dbCfgPath;
+
 	private JdbcTemplate jdbcTemplate;
+
+	private SingleConnectionDataSource dataSource;
 
 	@Autowired
 	private DaoFactory daoFactory;
@@ -54,9 +51,22 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		this.daoFactory = daoFactory;
 	}
 
+	public SingleConnectionDataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(SingleConnectionDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	public String getDbCfgPath() {
+		return dbCfgPath;
+	}
+
 	public void setDbCfgPath(String dbCfgPath) throws JsonParseException, JsonMappingException, IOException {
+		this.dbCfgPath = dbCfgPath;
 		this.dbCfg = parseJson(dbCfgPath);
-		this.endAt = dbCfg.getBatchSize();
+		this.endAt = dbCfg.getMaxResults();
 	}
 
 	@Override
@@ -65,13 +75,12 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 	}
 
 	@Override
-	public Boolean hasRows() {
-		return hasRows;
-	}
-
-	@Override
-	public void closeConnection() throws SQLException {
-		this.jdbcTemplate.getDataSource().getConnection().close();
+	public void shutdown() throws SQLException {
+		this.dataSource.destroy();
+		this.jdbcTemplate = null;
+		this.dataSource = null;
+		this.startAt = 0;
+		this.endAt += dbCfg.getMaxResults();
 	}
 
 	@Override
@@ -82,77 +91,55 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 
 		return jdbcTemplate.query(dbCfg.getSql(), 
 			new PreparedStatementSetter() {
-		        public void setValues(PreparedStatement preparedStatement) throws
-		          SQLException {
-		            preparedStatement.setInt(2, startAt);
-		            preparedStatement.setInt(1, endAt);
-		        }
-		      }, 
+		        	public void setValues(PreparedStatement preparedStatement) throws SQLException {
+		            		preparedStatement.setInt(2, startAt);
+		            		preparedStatement.setInt(1, endAt);
+		        	}
+		        }, 
 			new ResultSetExtractor<List<StagedParticipantDetail>>() {
 				@Override
-				public List<StagedParticipantDetail> extractData(ResultSet rs)
-						throws SQLException, DataAccessException {
+				public List<StagedParticipantDetail> extractData(ResultSet rs) 
+				throws SQLException, DataAccessException {
 					List<StagedParticipantDetail> participants = new ArrayList<>();
 
 					while (rs.next()) {
 						participants.add(toStagedParticipantDetails(rs, dbCfg.name));
 					}
 
-					hasRows = participants.size() < dbCfg.getBatchSize() ? false : true;
 					startAt = endAt;
-					endAt += dbCfg.getBatchSize();
+					endAt += dbCfg.getMaxResults();
 
 					return participants;
 				}
 		});
 	}
 
+	@Override
+	public Integer getMaxResults() {
+		return dbCfg.getMaxResults();
+	}
+
 	private void createConn(DbCfg dbCfg) {
-		DataSource source = new SingleConnectionDataSource(dbCfg.getDbUrl(), false);
-		this.jdbcTemplate = new JdbcTemplate(source);
+		this.dataSource = new SingleConnectionDataSource(dbCfg.getDbUrl(), dbCfg.getDbUser(), dbCfg.getDbPassword(), false);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	private StagedParticipantDetail toStagedParticipantDetails(ResultSet rs, String source) throws SQLException {
 		StagedParticipantDetail input = new StagedParticipantDetail();
 
 		input.setEmpi(rs.getString("EMPI_ID"));
-//		input.setUid(rs.getString("SSN"));
-//		input.setEthnicities(getEthnicities(rs.getString("ETHNICITY"), source));
 		input.setGender(getGender(rs.getString("GENDER"), source));
 		input.setLastName(rs.getString("LAST_NAME"));
 		input.setFirstName(rs.getString("FIRST_NAME"));
 		input.setMiddleName(rs.getString("MIDDLE_NAME"));
 		input.setBirthDate(rs.getDate("BIRTH_DATE"));
-//		input.setRaces(getRaces(rs.getString("RACE"), source));
 		input.setSource(source);
-//		input.setVitalStatus(rs.getString("VITAL_STATUS"));
-//		input.setDeathDate(rs.getDate("DEATH_DATE"));
 
 		return input;
 	}
 	
-	private Set<String> getEthnicities(String ethnicity0, String source) {
-		String ethnicity = getMappedValue(PvAttributes.ETHNICITY, ethnicity0, source);
-
-		if (StringUtils.isNotBlank(ethnicity)) {
-			return Collections.singleton(ethnicity);
-		} else {
-			return Collections.emptySet();
-		}
-	}
-
 	private String getGender(String gender, String source) {
 		return getMappedValue(PvAttributes.GENDER, gender, source);
-	}
-
-	private Set<String> getRaces(String race, String source) {
-		Set<String> races = new HashSet<>();
-
-		if (StringUtils.isNotBlank(race)) {
-			races.add(getMappedValue(PvAttributes.RACE, race, source));
-		}
-
-		return races;
 	}
 
 	private String getMappedValue(String attribute, String value, String source) {
@@ -182,9 +169,13 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 
 		String dbUrl;
 
+		String dbUser;
+
+		String dbPassword;
+
 		String sql;
 
-		Integer batchSize;
+		Integer maxResults;
 
 		public String getName() {
 			return name;
@@ -210,14 +201,30 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 			this.sql = sql;
 		}
 
-		public Integer getBatchSize() {
-			return batchSize == null ? DEF_BATCH_SIZE : batchSize;
+		public Integer getMaxResults() {
+			return maxResults == null ? DEF_MAX_RESULTS : maxResults;
 		}
 
-		public void setBatchSize(Integer batchSize) {
-			this.batchSize = batchSize;
+		public void setMaxResults(Integer maxResults) {
+			this.maxResults = maxResults;
 		}
 
-		private final Integer DEF_BATCH_SIZE = 25;
+		public String getDbUser() {
+			return dbUser;
+		}
+
+		public void setDbUser(String dbUser) {
+			this.dbUser = dbUser;
+		}
+
+		public String getDbPassword() {
+			return dbPassword;
+		}
+
+		public void setDbPassword(String dbPassword) {
+			this.dbPassword = dbPassword;
+		}
+
+		private final Integer DEF_MAX_RESULTS = 25;
 	}
 }

@@ -14,9 +14,6 @@ public class WcmcParticipantImporterTask implements ScheduledTask {
 	@Autowired
 	private ExternalParticipantsLoader loader;
 
-	@Autowired
-	private ExternalDbParticipants wcmcDbParticipants;
-
 	public ExternalParticipantsLoader getLoader() {
 		return loader;
 	}
@@ -25,18 +22,8 @@ public class WcmcParticipantImporterTask implements ScheduledTask {
 		this.loader = loader;
 	}
 
-	public ExternalDbParticipants getWcmcDbParticipants() {
-		return wcmcDbParticipants;
-	}
-
-	public void setWcmcDbParticipants(ExternalDbParticipants wcmcDbParticipants) {
-		this.wcmcDbParticipants = wcmcDbParticipants;
-	}
-
 	@Override
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
-		wcmcDbParticipants.setDbCfgPath(jobRun.getRtArgs());
-		loader.addSource(wcmcDbParticipants);
 		loader.loadParticipants();
 	}
 }

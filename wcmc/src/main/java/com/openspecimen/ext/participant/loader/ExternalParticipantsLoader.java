@@ -1,7 +1,6 @@
 package com.openspecimen.ext.participant.loader;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import com.openspecimen.ext.participant.source.ExternalParticipantSource;
 
 @Configurable
 public class ExternalParticipantsLoader {
-	private List<ExternalParticipantSource> sources = new ArrayList<>();
+	private List<ExternalParticipantSource> sources;
 
 	@Autowired
 	private StagedParticipantService participantSvc;
@@ -31,30 +30,25 @@ public class ExternalParticipantsLoader {
 		return sources;
 	}
 
-	public void addSource(ExternalParticipantSource source) {
-		if (!exists(source)) {
-			sources.add(source);
-		}
-	}
-
-	private boolean exists(ExternalParticipantSource source) {
-		return sources.stream()
-			.map(ExternalParticipantSource::getName)
-			.anyMatch(e -> e.equalsIgnoreCase(source.getName()));
+	public void setSources(List<ExternalParticipantSource> sources) {
+		this.sources = sources;
 	}
 
 	public void loadParticipants() throws SQLException {
 		for (ExternalParticipantSource source : sources) {
 			loadParticipants(source);
-			source.closeConnection();
+			source.shutdown();
 		}
 	}
 
 	private void loadParticipants(ExternalParticipantSource source) {
-		while (source.hasRows()) {
-			for (StagedParticipantDetail detail : source.getParticipants()) {
+		boolean hasMore = true;
+		while (hasMore) {
+			List<StagedParticipantDetail> participants = source.getParticipants();
+			for (StagedParticipantDetail detail : participants) {
 				participantSvc.saveOrUpdateParticipant(RequestEvent.wrap(detail));
 			}
+			hasMore = (participants.size() == source.getMaxResults());
 		}
 	}
 }

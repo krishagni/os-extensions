@@ -6,14 +6,19 @@
 
   <bean id="externalParticipantsLoader" class="com.openspecimen.ext.participant.loader.ExternalParticipantsLoader">
     <property name="participantSvc" ref="stagedParticipantSvc"/>
+    <property name="sources">
+      <list value-type="com.openspecimen.ext.participant.source.impl.ExternalDbParticipants">
+        <ref bean="externalDbParticipants"/>
+      </list>
+    </property>
   </bean>
 
   <bean id="externalDbParticipants" class="com.openspecimen.ext.participant.source.impl.ExternalDbParticipants">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
+    <property name="dbCfgPath" value="${app.data_dir}/wcmc/wcmc-db.json"/>
   </bean>
 
   <bean id="wcmcParticipantImporterTask" class="com.openspecimen.ext.participant.importer.job.WcmcParticipantImporterTask">
     <property name="loader" ref="externalParticipantsLoader"/>
-    <property name="wcmcDbParticipants" ref="externalDbParticipants"/>
   </bean>
 </beans>

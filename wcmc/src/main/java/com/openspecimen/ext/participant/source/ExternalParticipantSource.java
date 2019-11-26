@@ -10,7 +10,7 @@ public interface ExternalParticipantSource {
 
 	String getName();
 	
-	Boolean hasRows();
+	void shutdown() throws SQLException;
 	
-	void closeConnection() throws SQLException;
+	Integer getMaxResults();
 }
