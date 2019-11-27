@@ -17,8 +17,4 @@
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
     <property name="dbCfgPath" value="${app.data_dir}/wcmc/wcmc-db.json"/>
   </bean>
-
-  <bean id="wcmcParticipantImporterTask" class="com.openspecimen.ext.participant.importer.job.WcmcParticipantImporterTask">
-    <property name="loader" ref="externalParticipantsLoader"/>
-  </bean>
 </beans>

@@ -1,16 +1,16 @@
 package com.openspecimen.ext.participant.source;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.krishagni.catissueplus.core.biospecimen.events.StagedParticipantDetail;
+import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
 
 public interface ExternalParticipantSource {
-	List<StagedParticipantDetail> getParticipants();
+	List<StagedParticipantDetail> getParticipants(ExtParticipantListCriteria param);
 
 	String getName();
-	
-	void shutdown() throws SQLException;
-	
-	Integer getMaxResults();
+
+	void cleanUp();
+
+	void init();
 }

@@ -9,7 +9,7 @@ import com.openspecimen.ext.participant.loader.ExternalParticipantsLoader;
 import com.openspecimen.ext.participant.source.impl.ExternalDbParticipants;
 
 @Configurable
-public class WcmcParticipantImporterTask implements ScheduledTask {
+public class ParticipantImporterTask implements ScheduledTask {
 
 	@Autowired
 	private ExternalParticipantsLoader loader;

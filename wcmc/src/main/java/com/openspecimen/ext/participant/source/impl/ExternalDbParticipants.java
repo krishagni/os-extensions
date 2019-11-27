@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,11 +28,12 @@ import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.PvAttributes;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
+import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
 import com.openspecimen.ext.participant.error.ExtPartImpErrorCode;
 import com.openspecimen.ext.participant.source.ExternalParticipantSource;
 
 public class ExternalDbParticipants implements ExternalParticipantSource {
-	private int startAt, endAt = 0;
+	private static final Log logger = LogFactory.getLog(ExternalDbParticipants.class);
 
 	private DbCfg dbCfg;
 
@@ -63,10 +66,17 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		return dbCfgPath;
 	}
 
-	public void setDbCfgPath(String dbCfgPath) throws JsonParseException, JsonMappingException, IOException {
+	public void setDbCfgPath(String dbCfgPath) {
 		this.dbCfgPath = dbCfgPath;
-		this.dbCfg = parseJson(dbCfgPath);
-		this.endAt = dbCfg.getMaxResults();
+	}
+
+	@Override
+	public void init() {
+		try {
+			this.dbCfg = parseJson(dbCfgPath);
+		} catch (Exception e) {
+			logger.error("Error occured while initializing external participant source", e);
+		}
 	}
 
 	@Override
@@ -75,16 +85,14 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 	}
 
 	@Override
-	public void shutdown() throws SQLException {
+	public void cleanUp() {
 		this.dataSource.destroy();
 		this.jdbcTemplate = null;
 		this.dataSource = null;
-		this.startAt = 0;
-		this.endAt += dbCfg.getMaxResults();
 	}
 
 	@Override
-	public List<StagedParticipantDetail> getParticipants() {
+	public List<StagedParticipantDetail> getParticipants(ExtParticipantListCriteria param) {
 		if (jdbcTemplate == null) {
 			createConn(dbCfg);
 		}
@@ -92,8 +100,8 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		return jdbcTemplate.query(dbCfg.getSql(), 
 			new PreparedStatementSetter() {
 		        	public void setValues(PreparedStatement preparedStatement) throws SQLException {
-		            		preparedStatement.setInt(2, startAt);
-		            		preparedStatement.setInt(1, endAt);
+		            		preparedStatement.setInt(2, param.startAt());
+		            		preparedStatement.setInt(1, param.startAt() + param.maxResults());
 		        	}
 		        }, 
 			new ResultSetExtractor<List<StagedParticipantDetail>>() {
@@ -106,17 +114,11 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 						participants.add(toStagedParticipantDetails(rs, dbCfg.name));
 					}
 
-					startAt = endAt;
-					endAt += dbCfg.getMaxResults();
+					param.startAt(participants.size() + param.maxResults());
 
 					return participants;
 				}
 		});
-	}
-
-	@Override
-	public Integer getMaxResults() {
-		return dbCfg.getMaxResults();
 	}
 
 	private void createConn(DbCfg dbCfg) {
@@ -175,8 +177,6 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 
 		String sql;
 
-		Integer maxResults;
-
 		public String getName() {
 			return name;
 		}
@@ -201,14 +201,6 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 			this.sql = sql;
 		}
 
-		public Integer getMaxResults() {
-			return maxResults == null ? DEF_MAX_RESULTS : maxResults;
-		}
-
-		public void setMaxResults(Integer maxResults) {
-			this.maxResults = maxResults;
-		}
-
 		public String getDbUser() {
 			return dbUser;
 		}
@@ -224,7 +216,5 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		public void setDbPassword(String dbPassword) {
 			this.dbPassword = dbPassword;
 		}
-
-		private final Integer DEF_MAX_RESULTS = 25;
 	}
 }
