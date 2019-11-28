@@ -2,21 +2,21 @@ package com.openspecimen.ext.participant.source.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -39,20 +39,13 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 
 	private String dbCfgPath;
 
-	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private SingleConnectionDataSource dataSource;
 
-	@Autowired
+	private String source;
+
 	private DaoFactory daoFactory;
-
-	public DaoFactory getDaoFactory() {
-		return daoFactory;
-	}
-
-	public void setDaoFactory(DaoFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
 
 	public SingleConnectionDataSource getDataSource() {
 		return dataSource;
@@ -70,6 +63,22 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		this.dbCfgPath = dbCfgPath;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public DaoFactory getDaoFactory() {
+		return daoFactory;
+	}
+
+	public void setDaoFactory(DaoFactory daoFactory) {
+		this.daoFactory = daoFactory;
+	}
+
 	@Override
 	public void init() {
 		try {
@@ -81,7 +90,7 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 
 	@Override
 	public String getName() {
-		return dbCfg.getName();
+		return source;
 	}
 
 	@Override
@@ -98,12 +107,7 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		}
 
 		return jdbcTemplate.query(dbCfg.getSql(), 
-			new PreparedStatementSetter() {
-		        	public void setValues(PreparedStatement preparedStatement) throws SQLException {
-		            		preparedStatement.setInt(2, param.startAt());
-		            		preparedStatement.setInt(1, param.startAt() + param.maxResults());
-		        	}
-		        }, 
+			getParams(param), 
 			new ResultSetExtractor<List<StagedParticipantDetail>>() {
 				@Override
 				public List<StagedParticipantDetail> extractData(ResultSet rs) 
@@ -111,7 +115,7 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 					List<StagedParticipantDetail> participants = new ArrayList<>();
 
 					while (rs.next()) {
-						participants.add(toStagedParticipantDetails(rs, dbCfg.name));
+						participants.add(toStagedParticipantDetails(rs));
 					}
 
 					param.startAt(participants.size() + param.maxResults());
@@ -121,12 +125,21 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		});
 	}
 
-	private void createConn(DbCfg dbCfg) {
-		this.dataSource = new SingleConnectionDataSource(dbCfg.getDbUrl(), dbCfg.getDbUser(), dbCfg.getDbPassword(), false);
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	private MapSqlParameterSource getParams(ExtParticipantListCriteria param) {
+		Map<String, Object> params = new HashMap<>();
+
+		params.put("startAt", param.startAt());
+		params.put("endAt", param.startAt() + param.maxResults());
+
+		return new MapSqlParameterSource(params);
 	}
 
-	private StagedParticipantDetail toStagedParticipantDetails(ResultSet rs, String source) throws SQLException {
+	private void createConn(DbCfg dbCfg) {
+		this.dataSource = new SingleConnectionDataSource(dbCfg.getDbUrl(), dbCfg.getDbUser(), dbCfg.getDbPassword(), false);
+		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+	}
+
+	private StagedParticipantDetail toStagedParticipantDetails(ResultSet rs) throws SQLException {
 		StagedParticipantDetail input = new StagedParticipantDetail();
 
 		input.setEmpi(rs.getString("EMPI_ID"));
@@ -167,8 +180,6 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 	}
 
 	private static class DbCfg {
-		String name;
-
 		String dbUrl;
 
 		String dbUser;
@@ -176,14 +187,6 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 		String dbPassword;
 
 		String sql;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
 
 		public String getDbUrl() {
 			return dbUrl;

@@ -6,11 +6,11 @@ import com.krishagni.catissueplus.core.biospecimen.events.StagedParticipantDetai
 import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
 
 public interface ExternalParticipantSource {
-	List<StagedParticipantDetail> getParticipants(ExtParticipantListCriteria param);
-
 	String getName();
 
-	void cleanUp();
-
 	void init();
+
+	List<StagedParticipantDetail> getParticipants(ExtParticipantListCriteria param);
+
+	void cleanUp();
 }

@@ -14,14 +14,6 @@ public class ParticipantImporterTask implements ScheduledTask {
 	@Autowired
 	private ExternalParticipantsLoader loader;
 
-	public ExternalParticipantsLoader getLoader() {
-		return loader;
-	}
-
-	public void setLoader(ExternalParticipantsLoader loader) {
-		this.loader = loader;
-	}
-
 	@Override
 	public void doJob(ScheduledJobRun jobRun) throws Exception {
 		loader.loadParticipants();

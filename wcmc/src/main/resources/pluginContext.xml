@@ -15,6 +15,7 @@
 
   <bean id="externalDbParticipants" class="com.openspecimen.ext.participant.source.impl.ExternalDbParticipants">
     <property name="daoFactory" ref="biospecimenDaoFactory"/>
-    <property name="dbCfgPath" value="${app.data_dir}/wcmc/wcmc-db.json"/>
+    <property name="source" value="wcmc"/>
+    <property name="dbCfgPath" value="${app.data_dir}/ext_data_sources/wcmc.json"/>
   </bean>
 </beans>
