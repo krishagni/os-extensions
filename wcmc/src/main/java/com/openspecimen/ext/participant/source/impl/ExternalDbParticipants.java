@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,13 +103,13 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 	}
 
 	@Override
-	public List<StagedParticipantDetail> getParticipants(ExtParticipantListCriteria param) {
+	public List<StagedParticipantDetail> getParticipants(ExtParticipantListCriteria criteria) {
 		if (jdbcTemplate == null) {
 			createConn(dbCfg);
 		}
 
 		return jdbcTemplate.query(dbCfg.getSql(), 
-			getParams(param), 
+			getParams(criteria), 
 			new ResultSetExtractor<List<StagedParticipantDetail>>() {
 				@Override
 				public List<StagedParticipantDetail> extractData(ResultSet rs) 
@@ -118,18 +120,23 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 						participants.add(toStagedParticipantDetails(rs));
 					}
 
-					param.startAt(participants.size() + param.maxResults());
+					criteria.startAt(participants.size() + criteria.maxResults());
 
 					return participants;
 				}
 		});
 	}
 
-	private MapSqlParameterSource getParams(ExtParticipantListCriteria param) {
+	private MapSqlParameterSource getParams(ExtParticipantListCriteria criteria) {
+		if (criteria == null) {
+			return new MapSqlParameterSource(Collections.emptyMap());
+		}
+
 		Map<String, Object> params = new HashMap<>();
 
-		params.put("startAt", param.startAt());
-		params.put("endAt", param.startAt() + param.maxResults());
+		params.put("startAt", criteria.startAt());
+		params.put("endAt", criteria.startAt() + criteria.maxResults());
+		params.put("lastRun", criteria.lastRun() != null ? criteria.lastRun() : new Date(0));
 
 		return new MapSqlParameterSource(params);
 	}

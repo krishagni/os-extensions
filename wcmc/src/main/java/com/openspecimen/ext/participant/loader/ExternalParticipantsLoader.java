@@ -18,6 +18,8 @@ public class ExternalParticipantsLoader {
 
 	private StagedParticipantService participantSvc;
 
+	private ExtParticipantListCriteria criteria;
+
 	public List<ExternalParticipantSource> getSources() {
 		return sources;
 	}
@@ -34,6 +36,14 @@ public class ExternalParticipantsLoader {
 		this.participantSvc = participantSvc;
 	}
 
+	public ExtParticipantListCriteria getCriteria() {
+		return criteria;
+	}
+
+	public void setCriteria(ExtParticipantListCriteria criteria) {
+		this.criteria = criteria;
+	}
+
 	public void loadParticipants() {
 		sources.forEach(this::loadParticipants);
 	}
@@ -41,13 +51,13 @@ public class ExternalParticipantsLoader {
 	private void loadParticipants(ExternalParticipantSource source) {
 		try {
 			source.init();
-			ExtParticipantListCriteria param = new ExtParticipantListCriteria().startAt(0).maxResults(25);
+			criteria.startAt(0).maxResults(25);
 			boolean hasMore = true;
 
 			while (hasMore) {
-				List<StagedParticipantDetail> participants = source.getParticipants(param);
+				List<StagedParticipantDetail> participants = source.getParticipants(criteria);
 				saveOrUpdateParticipants(participants);
-				hasMore = (participants.size() == param.maxResults());
+				hasMore = (participants.size() == criteria.maxResults());
 			}
 		} catch (Exception e) {
 			logger.error("Error occured while loading participants for the source: " + source.getName(), e);
