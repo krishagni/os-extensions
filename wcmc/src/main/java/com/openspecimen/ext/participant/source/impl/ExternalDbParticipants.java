@@ -120,7 +120,7 @@ public class ExternalDbParticipants implements ExternalParticipantSource {
 						participants.add(toStagedParticipantDetails(rs));
 					}
 
-					criteria.startAt(participants.size() + criteria.maxResults());
+					criteria.startAt(participants.size() + criteria.startAt());
 
 					return participants;
 				}

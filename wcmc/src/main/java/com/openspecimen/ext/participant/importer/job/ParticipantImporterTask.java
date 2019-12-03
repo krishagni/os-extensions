@@ -38,12 +38,9 @@ public class ParticipantImporterTask implements ScheduledTask {
 	@PlusTransactional
  	public Date getLastJobRun(String name) {
  		ScheduledJob job = daoFactory.getScheduledJobDao().getJobByName(name);
- 		// This does not fetch the lastRunOn in the 'job' object.
- 		// (I found no mapping of this attribute (lastRunOn) in the 'ScheduledJob.hbm.xml' file)
  		List<Long> jobIds = Collections.singletonList(job.getId());
 
- 		Map<Long, Date> jobLastRun = daoFactory.getScheduledJobDao().getJobsLastRunTime(jobIds);
- 		// This returns the current running job's time, instead of the its lastRun time. 
+ 		Map<Long, Date> jobLastRun = daoFactory.getScheduledJobDao().getJobsLastRunTime(jobIds, Collections.singletonList("SUCCEEDED"));
  		return jobLastRun.getOrDefault(job.getId(), null);
  	}
 }
