@@ -1,0 +1,33 @@
+<row>
+	<subForm>
+		<name>vcbAdditionalFields</name>
+		<udn>vcbAdditionalFields</udn>
+		<caption>Primary Site / Tumour Stream (new)</caption>
+		<table>VCB_SPMN_SITE_TUMOUR_STREAM_VIEW</table>
+		<primaryKey>IDENTIFIER</primaryKey>
+		<foreignKey>VISIT_ID</foreignKey>
+		<parentKey>IDENTIFIER</parentKey>
+		<row>
+			<dropDown>
+				<name>primarySite</name>
+				<udn>primarySite</udn>
+				<caption>Primary Site</caption>
+				<column>primary_site</column>
+				<options>
+					<sql>select distinct DE_A_7 from DE_E_11333</sql>
+				</options>
+			</dropDown>
+		</row>
+		<row>
+			<dropDown>
+				<name>tumourStream</name>
+				<udn>tumourStream</udn>
+				<caption>Tumour Stream</caption>
+				<column>tumour_stream</column>
+				<options>
+					<sql>select distinct tumour_stream from vcb_primary_site_mapping</sql>
+				</options>
+			</dropDown>
+		</row>
+	</subForm>
+</row>
