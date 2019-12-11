@@ -1,0 +1,28 @@
+<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-spacing:0;border-collapse:separate">
+  <tbody>
+    <tr>
+      <td style="border-collapse:collapse;">
+        <table cellspacing="0" border="0" width="100%" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;line-height:20px">
+          <tbody>
+            <tr>
+              <td style="border-collapse:collapse;padding-bottom:10px">
+                <p style="margin:10px 0 0 0">
+                  Hello $rcpt.firstName $rcpt.lastName,
+                  <br><br>
+                  Please find the QC error report file attached with this mail. (Collection Protocol Id: $cps)
+                  <br>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        #parse( $footer )
+      </td>
+    <tr>
+  </tbody>
+</table>
