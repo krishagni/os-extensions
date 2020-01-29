@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -54,11 +55,12 @@ public class ScheduledCPCoordinatorsReport implements ScheduledTask {
 		Map<String, Object> props = new HashMap<>();
 		String helpdeskEmail = ConfigUtil.getInstance().getStrSetting("washu", "washu_helpdesk_email", "");
 		String contactEmail = ConfigUtil.getInstance().getStrSetting("washu", "washu_contact_email", "");
+		String openspecimenAccEmail = ConfigUtil.getInstance().getStrSetting("email", "account_id", "");
 
 		props.put("cpShortTitle", cp.getShortTitle());
 		props.put("cpCoords", cp.getCoordinators().stream().map(User::formattedName).collect(Collectors.joining(", ")));
-		props.put("helpdeskEmail", helpdeskEmail);
-		props.put("contactEmail", contactEmail);
+		props.put("helpdeskEmail", StringUtils.isEmpty(helpdeskEmail) ? openspecimenAccEmail : helpdeskEmail);
+		props.put("contactEmail", StringUtils.isEmpty(contactEmail) ? openspecimenAccEmail : contactEmail);
 		return props;
 	}
 }
