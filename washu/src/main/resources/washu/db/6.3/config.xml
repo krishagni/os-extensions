@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="single" id="WashU plugin configuration settings module" dbms="mysql">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (default, 'washu', 'WASHU')
+    </sql>
+  </changeSet>
+
+  <changeSet author="single" id="WashU plugin configuration settings module" dbms="oracle">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (OS_MODULES_SEQ.nextval, 'washu', 'WASHU')
+    </sql>
+  </changeSet>
+
+  <changeSet author="single" id="Setting to specify the contact email for 'CP coordinators report'">
+    <sql>
+      call add_cfg_prop(
+        'washu', 'washu_contact_email',
+        'washu_contact_email', 'washu_contact_email_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="single" id="Setting to specify the helpdesk contact email for 'CP coordinators report'">
+    <sql>
+      call add_cfg_prop(
+        'washu', 'washu_helpdesk_email',
+        'washu_helpdesk_email', 'washu_helpdesk_email_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="single" id="Scheduled job to send mail to CP PI regarding coordinators" dbms="mysql">
+    <sql>
+      select identifier into @userId from catissue_user where login_name = '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, minutely_interval, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+         scheduled_day_of_month, activity_status, repeat_schedule, type, command,
+         task_impl_fqn, rt_args_provided, rt_args_help_text, fixed_args)
+      values
+        (default, "CP coordinators report", @userId, now(), null, 131400, 0, null, null,
+         null, 'Active', 'MINUTELY', 'INTERNAL', null,
+         'com.krishagni.openspecimen.washu.jobs.ScheduledCPCoordinatorsReport', 0, null, null);
+    </sql>
+  </changeSet>
+
+  <changeSet author="single" id="Scheduled job to send mail to CP PI regarding coordinators" dbms="oracle">
+    <sql endDelimiter="//">
+      declare
+        userId number;
+      begin
+        select identifier into userId from catissue_user where login_name like '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, minutely_interval, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+         scheduled_day_of_month, activity_status, repeat_schedule, type, command,
+         task_impl_fqn, rt_args_provided, rt_args_help_text, fixed_args)
+      values
+        (OS_SCHEDULED_JOBS_SEQ.nextVal, 'CP coordinators report', userId, SYSDATE, null, 131400, 0, null, null,
+         null, 'Active', 'MINUTELY', 'INTERNAL', null,
+         'com.krishagni.openspecimen.washu.jobs.ScheduledCPCoordinatorsReport', 0, null, null);
+      end;
+      //
+    </sql>
+  </changeSet>
+</databaseChangeLog>

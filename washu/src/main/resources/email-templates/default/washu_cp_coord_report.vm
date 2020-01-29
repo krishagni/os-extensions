@@ -1,0 +1,43 @@
+<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-spacing:0;border-collapse:separate">
+  <tbody>
+    <tr>
+      <td style="border-collapse:collapse;">
+        <table cellspacing="0" border="0" width="100%" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;line-height:20px">
+          <tbody>
+            <tr>
+              <td style="border-collapse:collapse;padding-bottom:10px">
+                <p style="margin:10px 0 0 0">
+                  Dear PI,
+                  <br><br>
+
+		  OpenSpecimen is a biospecimen information management system utilized by research laboratories at Washington university and you are listed as the Principal Investigator for the study listed below. 
+		  For compliance reasons, we would like you to verify the study coordinators listed are still authorized to access your study data. 
+		  <br><br>
+				  
+		  <b>Collection Protocol Short Title:</b> $cpShortTitle
+		  <br>
+		  <b>List of Coordinators:</b> $cpCoords
+		  <br><br>
+				  
+                  If any of these study coordinators do not need access to the study data going forward, please email to our Help Desk at $helpdeskEmail, with user details so that our administrator can deactivate access. 
+                  <br>
+                  If you have any questions related to this email, please contact us at $contactEmail.
+		  <br><br>
+                  
+                  Thank you,<br>
+		  OpenSpecimen Administration Team.
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        #parse( $footer )
+      </td>
+    <tr>
+  </tbody>
+</table>
