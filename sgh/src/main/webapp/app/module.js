@@ -25,7 +25,7 @@ angular.module("os.plugins.sgh", ['openspecimen'])
       parent: 'signed-in'  
     });
   })
-  .run(function(PluginReg) {
+  .run(function(PluginReg, HomePageSvc) {
     PluginReg.registerViews(
       'sgh',
       {
@@ -33,13 +33,16 @@ angular.module("os.plugins.sgh", ['openspecimen'])
     	  'page-header': {
             template: 'plugin-ui-resources/sgh/cp-bulk-reg-btn.html'
           }
-        },
-
-        'home': {
-          'page-body': {
-            template: 'plugin-ui-resources/sgh/unplanned-bulk-pre-print-icon.html'
-          }
         }
+      }
+    );
+
+    HomePageSvc.registerCard(
+      {
+        sref: 'unplanned-bulk-pre-printing',
+        icon: 'fa fa-print',
+        title: 'custom_sgh.bulk_pre_printing',
+        description: 'custom_sgh.bpp_desc'
       }
     );
   });
