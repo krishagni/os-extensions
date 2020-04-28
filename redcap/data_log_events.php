@@ -27,16 +27,24 @@ $username  = $userRow['username'];
 
 $content   = (isset($_POST['content']) ? $_POST['content'] : 'data_audit_log');
 if (strcmp($content, 'data_audit_log') == 0) {
-  $lastEventId = (isset($_POST['lastEventId']) ? $_POST['lastEventId'] : 0);
-  $maxEvents   = (isset($_POST['maxEvents']) ? $_POST['maxEvents'] : 100);
-  send_data_audit_log($projectId, $lastEventId, $maxEvents);
+  $lastEventId   = (isset($_POST['lastEventId']) ? $_POST['lastEventId'] : 0);
+  $maxEvents     = (isset($_POST['maxEvents']) ? $_POST['maxEvents'] : 100);
+  $recordIds     = (isset($_POST['recordIds']) ? $_POST['recordIds'] : '');
+  send_data_audit_log($projectId, $lastEventId, $maxEvents, $recordIds);
+} else if (strcmp($content, 'data_record_values') == 0) {
+  $lastRowId = (isset($_POST['lastRowId']) ? $_POST['lastRowId'] : 0);
+  $maxRows   = (isset($_POST['maxRows']) ? $_POST['maxRows'] : 100);
+  $recordIds = (isset($_POST['recordIds']) ? $_POST['recordIds'] : '');
+  send_data_record_values($projectId, $lastRowId, $maxRows, $recordIds);
 } else if (strcmp($content, 'event') == 0) {
   send_events($projectId);
 } else if (strcmp($content, 'event_forms') == 0) {
   send_event_forms($projectId);
+} else if (strcmp($content, 'latest_log_event_id') == 0) {
+  send_latest_log_event_id($projectId);
 }
 
-function send_data_audit_log($projectId, $startEventId, $maxEvents) {
+function send_data_audit_log($projectId, $startEventId, $maxEvents, $recordIds) {
   $query =
     "select
        le.log_event_id, le.ts, le.event, le.pk, le.event_id, e.descrip as event_name, le.data_values
@@ -45,14 +53,54 @@ function send_data_audit_log($projectId, $startEventId, $maxEvents) {
        inner join redcap_events_metadata e on e.event_id = le.event_id
      where
        le.object_type = 'redcap_data' and
-       le.event in ('INSERT', 'UPDATE', 'DELETE') and
        le.project_id = " . db_real_escape_string($projectId);
+
+  if (strcmp($onlyDelEvents, 'true') == 0) {
+    $query = $query . " and (le.event = 'DELETE' or (le.event = 'UPDATE' and le.description like 'Delete%'))";
+  } else {
+    $query = $query . " and le.event in ('INSERT', 'UPDATE', 'DELETE')";
+  }
+
+  if (!empty($recordIds)) {
+    $query = $query . " and le.pk in (" . $recordIds . ")";
+  }
 
   if ($startEventId > 0) {
     $query = $query . " and log_event_id > " . db_real_escape_string($startEventId);
   }
 
   $query = $query . " order by log_event_id limit " . db_real_escape_string($maxEvents);
+
+  send_records(db_query($query));
+}
+
+function send_data_record_values($projectId, $startRowId, $maxRows, $recordIds) {
+  $query =
+    "select
+       d.record, d.event_id, d.instance, d.field_name, d.value, m.element_type
+     from
+       redcap_data d
+       inner join redcap_metadata m on m.field_name = d.field_name and m.project_id  = d.project_id
+       left join redcap_events_metadata e on e.event_id = d.event_id
+     where
+       d.project_id = " . db_real_escape_string($projectId);
+
+  if (!empty($recordIds)) {
+    $query = $query . " and d.record in (" . $recordIds . ")";
+  }
+
+  $query = $query . " order by abs(d.record), d.record, d.event_id, d.instance limit";
+  if ($startRowId > 0) {
+    $query = $query . " " . db_real_escape_string($startRowId);
+  } else {
+    $query = $query . " 0";
+  }
+
+  if ($maxRows > 0) {
+    $query = $query . ", " . db_real_escape_string($maxRows);
+  } else {
+    $query = $query . ", 100";
+  }
 
   send_records(db_query($query));
 }
@@ -82,6 +130,22 @@ function send_event_forms($projectId) {
        a.project_id = " . db_real_escape_string($projectId);
 
   send_records(db_query($query));
+}
+
+function send_latest_log_event_id($projectId) {
+  $query =
+    "select
+       max(log_event_id) as id
+     from
+       redcap_log_event
+     where
+       project_id = " . db_real_escape_string($projectId);
+
+  $rs = db_query($query);
+  $row = db_fetch_assoc($rs);
+
+  header("Content-Type:application/json");
+  print json_encode($row);
 }
 
 function send_records($rs) {
