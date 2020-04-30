@@ -6,8 +6,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 jar {
-  baseName = 'os-vcb'
-  version =  '1.0.0'
+  baseName = 'zos-vcb'
+  version =  '6.3.0'
 
   manifest {
     attributes("os-plugin-name": "vcb")

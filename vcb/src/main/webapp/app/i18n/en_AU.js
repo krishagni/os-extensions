@@ -60,5 +60,11 @@
  
   "specimen_list": {
     "label": "Tissue Bank Number (Barcode)"
+  },
+
+  "aliquots_cnt": "Aliquot Count",
+  "aliquot_qty": "Aliquot Quantity",
+  "sc": {
+    "comments": "Specific Requirements"
   }
 }
