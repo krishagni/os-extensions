@@ -102,7 +102,64 @@ function send_data_record_values($projectId, $startRowId, $maxRows, $recordIds) 
     $query = $query . ", 100";
   }
 
-  send_records(db_query($query));
+  $records = array();
+  $rids    = array();
+  $eids    = array();
+
+  $rs = db_query($query);
+  while ($row = db_fetch_assoc($rs)) {
+    $records [] = $row;
+    $rids[$row["record"]] = true;
+    $eids[$row["event_id"]] = true;
+  }
+
+  $tsMap = get_record_event_ts($projectId, $rids, $eids);
+  foreach ($records as $idx => $record) {
+    $records[$idx]["ts"] = $tsMap[$record["record"] . ":" . $record["event_id"]];
+  }
+
+  header("Content-Type:application/json");
+  print json_encode($records);
+}
+
+function get_record_event_ts($projectId, $rids, $eids) {
+  $tsMap = array();
+  if (count($rids) == 0) {
+    return $tsMap;
+  }
+
+  $query = "
+    select
+      pk, event_id, min(ts) as ts
+    from
+      redcap_log_event
+    where
+      pk in (" . to_csv($rids) . ") and
+      event_id in (" . to_csv($eids) . ") and
+      project_id = " . db_real_escape_string($projectId) . " and
+      event in ('INSERT', 'UPDATE', 'DELETE')
+    group by
+      pk, event_id";
+
+  $rs = db_query($query);
+  while ($row = db_fetch_assoc($rs)) {
+    $tsMap[$row["pk"] . ":" . $row["event_id"]] = $row["ts"];
+  }
+
+  return $tsMap;
+}
+
+function to_csv($array) {
+  $result = "";
+  foreach ($array as $key => $value) {
+    if (strlen($result) > 0) {
+      $result = $result . ",";
+    }
+
+    $result = $result . "'" . $key . "'";
+  }
+
+  return $result;
 }
 
 function send_events($projectId) {
