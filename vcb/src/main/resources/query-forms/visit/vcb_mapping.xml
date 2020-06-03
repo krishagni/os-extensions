@@ -2,7 +2,7 @@
 	<subForm>
 		<name>vcbAdditionalFields</name>
 		<udn>vcbAdditionalFields</udn>
-		<caption>Primary Site / Tumour Stream (new)</caption>
+		<caption>Primary Site / Tumour Stream</caption>
 		<table>VCB_SPMN_SITE_TUMOUR_STREAM_VIEW</table>
 		<primaryKey>IDENTIFIER</primaryKey>
 		<foreignKey>VISIT_ID</foreignKey>
@@ -14,7 +14,7 @@
 				<caption>Primary Site</caption>
 				<column>primary_site</column>
 				<options>
-					<sql>select distinct DE_A_7 from DE_E_11333</sql>
+					<sql> select distinct PRIMARY_SITE_ID from DE_E_11001 </sql>
 				</options>
 			</dropDown>
 		</row>
