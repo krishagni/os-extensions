@@ -7,6 +7,7 @@
 2. Make sure the remote DB and target DB is accessible.
 3. Make sure the user has write privilege to the current directory.
 4. Update the "Configuration" section with appropriate credentials.
+5. Stop any "EPIC: Participant Importer" job which might be running before you run the script.
 
 ### How the migration script works?
 1. The script will create a 'os_staged_participant_bkp' table which is the operating table until all the records are fetched.
