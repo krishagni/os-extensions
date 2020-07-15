@@ -96,10 +96,10 @@ mysql -u"$targetDbUsername" -h"$targetDbHostname" -p"$targetDbPassword" "$target
 
 # Moving everything from 'os_staged_participants_bkp' to 'os_staged_participants' table
 echo "Truncating orignal table"
-mysql -u $targetDbUsername -h $targetDbHostname -p $targetDbPassword $targetDbName -e  "SET FOREIGN_KEY_CHECKS=0; truncate table os_staged_participants;"
+mysql -u"$targetDbUsername" -h"$targetDbHostname" -p"$targetDbPassword" "$targetDbName" -e "SET FOREIGN_KEY_CHECKS=0; truncate table os_staged_participants;"
 
 echo "Moving the data from backup table to orignal table"
-mysql -u $targetDbUsername -h $targetDbHostname -p $targetDbPassword $targetDbName -e  "INSERT INTO os_staged_participants SELECT * FROM os_staged_participants_bkp;"
+mysql -u"$targetDbUsername" -h"$targetDbHostname" -p"$targetDbPassword" "$targetDbName" -e "INSERT INTO os_staged_participants SELECT * FROM os_staged_participants_bkp;"
 
 endTime=$(date +%s)
 
