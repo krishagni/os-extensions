@@ -126,8 +126,7 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		List<PrintItem<Specimen>> printItems = new ArrayList<PrintItem<Specimen>>();
 		Visit visit = new Visit();
 		visit.setName(visitName);
-		Site site = new Site();
-		site.setName(printerName);
+		Site site = getSiteFromSiteName(printerName);
 		visit.setSite(site);
 		
 		int tridCopies = cfgSvc.getIntSetting(SGH_MODULE, "trid_copies", 2);
@@ -160,6 +159,11 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			printItems.add(PrintItem.make(aliquot, 1));
 		}
 		return printItems;
+	}
+	
+	@PlusTransactional
+	private Site getSiteFromSiteName(String siteName) {
+		return daoFactory.getSiteDao().getSiteByName(siteName);
 	}
 	
 	private List<String> getUnplannedTrids(List<String> tridsToPrint) {
