@@ -45,11 +45,13 @@ if (strcmp($content, 'data_audit_log') == 0) {
 }
 
 function send_data_audit_log($projectId, $startEventId, $maxEvents, $recordIds) {
+  $logEventTable = get_audit_log_table($projectId);
+
   $query =
     "select
        le.log_event_id, le.ts, le.event, le.pk, le.event_id, e.descrip as event_name, le.data_values
      from
-       redcap_log_event le
+    " . $logEventTable . " le
        inner join redcap_events_metadata e on e.event_id = le.event_id
      where
        le.object_type = 'redcap_data' and
@@ -72,6 +74,26 @@ function send_data_audit_log($projectId, $startEventId, $maxEvents, $recordIds) 
   $query = $query . " order by log_event_id limit " . db_real_escape_string($maxEvents);
 
   send_records(db_query($query));
+}
+
+function get_audit_log_table($projectId) {
+  $query =
+    "select
+       log_event_table
+     from
+       redcap_projects
+     where
+       project_id = " . db_real_escape_string($projectId);
+
+  $table = "redcap_log_event";
+
+  $rs = db_query($query);
+  $row = db_fetch_assoc($rs)
+  if (!empty($row) && !empty($row["log_event_table"])) {
+    $table = $row["log_event_table"];
+  }
+
+  return $table;
 }
 
 function send_data_record_values($projectId, $startRowId, $maxRows, $recordIds) {
