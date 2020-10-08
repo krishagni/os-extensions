@@ -50,6 +50,7 @@ public class ExternalParticipantsLoader {
 
 	private void loadParticipants(ExternalParticipantSource source) {
 		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			source.init();
 			criteria.startAt(0).maxResults(25);
 			boolean hasMore = true;
