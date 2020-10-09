@@ -88,7 +88,7 @@ function get_audit_log_table($projectId) {
   $table = "redcap_log_event";
 
   $rs = db_query($query);
-  $row = db_fetch_assoc($rs)
+  $row = db_fetch_assoc($rs);
   if (!empty($row) && !empty($row["log_event_table"])) {
     $table = $row["log_event_table"];
   }
