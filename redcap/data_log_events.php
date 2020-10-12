@@ -42,6 +42,11 @@ if (strcmp($content, 'data_audit_log') == 0) {
   send_event_forms($projectId);
 } else if (strcmp($content, 'latest_log_event_id') == 0) {
   send_latest_log_event_id($projectId);
+} else if (strcmp($content, 'version') == 0) {
+   $result = array();
+   $result["version"] = "2020-10-12T07:58:48.225Z";
+   header("Content-Type:application/json");
+   print json_encode($result);
 }
 
 function send_data_audit_log($projectId, $startEventId, $maxEvents, $recordIds) {
