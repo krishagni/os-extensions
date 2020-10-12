@@ -150,11 +150,13 @@ function get_record_event_ts($projectId, $rids, $eids) {
     return $tsMap;
   }
 
+  $logEventTable = get_audit_log_table($projectId);
+
   $query = "
     select
       pk, event_id, min(ts) as ts
     from
-      redcap_log_event
+    " . $logEventTable . "
     where
       pk in (" . to_csv($rids) . ") and
       event_id in (" . to_csv($eids) . ") and
@@ -212,11 +214,13 @@ function send_event_forms($projectId) {
 }
 
 function send_latest_log_event_id($projectId) {
+  $logEventTable = get_audit_log_table($projectId);
+
   $query =
     "select
        max(log_event_id) as id
      from
-       redcap_log_event
+    " . $logEventTable . "
      where
        project_id = " . db_real_escape_string($projectId);
 
