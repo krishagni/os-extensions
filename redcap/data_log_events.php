@@ -194,10 +194,20 @@ function to_csv($array) {
 function send_events($projectId) {
   $query =
     "select
-       e.event_id, e.day_offset, e.offset_min, e.offset_max, e.descrip as event_name, a.arm_num
+       e.event_id, e.day_offset, e.offset_min, e.offset_max,
+       e.descrip as event_name, a.arm_num,
+       case when er.repeatable = 1 then 1 else 0 end as repeatable
      from
        redcap_events_metadata e
        inner join redcap_events_arms a on a.arm_id = e.arm_id
+       left join (
+         select
+           event_id, 1 as repeatable
+         from
+           redcap_events_repeat
+         where
+           form_name is null
+       ) er on er.event_id = e.event_id
      where
        a.project_id = " . db_real_escape_string($projectId);
 
