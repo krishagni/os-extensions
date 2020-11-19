@@ -206,7 +206,8 @@ function send_events($projectId) {
          from
            redcap_events_repeat
          where
-           form_name is null
+           form_name is null or
+           length(trim(form_name)) = 0
        ) er on er.event_id = e.event_id
      where
        a.project_id = " . db_real_escape_string($projectId);
