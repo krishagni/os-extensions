@@ -93,7 +93,6 @@ function get_audit_log_table($projectId) {
        where
          project_id = " . db_real_escape_string($projectId);
 
-
     $rs = db_query($query);
     $row = db_fetch_assoc($rs);
     if (!empty($row) && !empty($row["log_event_table"])) {
