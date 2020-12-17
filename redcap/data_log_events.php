@@ -44,7 +44,7 @@ if (strcmp($content, 'data_audit_log') == 0) {
   send_latest_log_event_id($projectId);
 } else if (strcmp($content, 'version') == 0) {
    $result = array();
-   $result["version"] = "2020-10-12T07:58:48.225Z";
+   $result["version"] = "2020-12-17T04:40:00.000Z";
    header("Content-Type:application/json");
    print json_encode($result);
 }
@@ -82,20 +82,25 @@ function send_data_audit_log($projectId, $startEventId, $maxEvents, $recordIds) 
 }
 
 function get_audit_log_table($projectId) {
-  $query =
-    "select
-       log_event_table
-     from
-       redcap_projects
-     where
-       project_id = " . db_real_escape_string($projectId);
-
   $table = "redcap_log_event";
 
-  $rs = db_query($query);
-  $row = db_fetch_assoc($rs);
-  if (!empty($row) && !empty($row["log_event_table"])) {
-    $table = $row["log_event_table"];
+  try {
+    $query =
+      "select
+         log_event_table
+       from
+         redcap_projects
+       where
+         project_id = " . db_real_escape_string($projectId);
+
+
+    $rs = db_query($query);
+    $row = db_fetch_assoc($rs);
+    if (!empty($row) && !empty($row["log_event_table"])) {
+      $table = $row["log_event_table"];
+    }
+  } catch (Exception $e) {
+    echo "Running on REDCap < 9.6.0\n";
   }
 
   return $table;
