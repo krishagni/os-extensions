@@ -103,9 +103,9 @@ public class CprServiceImpl implements CprService {
 				registrations.add(regDetail);
 			}
 			
-			if(!regReq.isPrintLabels()){
-				logTridGeneration(registrations);
-			}
+//			if(!regReq.isPrintLabels()){
+//				logTridGeneration(registrations);
+//			}
 			
 			return ResponseEvent.response(BulkParticipantRegDetail.from(regReq, registrations));			
 		} catch (OpenSpecimenException ose) {
@@ -261,8 +261,7 @@ public class CprServiceImpl implements CprService {
 		
 		Visit visit = new Visit();
 		visit.setName(visitName);
-		Site site = new Site();
-		site.setName(printerName);
+		Site site = getSiteFromSiteName(printerName);
 		visit.setSite(site);
 		
 		for(int i = 0; i < 2; ++i){
@@ -276,6 +275,11 @@ public class CprServiceImpl implements CprService {
 			printItems.add(PrintItem.make(specimen, 1));
 		}
 		return printItems;
+	}
+	
+	@PlusTransactional
+	private Site getSiteFromSiteName(String siteName) {
+		return daoFactory.getSiteDao().getSiteByName(siteName);
 	}
 	
 	private RequestEvent<PrintSpecimenLabelDetail> getPrintLabelsReq(List<Long> specimenIds) {
