@@ -1,9 +1,6 @@
 package com.krishagni.openspecimen.mcrigenv;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationListener;
-import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.SpecimenSavedEvent;
 import com.krishagni.openspecimen.mcrigenv.jms.JmsMessagePublisher;
 

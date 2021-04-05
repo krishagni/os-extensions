@@ -52,7 +52,7 @@ dependencies {
   compile   "org.aspectj:aspectjrt:1.8.6"
   compile   "javax.persistence:persistence-api:1.0.2"
   aspects   "org.springframework:spring-aspects:4.3.19.RELEASE"
-  aspects   fileTree(dir: './lib', include: ['openspecimen.jar'])
+  aspects   fileTree(dir: '../lib', include: ['openspecimen.jar'])
 
   compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
   compile group: 'log4j', name: 'log4j', version:'1.2.16'
