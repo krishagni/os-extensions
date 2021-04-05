@@ -6,30 +6,36 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.jms.ConnectionFactory;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jms.core.JmsTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.krishagni.catissueplus.core.biospecimen.domain.SpecimenSavedEvent;
 import com.krishagni.catissueplus.core.biospecimen.events.SpecimenDetail;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 
 public class JmsMessagePublisher {
 	private static final Map<String, JmsTemplate> jmsConnectionsMap = new ConcurrentHashMap<>();
 	
-	public void processMessage(SpecimenSavedEvent event) {
-		String msg = toJSON(SpecimenDetail.from(event.getEventData(),false,false,true));
+	public void processMessage(Specimen specimen) {
+		String msg = toJSON(SpecimenDetail.from(specimen,false,false,true));
 		publishMessage(msg);
 	}
 	
 	private String toJSON(SpecimenDetail specimenDetail) {
-		Map<String,Object> objectMap = new HashMap<String, Object>();
-		objectMap.put("creationTime", specimenDetail.getCreatedOn().getTime());
-		objectMap.put("user", specimenDetail.getCreatedBy());
-		objectMap.put("specimen", specimenDetail);
+		FilterProvider filters = new SimpleFilterProvider()
+				.addFilter("withoutId", SimpleBeanPropertyFilter.serializeAllExcept("id", "statementId"));
 		String msg = "{}";
 		
 		try {
-			 msg = new ObjectMapper().writeValueAsString(objectMap);
+			 msg =  new ObjectMapper()
+					.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+					.writer(filters)
+					.writeValueAsString(specimenDetail);
 		} catch (Exception e) {
 			throw new RuntimeException("Error creating JSON message: " + e.getMessage(), e);
 		}

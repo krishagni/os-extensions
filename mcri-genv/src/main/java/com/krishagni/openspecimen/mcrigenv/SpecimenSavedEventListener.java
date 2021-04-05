@@ -8,11 +8,9 @@ import com.krishagni.catissueplus.core.biospecimen.domain.SpecimenSavedEvent;
 import com.krishagni.openspecimen.mcrigenv.jms.JmsMessagePublisher;
 
 public class SpecimenSavedEventListener implements ApplicationListener<SpecimenSavedEvent> {
-    private static final Log logger = LogFactory.getLog(SpecimenSavedEventListener.class);
-
     @Override
     public void onApplicationEvent(SpecimenSavedEvent event) {
     	JmsMessagePublisher messagePublisher = new JmsMessagePublisher();
-    	messagePublisher.processMessage(event);
+    	messagePublisher.processMessage(event.getEventData());
     }
 }
