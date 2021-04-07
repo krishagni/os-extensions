@@ -14,19 +14,34 @@
               </td>
             </tr>
             <tr>
-              <td>
-                <p>
-                    Collection Site: <b>$site</b>
-                    <br>
-                    Sample Type: <b>$type</b>
-                    <br>
-                    Participant ID: <b>$cprId</b>
-                    <br>
-                    Sample ID: <b>$id</b>
-                    <br>
-                    Sample Quality: <b>$quality</b>
-                </p>
-              </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td> Collection Site </td>
+                            <td> : <b>$site</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Sample Type </td>
+                            <td> : <b>$type</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Participant ID </td>
+                            <td> : <b>$ppid</b> </td>
+                        </tr>
+                        <tr>
+                            <td> CP Short Title </td>
+                            <td> : <b>$cpShortTitle</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Sample ID </td>
+                            <td> : <b>$id</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Sample Quality </td>
+                            <td> : <b>$quality</b> </td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
           </tbody>
         </table>

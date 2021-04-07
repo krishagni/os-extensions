@@ -10,13 +10,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
+import com.krishagni.catissueplus.core.administrative.domain.Site;
+import com.krishagni.catissueplus.core.biospecimen.domain.*;
 import com.krishagni.catissueplus.core.common.util.EmailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jms.core.JmsTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krishagni.catissueplus.core.biospecimen.events.SpecimenDetail;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
+import static com.krishagni.catissueplus.core.biospecimen.domain.Specimen.ACCEPTABLE;
 
 public class JmsMessagePublisher {
 	private static final Map<String, JmsTemplate> jmsConnectionsMap = new ConcurrentHashMap<>();
@@ -25,22 +27,33 @@ public class JmsMessagePublisher {
 		SpecimenDetail specimenDetail = SpecimenDetail.from(specimen,false,false,true);
 		String msg = toJSON(specimenDetail);
 		publishMessage(msg);
-		checkSpecimenQuality(specimenDetail);
+		checkSpecimenQuality(specimen);
 	}
 
-	private void checkSpecimenQuality(SpecimenDetail specimenDetail){
-		String specimenQuality = specimenDetail.getReceivedEvent().getReceivedQuality();
+	private void checkSpecimenQuality(Specimen specimen){
 
-		if(specimenQuality.equals("Damaged") || specimenQuality.equals("Unacceptable, Not Specified")){
-			Map<String,Object> props = new HashMap<>();
-			props.put("$subject",new String[] {"Specimen Summary Report"});
-			props.put("site","Pune Site");
-			props.put("type",specimenDetail.getType());
-			props.put("cprId",specimenDetail.getCprId());
-			props.put("id",specimenDetail.getId());
-			props.put("quality",specimenDetail.getReceivedEvent().getReceivedQuality());
-			EmailUtil.getInstance().sendEmail("specimen_sample_quality_report", new String[] {"nikhil@krishagni.com"},null,props);
+		if(!specimen.isPrimary()){
+			return;
 		}
+
+		SpecimenReceivedEvent recvEvent = specimen.getReceivedEvent();
+		if (ACCEPTABLE.equals(recvEvent.getQuality().getValue())) {
+			return;
+		}
+
+		Visit visit = specimen.getVisit();
+		Site site = visit.getSite();
+		CollectionProtocolRegistration cpr = visit.getRegistration();
+		CollectionProtocol cp = cpr.getCollectionProtocol();
+
+		Map<String,Object> props = new HashMap<>();
+		props.put("site",visit.getSite().getName());
+		props.put("type",specimen.getSpecimenType().getValue());
+		props.put("ppid",cpr.getPpid());
+		props.put("cpShortTitle",cp.getShortTitle());
+		props.put("id",specimen.getId());
+		props.put("quality",recvEvent.getQuality().getValue());
+		EmailUtil.getInstance().sendEmail("specimen_sample_quality_report", new String[] {"nikhil@krishagni.com"},null,props);
 	}
 
 	private String toJSON(SpecimenDetail specimenDetail) {
