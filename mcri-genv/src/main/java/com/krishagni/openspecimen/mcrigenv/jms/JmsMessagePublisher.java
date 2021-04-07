@@ -18,7 +18,6 @@ import org.springframework.jms.core.JmsTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krishagni.catissueplus.core.biospecimen.events.SpecimenDetail;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
-import static com.krishagni.catissueplus.core.biospecimen.domain.Specimen.ACCEPTABLE;
 
 public class JmsMessagePublisher {
 	private static final Map<String, JmsTemplate> jmsConnectionsMap = new ConcurrentHashMap<>();
@@ -37,7 +36,7 @@ public class JmsMessagePublisher {
 		}
 
 		SpecimenReceivedEvent recvEvent = specimen.getReceivedEvent();
-		if (ACCEPTABLE.equals(recvEvent.getQuality().getValue())) {
+		if ((!recvEvent.getQuality().getValue().equals("Damaged")) && (!recvEvent.getQuality().getValue().equals("Unacceptable, Not Specified"))) {
 			return;
 		}
 
@@ -47,6 +46,7 @@ public class JmsMessagePublisher {
 		CollectionProtocol cp = cpr.getCollectionProtocol();
 
 		Map<String,Object> props = new HashMap<>();
+		props.put("$subject",new String[] {recvEvent.getQuality().getValue()});
 		props.put("site",visit.getSite().getName());
 		props.put("type",specimen.getSpecimenType().getValue());
 		props.put("ppid",cpr.getPpid());
