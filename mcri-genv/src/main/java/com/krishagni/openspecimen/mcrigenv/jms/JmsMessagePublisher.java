@@ -6,12 +6,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.jms.ConnectionFactory;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
+import com.krishagni.catissueplus.core.common.util.EmailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jms.core.JmsTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,12 +20,29 @@ import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
 
 public class JmsMessagePublisher {
 	private static final Map<String, JmsTemplate> jmsConnectionsMap = new ConcurrentHashMap<>();
-	
+
 	public void processMessage(Specimen specimen) {
-		String msg = toJSON(SpecimenDetail.from(specimen,false,false,true));
+		SpecimenDetail specimenDetail = SpecimenDetail.from(specimen,false,false,true);
+		String msg = toJSON(specimenDetail);
 		publishMessage(msg);
+		checkSpecimenQuality(specimenDetail);
 	}
-	
+
+	private void checkSpecimenQuality(SpecimenDetail specimenDetail){
+		String specimenQuality = specimenDetail.getReceivedEvent().getReceivedQuality();
+
+		if(specimenQuality.equals("Damaged") || specimenQuality.equals("Unacceptable, Not Specified")){
+			Map<String,Object> props = new HashMap<>();
+			props.put("$subject",new String[] {"Specimen Summary Report"});
+			props.put("site","Pune Site");
+			props.put("type",specimenDetail.getType());
+			props.put("cprId",specimenDetail.getCprId());
+			props.put("id",specimenDetail.getId());
+			props.put("quality",specimenDetail.getReceivedEvent().getReceivedQuality());
+			EmailUtil.getInstance().sendEmail("specimen_sample_quality_report", new String[] {"nikhil@krishagni.com"},null,props);
+		}
+	}
+
 	private String toJSON(SpecimenDetail specimenDetail) {
 		FilterProvider filters = new SimpleFilterProvider()
 				.addFilter("withoutId", SimpleBeanPropertyFilter.serializeAllExcept("id", "statementId"));
