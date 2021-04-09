@@ -20,8 +20,14 @@ jar {
     attributes("built-on": getTodayDate())
     attributes("version": version)
   }
-  
-  
+
+  doFirst {
+    from('./src/main/webapp/app') {
+      include '**/**'
+
+      into 'META-INF/resources/zos-mcri-genv'
+    }
+  }
 }
 
 sourceCompatibility = 1.8
