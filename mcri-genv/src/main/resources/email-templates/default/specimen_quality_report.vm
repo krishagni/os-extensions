@@ -9,7 +9,7 @@
                 <p style="margin:10px 0 0 0">
                   Hello All,
                   <br><br>
-                  Specimen is collected with $receiveQuality quality. Find the specimen summary below:
+                  Specimen is collected with $quality quality. Find the specimen summary below:
                 </p>
               </td>
             </tr>
