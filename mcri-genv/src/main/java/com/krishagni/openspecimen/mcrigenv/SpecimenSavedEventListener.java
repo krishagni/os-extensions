@@ -134,8 +134,7 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 			return;
 		}
 
-		List<String> values = (List<String>) missingSpmn.getValue();
-		String value = values.get(0);
+		String value = missingSpmn.getValue().toString();
 		if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("1")) {
 			notifyByEmail("specimen_missing_report", rcpts, specimen);
 		}
