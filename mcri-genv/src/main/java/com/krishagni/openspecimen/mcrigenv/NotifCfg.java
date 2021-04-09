@@ -3,6 +3,8 @@ package com.krishagni.openspecimen.mcrigenv;
 import java.util.List;
 
 public class NotifCfg {
+	private List<String> cps;
+
 	private String jmsConnectionFactory;
 
 	private String jmsNotifQueue;
@@ -14,6 +16,14 @@ public class NotifCfg {
 	private String missingSpecimenFieldName;
 
 	private List<String> missingSpecimenNotifRcpts;
+
+	public List<String> getCps() {
+		return cps;
+	}
+
+	public void setCps(List<String> cps) {
+		this.cps = cps;
+	}
 
 	public String getJmsConnectionFactory() {
 		return jmsConnectionFactory;

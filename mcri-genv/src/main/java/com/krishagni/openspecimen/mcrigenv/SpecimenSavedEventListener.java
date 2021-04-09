@@ -46,6 +46,11 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 		}
 
 		Specimen specimen = event.getEventData();
+		List<String> cps = notifCfg.getCps();
+		if (cps != null && !cps.isEmpty() && !cps.contains(specimen.getCpShortTitle())) {
+			return;
+		}
+
 		new MessagePublisher().publish(notifCfg.getJmsConnectionFactory(), notifCfg.getJmsNotifQueue(), specimen);
 		notifyUnacceptableRecvQualities(specimen);
 		notifyMissingSpecimen(specimen);
@@ -108,10 +113,6 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 	}
 
 	private void notifyMissingSpecimen(Specimen specimen) {
-		if (!specimen.isCollected()) {
-			return;
-		}
-
 		List<String> rcpts = notifCfg.getMissingSpecimenNotifRcpts();
 		if (rcpts == null || rcpts.isEmpty()) {
 			return;
