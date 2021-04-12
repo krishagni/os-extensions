@@ -7,7 +7,7 @@
 
   <bean id="emoryLitsLiquibase" class="liquibase.integration.spring.SpringLiquibase">
     <property name="dataSource" ref="dataSource"/>
-    <property name="changeLog" value="classpath:emory-lits/.db/changelog-master.xml"/>
+    <property name="changeLog" value="classpath:emory-lits/db/changelog-master.xml"/>
   </bean>
 
   <bean class="com.krishagni.openspecimen.emorylits.SpecimenSavedEventListener">
