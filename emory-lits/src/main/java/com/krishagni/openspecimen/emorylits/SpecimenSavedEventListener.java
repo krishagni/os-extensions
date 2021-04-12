@@ -33,7 +33,7 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
     @Override
     public void onApplicationEvent(SpecimenSavedEvent event) {
         if (config == null) {
-            logger.warn("Notifications setting is not configured yet. Nothing to do.");
+            logger.warn("Emory LITS plugin settings not configured yet. Nothing to do.");
             return;
         }
 
@@ -55,7 +55,7 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
             String notifCfgJson = configSvc.getFileContent(MODULE, CONFIG);
             config = parseConfig(notifCfgJson);
         } catch (Exception e) {
-            logger.error("Error parsing the MCRI GenV notifications setting", e);
+            logger.error("Error parsing the Emory LITS configuration setting", e);
         }
 
         configSvc.registerChangeListener(MODULE,
