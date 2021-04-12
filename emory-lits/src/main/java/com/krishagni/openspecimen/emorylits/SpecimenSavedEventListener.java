@@ -46,7 +46,7 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
     }
 
     public void updateSpecimenBarcode(Specimen specimen) {
-        specimen.setBarcode(String.valueOf(specimen.getId()));
+        specimen.setBarcode(specimen.getId().toString());
     }
 
     @Override
