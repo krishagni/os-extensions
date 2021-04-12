@@ -39,7 +39,7 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 
         Specimen specimen = event.getEventData();
         List<String> cps = config.getCps();
-        if (cps != null && !cps.isEmpty() && !cps.contains(specimen.getCpShortTitle())) {
+        if (cps == null || cps.isEmpty() || !cps.contains(specimen.getCpShortTitle())) {
             return;
         }
         updateSpecimenBarcode(specimen);
