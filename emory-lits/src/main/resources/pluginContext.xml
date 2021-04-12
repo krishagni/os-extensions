@@ -12,6 +12,5 @@
 
   <bean class="com.krishagni.openspecimen.emorylits.SpecimenSavedEventListener">
     <property name="configSvc" ref="cfgSvc"/>
-<!--    <property name="daoFactory" ref="biospecimenDaoFactory"/>-->
   </bean>
 </beans>
