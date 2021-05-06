@@ -6,6 +6,8 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+  <include file="db/data-type-definitions.xml"/>
+
   <changeSet author="vpawar" id="MCRI notifications configuration setting">
     <sql>
       call add_cfg_prop(
