@@ -12,5 +12,10 @@
 
   <bean class="com.krishagni.openspecimen.mcrigenv.SpecimenSavedEventListener">
     <property name="configSvc" ref="cfgSvc"/>
+    <property name="specimenNotifDao">
+      <bean class="com.krishagni.openspecimen.mcrigenv.SpecimenNotifDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+      </bean>
+    </property>
   </bean>
 </beans>

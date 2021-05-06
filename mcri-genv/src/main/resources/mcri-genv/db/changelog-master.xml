@@ -15,4 +15,23 @@
       );
     </sql>
   </changeSet>
+
+  <changeSet author="vpawar" id="Specimen notifications">
+    <createTable tableName="OS_MCRI_SPMN_NOTIFS">
+      <column name="IDENTIFIER" type="${int.type}" autoIncrement="${autoIncrement}">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="SPECIMEN_ID" type="${int.type}">
+        <constraints nullable="false" foreignKeyName="FK_MCRI_SPMN_NOTIF_SPMN_ID"
+          referencedTableName="CATISSUE_SPECIMEN" referencedColumnNames="IDENTIFIER"/>
+      </column>
+      <column name="RECEIVE_QUALITY_ID" type="${int.type}">
+        <constraints nullable="false" foreignKeyName="FK_MCRI_SPMN_NOTIF_RECV_ID"
+          referencedTableName="CATISSUE_PERMISSIBLE_VALUE" referencedColumnNames="IDENTIFIER"/>
+      </column>
+      <column name="RECEIVE_QUALITY_NOTIF_TIME" type="${nullable.ts.type}"/>
+      <column name="MISSED" type="${boolean.type}"/>
+      <column name="MISSED_NOTIF_TIME" type="${nullable.ts.type}"/>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>

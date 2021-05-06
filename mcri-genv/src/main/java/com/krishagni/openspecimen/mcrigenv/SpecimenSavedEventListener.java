@@ -1,5 +1,6 @@
 package com.krishagni.openspecimen.mcrigenv;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationListener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolRegistration;
@@ -34,8 +36,14 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 
 	private NotifCfg notifCfg;
 
+	private SpecimenNotifDao specimenNotifDao;
+
 	public void setConfigSvc(ConfigurationService configSvc) {
 		this.configSvc = configSvc;
+	}
+
+	public void setSpecimenNotifDao(SpecimenNotifDao specimenNotifDao) {
+		this.specimenNotifDao = specimenNotifDao;
 	}
 
 	@Override
@@ -52,8 +60,11 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 		}
 
 		new MessagePublisher().publish(notifCfg.getJmsConnectionFactory(), notifCfg.getJmsNotifQueue(), specimen);
-		notifyUnacceptableRecvQualities(specimen);
-		notifyMissingSpecimen(specimen);
+
+		SpecimenNotif notif = getNotif(specimen);
+		notifyUnacceptableRecvQualities(specimen, notif);
+		notifyMissingSpecimen(specimen, notif);
+		saveNotif(notif);
     }
 
 	@Override
@@ -89,10 +100,17 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 		}
 	}
 
-	private void notifyUnacceptableRecvQualities(Specimen specimen) {
+	private void notifyUnacceptableRecvQualities(Specimen specimen, SpecimenNotif notif) {
+		notif.setReceiveQualityNotifTime(Calendar.getInstance().getTime());
+
 		if (!specimen.isPrimary() || !specimen.isCollected()) {
+			notif.setReceiveQuality(null);
 			return;
 		}
+
+		PermissibleValue prevQuality = notif.getReceiveQuality();
+		PermissibleValue newQuality = specimen.getReceivedEvent().getQuality();
+		notif.setReceiveQuality(newQuality);
 
 		List<String> unacceptableQualities = notifCfg.getUnacceptableRecvQualities();
 		if (unacceptableQualities == null || unacceptableQualities.isEmpty()) {
@@ -104,19 +122,17 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 			return;
 		}
 
-		String receiveQuality = specimen.getReceivedEvent().getQuality().getValue();
-		if (!unacceptableQualities.contains(receiveQuality)) {
+		if (!unacceptableQualities.contains(newQuality.getValue()) || newQuality.equals(prevQuality)) {
 			return;
 		}
 
 		notifyByEmail("specimen_quality_report", rcpts, specimen);
 	}
 
-	private void notifyMissingSpecimen(Specimen specimen) {
-		List<String> rcpts = notifCfg.getMissingSpecimenNotifRcpts();
-		if (rcpts == null || rcpts.isEmpty()) {
-			return;
-		}
+	private void notifyMissingSpecimen(Specimen specimen, SpecimenNotif notif) {
+		Boolean prevValue = notif.getMissed();
+		notif.setMissedNotifTime(Calendar.getInstance().getTime());
+		notif.setMissed(null);
 
 		String missingFlagFieldName = notifCfg.getMissingSpecimenFieldName();
 		if (StringUtils.isBlank(missingFlagFieldName)) {
@@ -136,7 +152,15 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 		}
 
 		String value = missingSpmn.getValue().toString();
-		if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("1")) {
+		Boolean newValue = value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("1");
+		notif.setMissed(newValue);
+
+		List<String> rcpts = notifCfg.getMissingSpecimenNotifRcpts();
+		if (rcpts == null || rcpts.isEmpty()) {
+			return;
+		}
+
+		if (newValue && !newValue.equals(prevValue)) {
 			notifyByEmail("specimen_missing_report", rcpts, specimen);
 		}
 	}
@@ -159,5 +183,19 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 		}
 
 		EmailUtil.getInstance().sendEmail(emailTmpl, rcpts.toArray(new String[0]), null, props);
+	}
+
+	private SpecimenNotif getNotif(Specimen specimen) {
+		SpecimenNotif notif = specimenNotifDao.getBySpecimen(specimen.getId());
+		if (notif == null) {
+			notif = new SpecimenNotif();
+			notif.setSpecimen(specimen);
+		}
+
+		return notif;
+	}
+
+	private void saveNotif(SpecimenNotif notif) {
+		specimenNotifDao.saveOrUpdate(notif);
 	}
 }
