@@ -1,8 +1,10 @@
 package com.krishagni.os.jhuprinttoken;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolRegistration;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.common.domain.AbstractLabelTmplToken;
@@ -18,14 +20,19 @@ public class ParticipantRacePrintToken extends AbstractLabelTmplToken implements
 
 	@Override
 	public String getReplacement(Object object) {
-		Set<String> raceSet = null;
-		
+		CollectionProtocolRegistration cpr = null;
 		if (object instanceof Visit) {
-			raceSet = ((Visit)object).getRegistration().getParticipant().getRaces();
+			cpr = ((Visit) object).getRegistration();
 		} else if (object instanceof Specimen) {
-			raceSet = ((Specimen)object).getRegistration().getParticipant().getRaces();
+			cpr = ((Specimen) object).getRegistration();
 		}
-		
-		return Utility.nullSafeStream(raceSet).collect(Collectors.joining(","));
+
+		if (cpr == null) {
+			return StringUtils.EMPTY;
+		}
+
+		return Utility.nullSafeStream(cpr.getParticipant().getRaces())
+				.map(race -> race.getValue())
+				.collect(Collectors.joining(","));
 	}
 }

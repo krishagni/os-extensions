@@ -2,6 +2,7 @@ package com.krishagni.os.jhuprinttoken;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocolRegistration;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
 import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.common.domain.AbstractLabelTmplToken;
@@ -16,15 +17,17 @@ public class ParticipantGenderPrintToken extends AbstractLabelTmplToken implemen
 
 	@Override
 	public String getReplacement(Object object) {
-		String gender = null;
-		
+		CollectionProtocolRegistration cpr = null;
 		if (object instanceof Visit) {
-			gender = ((Visit)object).getRegistration().getParticipant().getGender();
+			cpr = ((Visit) object).getRegistration();
 		} else if (object instanceof Specimen) {
-			gender = ((Specimen)object).getRegistration().getParticipant().getGender();
+			cpr = ((Specimen) object).getRegistration();
 		}
-		
-		return StringUtils.isNotBlank(gender) ? gender : StringUtils.EMPTY;
+
+		if (cpr != null && cpr.getParticipant().getGender() != null) {
+			return cpr.getParticipant().getGender().getValue();
+		} else {
+			return StringUtils.EMPTY;
+		}
 	}
-	
 }

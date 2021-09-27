@@ -45,6 +45,19 @@ angular.module('os.plugins.jhu-epic-lookup', ['openspecimen'])
                 return events.filter(function(event) { return event.activityStatus == 'Active'; });
               }
             );
+          },
+          visitsTab: function(cp, $q, CpConfigSvc) {
+            var allCfgQ = CpConfigSvc.getWorkflowData(-1,    'visitsTab', {});
+            var cpCfgQ  = CpConfigSvc.getWorkflowData(cp.id, 'visitsTab', {});
+            return $q.all([allCfgQ, cpCfgQ]).then(
+              function(tabs) {
+                var allCfg = angular.copy(tabs[0]);
+                return angular.extend(allCfg, tabs[1]);
+              }
+            );
+          },
+          userRole: function(authInit, cp, AuthorizationService) {
+            return AuthorizationService.getRole(cp);
           }
         },
         parent: 'participant-root'
