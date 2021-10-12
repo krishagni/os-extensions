@@ -31,6 +31,9 @@ if (strcmp($content, 'data_audit_log') == 0) {
   $maxEvents     = (isset($_POST['maxEvents']) ? $_POST['maxEvents'] : 100);
   $recordIds     = (isset($_POST['recordIds']) ? $_POST['recordIds'] : '');
   send_data_audit_log($projectId, $lastEventId, $maxEvents, $recordIds);
+} else if (strcmp($content, 'modified_record_ids') == 0) {
+  $lastEventId   = (isset($_POST['lastEventId']) ? $_POST['lastEventId'] : 0);
+  send_modified_record_ids($projectId, $lastEventId);
 } else if (strcmp($content, 'data_record_values') == 0) {
   $lastRowId = (isset($_POST['lastRowId']) ? $_POST['lastRowId'] : 0);
   $maxRows   = (isset($_POST['maxRows']) ? $_POST['maxRows'] : 100);
@@ -44,7 +47,7 @@ if (strcmp($content, 'data_audit_log') == 0) {
   send_latest_log_event_id($projectId);
 } else if (strcmp($content, 'version') == 0) {
    $result = array();
-   $result["version"] = "2020-12-17T04:40:00.000Z";
+   $result["version"] = "2021-10-11T09:30:00.000Z";
    header("Content-Type:application/json");
    print json_encode($result);
 }
@@ -78,6 +81,30 @@ function send_data_audit_log($projectId, $startEventId, $maxEvents, $recordIds) 
 
   $query = $query . " order by log_event_id limit " . db_real_escape_string($maxEvents);
 
+  send_records(db_query($query));
+}
+
+function send_modified_record_ids($projectId, $startEventId) {
+  $logEventTable = get_audit_log_table($projectId);
+
+  $query =
+    "select
+       le.pk, le.event
+     from
+    " . $logEventTable . " le
+       left join " . $logEventTable . " te on te.pk = le.pk and le.log_event_id < te.log_event_id
+     where
+       le.object_type = 'redcap_data' and
+       le.project_id = " . db_real_escape_string($projectId) . " and
+       le.event in ('INSERT', 'UPDATE', 'DELETE') and
+       te.log_event_id is null";
+
+
+  if ($startEventId > 0) {
+    $query = $query . " and le.log_event_id > " . db_real_escape_string($startEventId);
+  }
+
+  $query = $query . " order by le.log_event_id";
   send_records(db_query($query));
 }
 
