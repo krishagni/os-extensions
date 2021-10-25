@@ -6,14 +6,20 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 jar {
-  baseName = 'os-utsw'
-  version =  '1.0.0'
+  baseName = 'zos-utsw'
+  version =  '8.1.0'
 
   manifest {
-    attributes("os-plugin-name": "os-plugin")
+    attributes("os-plugin-name": "utsw")
   }
-  
-  
+
+
+  doFirst {
+    from ('./src/main/webapp/app/') {
+      include '**/**' 
+      into 'META-INF/resources/utsw'
+    }
+  } 
 }
 
 sourceCompatibility = 1.8
@@ -27,7 +33,7 @@ configurations {
   ajc
   aspects
   aspectCompile
-  
+
   compile {
     extendsFrom aspects
   }
@@ -47,13 +53,11 @@ dependencies {
   aspects   fileTree(dir: './lib', include: ['openspecimen.jar'])
 
   compile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.0.1'
-  
   compile group: 'asm', name: 'asm', version:'3.3.1'
   compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.8.6'
   compile group: 'org.javassist', name: 'javassist', version:'3.19.0-GA'
   compile group: 'cglib', name: 'cglib', version:'3.1'
   compile group: 'com.google.code.gson', name: 'gson', version:'2.3.1'
-
   compile group: 'commons-codec', name: 'commons-codec', version:'1.10'
   compile group: 'commons-collections', name: 'commons-collections', version:'3.2.1'
   compile group: 'commons-logging', name: 'commons-logging', version:'1.2'
@@ -61,10 +65,8 @@ dependencies {
   compile group: 'commons-io', name: 'commons-io', version:'2.4'
   compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
   compile group: 'log4j', name: 'log4j', version:'1.2.16'
-
   compile group: 'org.hibernate', name: 'hibernate-envers', version:'4.2.18.Final'
   compile group: 'org.hibernate', name: 'hibernate-core', version:'4.2.18.Final'
-
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.5.3'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.5.3'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.5.3'
@@ -74,7 +76,6 @@ dependencies {
   compile group: 'com.sun.jersey', name: 'jersey-core', version:'1.19'
   compile group: 'com.sun.jersey', name: 'jersey-server', version:'1.19'
   compile group: 'javax.ws.rs', name: 'jsr311-api', version:'1.1.1'
-
   compile group: 'org.springframework', name: 'spring-aop', version:springVersion
   compile group: 'org.springframework', name: 'spring-beans',  version:springVersion
   compile group: 'org.springframework', name: 'spring-context', version:springVersion
@@ -85,14 +86,12 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-web', version:springVersion
   compile group: 'org.springframework', name: 'spring-webmvc', version:springVersion
   compile group: 'org.springframework', name: 'spring-test', version:2.5
-  
 }
 
 compileJava {
   doLast{
     ant.taskdef(resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
                 classpath: configurations.ajc.asPath)
-
     ant.iajc(
       source: 1.8, target: 1.8,
       destDir: sourceSets.main.output.classesDir.absolutePath,
@@ -109,5 +108,21 @@ compileJava {
   }
 }
 
+def grunt_cmd = "grunt"
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+  grunt_cmd = "grunt.cmd"
+}
 
+task grunt_build(type: Exec) {
+  workingDir './src/main/webapp'
+  commandLine grunt_cmd, 'build'
+}
+
+task grunt_clean(type: Exec) {
+  workingDir './src/main/webapp'
+  commandLine grunt_cmd, 'clean'
+}
+
+clean.dependsOn grunt_clean
+jar.dependsOn grunt_build
 build.dependsOn jar
