@@ -21,10 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+
+
 import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
@@ -46,8 +47,9 @@ import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.os.jhuepic.dao.ParticipantLookupDao;
 
 public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChangeListener, InitializingBean {
-
 	private static Log logger = LogFactory.getLog(EpicParticipantLookup.class);
+
+	private static final String MERGE_OP = "JHU-EPIC-MERGE";
 
 	private LocalDbParticipantLookupImpl osDbLookup;
 
@@ -97,6 +99,10 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	@Override
 	public List<MatchedParticipant> getMatchingParticipants(ParticipantDetail detail) {
+		if (StringUtils.equals(MERGE_OP, detail.getOpComments())) {
+			return Collections.emptyList();
+		}
+
 		if (StringUtils.isBlank(detail.getEmpi()) && CollectionUtils.isEmpty(detail.getPmis())) {
 			return osDbLookup.getMatchingParticipants(detail);
 		}
@@ -278,6 +284,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		}
 
 		epicParticipant.setId(localParticipant.getId());
+		epicParticipant.setOpComments(MERGE_OP); // to indicate that this is merge and no matching should be done
 		ResponseEvent<ParticipantDetail> response = participantSvc.patchParticipant(new RequestEvent<>(epicParticipant));
 		response.throwErrorIfUnsuccessful();
 		return response.getPayload();
