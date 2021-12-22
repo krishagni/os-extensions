@@ -100,7 +100,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 	@Override
 	public List<MatchedParticipant> getMatchingParticipants(ParticipantDetail detail) {
 		if (StringUtils.equals(MERGE_OP, detail.getOpComments())) {
-			return Collections.emptyList();
+			return Collections.singletonList(new MatchedParticipant(detail, Collections.singletonList("pmi")));
 		}
 
 		if (StringUtils.isBlank(detail.getEmpi()) && CollectionUtils.isEmpty(detail.getPmis())) {
