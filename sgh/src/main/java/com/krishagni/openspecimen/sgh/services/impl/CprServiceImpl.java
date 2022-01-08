@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+
+import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
@@ -263,10 +265,18 @@ public class CprServiceImpl implements CprService {
 		visit.setName(visitName);
 		Site site = getSiteFromSiteName(printerName);
 		visit.setSite(site);
-		
+
+		PermissibleValue spmnClass = new PermissibleValue();
+		spmnClass.setValue("*****");
+		PermissibleValue spmnType = new PermissibleValue();
+		spmnType.setValue("*****");
+
 		for(int i = 0; i < 2; ++i){
 			Specimen specimen = new Specimen();
 			specimen.setVisit(visit);
+			specimen.setSpecimenClass(spmnClass);
+			specimen.setSpecimenType(spmnType);
+
 			if(i==1){
 				specimen.setLabel(visitName+" ");
 			} else {

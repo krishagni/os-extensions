@@ -7,6 +7,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 
+
+import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
 import com.krishagni.catissueplus.core.biospecimen.domain.Specimen;
@@ -130,10 +132,18 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 		visit.setSite(site);
 		
 		int tridCopies = cfgSvc.getIntSetting(SGH_MODULE, "trid_copies", 2);
-		
+
+		PermissibleValue spmnClass = new PermissibleValue();
+		spmnClass.setValue("*****");
+		PermissibleValue spmnType = new PermissibleValue();
+		spmnType.setValue("*****");
+
 		for(int i = 0; i < tridCopies; ++i){
 			Specimen specimen = new Specimen();
 			specimen.setVisit(visit);
+			specimen.setSpecimenClass(spmnClass);
+			specimen.setSpecimenType(spmnType);
+
 			if(i==1){
 				specimen.setLabel(visitName+" ");
 			} else {
@@ -148,6 +158,8 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			Specimen aliquot = new Specimen();
 			aliquot.setVisit(visit);
 			aliquot.setLabel(malignantAliqPrefix + i);
+			aliquot.setSpecimenClass(spmnClass);
+			aliquot.setSpecimenType(spmnType);
 			printItems.add(PrintItem.make(aliquot, 1));
 		}
 		
@@ -156,6 +168,8 @@ public class TridPrintSvcImpl implements TridPrintSvc {
 			Specimen aliquot = new Specimen();
 			aliquot.setVisit(visit);
 			aliquot.setLabel(nonMalignantAliqPrefix + i);
+			aliquot.setSpecimenClass(spmnClass);
+			aliquot.setSpecimenType(spmnType);
 			printItems.add(PrintItem.make(aliquot, 1));
 		}
 		return printItems;
