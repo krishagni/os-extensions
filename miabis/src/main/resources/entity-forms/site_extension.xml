@@ -1,71 +1,536 @@
+<!-- Form for site extension(OpenSpecimen). The fields are from the BBMRI-ERIC directory.
+    Mandatory fields for biobanks are id, name, juridical_person, country, partner_charter_signed, contact_priority-->
 <form>
-<view>
-<name>mIABISBiobank</name>
-<caption><![CDATA[MIABIS Biobank]]></caption>
-<row>
-<textField>
-<name>ST2</name>
-<udn>iD</udn>
-<caption><![CDATA[ID]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>8</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<url>false</url>
-<password>false</password>
-</textField>
-</row>
-<row>
-<textField>
-<name>ST3</name>
-<udn>uRL</udn>
-<caption><![CDATA[URL]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[http-address for the biobank]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>8</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<url>false</url>
-<password>false</password>
-</textField>
-</row>
-<row>
-<textField>
-<name>ST4</name>
-<udn>juristicPerson</udn>
-<caption><![CDATA[Juristic Person]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[e.g. a university, concern, county council etc. for the biobank]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>8</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<url>false</url>
-<password>false</password>
-</textField>
-</row>
-<row>
-<textArea>
-<name>TA5</name>
-<udn>description</udn>
-<caption><![CDATA[Description]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>3</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<height>3</height>
-</textArea>
-</row>
-</view>
-<skipRules>
-</skipRules>
+    <view>
+        <name>bBMRIBiobank</name>
+        <caption>
+            <![CDATA[BBMRI Biobank]]>
+        </caption>
+        <!-- ID of the Biobank-->
+        <row>
+            <textField>
+                <name>biobankId</name>
+                <udn>BBMRI_BIOBANK_ID</udn>
+                <caption><![CDATA[ID]]></caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip><![CDATA[Biobank ID in BBMRI Code.(bbmri-eric:ID:??_BB-Code, where ?? is the country in ISO90001 and Code is the numerical code for the biobank.)]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Acronym of the Biobank-->
+        <row>
+            <textField>
+                <name>acronym</name>
+                <udn>BBMRI_BIOBANK_ACRONYM</udn>
+                <caption><![CDATA[Acronym]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[Textual string of short name in use for the biobank. If applicable]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Description of the Biobank-->
+        <row>
+            <textArea>
+                <name>description</name>
+                <udn>BBMIR_BIOBANK_DESCRIPTION</udn>
+                <caption><![CDATA[Description]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[Textual string of letters with a description about the biobank in English.]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <height>3</height>
+            </textArea>
+        </row>
+        <!--bioresource reference-->
+        <row>
+            <textField>
+                <name>BioresourceReference</name>
+                <udn>BBMRI_BIORESOURCE_REFERENCE</udn>
+                <caption><![CDATA[ Bioresource Reference]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+            </textField>
+        </row>
+        <!-- URL of the Biobank-->
+        <row>
+            <textField>
+                <name>bBMRIBiobankUrl</name>
+                <udn>BBMRI_BIOBANK_URL</udn>
+                <caption><![CDATA[URL]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[Textual string of letters with the complete http/s-address for the biobank.]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>true</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Juridical Person-->
+        <row>
+            <textField>
+                <name>juridicalPerson</name>
+                <udn>BBMRI_JURIDICAL_PERSON</udn>
+                <caption><![CDATA[Juridical Person]]></caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip><![CDATA[Textual string of letters denoting the juridical person e.g. a university, concern, county council etc. for the biobank]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Country of the Biobank-->
+        <row>
+            <textField>
+                <name>country</name>
+                <udn>BBMRI_BIOBANK_COUNTRY</udn>
+                <caption><![CDATA[Country]]></caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip><![CDATA[ISO9001 code of the country of the biobank.]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- IT support.-->
+        <row>
+            <booleanCheckBox>
+                <name>itSupport</name>
+                <udn>BBMRI_BIOBANK_IT_SUPPORT</udn>
+                <caption><![CDATA[IT Support available]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- It staff size -->
+        <row>
+            <numberField>
+                <name>itStaffSize</name>
+                <udn>BBMRI_BIOBANK_IT_STAFF_SIZE</udn>
+                <caption><![CDATA[IT Staff Size]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <width>0</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <noOfDigits>6</noOfDigits>
+            </numberField>
+        </row>
+        <!-- availability -->
+        <row>
+            <booleanCheckBox>
+                <name>isAvailable</name>
+                <udn>BBMRI_BIOBANK_IS_AVAILABLE</udn>
+                <caption><![CDATA[IS Available]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>hisAvailable</name>
+                <udn>BBMRI_BIOBANK_HIS_AVAILABLE</udn>
+                <caption><![CDATA[His Available]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Partner Charter-->
+        <row>
+            <booleanCheckBox>
+                <name>partnerChart</name>
+                <udn>BBMRI_BIOBANK_PARTNER_CHART</udn>
+                <caption><![CDATA[Partner Charter]]></caption>
+                <phi>false</phi>
+                <!-- Should be mandatory but if unchecked, OpenSpecimen cries. -->
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Head Title and Head First Name -->
+        <row>
+            <textField>
+                <name>headTitle</name>
+                <udn>BBMRI_BIOBANK_HEAD_TITLE</udn>
+                <caption><![CDATA[ Head Title]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+            <textField>
+                <name>headFirstname</name>
+                <udn>BBMRI_BIOBANK_HEAD_FIRSTNAME</udn>
+                <caption><![CDATA[ Head Firstname]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Head Last Name and Head Title after the Name -->
+        <row>
+            <textField>
+                <name>headLastname</name>
+                <udn>BBMRI_BIOBANK_HEAD_LASTNAME</udn>
+                <caption><![CDATA[ Head Lastname]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+            <textField>
+                <name>headTitleAfter</name>
+                <udn>BBMRI_BIOBANK_TITLE_AFTER</udn>
+                <caption><![CDATA[ Head Title After Name]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Role of the Head in the Biobank -->
+        <row>
+            <textField>
+                <name>headRole</name>
+                <udn>BBMRI_BIOBANK_HEAD_ROLE</udn>
+                <caption><![CDATA[ Head Role]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!--Contact Priority-->
+        <row>
+        <numberField>
+                <name>contactPriority</name>
+                <udn>BBMRI_BIOBANK_CONTACT_PRIORITY</udn>
+                <caption><![CDATA[ Contact Priority]]></caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <tooltip><![CDATA[ ]]></tooltip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue><![CDATA[0]]></defaultValue>
+                <noOfDigits>2</noOfDigits>
+                <noOfDigitsAfterDecimal>0</noOfDigitsAfterDecimal>
+            </numberField>
+        </row>
+        <!-- Coordinates -->
+        <row>
+            <numberField>
+                <name>latitude</name>
+                <udn>BBMRI_BIOBANK_LATITUDE</udn>
+                <caption><![CDATA[ Latitude]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <noOfDigits>3</noOfDigits>
+                <noOfDigitsAfterDecimal>14</noOfDigitsAfterDecimal>
+            </numberField>
+            <numberField>
+                <name>longitude</name>
+                <udn>BBMRI_BIOBANK_LONGITUDE</udn>
+                <caption><![CDATA[Longitude]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <noOfDigits>3</noOfDigits>
+                <noOfDigitsAfterDecimal>10</noOfDigitsAfterDecimal>
+            </numberField>
+        </row>
+        <!-- Also Known -->
+        <row>
+            <textField>
+                <name>alsoKnown</name>
+                <udn>BBMRI_BIOBANK_ALSO_KNOWN</udn>
+                <caption><![CDATA[ also known]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Contact of the Biobank, BBMRI Contact ID-->
+        <row>
+            <textField>
+                <name>contact</name>
+                <udn>BBMRI_BIOBANK_CONTACT</udn>
+                <caption><![CDATA[ Contact]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[BBMRI Contact ID ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- planed collections, real collections-->
+        <!-- TODO -->
+        <row>
+            <textField>
+                <name>expectedCollectionProtocols</name>
+                <udn>BBMRI_BIOBANK_EX_COLLECTION_PROTOCOLS</udn>
+                <caption><![CDATA[Planned Collection Protocols]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <row>
+            <textField>
+                <name>realCollectionProtocols</name>
+                <udn>BBMRI_BIOBANK_REAL_COLLECTION_PROTOCOLS</udn>
+                <caption><![CDATA[Collection Protocols already in Biobank]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- /TODO -->
+        <!-- network -->
+        <row>
+            <textField>
+                <name>network</name>
+                <udn>BBMRI_BIOBANK_NETWORK</udn>
+                <caption><![CDATA[Network]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[BBMRI Network ID]]></toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Colarboration for Commercial -->
+        <row>
+            <booleanCheckBox>
+                <name>collaborationCommercial</name>
+                <udn>BBMRI_BIOBANK_COLLABORATION_COMERCIAL</udn>
+                <caption><![CDATA[Collaboration for Commercial]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Collarboration not for Profit -->
+        <row>
+            <booleanCheckBox>
+                <name>collaborationNonForProfit</name>
+                <udn>BBMRI_BIOBANK_COLLABORATION_NON_PROFIT</udn>
+                <caption><![CDATA[Collaboration non for profit]]></caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Capabilities Standards-->
+       <row>
+            <textField>
+                <name>capabilities</name>
+                <udn>BBMRI_BIOBANK_CAPABILITIES</udn>
+                <caption><![CDATA[ Capabilities]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <phi>false</phi>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Operational Standards -->
+        <row>
+            <textField>
+                <name>operationalStandards</name>
+                <udn>BBMRI_BIOBANK_OPERATIONAL_STANDARDS</udn>
+                <caption><![CDATA[ Operational Standards]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <phi>false</phi>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Other Standards -->
+        <row>
+            <textField>
+                <name>otherStandards</name>
+                <udn>BBMRI_BIOBANK_OTHER_STANDARDS</udn>
+                <caption><![CDATA[ other Standards]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <phi>false</phi>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Quality -->
+        <row>
+            <textField>
+                <name>quality</name>
+                <udn>BBMRI_BIOBANK_QUALITY</udn>
+                <caption><![CDATA[Quality]]></caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <phi>false</phi>
+                <toolTip><![CDATA[ ]]></toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+    </view>
+    <skipRules></skipRules>
 </form>

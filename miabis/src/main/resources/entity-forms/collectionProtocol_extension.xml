@@ -1,113 +1,1680 @@
+<!-- Form for Collection Protocol extension in OpenSpecimen. The fileds are from the BBMRI-ERIC directory.
+    Mandatory fields for collections are id, country, biobank, name, type, data_categories, order_of_magnitude, contact_priority-->
 <form>
-<view>
-<name>mIABISStudyInformation</name>
-<caption><![CDATA[MIABIS study information]]></caption>
-<row>
-<listBox>
-<name>DD2</name>
-<udn>studyDesign</udn>
-<caption><![CDATA[Study design]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<options>
-<option>
-<value><![CDATA[Case-control]]></value>
-</option>
-<option>
-<value><![CDATA[Cohort]]></value>
-</option>
-<option>
-<value><![CDATA[Cross-sectional]]></value>
-</option>
-<option>
-<value><![CDATA[Longitudinal]]></value>
-</option>
-<option>
-<value><![CDATA[Twin-study]]></value>
-</option>
-<option>
-<value><![CDATA[Quality control]]></value>
-</option>
-<option>
-<value><![CDATA[Population-based]]></value>
-</option>
-<option>
-<value><![CDATA[Disease specific]]></value>
-</option>
-<option>
-<value><![CDATA[Birth cohort]]></value>
-</option>
-<option>
-<value><![CDATA[Other]]></value>
-</option>
-</options>
-<autoCompleteDropdown>false</autoCompleteDropdown>
-<noOfRows>0</noOfRows>
-<minQueryChars>3</minQueryChars>
-<multiSelect>true</multiSelect>
-</listBox>
-</row>
-<row>
-<listBox>
-<name>MLB3</name>
-<udn>dataCategories</udn>
-<caption><![CDATA[Data categories]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<options>
-<option>
-<value><![CDATA[Biological samples]]></value>
-</option>
-<option>
-<value><![CDATA[Survey data]]></value>
-</option>
-<option>
-<value><![CDATA[Imaging data]]></value>
-</option>
-<option>
-<value><![CDATA[Medical records]]></value>
-</option>
-<option>
-<value><![CDATA[National registries]]></value>
-</option>
-<option>
-<value><![CDATA[Genealogical records]]></value>
-</option>
-<option>
-<value><![CDATA[Physiological/Biochemical measurements]]></value>
-</option>
-<option>
-<value><![CDATA[Other]]></value>
-</option>
-</options>
-<autoCompleteDropdown>false</autoCompleteDropdown>
-<noOfRows>0</noOfRows>
-<minQueryChars>3</minQueryChars>
-<multiSelect>true</multiSelect>
-</listBox>
-</row>
-<row>
-<textArea>
-<name>TA5</name>
-<udn>description</udn>
-<caption><![CDATA[Description]]></caption>
-<phi>false</phi>
-<mandatory>false</mandatory>
-<toolTip><![CDATA[Study Decription]]></toolTip>
-<showLabel>true</showLabel>
-<showInGrid>false</showInGrid>
-<width>3</width>
-<defaultValue><![CDATA[]]></defaultValue>
-<height>3</height>
-</textArea>
-</row>
-</view>
-<skipRules>
-</skipRules>
+    <view>
+        <name>bBMRICollection</name>
+        <caption>
+            <![CDATA[BBMRI Collection]]>
+        </caption>
+        <udn>BBMRI_Collection</udn>
+        <!-- ID-->
+        <row>
+            <textField>
+                <name>bBMRICollectionId</name>
+                <udn>BBMRI_COLLECTION_ID</udn>
+                <caption>
+                    <![CDATA[BBMRI Collection ID]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[ID of the Collection in the BBMRI Format.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Country -->
+        <row>
+            <textField>
+                <name>bBMRICollectionCountry</name>
+                <udn>BBMRI_COLLECTION_COUNTRY</udn>
+                <caption>
+                    <![CDATA[Country]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[Country in ISO-90001 format.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Description -->
+        <row>
+            <textArea>
+                <name>bBMRIDescription</name>
+                <udn>BBMRI_DESCRIPTION</udn>
+                <caption>
+                    <![CDATA[Description]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[Country in ISO-90001 format.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <height>3</height>
+            </textArea>
+        </row>
+        <!-- BioResource Reference-->
+        <row>
+            <textArea>
+                <name>bBMRIBioresourceReference</name>
+                <udn>BBMRI_BIORESOURCE_REFERENCE</udn>
+                <caption>
+                    <![CDATA[ Bioresource Reference]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textArea>
+        </row>
+        <!-- network -->
+        <row>
+            <textField>
+                <name>bBMRINetwork</name>
+                <udn>BBMRI_Network</udn>
+                <caption>
+                    <![CDATA[Network]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Type-->
+        <row>
+            <listBox>
+                <name>bBMRICollectionType</name>
+                <udn>BBMRI_COLLECTION_TYPE</udn>
+                <caption>
+                    <![CDATA[Collection Type]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[ The type of the sample collection. Can be several values. ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <options>
+                    <option>
+                        <value>
+                            <![CDATA[ Case-Control ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A case-control study design compares two groups of subjects: those with the disease or condition under study(cases) and a very similar group of subjects who do not have the disease or condition(controls). ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Cohort ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A form of longitudinal study for the analysis of risk factors following a group of people who do not have a disease and uses correlations to determine the absolute risk of subject contraction. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Cross-sectional ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A type of observational study that involves data colletion from a population or a representativesubset, at one specificpoint in time. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Longitudinal ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ Research studies involving repeated observations of the same entinity over time. In the biobank context, longitudinal studies sample a group of people in a given time period and study them at intervals by aquisition and analyses of data and/or samples over time. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Twin-Study ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ Twin studies measure the contribution of genetics (as opposed to environment) to a given trait or condition of interest. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Quality-Control ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A quality control testind study design type is where some aspect of the experiment is quality controlled for purposes of quality assurance. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Population-based ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ Study done ate the population level or among the population groups, generally to find the cause, incidence or spread of the disease or to see the responce to the treatment, nutrition or environment. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Disease specific ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A study or biobank for which material and information is collected from subjects that have already developed a particular disease. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Birt cohort ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A cohort study for which the subjects are the followed from the time of birth usually including information about gestation and follow up. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Other ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ Collection Types, which are not specified before. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Non-human ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Sample Collection ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ A collection that contains samples. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Rare-disease collection.]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A collection that is focusing on rare diseases. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ Image collection]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A collection that contains images. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Hospital]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A collection that contains patients from a hospital. ]]>
+                        </toolTip>
+                    </option>
+                </options>
+                <autoCompleteDropdown>false</autoCompleteDropdown>
+                <noOfRows>0</noOfRows>
+                <minQueryChars>3</minQueryChars>
+                <multiSelect>true</multiSelect>
+            </listBox>
+        </row>
+        <!-- Data Categories-->
+        <row>
+            <listBox>
+                <name>bBMRIDataCategories</name>
+                <udn>BBMRI_DATA_CATEGORIES</udn>
+                <caption>
+                    <![CDATA[Data Categories]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[The data catagories from which data is available.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <options>
+                    <option>
+                        <value>
+                            <![CDATA[Not available]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Not available.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Biological Samples]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if biological samples are collected from the participants in the sample collection/study.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Survey Data]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if information from surveys are collected from the participants in the sample collection/study.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Imaging Data]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if imaging data are collected from the participants in the sample collection/study.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Medical Records]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if medical records are collected from the participants in the sample collection/study.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[National Registries]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if register data is associated to the participants in the sample collection/study.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Genealogical Records]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if genealogical records are associated with the participants in the sample collection/study.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Physiological/Biochemical measurements]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if Measurements/tests performed during a clinical/home visit and from samples taken from donor.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Other]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Select if non of the previous Data is available.]]>
+                        </toolTip>
+                    </option>
+                </options>
+                <autoCompleteDropdown>false</autoCompleteDropdown>
+                <noOfRows>0</noOfRows>
+                <minQueryChars>3</minQueryChars>
+                <multiSelect>true</multiSelect>
+            </listBox>
+        </row>
+        <!-- standards-->
+        <rows>
+            <textField>
+                <name>bBMRIStandards</name>
+                <udn>BBMRI_Standards</udn>
+                <caption>
+                    <![CDATA[Standards]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </rows>
+        <!-- Order of magnitude-->
+        <row>
+            <numberField>
+                <name>bBMRIOrderOfMagnitude</name>
+                <udn>BBMRI_ORDER_OF_MAGNITUDE</udn>
+                <caption>
+                    <![CDATA[ Order of Magnitude ]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[ ]]>
+                </defaultValue>
+                <noOfDigits>1</noOfDigits>
+            </numberField>
+        </row>
+        <!-- number of donors-->
+        <row>
+            <numberField>
+                <name>bBMRINumberOfDonors</name>
+                <udn>BBMRI_NUMBER_OF_DONORS</udn>
+                <caption>
+                    <![CDATA[ Number of Donors ]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[ ]]>
+                </defaultValue>
+                <noOfDigits>10</noOfDigits>
+            </numberField>
+        </row>
+        <!-- Magnitude of Donors -->
+        <row>
+            <numberField>
+                <name>bBMRIMagnitudeOfDonors</name>
+                <udn>BBMRI_MAGNITUDE_OF_DONORS</udn>
+                <caption>
+                    <![CDATA[ Magnitude of Donors ]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[ ]]>
+                </defaultValue>
+                <noOfDigits>10</noOfDigits>
+            </numberField>
+        </row>
+        <!-- Parent Collections-->
+        <row>
+            <textField>
+                <name>bBMRIParentCollections</name>
+                <udn>BBMRI_PARENT_COLLECTIONS</udn>
+                <caption>
+                    <![CDATA[Parent Collections]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Sub Collections -->
+        <row>
+            <textField>
+                <name>bBMRISubCollections</name>
+                <udn>BBMRI_SUB_COLLECTIONS</udn>
+                <caption>
+                    <![CDATA[Sub Collections]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- ID CARD-->
+        <row>
+            <textField>
+                <name>bBMRIIdCard</name>
+                <udn>BBMRI_ID_CARD</udn>
+                <caption>
+                    <![CDATA[ID Card]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>8</width>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- HEAD Title and First Name-->
+        <row>
+            <textField>
+                <name>headTitle</name>
+                <udn>BBMRI_COLLECTION_HEAD_TITLE</udn>
+                <caption>
+                    <![CDATA[ Head Title]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+            <textField>
+                <name>headFirstname</name>
+                <udn>BBMRI_COLLECTION_HEAD_FIRSTNAME</udn>
+                <caption>
+                    <![CDATA[ Head Firstname]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Head Last Name, Head Title after Name -->
+        <row>
+            <textField>
+                <name>headLastname</name>
+                <udn>BBMRI_COLLECTION_HEAD_LASTNAME</udn>
+                <caption>
+                    <![CDATA[ Head Lastname]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+            <textField>
+                <name>headTitleAfter</name>
+                <udn>BBMRI_COLLECTION_TITLE_AFTER</udn>
+                <caption>
+                    <![CDATA[ Head Title After Name]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Role of the HEAD in the BioBank-->
+        <row>
+            <textField>
+                <name>headRole</name>
+                <udn>BBMRI_COLLECTION_HEAD_ROLE</udn>
+                <caption>
+                    <![CDATA[ Head Role]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!--contact_priority-->
+        <row>
+            <numberField>
+                <name>contactPriority</name>
+                <udn>BBMRI_COLLECTION_CONTACT_PRIORITY</udn>
+                <caption>
+                    <![CDATA[ Contact Priority]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <tooltip>
+                    <![CDATA[ ]]>
+                </tooltip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[0]]>
+                </defaultValue>
+                <noOfDigits>2</noOfDigits>
+                <noOfDigitsAfterDecimal>0</noOfDigitsAfterDecimal>
+            </numberField>
+        </row>
+        <!-- Coordinates -->
+        <row>
+            <numberField>
+                <name>latitude</name>
+                <udn>BBMRI_COLLECTION_LATITUDE</udn>
+                <caption>
+                    <![CDATA[ Latitude]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <noOfDigits>3</noOfDigits>
+                <noOfDigitsAfterDecimal>14</noOfDigitsAfterDecimal>
+            </numberField>
+            <numberField>
+                <name>longitude</name>
+                <udn>BBMRI_COLLECTION_LONGITUDE</udn>
+                <caption>
+                    <![CDATA[Longitude]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <noOfDigits>3</noOfDigits>
+                <noOfDigitsAfterDecimal>10</noOfDigitsAfterDecimal>
+            </numberField>
+        </row>
+        <!-- contact ID-->
+        <row>
+            <textField>
+                <name>contact</name>
+                <udn>BBMRI_COLLECTION_CONTACT</udn>
+                <caption>
+                    <![CDATA[ Contact]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[BBMRI Contact ID ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- SEX -->
+        <row>
+            <listBox>
+                <name>bBMRICollectionSex</name>
+                <udn>BBMRI_COLLECTION_SEX</udn>
+                <caption>
+                    <![CDATA[Sex of the Probands in the Study.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[Define which Unit is used for calculating the Age.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <defaultValue>
+                    <![CDATA[Not Available]]>
+                </defaultValue>
+                <options>
+                    <option>
+                        <value>
+                            <![CDATA[Female]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Male]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Undifferential]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Not available]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Unknown]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Not asked]]>
+                        </value>
+                    </option>
+                </options>
+                <autoCompleteDropdown>false</autoCompleteDropdown>
+                <noOfRows>0</noOfRows>
+                <minQueryChars>3</minQueryChars>
+                <multiSelect>true</multiSelect>
+            </listBox>
+        </row>
+        <!-- Diagnose Available -->
+        <row>
+            <textArea>
+                <name>bBMRIDiagnosisAvailable</name>
+                <udn>BBMRI_COLLECTION_DIAGNOSIS_AVAILABLE</udn>
+                <caption>
+                    <![CDATA[ Diagnosis Available]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textArea>
+        </row>
+        <!--expected Age -->
+        <row>
+            <numberField>
+                <name>expectedAgeLow</name>
+                <udn>BBMRI_COLLECTION_EXP_AGE_LOW</udn>
+                <caption>
+                    <![CDATA[Expected Age Low]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[Expected lowest possible Age of the sample donor at time of sample donation.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <noOfDigits>18</noOfDigits>
+            </numberField>
+            <numberField>
+                <name>expectedAgeHigh</name>
+                <udn>BBMRI_COLLECTION_EXP_AGE_HIGH</udn>
+                <caption>
+                    <![CDATA[Expected Age High]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[Expected highest possible Age of the sample donor at time of sample donation.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <noOfDigits>18</noOfDigits>
+            </numberField>
+        </row>
+        <!-- Age of Oldest and Youngest Participant in the Collection Protocol, TODO -->
+        <row>
+            <numberField>
+                <name>AgeLow</name>
+                <udn>BBMRI_COLLECTION_AGE_LOW</udn>
+                <caption>
+                    <![CDATA[Age Low]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[Age of the youngest sample donor at time of sample donation.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <noOfDigits>18</noOfDigits>
+            </numberField>
+            <numberField>
+                <name>AgeHigh</name>
+                <udn>BBMRI_COLLECTION_AGE_HIGH</udn>
+                <caption>
+                    <![CDATA[Age High]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[Age of the oldest sample donor at time of sample donation.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <width>0</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <noOfDigits>18</noOfDigits>
+            </numberField>
+        </row>
+        <!-- unit of Age, TODO -->
+        <row>
+            <listBox>
+                <name>mIABISAgeUnit</name>
+                <udn>MIABIS_AGE_UNIT</udn>
+                <caption>
+                    <![CDATA[ Age Unit]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[Define which Unit is used for calculating the Age.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <defaultValue>
+                    <![CDATA[years]]>
+                </defaultValue>
+                <options>
+                    <option>
+                        <value>
+                            <![CDATA[years]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[month]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[weeks]]>
+                        </value>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[days]]>
+                        </value>
+                    </option>
+                </options>
+                <autoCompleteDropdown>false</autoCompleteDropdown>
+                <noOfRows>0</noOfRows>
+                <minQueryChars>3</minQueryChars>
+                <multiSelect>true</multiSelect>
+            </listBox>
+        </row>
+        <!-- body part exaimed -->
+        <row>
+            <textField>
+                <name>bBMRICollectionBodyPartExaimed</name>
+                <udn>BBMRI_COLLECTION_BODY_PART_EXAIMED</udn>
+                <caption>
+                    <![CDATA[Body Part Exaimed]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- imaging modality -->
+        <row>
+            <textField>
+                <name>bBMRICollectionImagingModality</name>
+                <udn>BBMRI_COLLECTION_IMAGING_MODALITY</udn>
+                <caption>
+                    <![CDATA[Imaging Modality]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Image Dataset Type -->
+        <row>
+            <textField>
+                <name>bBMRICollectionImageDatasetType</name>
+                <udn>BBMRI_COLLECTION_IMAGE_DATASET_TYPE</udn>
+                <caption>
+                    <![CDATA[Image Dataset Type]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Materials -->
+        <row>
+            <listBox>
+                <name>bBMRICollectionMaterials</name>
+                <udn>BBMRI_COLLECTION_MATERIALS</udn>
+                <caption>
+                    <![CDATA[Materials]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[The biospecimen saved from a biological entity for propagation e.g. testing, diagnostics, treatment or research purposes. Can be several values.]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <options>
+                    <option>
+                        <value>
+                            <![CDATA[Not available]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Not Available.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Pathogen]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A biological agent causing disease; a disease producer e.g. virus, bacterium, prion, other microorganism etc.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[RNA]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[One of two types of nucleic acid made by cells. RNA contains information that has been copied from DNA (the other type of nucleic acid). Cells make several different forms of RNA, and each form has a specific job in the cell. Many forms of RNA have functions related to making proteins. RNA is also the genetic material of some viruses instead of DNA. RNA can be made in the laboratory and used in research studies. Also called ribonucleic acid.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Feces]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[The material discharged from the bowel during defecation. It consists of undigested food, intestinal mucus, epithelial cells, and bacteria. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Cell Lines]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Cells of a single type (human, animal, or plant) that have been adapted to grow continuously in the laboratory and are used in research. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Serum]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[The clear portion of the blood that remains after the removal of the blood cells and the clotting proteins. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[cDNA / mRNA]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Single-stranded DNA that is complementary to messenger RNA or DNA that has been synthesized from messenger RNA by reverse transcriptase/A class of RNA molecule containing protein-coding information in its nucleotide sequence that can be translated into the amino acid sequence of a protein. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Tissue(frozen)]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[An anatomical structure consisting of similarly specialized cells and intercellular matrix, aggregated according to genetically determined spatial relationships, performing a specific function. (NCI), preserved by freezing in liquid nitrogen.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Salvia]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A clear liquid secreted into the mouth by salivary glands and mucous glands of the mouth; moistens the mouth and starts the digestion of starches.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Other]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[any other type of material taken from a biological entity, e.g. amniotic fluid,  cerebrospinal fluid, mitochondrial RNA.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Plasma]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Plasma is the fluid (acellular) portion of the circulating blood, as distinguished from the serum that is the fluid portion of the blood obtained by removal of the fibrin clot and blood cells after coagulation. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[peripheral blood cells]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A general term describing the three cellular components of blood (white blood cells, red blood cells, and platelets), all which are made in the bone marrow. (Lymphoma Information Network Glossary)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[microRNA]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A type of RNA found in cells and in blood. MicroRNAs are smaller than many other types of RNA and can bind to messenger RNAs (mRNAs) to block them from making proteins. MicroRNAs are being studied in the diagnosis (NCI) and treatment of cancer.]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[DNA]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[A long linear double-stranded polymer formed from nucleotides attached to a deoxyribose backbone and found in the nucleus of a cell; associated with the transmission of genetic information. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Tissue (paraffin preserved)]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Tissue that is preserved and embedded in paraffin. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Urine]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[The fluid that is excreted by the kidneys. It is stored in the bladder and discharged through the urethra. (NCI)]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Whole Blood]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Blood that has not been separated into its various components; blood that has not been modified except for the addition of an anticoagulant (NCI)]]>
+                        </toolTip>
+                    </option>
+                </options>
+                <autoCompleteDropdown>false</autoCompleteDropdown>
+                <noOfRows>0</noOfRows>
+                <minQueryChars>3</minQueryChars>
+                <multiSelect>true</multiSelect>
+            </listBox>
+        </row>
+        <!--Storage Temperatures -->
+        <row>
+            <listBox>
+                <name>bBMRIStorageTemperatures</name>
+                <udn>BBMRI_STORAGE_TEMPERATURES</udn>
+                <caption>
+                    <![CDATA[ Storage temperatures ]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ The long term storage temparature at which the samples are stored after preparation. Can be several values. ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <options>
+                    <option>
+                        <value>
+                            <![CDATA[Room Temperature]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ Room teparature ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ 2 to 10 degree Celsius ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ between 2 and 10 degree Celsius. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[ -18 to -35 degree Celsius ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[ between -18 and -35 degree Celsius. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[  -60 to -85 degree Celsius ]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[  between -60 and -85 degree Celsius. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Liquid Nitrogen]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[  liquid nitrogen, between -150 and -196 degree Celsius. ]]>
+                        </toolTip>
+                    </option>
+                    <option>
+                        <value>
+                            <![CDATA[Other]]>
+                        </value>
+                        <toolTip>
+                            <![CDATA[Any other temperature.]]>
+                        </toolTip>
+                    </option>
+                </options>
+                <autoCompleteDropdown>false</autoCompleteDropdown>
+                <noOfRows>0</noOfRows>
+                <minQueryChars>3</minQueryChars>
+                <multiSelect>true</multiSelect>
+            </listBox>
+        </row>
+        <!-- Sample Access -->
+        <row>
+            <booleanCheckBox>
+                <name>bBMRICollectionSampleAccessFee</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_ACCESS_FEE</udn>
+                <caption>
+                    <![CDATA[Sample Access Fee]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>bBMRICollectionSampleAccessJointProjekt</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_ACCESS_JOINT_PROJEKT</udn>
+                <caption>
+                    <![CDATA[Sample Access Joint Projekt]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Sample Access -->
+        <row>
+            <textField>
+                <name>bBMRICollectionSampleAccessDescription</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_ACCESS_DESCRIPTION</udn>
+                <caption>
+                    <![CDATA[ Sample Access Description]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <row>
+            <textField>
+                <name>bBMRICollectionSampleAccessUri</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_ACCESS_URI</udn>
+                <caption>
+                    <![CDATA[ Sample Access Uri]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>true</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Data Access -->
+        <row>
+            <booleanCheckBox>
+                <name>bBMRICollectionDataAccessFee</name>
+                <udn>BBMRI_COLLECTION_DATA_ACCESS_FEE</udn>
+                <caption>
+                    <![CDATA[Data Access Fee]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>bBMRICollectionDataAccessJointProjekt</name>
+                <udn>BBMRI_COLLECTION_DATA_ACCESS_JOINT_PROJEKT</udn>
+                <caption>
+                    <![CDATA[Data Access Joint Projekt]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Description -->
+        <row>
+            <textField>
+                <name>bBMRICollectionDataAccessDescription</name>
+                <udn>BBMRI_COLLECTION_DATA_ACCESS_DESCRIPTION</udn>
+                <caption>
+                    <![CDATA[ Data Access Description]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- data Access Website -->
+        <row>
+            <textField>
+                <name>bBMRICollectionDataAccessUri</name>
+                <udn>BBMRI_COLLECTION_DATA_ACCESS_URI</udn>
+                <caption>
+                    <![CDATA[Data Access Uri]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>true</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Image Access -->
+        <row>
+            <booleanCheckBox>
+                <name>bBMRICollectionImageAccessFee</name>
+                <udn>BBMRI_COLLECTION_IMAGE_ACCESS_FEE</udn>
+                <caption>
+                    <![CDATA[Image Access Fee]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>bBMRICollectionImageAccessJointProjekt</name>
+                <udn>BBMRI_COLLECTION_IMAGE_ACCESS_JOINT_PROJEKT</udn>
+                <caption>
+                    <![CDATA[Image Access Joint Projekt]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!-- Image Access Description -->
+        <row>
+            <textField>
+                <name>bBMRICollectionImageAccessDescription</name>
+                <udn>BBMRI_COLLECTION_IMAGE_ACCESS_DESCRIPTION</udn>
+                <caption>
+                    <![CDATA[ Image Access Description]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Image Access Website -->
+        <row>
+            <textField>
+                <name>bBMRICollectionImageAccessUri</name>
+                <udn>BBMRI_COLLECTION_IMAGE_ACCESS_URI</udn>
+                <caption>
+                    <![CDATA[ Image Access Uri]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>true</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!-- Collaboration -->
+        <row>
+            <booleanCheckBox>
+                <name>collaborationCommercial</name>
+                <udn>BBMRI_COLLECTION_COLLABORATION_COMERCIAL</udn>
+                <caption>
+                    <![CDATA[Collection Protocols already in Biobank.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>collaborationNonForProfit</name>
+                <udn>BBMRI_COLLECTION_COLLABORATION_NON_PROFIT</udn>
+                <caption>
+                    <![CDATA[Collaboration non for profit.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>true</checked>
+            </booleanCheckBox>
+        </row>
+        <!--Sample SOP-->
+        <row>
+            <booleanCheckBox>
+                <name>sampleProcessingSOP</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_PROCESSING_SOP</udn>
+                <caption>
+                    <![CDATA[Sample Processing SOP.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>sampleTransportSOP</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_TRANSPORT_SOP</udn>
+                <caption>
+                    <![CDATA[Sample Transport SOP.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>dataStorageSOP</name>
+                <udn>BBMRI_COLLECTION_SAMPLE_STORAGE_SOP</udn>
+                <caption>
+                    <![CDATA[Sample Storage SOP.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+        </row>
+        <!--data SOP-->
+        <row>
+            <booleanCheckBox>
+                <name>collectionDataProcessingSOP</name>
+                <udn>BBMRI_COLLECTION_DATA_PROCESSING_SOP</udn>
+                <caption>
+                    <![CDATA[Data Processing SOP.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>collectionDataTransportSOP</name>
+                <udn>BBMRI_COLLECTION_DATA_TRANSPORT_SOP</udn>
+                <caption>
+                    <![CDATA[Data Transport SOP.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>true</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+            <booleanCheckBox>
+                <name>collectionDataStorageSOP</name>
+                <udn>BBMRI_COLLECTION_DATA_STORAGE_SOP</udn>
+                <caption>
+                    <![CDATA[Data Storage SOP.]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showInGrid>false</showInGrid>
+                <hidden>false</hidden>
+                <checked>false</checked>
+            </booleanCheckBox>
+        </row>
+        <!--quality-->
+        <row>
+            <textField>
+                <name>CollectionQuality</name>
+                <udn>BBMRI_COLLECTION_QUALITY</udn>
+                <caption>
+                    <![CDATA[ Quality]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!--biobank label-->
+        <row>
+            <textField>
+                <name>biobankLabel</name>
+                <udn>BBMRI_COLLECTION_BIOBANK_LABEL</udn>
+                <caption>
+                    <![CDATA[ Biobank Label]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row>
+        <!--also known-->
+        <row>
+            <textField>
+                <name>CollectionAlsoKnown</name>
+                <udn>BBMRI_COLLECTION_ALSO_KNOWN</udn>
+                <caption>
+                    <![CDATA[ Also Known ]]>
+                </caption>
+                <phi>false</phi>
+                <mandatory>false</mandatory>
+                <toolTip>
+                    <![CDATA[ ]]>
+                </toolTip>
+                <showLabel>true</showLabel>
+                <showinGrid>false</showinGrid>
+                <hidden>false</hidden>
+                <width>8</width>
+                <defaultValue>
+                    <![CDATA[]]>
+                </defaultValue>
+                <url>false</url>
+                <password>false</password>
+            </textField>
+        </row> 
+    </view>
 </form>

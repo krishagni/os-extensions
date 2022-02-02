@@ -20,7 +20,7 @@
 
   <bean id="miabis-liquibase" class="liquibase.integration.spring.SpringLiquibase">
     <property name="dataSource" ref="dataSource"/>
-    <property name="changeLog" value="classpath:com/krishagni/openspecimen/miabis/4.0/db-changelog.xml" />
+    <property name="changeLog" value="classpath:com/krishagni/openspecimen/miabis/2.4/db-changelog.xml" />
   </bean>
 
 </beans>
