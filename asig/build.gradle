@@ -3,6 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import static groovy.io.FileType.FILES
 
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 jar {
@@ -11,14 +12,6 @@ jar {
 
   manifest {
     attributes("os-plugin-name": "asig")
-  }
-
-  doFirst {
-    from ('./src/main/webapp/app/') {
-      include '**/**'
- 
-      into 'META-INF/resources/asig'
-    }
   }
 }
 

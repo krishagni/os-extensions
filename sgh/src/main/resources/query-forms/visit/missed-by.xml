@@ -1,0 +1,38 @@
+<row>
+  <subForm>
+    <name>missedByDetailed</name>
+    <udn>missedByDetailed</udn>
+    <caption>#getMessage("visit_missed_by_detailed")</caption>
+    <table>USER_VIEW</table>
+    <foreignKey>IDENTIFIER</foreignKey>
+    <parentKey>MISSED_BY</parentKey>
+    <row>
+      <userField>
+        <name>missedByName</name>
+        <udn>missedByName</udn>
+        <caption>#getMessage("visit_missed_by")</caption>
+        <column>IDENTIFIER</column>
+      </userField>
+    </row>
+    <row>
+      <siteField>
+        <name>primarySite</name>
+        <udn>primarySite</udn>
+        <caption>#getMessage("visit_missed_by_primary_site")</caption>
+        <column>PRIMARY_SITE_ID</column>
+        <recordUrl>#/object-state-params-resolver?stateName=site-detail.overview&amp;objectName=site&amp;key=name&amp;value={{$value}}</recordUrl>
+      </siteField>
+    </row>
+    <row>
+      <dropDown>
+        <name>institute</name>
+        <udn>institute</udn>
+        <caption>#getMessage("visit_missed_by_institute")</caption>
+        <column>INSTITUTE_NAME</column>
+        <options>
+          <sql>select distinct INSTITUTE_NAME from USER_VIEW</sql>
+        </options>
+      </dropDown>
+    </row>
+  </subForm>
+</row>

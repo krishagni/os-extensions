@@ -22,15 +22,4 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="changeLog" value="classpath:com/krishagni/openspecimen/vcb/2.2/db-changelog.xml" />
   </bean>
-
-  <bean id="vcbObjectSchemaLoader" class="com.krishagni.catissueplus.core.importer.services.impl.ObjectSchemaLoader">
-    <property name="objectSchemaFactory" ref="objectSchemaFactory"/>
-    <property name="schemaResources">
-      <list>
-        <value>com/krishagni/openspecimen/vcb/biospecimen/schema/participant.xml</value>
-        <value>com/krishagni/openspecimen/vcb/biospecimen/schema/cpr.xml</value>
-      </list>
-    </property>
-  </bean>
-
 </beans>

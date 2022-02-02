@@ -131,6 +131,7 @@ public class EpicPatient {
 		@JsonProperty("ID")
 		private String ID;
 
+		@JsonProperty("Type")
 		private String Type;
 
 		public String getId() {

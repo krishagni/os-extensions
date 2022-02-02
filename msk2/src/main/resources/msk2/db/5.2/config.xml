@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="vpawar" id="MSKCC-2 plugin configuration settings module" dbms="mysql">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (default, 'mskcc2', 'MSKCC')
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="MSKCC-2 plugin configuration settings module" dbms="oracle">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (OS_MODULES_SEQ.nextval, 'mskcc2', 'MSKCC')
+    </sql>
+  </changeSet>
+
+
+
+  <changeSet author="vpawar" id="Setting to specify the CARS database connection URL">
+    <sql>
+      call add_cfg_prop(
+        'mskcc2', 'cars_db_url',
+        'cars_db_url', 'cars_db_url_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Setting to specify the CARS database username">
+    <sql>
+      call add_cfg_prop(
+        'mskcc2', 'cars_db_username',
+        'cars_db_username', 'cars_db_username_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Setting to specify the CARS database password">
+    <sql>
+      call add_secured_cfg_prop(
+        'mskcc2', 'cars_db_password',
+        'cars_db_password', 'cars_db_password_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Nightly job to import the CARS study details" dbms="mysql">
+    <sql>
+      select identifier into @userId from catissue_user where login_name = '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+         scheduled_day_of_month, activity_status, repeat_schedule, type, command,
+         task_impl_fqn, rt_args_provided, rt_args_help_text)
+      values
+        (default, "CARS Study Importer", @userId, now(), null, 30, 00, null,
+         null, 'Active', 'DAILY', 'INTERNAL', null,
+         'com.krishagni.openspecimen.msk2.services.impl.CarsStudyImportTask', 0, null);
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Nightly job to import the CARS study details" dbms="oracle">
+    <sql endDelimiter="//">
+      declare
+        userId number;
+      begin
+        select identifier into userId from catissue_user where login_name like '$system';
+
+      insert into os_scheduled_jobs
+        (identifier, name, created_by, start_date, end_date, scheduled_minute, scheduled_hour, scheduled_day_of_week,
+         scheduled_day_of_month, activity_status, repeat_schedule, type, command,
+         task_impl_fqn, rt_args_provided, rt_args_help_text)
+      values
+        (OS_SCHEDULED_JOBS_SEQ.nextVal, 'CARS Study Importer', userId, SYSDATE, null, 50, 23, null,
+         null, 'Active', 'DAILY', 'INTERNAL', null,
+         'com.krishagni.openspecimen.msk2.services.impl.CarsStudyImportTask', 0, null);
+      end;
+      //
+    </sql>
+  </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,1163 @@
+<row>
+      <subForm>
+        <name>utswtumorRegistryAll</name> <!-- unique name within form for all TUMOR_REG_ALL -->
+        <udn>utswtumorRegistryAll</udn>
+        <caption>UTSW Tumor Registry All Fields</caption>
+        <table>TUMOR_REGISTRY_ALL</table>         <!-- custom table name -->
+        <primaryKey>IDENTIFIER</primaryKey>
+        <foreignKey>VISIT_ID</foreignKey>     <!-- visit foreign key in custom table -->
+        <parentKey>IDENTIFIER</parentKey>
+        
+        <row>    
+           <numberField>
+             <name>participant_id</name>
+             <udn>participant_id</udn>
+             <caption>PARTICIPANT ID</caption>
+             <column>PARTICIPANT_ID</column>
+           </numberField>
+
+           <textField>
+             <name>ppid</name>
+             <udn>ppid</udn>
+             <caption>PPID</caption>
+             <column>PPID</column>
+           </textField>
+
+           <numberField>
+             <name>visit_id</name>
+             <udn>visit_id</udn>
+             <caption>VISIT ID</caption>
+             <column>VISIT_ID</column>
+           </numberField>
+
+           <textField>
+             <name>accession_num</name>
+             <udn>accession_num</udn>
+             <caption>ACCESSION NUM</caption>
+             <column>ACCESSION_NUM</column>
+           </textField>
+
+           <textField>
+             <name>sequence_num</name>
+             <udn>sequence_num</udn>
+             <caption>SEQUENCE NUM</caption>
+             <column>SEQUENCE_NUM</column>
+           </textField>
+
+           <textField>
+             <name>primary_site_value</name>
+             <udn>primary_site_value</udn>
+             <caption>PRIMARY SITE VALUE</caption>
+             <column>PRIMARY_SITE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>laterality</name>
+             <udn>laterality</udn>
+             <caption>Laterality</caption>
+             <column>Laterality</column>
+           </textField>
+
+           <textField>
+             <name>laterality_value</name>
+             <udn>laterality_value</udn>
+             <caption>LATERALITY VALUE</caption>
+             <column>LATERALITY_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>hist_behav</name>
+             <udn>hist_behav</udn>
+             <caption>HIST BEHAV</caption>
+             <column>HIST_BEHAV</column>
+           </textField>
+
+           <textField>
+             <name>histology_behavior_description</name>
+             <udn>histology_behavior_description</udn>
+             <caption>HISTOLOGY BEHAVIOR DESCRIPTION</caption>
+             <column>HISTOLOGY_BEHAVIOR_DESCRIPTION</column>
+           </textField>
+
+           <textField>
+             <name>age_at_diagnosis</name>
+             <udn>age_at_diagnosis</udn>
+             <caption>AGE AT DIAGNOSIS</caption>
+             <column>AGE_AT_DIAGNOSIS</column>
+           </textField>
+
+           <datePicker>
+             <name>diagnosis_date</name>
+             <udn>diagnosis_date</udn>
+             <caption>DIAGNOSIS DATE</caption>
+             <column>DIAGNOSIS_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>grade</name>
+             <udn>grade</udn>
+             <caption>GRADE</caption>
+             <column>GRADE</column>
+           </textField>
+
+           <textField>
+             <name>grade_value</name>
+             <udn>grade_value</udn>
+             <caption>GRADE VALUE</caption>
+             <column>GRADE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>lymph_vascular_invasion</name>
+             <udn>lymph_vascular_invasion</udn>
+             <caption>LYMPH VASCULAR INVASION</caption>
+             <column>LYMPH_VASCULAR_INVASION</column>
+           </textField>
+
+           <textField>
+             <name>lymph_vascular_invasion_value</name>
+             <udn>lymph_vascular_invasion_value</udn>
+             <caption>LYMPH VASCULAR INVASION VALUE</caption>
+             <column>LYMPH_VASCULAR_INVASION_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>regional_nodes_examined</name>
+             <udn>regional_nodes_examined</udn>
+             <caption>REGIONAL NODES EXAMINED</caption>
+             <column>REGIONAL_NODES_EXAMINED</column>
+           </textField>
+
+           <textField>
+             <name>regional_nodes_examined_value</name>
+             <udn>regional_nodes_examined_value</udn>
+             <caption>REGIONAL NODES EXAMINED VALUE</caption>
+             <column>REGIONAL_NODES_EXAMINED_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>regional_nodes_positive</name>
+             <udn>regional_nodes_positive</udn>
+             <caption>REGIONAL NODES POSITIVE</caption>
+             <column>REGIONAL_NODES_POSITIVE</column>
+           </textField>
+
+           <textField>
+             <name>regional_nodes_positive_value</name>
+             <udn>regional_nodes_positive_value</udn>
+             <caption>REGIONAL NODES POSITIVE VALUE</caption>
+             <column>REGIONAL_NODES_POSITIVE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_lymph_nodes</name>
+             <udn>cs_lymph_nodes</udn>
+             <caption>CS LYMPH NODES</caption>
+             <column>CS_LYMPH_NODES</column>
+           </textField>
+
+           <textField>
+             <name>cs_lymph_nodes_value</name>
+             <udn>cs_lymph_nodes_value</udn>
+             <caption>CS LYMPH NODES VALUE</caption>
+             <column>CS_LYMPH_NODES_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_lymph_nodes_eval</name>
+             <udn>cs_lymph_nodes_eval</udn>
+             <caption>CS LYMPH NODES EVAL</caption>
+             <column>CS_LYMPH_NODES_EVAL</column>
+           </textField>
+
+           <textField>
+             <name>cs_lymph_nodes_eval_value</name>
+             <udn>cs_lymph_nodes_eval_value</udn>
+             <caption>CS LYMPH NODES EVAL VALUE</caption>
+             <column>CS_LYMPH_NODES_EVAL_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_t</name>
+             <udn>tnm_clin_t</udn>
+             <caption>TNM CLIN T</caption>
+             <column>TNM_CLIN_T</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_t_value</name>
+             <udn>tnm_clin_t_value</udn>
+             <caption>TNM CLIN T VALUE</caption>
+             <column>TNM_CLIN_T_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_n</name>
+             <udn>tnm_clin_n</udn>
+             <caption>TNM CLIN N</caption>
+             <column>TNM_CLIN_N</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_n_value</name>
+             <udn>tnm_clin_n_value</udn>
+             <caption>TNM CLIN N VALUE</caption>
+             <column>TNM_CLIN_N_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_m</name>
+             <udn>tnm_clin_m</udn>
+             <caption>TNM CLIN M</caption>
+             <column>TNM_CLIN_M</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_m_value</name>
+             <udn>tnm_clin_m_value</udn>
+             <caption>TNM CLIN M VALUE</caption>
+             <column>TNM_CLIN_M_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_stage_group</name>
+             <udn>tnm_clin_stage_group</udn>
+             <caption>TNM CLIN STAGE GROUP</caption>
+             <column>TNM_CLIN_STAGE_GROUP</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_stage_group_value</name>
+             <udn>tnm_clin_stage_group_value</udn>
+             <caption>TNM CLIN STAGE GROUP VALUE</caption>
+             <column>TNM_CLIN_STAGE_GROUP_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_descriptor</name>
+             <udn>tnm_clin_descriptor</udn>
+             <caption>TNM CLIN DESCRIPTOR</caption>
+             <column>TNM_CLIN_DESCRIPTOR</column>
+           </textField>
+
+           <textField>
+             <name>tnm_clin_descriptor_value</name>
+             <udn>tnm_clin_descriptor_value</udn>
+             <caption>TNM CLIN DESCRIPTOR VALUE</caption>
+             <column>TNM_CLIN_DESCRIPTOR_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_t</name>
+             <udn>tnm_path_t</udn>
+             <caption>TNM PATH T</caption>
+             <column>TNM_PATH_T</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_t_value</name>
+             <udn>tnm_path_t_value</udn>
+             <caption>TNM PATH T VALUE</caption>
+             <column>TNM_PATH_T_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_n</name>
+             <udn>tnm_path_n</udn>
+             <caption>TNM PATH N</caption>
+             <column>TNM_PATH_N</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_n_value</name>
+             <udn>tnm_path_n_value</udn>
+             <caption>TNM PATH N VALUE</caption>
+             <column>TNM_PATH_N_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_m</name>
+             <udn>tnm_path_m</udn>
+             <caption>TNM PATH M</caption>
+             <column>TNM_PATH_M</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_m_value</name>
+             <udn>tnm_path_m_value</udn>
+             <caption>TNM PATH M VALUE</caption>
+             <column>TNM_PATH_M_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_stage_group</name>
+             <udn>tnm_path_stage_group</udn>
+             <caption>TNM PATH STAGE GROUP</caption>
+             <column>TNM_PATH_STAGE_GROUP</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_stage_group_value</name>
+             <udn>tnm_path_stage_group_value</udn>
+             <caption>TNM PATH STAGE GROUP VALUE</caption>
+             <column>TNM_PATH_STAGE_GROUP_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_descriptor</name>
+             <udn>tnm_path_descriptor</udn>
+             <caption>TNM PATH DESCRIPTOR</caption>
+             <column>TNM_PATH_DESCRIPTOR</column>
+           </textField>
+
+           <textField>
+             <name>tnm_path_descriptor_value</name>
+             <udn>tnm_path_descriptor_value</udn>
+             <caption>TNM PATH DESCRIPTOR VALUE</caption>
+             <column>TNM_PATH_DESCRIPTOR_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_t</name>
+             <udn>derived_ajcc_6_t</udn>
+             <caption>DERIVED AJCC 6 T</caption>
+             <column>DERIVED_AJCC_6_T</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_t_value</name>
+             <udn>derived_ajcc_6_t_value</udn>
+             <caption>DERIVED AJCC 6 T VALUE</caption>
+             <column>DERIVED_AJCC_6_T_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_t_descript</name>
+             <udn>derived_ajcc_6_t_descript</udn>
+             <caption>DERIVED AJCC 6 T DESCRIPT</caption>
+             <column>DERIVED_AJCC_6_T_DESCRIPT</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_t_descript_val</name>
+             <udn>derived_ajcc_6_t_descript_val</udn>
+             <caption>DERIVED AJCC 6 T DESCRIPT VAL</caption>
+             <column>DERIVED_AJCC_6_T_DESCRIPT_VAL</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_n</name>
+             <udn>derived_ajcc_6_n</udn>
+             <caption>DERIVED AJCC 6 N</caption>
+             <column>DERIVED_AJCC_6_N</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_n_value</name>
+             <udn>derived_ajcc_6_n_value</udn>
+             <caption>DERIVED AJCC 6 N VALUE</caption>
+             <column>DERIVED_AJCC_6_N_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_n_descript</name>
+             <udn>derived_ajcc_6_n_descript</udn>
+             <caption>DERIVED AJCC 6 N DESCRIPT</caption>
+             <column>DERIVED_AJCC_6_N_DESCRIPT</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_n_descript_val</name>
+             <udn>derived_ajcc_6_n_descript_val</udn>
+             <caption>DERIVED AJCC 6 N DESCRIPT VAL</caption>
+             <column>DERIVED_AJCC_6_N_DESCRIPT_VAL</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_m</name>
+             <udn>derived_ajcc_6_m</udn>
+             <caption>DERIVED AJCC 6 M</caption>
+             <column>DERIVED_AJCC_6_M</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_m_value</name>
+             <udn>derived_ajcc_6_m_value</udn>
+             <caption>DERIVED AJCC 6 M VALUE</caption>
+             <column>DERIVED_AJCC_6_M_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_m_descript</name>
+             <udn>derived_ajcc_6_m_descript</udn>
+             <caption>DERIVED AJCC 6 M DESCRIPT</caption>
+             <column>DERIVED_AJCC_6_M_DESCRIPT</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_m_descript_val</name>
+             <udn>derived_ajcc_6_m_descript_val</udn>
+             <caption>DERIVED AJCC 6 M DESCRIPT VAL</caption>
+             <column>DERIVED_AJCC_6_M_DESCRIPT_VAL</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_stage_grp</name>
+             <udn>derived_ajcc_6_stage_grp</udn>
+             <caption>DERIVED AJCC 6 STAGE GRP</caption>
+             <column>DERIVED_AJCC_6_STAGE_GRP</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_6_stage_grp_val</name>
+             <udn>derived_ajcc_6_stage_grp_val</udn>
+             <caption>DERIVED AJCC 6 STAGE GRP VAL</caption>
+             <column>DERIVED_AJCC_6_STAGE_GRP_VAL</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_t</name>
+             <udn>derived_ajcc_7_t</udn>
+             <caption>DERIVED AJCC 7 T</caption>
+             <column>DERIVED_AJCC_7_T</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_t_value</name>
+             <udn>derived_ajcc_7_t_value</udn>
+             <caption>DERIVED AJCC 7 T VALUE</caption>
+             <column>DERIVED_AJCC_7_T_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_t_descript</name>
+             <udn>derived_ajcc_7_t_descript</udn>
+             <caption>DERIVED AJCC 7 T DESCRIPT</caption>
+             <column>DERIVED_AJCC_7_T_DESCRIPT</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_t_descript_val</name>
+             <udn>derived_ajcc_7_t_descript_val</udn>
+             <caption>DERIVED AJCC 7 T DESCRIPT VAL</caption>
+             <column>DERIVED_AJCC_7_T_DESCRIPT_VAL</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_n</name>
+             <udn>derived_ajcc_7_n</udn>
+             <caption>DERIVED AJCC 7 N</caption>
+             <column>DERIVED_AJCC_7_N</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_n_descript</name>
+             <udn>derived_ajcc_7_n_descript</udn>
+             <caption>DERIVED AJCC 7 N DESCRIPT</caption>
+             <column>DERIVED_AJCC_7_N_DESCRIPT</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_m</name>
+             <udn>derived_ajcc_7_m</udn>
+             <caption>DERIVED AJCC 7 M</caption>
+             <column>DERIVED_AJCC_7_M</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_m_descript</name>
+             <udn>derived_ajcc_7_m_descript</udn>
+             <caption>DERIVED AJCC 7 M DESCRIPT</caption>
+             <column>DERIVED_AJCC_7_M_DESCRIPT</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_stage_grp</name>
+             <udn>derived_ajcc_7_stage_grp</udn>
+             <caption>DERIVED AJCC 7 STAGE GRP</caption>
+             <column>DERIVED_AJCC_7_STAGE_GRP</column>
+           </textField>
+
+           <textField>
+             <name>derived_ajcc_7_stage_grp_val</name>
+             <udn>derived_ajcc_7_stage_grp_val</udn>
+             <caption>DERIVED AJCC 7 STAGE GRP VAL</caption>
+             <column>DERIVED_AJCC_7_STAGE_GRP_VAL</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx</name>
+             <udn>cs_mets_at_dx</udn>
+             <caption>CS METS AT DX</caption>
+             <column>CS_METS_AT_DX</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_value</name>
+             <udn>cs_mets_at_dx_value</udn>
+             <caption>CS METS AT DX VALUE</caption>
+             <column>CS_METS_AT_DX_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_eval</name>
+             <udn>cs_mets_eval</udn>
+             <caption>CS METS EVAL</caption>
+             <column>CS_METS_EVAL</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_eval_value</name>
+             <udn>cs_mets_eval_value</udn>
+             <caption>CS METS EVAL VALUE</caption>
+             <column>CS_METS_EVAL_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_bone</name>
+             <udn>cs_mets_at_dx_bone</udn>
+             <caption>CS METS AT DX BONE</caption>
+             <column>CS_METS_AT_DX_BONE</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_bone_value</name>
+             <udn>cs_mets_at_dx_bone_value</udn>
+             <caption>CS METS AT DX BONE VALUE</caption>
+             <column>CS_METS_AT_DX_BONE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_brain</name>
+             <udn>cs_mets_at_dx_brain</udn>
+             <caption>CS METS AT DX BRAIN</caption>
+             <column>CS_METS_AT_DX_BRAIN</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_brain_value</name>
+             <udn>cs_mets_at_dx_brain_value</udn>
+             <caption>CS METS AT DX BRAIN VALUE</caption>
+             <column>CS_METS_AT_DX_BRAIN_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_liver</name>
+             <udn>cs_mets_at_dx_liver</udn>
+             <caption>CS METS AT DX LIVER</caption>
+             <column>CS_METS_AT_DX_LIVER</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_liver_value</name>
+             <udn>cs_mets_at_dx_liver_value</udn>
+             <caption>CS METS AT DX LIVER VALUE</caption>
+             <column>CS_METS_AT_DX_LIVER_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_lung</name>
+             <udn>cs_mets_at_dx_lung</udn>
+             <caption>CS METS AT DX LUNG</caption>
+             <column>CS_METS_AT_DX_LUNG</column>
+           </textField>
+
+           <textField>
+             <name>cs_mets_at_dx_lung_value</name>
+             <udn>cs_mets_at_dx_lung_value</udn>
+             <caption>CS METS AT DX LUNG VALUE</caption>
+             <column>CS_METS_AT_DX_LUNG_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_most_defin_surg</name>
+             <udn>rx_date_most_defin_surg</udn>
+             <caption>RX DATE MOST DEFIN SURG</caption>
+             <column>RX_DATE_MOST_DEFIN_SURG</column>
+           </textField>
+
+           <datePicker>
+             <name>rx_date_most_defin_surg_date</name>
+             <udn>rx_date_most_defin_surg_date</udn>
+             <caption>RX DATE MOST DEFIN SURG DATE</caption>
+             <column>RX_DATE_MOST_DEFIN_SURG_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>rx_summ_surg_prim_site</name>
+             <udn>rx_summ_surg_prim_site</udn>
+             <caption>RX SUMM SURG PRIM SITE</caption>
+             <column>RX_SUMM_SURG_PRIM_SITE</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_surg_prim_site_val</name>
+             <udn>rx_summ_surg_prim_site_val</udn>
+             <caption>RX SUMM SURG PRIM SITE VAL</caption>
+             <column>RX_SUMM_SURG_PRIM_SITE_VAL</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_surgery</name>
+             <udn>rx_date_surgery</udn>
+             <caption>RX DATE SURGERY</caption>
+             <column>RX_DATE_SURGERY</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_surgical_margins</name>
+             <udn>rx_summ_surgical_margins</udn>
+             <caption>RX SUMM SURGICAL MARGINS</caption>
+             <column>RX_SUMM_SURGICAL_MARGINS</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_surgical_margins_val</name>
+             <udn>rx_summ_surgical_margins_val</udn>
+             <caption>RX SUMM SURGICAL MARGINS VAL</caption>
+             <column>RX_SUMM_SURGICAL_MARGINS_VAL</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_radiation</name>
+             <udn>rx_date_radiation</udn>
+             <caption>RX DATE RADIATION</caption>
+             <column>RX_DATE_RADIATION</column>
+           </textField>
+
+           <datePicker>
+             <name>rx_date_radiation_date</name>
+             <udn>rx_date_radiation_date</udn>
+             <caption>RX DATE RADIATION DATE</caption>
+             <column>RX_DATE_RADIATION_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>rx_text_radiation_beam</name>
+             <udn>rx_text_radiation_beam</udn>
+             <caption>RX TEXT RADIATION BEAM</caption>
+             <column>RX_TEXT_RADIATION_BEAM</column>
+           </textField>
+
+           <textField>
+             <name>rx_text_radiation_other</name>
+             <udn>rx_text_radiation_other</udn>
+             <caption>RX TEXT RADIATION OTHER</caption>
+             <column>RX_TEXT_RADIATION_OTHER</column>
+           </textField>
+
+           <textField>
+             <name>reason_for_no_radiation</name>
+             <udn>reason_for_no_radiation</udn>
+             <caption>Reason for No Radiation</caption>
+             <column>Reason_for_No_Radiation</column>
+           </textField>
+
+           <textField>
+             <name>reason_for_no_rad_value</name>
+             <udn>reason_for_no_rad_value</udn>
+             <caption>REASON FOR NO RAD VALUE</caption>
+             <column>REASON_FOR_NO_RAD_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rad_treatment_volume</name>
+             <udn>rad_treatment_volume</udn>
+             <caption>RAD TREATMENT VOLUME</caption>
+             <column>RAD_TREATMENT_VOLUME</column>
+           </textField>
+
+           <textField>
+             <name>rad_treatment_volume_value</name>
+             <udn>rad_treatment_volume_value</udn>
+             <caption>RAD TREATMENT VOLUME VALUE</caption>
+             <column>RAD_TREATMENT_VOLUME_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rad_regional_dose_cgy</name>
+             <udn>rad_regional_dose_cgy</udn>
+             <caption>RAD REGIONAL DOSE CGY</caption>
+             <column>RAD_REGIONAL_DOSE_CGY</column>
+           </textField>
+
+           <textField>
+             <name>rad_regional_dose_cgy_value</name>
+             <udn>rad_regional_dose_cgy_value</udn>
+             <caption>RAD REGIONAL DOSE CGY VALUE</caption>
+             <column>RAD_REGIONAL_DOSE_CGY_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rad_boost_dose_cgy</name>
+             <udn>rad_boost_dose_cgy</udn>
+             <caption>RAD BOOST DOSE CGY</caption>
+             <column>RAD_BOOST_DOSE_CGY</column>
+           </textField>
+
+           <textField>
+             <name>rad_boost_dose_cgy_value</name>
+             <udn>rad_boost_dose_cgy_value</udn>
+             <caption>RAD BOOST DOSE CGY VALUE</caption>
+             <column>RAD_BOOST_DOSE_CGY_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_radiation_ended</name>
+             <udn>rx_date_radiation_ended</udn>
+             <caption>RX DATE RADIATION ENDED</caption>
+             <column>RX_DATE_RADIATION_ENDED</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_systemic</name>
+             <udn>rx_date_systemic</udn>
+             <caption>RX DATE SYSTEMIC</caption>
+             <column>RX_DATE_SYSTEMIC</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_surg_rad_seq</name>
+             <udn>rx_summ_surg_rad_seq</udn>
+             <caption>RX SUMM SURG RAD SEQ</caption>
+             <column>RX_SUMM_SURG_RAD_SEQ</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_surg_rad_seq_value</name>
+             <udn>rx_summ_surg_rad_seq_value</udn>
+             <caption>RX SUMM SURG RAD SEQ VALUE</caption>
+             <column>RX_SUMM_SURG_RAD_SEQ_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_chemo</name>
+             <udn>rx_date_chemo</udn>
+             <caption>RX DATE CHEMO</caption>
+             <column>RX_DATE_CHEMO</column>
+           </textField>
+
+           <datePicker>
+             <name>rx_date_chemo_date</name>
+             <udn>rx_date_chemo_date</udn>
+             <caption>RX DATE CHEMO DATE</caption>
+             <column>RX_DATE_CHEMO_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>rx_summ_chemo</name>
+             <udn>rx_summ_chemo</udn>
+             <caption>RX SUMM CHEMO</caption>
+             <column>RX_SUMM_CHEMO</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_chemo_value</name>
+             <udn>rx_summ_chemo_value</udn>
+             <caption>RX SUMM CHEMO VALUE</caption>
+             <column>RX_SUMM_CHEMO_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_text_chemo</name>
+             <udn>rx_text_chemo</udn>
+             <caption>RX TEXT CHEMO</caption>
+             <column>RX_TEXT_CHEMO</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_hormone</name>
+             <udn>rx_date_hormone</udn>
+             <caption>RX DATE HORMONE</caption>
+             <column>RX_DATE_HORMONE</column>
+           </textField>
+
+           <datePicker>
+             <name>rx_date_hormone_date</name>
+             <udn>rx_date_hormone_date</udn>
+             <caption>RX DATE HORMONE DATE</caption>
+             <column>RX_DATE_HORMONE_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>rx_summ_hormone</name>
+             <udn>rx_summ_hormone</udn>
+             <caption>RX SUMM HORMONE</caption>
+             <column>RX_SUMM_HORMONE</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_hormone_value</name>
+             <udn>rx_summ_hormone_value</udn>
+             <caption>RX SUMM HORMONE VALUE</caption>
+             <column>RX_SUMM_HORMONE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_systemic_sur_seq</name>
+             <udn>rx_summ_systemic_sur_seq</udn>
+             <caption>RX SUMM SYSTEMIC SUR SEQ</caption>
+             <column>RX_SUMM_SYSTEMIC_SUR_SEQ</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_brm</name>
+             <udn>rx_date_brm</udn>
+             <caption>RX DATE BRM</caption>
+             <column>RX_DATE_BRM</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_brm</name>
+             <udn>rx_summ_brm</udn>
+             <caption>RX SUMM BRM</caption>
+             <column>RX_SUMM_BRM</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_brm_value</name>
+             <udn>rx_summ_brm_value</udn>
+             <caption>RX SUMM BRM VALUE</caption>
+             <column>RX_SUMM_BRM_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_text_brm</name>
+             <udn>rx_text_brm</udn>
+             <caption>RX TEXT BRM</caption>
+             <column>RX_TEXT_BRM</column>
+           </textField>
+
+           <textField>
+             <name>text_dx_proc_lab_tests</name>
+             <udn>text_dx_proc_lab_tests</udn>
+             <caption>TEXT DX PROC LAB TESTS</caption>
+             <column>TEXT_DX_PROC_LAB_TESTS</column>
+           </textField>
+
+           <textField>
+             <name>rx_date_other</name>
+             <udn>rx_date_other</udn>
+             <caption>RX DATE OTHER</caption>
+             <column>RX_DATE_OTHER</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_other</name>
+             <udn>rx_summ_other</udn>
+             <caption>RX SUMM OTHER</caption>
+             <column>RX_SUMM_OTHER</column>
+           </textField>
+
+           <textField>
+             <name>rx_summ_other_value</name>
+             <udn>rx_summ_other_value</udn>
+             <caption>RX SUMM OTHER VALUE</caption>
+             <column>RX_SUMM_OTHER_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>rx_text_other</name>
+             <udn>rx_text_other</udn>
+             <caption>RX Text Other</caption>
+             <column>RX_Text_Other</column>
+           </textField>
+
+           <textField>
+             <name>recurrence_date_1st</name>
+             <udn>recurrence_date_1st</udn>
+             <caption>RECURRENCE DATE 1ST</caption>
+             <column>RECURRENCE_DATE_1ST</column>
+           </textField>
+
+           <datePicker>
+             <name>recurrence_date_1st_date</name>
+             <udn>recurrence_date_1st_date</udn>
+             <caption>RECURRENCE DATE 1ST DATE</caption>
+             <column>RECURRENCE_DATE_1ST_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>recurrence_type_1st</name>
+             <udn>recurrence_type_1st</udn>
+             <caption>RECURRENCE TYPE 1ST</caption>
+             <column>RECURRENCE_TYPE_1ST</column>
+           </textField>
+
+           <textField>
+             <name>recurrence_type_1st_value</name>
+             <udn>recurrence_type_1st_value</udn>
+             <caption>RECURRENCE TYPE 1ST VALUE</caption>
+             <column>RECURRENCE_TYPE_1ST_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>date_of_last_contact</name>
+             <udn>date_of_last_contact</udn>
+             <caption>DATE OF LAST CONTACT</caption>
+             <column>DATE_OF_LAST_CONTACT</column>
+           </textField>
+
+           <datePicker>
+             <name>date_of_last_contact_date</name>
+             <udn>date_of_last_contact_date</udn>
+             <caption>DATE OF LAST CONTACT DATE</caption>
+             <column>DATE_OF_LAST_CONTACT_DATE</column>
+           </datePicker>
+
+           <textField>
+             <name>vital_status</name>
+             <udn>vital_status</udn>
+             <caption>VITAL STATUS</caption>
+             <column>VITAL_STATUS</column>
+           </textField>
+
+           <textField>
+             <name>vital_status_value</name>
+             <udn>vital_status_value</udn>
+             <caption>VITAL STATUS VALUE</caption>
+             <column>VITAL_STATUS_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>cancer_status_value</name>
+             <udn>cancer_status_value</udn>
+             <caption>CANCER STATUS VALUE</caption>
+             <column>CANCER_STATUS_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>follow_up_source_value</name>
+             <udn>follow_up_source_value</udn>
+             <caption>FOLLOW UP SOURCE VALUE</caption>
+             <column>FOLLOW_UP_SOURCE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>morph_type_behav_icd_o_3</name>
+             <udn>morph_type_behav_icd_o_3</udn>
+             <caption>MORPH TYPE BEHAV ICD O 3</caption>
+             <column>MORPH_TYPE_BEHAV_ICD_O_3</column>
+           </textField>
+
+           <textField>
+             <name>morph_type_behav_value</name>
+             <udn>morph_type_behav_value</udn>
+             <caption>MORPH TYPE BEHAV VALUE</caption>
+             <column>MORPH_TYPE_BEHAV_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>behavior_code_icd_o_3</name>
+             <udn>behavior_code_icd_o_3</udn>
+             <caption>BEHAVIOR CODE ICD O 3</caption>
+             <column>BEHAVIOR_CODE_ICD_O_3</column>
+           </textField>
+
+           <textField>
+             <name>behavior_code_value</name>
+             <udn>behavior_code_value</udn>
+             <caption>BEHAVIOR CODE VALUE</caption>
+             <column>BEHAVIOR_CODE_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>seer_summary_stage_2000</name>
+             <udn>seer_summary_stage_2000</udn>
+             <caption>SEER SUMMARY STAGE 2000</caption>
+             <column>SEER_SUMMARY_STAGE_2000</column>
+           </textField>
+
+           <textField>
+             <name>seer_summary_stage_2000_value</name>
+             <udn>seer_summary_stage_2000_value</udn>
+             <caption>SEER SUMMARY STAGE 2000 VALUE</caption>
+             <column>SEER_SUMMARY_STAGE_2000_VALUE</column>
+           </textField>
+
+           <textField>
+             <name>text_remarks</name>
+             <udn>text_remarks</udn>
+             <caption>TEXT REMARKS</caption>
+             <column>TEXT_REMARKS</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_1</name>
+             <udn>cs_site_specific_factor_1</udn>
+             <caption>CS SITE SPECIFIC FACTOR 1</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_1</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_2</name>
+             <udn>cs_site_specific_factor_2</udn>
+             <caption>CS SITE SPECIFIC FACTOR 2</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_2</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_3</name>
+             <udn>cs_site_specific_factor_3</udn>
+             <caption>CS SITE SPECIFIC FACTOR 3</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_3</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_4</name>
+             <udn>cs_site_specific_factor_4</udn>
+             <caption>CS SITE SPECIFIC FACTOR 4</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_4</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_5</name>
+             <udn>cs_site_specific_factor_5</udn>
+             <caption>CS SITE SPECIFIC FACTOR 5</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_5</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_6</name>
+             <udn>cs_site_specific_factor_6</udn>
+             <caption>CS SITE SPECIFIC FACTOR 6</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_6</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_7</name>
+             <udn>cs_site_specific_factor_7</udn>
+             <caption>CS SITE SPECIFIC FACTOR 7</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_7</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_8</name>
+             <udn>cs_site_specific_factor_8</udn>
+             <caption>CS SITE SPECIFIC FACTOR 8</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_8</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_9</name>
+             <udn>cs_site_specific_factor_9</udn>
+             <caption>CS SITE SPECIFIC FACTOR 9</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_9</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_10</name>
+             <udn>cs_site_specific_factor_10</udn>
+             <caption>CS SITE SPECIFIC FACTOR 10</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_10</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_11</name>
+             <udn>cs_site_specific_factor_11</udn>
+             <caption>CS SITE SPECIFIC FACTOR 11</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_11</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_12</name>
+             <udn>cs_site_specific_factor_12</udn>
+             <caption>CS SITE SPECIFIC FACTOR 12</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_12</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_13</name>
+             <udn>cs_site_specific_factor_13</udn>
+             <caption>CS SITE SPECIFIC FACTOR 13</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_13</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_14</name>
+             <udn>cs_site_specific_factor_14</udn>
+             <caption>CS SITE SPECIFIC FACTOR 14</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_14</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_15</name>
+             <udn>cs_site_specific_factor_15</udn>
+             <caption>CS SITE SPECIFIC FACTOR 15</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_15</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_16</name>
+             <udn>cs_site_specific_factor_16</udn>
+             <caption>CS SITE SPECIFIC FACTOR 16</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_16</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_17</name>
+             <udn>cs_site_specific_factor_17</udn>
+             <caption>CS SITE SPECIFIC FACTOR 17</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_17</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_18</name>
+             <udn>cs_site_specific_factor_18</udn>
+             <caption>CS SITE SPECIFIC FACTOR 18</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_18</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_19</name>
+             <udn>cs_site_specific_factor_19</udn>
+             <caption>CS SITE SPECIFIC FACTOR 19</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_19</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_20</name>
+             <udn>cs_site_specific_factor_20</udn>
+             <caption>CS SITE SPECIFIC FACTOR 20</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_20</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_21</name>
+             <udn>cs_site_specific_factor_21</udn>
+             <caption>CS SITE SPECIFIC FACTOR 21</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_21</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_22</name>
+             <udn>cs_site_specific_factor_22</udn>
+             <caption>CS SITE SPECIFIC FACTOR 22</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_22</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_23</name>
+             <udn>cs_site_specific_factor_23</udn>
+             <caption>CS SITE SPECIFIC FACTOR 23</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_23</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_24</name>
+             <udn>cs_site_specific_factor_24</udn>
+             <caption>CS SITE SPECIFIC FACTOR 24</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_24</column>
+           </textField>
+
+           <textField>
+             <name>cs_site_specific_factor_25</name>
+             <udn>cs_site_specific_factor_25</udn>
+             <caption>CS SITE SPECIFIC FACTOR 25</caption>
+             <column>CS_SITE_SPECIFIC_FACTOR_25</column>
+           </textField>
+           
+        </row>
+        
+      </subForm>
+  </row>   

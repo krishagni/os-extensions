@@ -7,8 +7,8 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 jar {
-  baseName = 'os-jhu-epic-lookup'
-  version =  '1.0.0'
+  baseName = 'os-jhu'
+  version =  '8.1.0'
 
   manifest {
     attributes("os-plugin-name": "jhu-epic-lookup")
@@ -104,6 +104,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version:springVersion
   compile group: 'org.springframework', name: 'spring-web', version:springVersion
   compile group: 'org.springframework', name: 'spring-webmvc', version:springVersion
+  compile group: 'org.springframework.security', name: 'spring-security-core', version: '3.2.7.RELEASE'
 }
 
 compileJava {

@@ -1,0 +1,59 @@
+<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-spacing:0;border-collapse:separate">
+  <tbody>
+    <tr>
+      <td style="border-collapse:collapse;">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;line-height:20px">
+          <tbody>
+            <tr>
+              <td style="padding:0px;border-collapse:collapse;padding:0px;padding-bottom:10px">
+                <p style="margin:10px 0 0 0">
+                  Hello All,
+                  <br><br>
+                  Specimen is collected with $quality quality. Find the specimen summary below:
+                </p>
+              </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td> Collection Site </td>
+                            <td> : <b>$site</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Sample Type </td>
+                            <td> : <b>$type</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Participant ID </td>
+                            <td> : <b>$ppid</b> </td>
+                        </tr>
+                        <tr>
+                            <td> CP Short Title </td>
+                            <td> : <b>$cpShortTitle</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Sample ID </td>
+                            <td> : <b>$id</b> </td>
+                        </tr>
+                        <tr>
+                            <td> Sample Quality </td>
+                            <td> : <b>$quality</b> </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="height:5px;line-height:5px;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+        #parse( $footer )
+      </td>
+    <tr>
+  </tbody>
+</table>

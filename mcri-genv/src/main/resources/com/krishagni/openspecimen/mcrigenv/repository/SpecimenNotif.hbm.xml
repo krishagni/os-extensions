@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false">
+  <class name="com.krishagni.openspecimen.mcrigenv.SpecimenNotif" table="OS_MCRI_SPMN_NOTIFS" batch-size="100">
+    <id name="id" column="IDENTIFIER" type="long">
+      <generator class="native"/>
+    </id>
+
+    <many-to-one name="specimen" column="SPECIMEN_ID"/>
+
+    <many-to-one name="receiveQuality" column="RECEIVE_QUALITY_ID"/>
+
+    <property name="receiveQualityNotifTime" column="RECEIVE_QUALITY_NOTIF_TIME"/>
+
+    <property name="missed" column="MISSED"/>
+
+    <property name="missedNotifTime" column="MISSED_NOTIF_TIME"/>
+
+    <query name="getBySpecimen">
+      select
+        n
+      from
+        com.krishagni.openspecimen.mcrigenv.SpecimenNotif n
+        join n.specimen s
+      where
+        s.id = :specimenId
+    </query>
+  </class>
+</hibernate-mapping>

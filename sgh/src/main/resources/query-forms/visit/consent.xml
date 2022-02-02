@@ -1,0 +1,52 @@
+<row>
+  <subForm>
+    <name>visitConsents</name>
+    <udn>visitConsents</udn>
+    <caption>#getMessage("visit_consents")</caption>
+    <table>os_visit_consent_avl_view</table>
+    <primaryKey>SCG_ID</primaryKey>
+    <foreignKey>SCG_ID</foreignKey>
+    <parentKey>IDENTIFIER</parentKey>
+    <row>
+      <subForm>
+        <name>userInfo</name>
+        <udn>userInfo</udn>
+        <caption>User information</caption>
+        <table>USER_VIEW</table>
+        <foreignKey>IDENTIFIER</foreignKey>
+        <parentKey>COLLECTOR_ID</parentKey>
+        <row>
+          <userField>
+            <name>user</name>
+            <udn>user</udn>
+            <caption>#getMessage("visit_consents_user")</caption>
+            <column>IDENTIFIER</column>
+          </userField>
+        </row>
+        <row>
+          <dropDown>
+            <name>institute</name>
+            <udn>institute</udn>
+            <caption>#getMessage("visit_consents_institute_name")</caption>
+            <column>INSTITUTE_NAME</column>
+            <options>
+              <sql>select distinct institute_name from user_view</sql>
+            </options>
+          </dropDown>
+        </row>
+      </subForm>
+    </row>
+    <row>
+      <dropDown>
+        <name>consent_available</name>
+        <udn>consent_available</udn>
+        <caption>#getMessage("visit_consents_available")</caption>
+        <column>CONSENT_AVAILABLE</column>
+        <options>
+          <option><value>True</value></option>
+          <option><value>False</value></option>
+        </options>
+      </dropDown>
+    </row>
+  </subForm>
+</row>

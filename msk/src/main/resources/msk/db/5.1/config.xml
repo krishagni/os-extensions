@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="vpawar" id="MSKCC plugin configuration settings module" dbms="mysql">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (default, 'mskcc', 'MSKCC')
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="MSKCC plugin configuration settings module" dbms="oracle">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (OS_MODULES_SEQ.nextval, 'mskcc', 'MSKCC')
+    </sql>
+  </changeSet>
+
+
+
+  <changeSet author="vpawar" id="Setting to specify the patients' consents database connection URL">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'consents_db_url',
+        'consents_db_url', 'consents_db_url_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Setting to specify the patients' consents database username">
+    <sql>
+      call add_cfg_prop(
+        'mskcc', 'consents_db_username',
+        'consents_db_username', 'consents_db_username_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Setting to specify the patients' consents database password">
+    <sql>
+      call add_secured_cfg_prop(
+        'mskcc', 'consents_db_password',
+        'consents_db_password', 'consents_db_password_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+</databaseChangeLog>

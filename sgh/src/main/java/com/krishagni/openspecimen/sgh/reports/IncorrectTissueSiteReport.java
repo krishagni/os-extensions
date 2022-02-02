@@ -69,7 +69,7 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			csvWriter.writeNext(new String[]{lineSeperator});
 			csvWriter.writeNext(new String[]{"Report for Incorrect Tissue Site and Side : "});
 			csvWriter.writeNext(new String[]{lineSeperator});
-			csvWriter.writeNext(new String[]{"CP Short Title", "TRID", "Specimen Label", "Tissue Site", "Tissue Side", "Pathological Status"});
+			csvWriter.writeNext(new String[]{"CP Short Title", "TRID", "Specimen Label", "Tissue Site", "Tissue Side"});
 			List<Object[]> list = sessionFactory.getCurrentSession().createSQLQuery(query).list();
 
 			for (Object[] object : list) {
@@ -78,13 +78,12 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 				String label = getStringValue(object[2]);
 				String tissue_site = getStringValue(object[3]);
 				String tissue_side = getStringValue(object[4]);
-				String pathological_status = getStringValue(object[5]);
-				csvWriter.writeNext(new String[]{cp_short_title, trid, label, tissue_site, tissue_side, pathological_status});
+				csvWriter.writeNext(new String[]{cp_short_title, trid, label, tissue_site, tissue_side});
 				counter++;
 			}
 			
 			csvWriter.writeNext(new String[]{lineSeperator});
-			csvWriter.writeNext(new String[]{"Total number of incorrect record," + counter});
+			csvWriter.writeNext(new String[]{"Total number of incorrect record: " + counter});
 			csvWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -109,7 +108,7 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			"select " +
 			"  cp.short_title as cp_short_title, s.name as trid, " + 
 			"  spmn.label as specimen_label, spmn.tissue_site as tissue_site, " + 
-			"  spmn.tissue_side as tissue_side, spmn.pathological_status as pathological_status " +
+			"  spmn.tissue_side as tissue_side " +
 			"from " +
 			"  catissue_specimen spmn " +
 			"  join (" +
@@ -126,8 +125,7 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			"      scg.name " +
 			"    having " +
 			"      count(distinct spec.tissue_site) > 1 or " +
-			"      count(distinct spec.tissue_side) > 1 or " +
-			"      count(distinct spec.pathological_status) > 1 " +        
+			"      count(distinct spec.tissue_side) > 1 " +
 			"  ) as s on spmn.specimen_collection_group_id = s.identifier " +
 			"  join catissue_coll_prot_reg ccpr on ccpr.identifier = s.collection_protocol_reg_id " +
 			"  join catissue_collection_protocol cp on cp.identifier = ccpr.collection_protocol_id " +
@@ -135,6 +133,7 @@ public class IncorrectTissueSiteReport implements ScheduledTask {
 			"  spmn.lineage = 'New' and " +
 			"  spmn.label is not null and " +
 			"  spmn.collection_status = 'Collected' and " +
+			"  spmn.activity_status = 'Active' and " +
 			"  s.collection_timestamp between concat( '%s' , ' 00:00:00' ) and concat( '%s' , ' 23:59:59' ) " + 
 			"order by " +
 			"  spmn.label "; 

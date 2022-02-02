@@ -1,6 +1,7 @@
 
 package com.krishagni.openspecimen.asig.dao;
 
+import java.io.File;
 import java.util.List;
 
 import com.krishagni.openspecimen.asig.events.PatientDetail;
@@ -28,5 +29,6 @@ public interface AsigDao {
 	public Long getOsUserId(Long asigSiteId);
 		
 	public String getSiteName(Long aisgClinicId);
-		
+
+	void importData(File file, String entity);
 }

@@ -1,0 +1,8 @@
+{
+  "styles": [
+  ],
+
+  "scripts": [
+    "msk/module.js"
+  ]
+}

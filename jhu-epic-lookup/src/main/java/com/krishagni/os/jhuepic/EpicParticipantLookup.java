@@ -21,10 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+
+
 import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
@@ -46,8 +47,9 @@ import com.krishagni.catissueplus.core.common.util.ConfigUtil;
 import com.krishagni.os.jhuepic.dao.ParticipantLookupDao;
 
 public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChangeListener, InitializingBean {
-
 	private static Log logger = LogFactory.getLog(EpicParticipantLookup.class);
+
+	private static final String MERGE_OP = "JHU-EPIC-MERGE";
 
 	private LocalDbParticipantLookupImpl osDbLookup;
 
@@ -97,6 +99,10 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 
 	@Override
 	public List<MatchedParticipant> getMatchingParticipants(ParticipantDetail detail) {
+		if (StringUtils.equals(MERGE_OP, detail.getOpComments())) {
+			return Collections.singletonList(new MatchedParticipant(detail, Collections.singletonList("pmi")));
+		}
+
 		if (StringUtils.isBlank(detail.getEmpi()) && CollectionUtils.isEmpty(detail.getPmis())) {
 			return osDbLookup.getMatchingParticipants(detail);
 		}
@@ -138,7 +144,13 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		}
 
 		return epicMatchingList.stream()
-			.map(participant -> new MatchedParticipant(participant, Collections.singletonList("pmi")))
+			.map(participant -> {
+				if (participant.getRegisteredCps() == null) {
+					participant.setRegisteredCps(Collections.emptySet());
+				}
+
+				return new MatchedParticipant(participant, Collections.singletonList("pmi"));
+			})
 			.collect(Collectors.toList());
 	}
 
@@ -228,9 +240,14 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		participant.setMiddleName(epicPatient.getMiddleName());
 		participant.setBirthDate(epicPatient.getDateOfBirth());
 		participant.setGender(getMappedValue(PvAttributes.GENDER, epicPatient.getSex()));
-		participant.setEthnicity(getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup()));
 		//participant.setEmpi(empi);
 		participant.setSource("EPIC");
+
+		String ethnicity = getMappedValue(PvAttributes.ETHNICITY, epicPatient.getEthnicGroup());
+		if (StringUtils.isNotBlank(ethnicity)) {
+			participant.setEthnicities(Collections.singleton(ethnicity));
+		}
+
 
 		if (epicPatient.getRace() != null && epicPatient.getRace().length > 0) {
 			participant.setRaces(Stream.of(epicPatient.getRace())
@@ -267,6 +284,7 @@ public class EpicParticipantLookup implements ParticipantLookupLogic, ConfigChan
 		}
 
 		epicParticipant.setId(localParticipant.getId());
+		epicParticipant.setOpComments(MERGE_OP); // to indicate that this is merge and no matching should be done
 		ResponseEvent<ParticipantDetail> response = participantSvc.patchParticipant(new RequestEvent<>(epicParticipant));
 		response.throwErrorIfUnsuccessful();
 		return response.getPayload();
