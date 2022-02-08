@@ -20,7 +20,7 @@ cd <cloned repo> \
     
 Restart OpenSpecimen in order to see the attached forms
 
-This is the *[Python Script and job description](https://www.markdownguide.org)*.
+This is the *[Python Script and job description](https://github.com/bibbox/app-openspecimen/new/master/data/os-plugins)*.
 
 In order to export the filled forms towards an BBMRI directory conform EMX2-File please see:
 
