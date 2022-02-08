@@ -8,8 +8,8 @@ jar {
   manifest {
     attributes("os-plugin-name": "miabis")
   }
-
-  doFirst {
+  
+doFirst {
     from ('./src/main/webapp/app/') {
       include '**/**'
  

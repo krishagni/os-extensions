@@ -1,0 +1,14 @@
+IDENTIFIER,CONCEPT_CODE,DEFINITION,PARENT_IDENTIFIER,VALUE,PUBLIC_ID,SORTORDER
+getNextPvId(),,,null,African,Ethnicity_PID,0
+getNextPvId(),,,null,Caucasian,Ethnicity_PID,0
+getNextPvId(),,,null,Pacific Islander,Ethnicity_PID,0
+getNextPvId(),,,null,East Asian,Ethnicity_PID,0
+getNextPvId(),,,null,Native American,Ethnicity_PID,0
+getNextPvId(),,,null,Other,Ethnicity_PID,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",mRNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Molecular')",microRNA,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Cell Lines,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Pathogen,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Cell')",Peripheral Blood Cells,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Cryo Preserved Tissue,null,0
+getNextPvId(),,,"getPvParentId('2003991', 'Tissue')",Paraffin Preserved Tissue,null,0
