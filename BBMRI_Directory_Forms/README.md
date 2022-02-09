@@ -1,10 +1,13 @@
-## BBMRI directory forms plugin
+# BBMRI directory forms plugin
 
-Source code for adding extension forms towards the Collection Protocoll and Site entities.
+## Introduction
+*[MIABIS](https://github.com/BBMRI-ERIC/miabis)* describes the Minimum Information About BIobank data Sharing, developed by *[BBMRI-ERIC](https://www.bbmri-eric.eu/)*.
+This extension can be used to add the respective forms to Collection Protocol and Site entities. 
 
-Build instructions:
 
-INSTALL BUILD TOOLS
+## Build Instructions:
+
+INSTALL BUILD TOOLS 
 
 wget https://downloads.gradle-dn.com/distributions/gradle-2.0-bin.zip -P /tmp \
     && apt-get update \
@@ -17,10 +20,11 @@ wget https://downloads.gradle-dn.com/distributions/gradle-2.0-bin.zip -P /tmp \
 cd <cloned repo> \
     && gradle build \
     && cp build/libs/* <openSpecimenPluginDir> \
-    
+
 Restart OpenSpecimen in order to see the attached forms
+- default hängt form an jedem CP und jeder Site 
 
-This is the *[Python Script and job description](https://github.com/bibbox/app-openspecimen/tree/master/data/os-plugins)*.
 
-In order to export the filled forms towards an BBMRI directory conform EMX2-File please see:
-
+## Further Resources
+The process of exporting data from OpenSpecimen and data integration into the BBMRI directory can be automated using scheduled jobs in OpenSpecimen. 
+In order to export the information recorded in the forms as a BBMRI directory conform EMX2-file, please refer to the following *[resource](https://github.com/bibbox/app-openspecimen/tree/master/data/os-plugins)*.
