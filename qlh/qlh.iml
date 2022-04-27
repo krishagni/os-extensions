@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output/>
+    <content url="file://$MODULE_DIR$/">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false"/>
+      <excludeFolder url="file://$MODULE_DIR$/build"/>
+      <excludeFolder url="file://$MODULE_DIR$/.gradle"/>
+    </content>
+    <orderEntry type="inheritedJdk"/>
+    <orderEntry type="sourceFolder" forTests="false"/>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/3.2.13.RELEASE/be0a2c3763f67adaaf5c407a9ef56c320a9fbb1d/spring-aspects-3.2.13.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/3.2.13.RELEASE/c77ae3ae7208b2ba5ec61da2d460020883cff71a/spring-aspects-3.2.13.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.8.6/a7db7ea5f7bb18a1cbd9f24edd0e666504800be/aspectjrt-1.8.6.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.8.6/4cc5b7ac5c2c314fbb00c76bd2924c75f7c1ca5d/aspectjrt-1.8.6-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/javax.persistence/persistence-api/1.0.2/8a7f96961047da52a53b7347b6a919c6fbc6d7fa/persistence-api-1.0.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/javax.persistence/persistence-api/1.0.2/eb8ae77be88577b23e64ce1e5386e874b08b49cc/persistence-api-1.0.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/1952f91d84016a39e31346c9d18bd8c9c4a128a/javax.servlet-api-3.0.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/asm/asm/3.3.1/1d5f20b4ea675e6fab6ab79f1cd60ec268ddc015/asm-3.3.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES/>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.6/7108cf65148f29a55ebf23db2c46224ea9d086dc/aspectjweaver-1.8.6.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.6/a361b303ca34e33bfdb96cb4e93d516e854366bb/aspectjweaver-1.8.6-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.1/d771af8e336e372fb5399c99edabe0919aeaf5b2/log4j-api-2.17.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.1/d23d37cc41300a7f6eba7813855dbb224e2a3177/log4j-api-2.17.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.19.RELEASE/1f475ad8e9cbd6df169f61a5e4106306ecd7d370/spring-aop-4.3.19.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.3.19.RELEASE/1267cefaa25967229e374a099c7fad1386e251a8/spring-aop-4.3.19.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.19.RELEASE/5bd5eb9e4dc86f985c4e6936e0463eee75e24781/spring-beans-4.3.19.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.3.19.RELEASE/3b6525fae73d6f0763e70ce766dabb9c91a154d4/spring-beans-4.3.19.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.19.RELEASE/ea103d73207f4f17f824de2eb5e128b06bdf050a/spring-context-4.3.19.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.3.19.RELEASE/20d657378f3dbbdf3dcdc896f087e2d4aca4465f/spring-context-4.3.19.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.19.RELEASE/519cfdf4887adefbda2f13bbc45e8e933a0cd894/spring-core-4.3.19.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.3.19.RELEASE/990443251a995930bc6001adae99b8e8e24d7b14/spring-core-4.3.19.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.3.19.RELEASE/503dfe394c891e38a385ff9620b4159fdc13b1e2/spring-jdbc-4.3.19.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.3.19.RELEASE/8aa6dc53ff0efaaf256f0f9b5268fd99319c25e8/spring-jdbc-4.3.19.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.3.19.RELEASE/a829456fc9f0f043471f972d0632bccd4d3c5aeb/spring-tx-4.3.19.RELEASE.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/vinayakpawar/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.3.19.RELEASE/5e409bfca8bcc232b43f43a2777177d02f146d28/spring-tx-4.3.19.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/work/ka/os/plugins/os-extensions/lib/DynamicExtensions.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES/>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/vinayakpawar/work/ka/os/plugins/os-extensions/lib/openspecimen.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES/>
+      </library>
+    </orderEntry>
+  </component>
+</module>
