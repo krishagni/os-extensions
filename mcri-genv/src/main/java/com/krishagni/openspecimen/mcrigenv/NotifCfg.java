@@ -1,5 +1,6 @@
 package com.krishagni.openspecimen.mcrigenv;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotifCfg {
@@ -8,6 +9,10 @@ public class NotifCfg {
 	private String jmsConnectionFactory;
 
 	private String jmsNotifQueue;
+
+	private List<String> emailNotifTypesWhiteList = new ArrayList<>();
+
+	private List<String> emailNotifTypesBlackList = new ArrayList<>();
 
 	private List<String> unacceptableRecvQualities;
 
@@ -39,6 +44,22 @@ public class NotifCfg {
 
 	public void setJmsNotifQueue(String jmsNotifQueue) {
 		this.jmsNotifQueue = jmsNotifQueue;
+	}
+
+	public List<String> getEmailNotifTypesWhiteList() {
+		return emailNotifTypesWhiteList;
+	}
+
+	public void setEmailNotifTypesWhiteList(List<String> emailNotifTypesWhiteList) {
+		this.emailNotifTypesWhiteList = emailNotifTypesWhiteList;
+	}
+
+	public List<String> getEmailNotifTypesBlackList() {
+		return emailNotifTypesBlackList;
+	}
+
+	public void setEmailNotifTypesBlackList(List<String> emailNotifTypesBlackList) {
+		this.emailNotifTypesBlackList = emailNotifTypesBlackList;
 	}
 
 	public List<String> getUnacceptableRecvQualities() {

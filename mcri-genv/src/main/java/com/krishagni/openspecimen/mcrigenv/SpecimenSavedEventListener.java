@@ -60,15 +60,11 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 		}
 
 		new MessagePublisher().publish(notifCfg.getJmsConnectionFactory(), notifCfg.getJmsNotifQueue(), specimen);
-
-		SpecimenNotif notif = getNotif(specimen);
-		notifyUnacceptableRecvQualities(specimen, notif);
-		notifyMissingSpecimen(specimen, notif);
-		saveNotif(notif);
-    }
+		notifyByEmail(specimen);
+	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		try {
 			String notifCfgJson = configSvc.getFileContent(MODULE, CONFIG);
 			notifCfg = parseConfig(notifCfgJson);
@@ -98,6 +94,23 @@ public class SpecimenSavedEventListener implements ApplicationListener<SpecimenS
 			logger.error("Error parsing the configuration file contents", e);
 			throw OpenSpecimenException.userError(CommonErrorCode.INVALID_INPUT, e.getMessage());
 		}
+	}
+
+	private void notifyByEmail(Specimen specimen) {
+		if (notifCfg.getEmailNotifTypesWhiteList() != null && !notifCfg.getEmailNotifTypesWhiteList().isEmpty()) {
+			if (!notifCfg.getEmailNotifTypesWhiteList().contains(specimen.getSpecimenType().getValue())) {
+				return;
+			}
+		} else if (notifCfg.getEmailNotifTypesBlackList() != null && !notifCfg.getEmailNotifTypesBlackList().isEmpty()) {
+			if (notifCfg.getEmailNotifTypesBlackList().contains(specimen.getSpecimenType().getValue())) {
+				return;
+			}
+		}
+
+		SpecimenNotif notif = getNotif(specimen);
+		notifyUnacceptableRecvQualities(specimen, notif);
+		notifyMissingSpecimen(specimen, notif);
+		saveNotif(notif);
 	}
 
 	private void notifyUnacceptableRecvQualities(Specimen specimen, SpecimenNotif notif) {
