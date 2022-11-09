@@ -1,0 +1,48 @@
+<div>
+  <div os-page-header>
+    <div class="os-page-header-content">
+      <h3>
+        <span>Generate Case Forms</span>
+      </h3>
+    </div>
+  </div>
+
+  <div class="container">
+    <form name="genCaseForms" os-form-validator="genCaseForms" class="form-horizontal" novalidate>
+      <div class="form-group" ng-if="!ctx.subjectIds">
+        <label class="control-label col-xs-3">Number of Case Forms</label>
+        <div class="col-xs-6">
+          <input name="count" type="text" class="form-control" ng-pattern="/^[1-9][0-9]*$/" ng-model="ctx.count"
+            ng-required="!ctx.subjectIds">
+          <div os-field-error field="genCaseForms.count"></div>
+        </div>
+      </div>
+
+      <div class="form-group" ng-if="!ctx.count">
+        <label class="control-label col-xs-3">Subject IDs</label>
+        <div class="col-xs-6">
+          <textarea name="subjectIds" class="form-control" ng-model="ctx.subjectIds"
+            placeholder="Enter subject IDs separated by comma, newline or tab" rows="5"
+            ng-required="!ctx.count">
+          </textarea>
+          <div os-field-error field="genCaseForms.subjectIds"></div>
+        </div>
+      </div>
+
+      <div class="os-divider"></div>
+
+      <div class="form-group">
+        <div class="col-xs-offset-3 col-xs-6">
+          <button class="btn btn-primary" os-form-submit="generate()">
+            <span>Generate</span>
+          </button>
+          <button class="btn os-btn-text" ng-click="back()">
+            <span translate="common.buttons.discard">Discard</span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
