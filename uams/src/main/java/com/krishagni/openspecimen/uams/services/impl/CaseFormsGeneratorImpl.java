@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
@@ -44,6 +45,8 @@ public class CaseFormsGeneratorImpl implements CaseFormsGenerator {
 	private static final String CASE_FORM_TMPL = "uams_case_form_tmpl";
 
 	private static final String NOTIF_TMPL = "case_forms_generated";
+
+	private static final String DEF_TMPL = "com/krishagni/openspecimen/uams/case_forms_tmpl.html";
 
 	private TemplateService tmplSvc;
 
@@ -119,6 +122,8 @@ public class CaseFormsGeneratorImpl implements CaseFormsGenerator {
 
 		private List<String> subjectIds;
 
+		private List<String> caseIds;
+
 		ExportCaseForms(int count) {
 			this.count = count;
 			this.user = AuthUtil.getCurrentUser();
@@ -141,30 +146,38 @@ public class CaseFormsGeneratorImpl implements CaseFormsGenerator {
 			}
 
 			String fileId = UUID.randomUUID().toString();
+
+			String tmpl = DEF_TMPL;
 			File tmplFile = ConfigUtil.getInstance().getFileSetting(MODULE, CASE_FORM_TMPL, null);
-			if (tmplFile == null) {
-				throw OpenSpecimenException.userError(CommonErrorCode.INVALID_INPUT, "No template configured");
+			if (tmplFile != null) {
+				tmpl = tmplFile.getAbsolutePath();
 			}
 
 			List<File> pdfs = new ArrayList<>();
 			try {
 				AuthUtil.setCurrentUser(user, ipAddress);
-				if ((subjectIds == null || subjectIds.isEmpty()) && count == 0) {
+				if ((subjectIds == null || subjectIds.isEmpty()) && count <= 0) {
 					throw OpenSpecimenException.userError(CommonErrorCode.INVALID_INPUT, "Specify either the subject IDs or count of case forms to print.");
-				} else if (count != 0) {
+				} else if (count > 0) {
 					Long subjectStartId = daoFactory.getUniqueIdGenerator().getUniqueId("UAMS_SUBJECT_ID", "ALL", 0L, count);
 					subjectIds = new ArrayList<>();
+					caseIds = new ArrayList<>();
 					for (int i = 0; i < count; ++i) {
-						String subjectId = String.format("AI%010d", (subjectStartId + i));
-						subjectIds.add(subjectId);
+						subjectIds.add(String.format("AI%010d", (subjectStartId + i)));
+						caseIds.add(String.format("CI%010d", (subjectStartId + i)));
+					}
+				} else {
+					subjectIds = subjectIds.stream().distinct().map(String::toUpperCase).collect(Collectors.toList());
+					caseIds = new ArrayList<>();
+					Long caseStartId = daoFactory.getUniqueIdGenerator().getUniqueId("UAMS_CASE_ID", "ALL", 0L, subjectIds.size());
+					for (int i = 0; i < subjectIds.size(); ++i) {
+						caseIds.add(String.format("CI7%09d", (caseStartId + i)));
 					}
 				}
 
-				Long caseStartId = daoFactory.getUniqueIdGenerator().getUniqueId("UAMS_CASE_ID", "ALL", 0L, subjectIds.size());
-				String tmpl = tmplFile.getAbsolutePath();
 				for (int i = 0; i < subjectIds.size(); ++i) {
-					String subjectId = subjectIds.get(i).toUpperCase();
-					String caseId = String.format("CI%010d", (caseStartId + i));
+					String subjectId = subjectIds.get(i);
+					String caseId    = caseIds.get(i);
 
 					Map<String, Object> props = new HashMap<>();
 					props.put("subjectId", subjectId);

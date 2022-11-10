@@ -1,0 +1,440 @@
+<html>
+  <head>
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 10mm 10mm;
+      }
+      
+      body {
+        font-size: 12px;
+      }
+      
+      .header {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .title {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 0px;
+      }
+      
+      .sub-title {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+      }
+      
+      #top-left {
+        position: running(top-left);
+      }
+
+      #top-right {
+        position: running(top-right);
+        text-align: right;
+        display: block;
+      }
+      
+      .title {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 0px;
+      }
+      
+      .sub-title {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;        
+      }
+      
+      .clear:before,
+      .clear:after, 
+      .field:before,
+      .field:after {
+        content: ' ';
+        display: table;
+        clear: both;
+      }
+      
+      .field {
+        width: 100%;
+        display: block;
+      }
+      
+      .field label {
+        width: 30%;
+        float: left;
+      }
+      
+      .field label span {
+        margin: 5px;
+        text-align: right;
+        display: inline-block;
+        width: 95%;
+        box-sizing: border-box;
+      }
+      
+      .field .input-container {
+        width: 70%;
+        float: left;
+      }
+      
+      .field .input-container .input {
+        margin: 5px;
+        display: inline-block;
+        width: 95%;
+        box-sizing: border-box;
+        border: 0px;
+        border-bottom: 1px solid #333;
+        height: 13px;
+      }
+    </style>
+
+    <title>Order manifest</title>
+  </head>
+
+  <body>
+    <div class="header">
+      <h3 class="title">CONSENT TRACKING FORM - LINKED - NEW DONOR </h3>
+      <span class="sub-title">(Tissue BioRepository and Procurement Service - 35954 (TBAPS))</span>
+    </div>
+
+    <div class="clear">
+      <div style="float: left; width: 45%;">
+        <div style="margin: 5px; border: 1px solid #ccc; border-radius: 5px; padding: 0px 5px 20px 5px;">
+          <h3 style="text-align: center">Patient IDs</h3>
+          <div class="form">
+            <div class="field">
+              <label>
+                <span>Name:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>
+            <div class="field">
+              <label>
+                <span>DOB:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>            
+            <div class="field">
+              <label>
+                <span>SS#:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>            
+            <div class="field">
+              <label>
+                <span>MR#/Unit#:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>            
+            <div class="field">
+              <label>
+                <span>Case#:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>            
+          </div>
+        </div>  
+      </div>
+      <div style="float: right; width: 45%;">
+        <div style="margin: 5px;">
+          <div style="width: 75%; margin: auto; border: 1px solid #333; border-radius: 5px;margin-top: 5px; margin-bottom: 5px;">
+            <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">SUBJECT ID</h5>
+            <img style="width: 100%; margin: auto; display: block;" src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $subjectId, 0, 40)"></img>
+            <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$subjectId</h5>
+          </div>
+          <div style="width: 75%; margin: auto; border: 1px solid #333; border-radius: 5px;margin-top: 5px; margin-bottom: 5px;">
+            <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">CASE ID</h5>
+            <img style="width: 100%; margin-top: 5px; margin: auto; display: block;" src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 0, 40)"></img>
+            <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+          </div>          
+        </div>
+      </div>
+    </div>
+    
+    <div class="clear">
+      <div style="float: left; width: 50%; border-right: 2px solid #333">
+        <div style="padding: 8px 0px 8px 8px;">
+          <div style="padding-right: 8px;margin-bottom: 5px;">
+            <h4 style="margin: 5px;">1: CONSENT</h4>
+            <div>
+              <div style="margin-bottom: 5px;">
+                <u>INSTRUCTIONS</u>
+              </div>
+              <ul style="margin: 0px; padding-left: 15px; margin-bottom: 10px;">
+                <li>Fill in information below for consent.</li>
+                <li>Use Subject ID label to mark entry in OpenSpecimen.</li>
+                <li>Enter data into TBAPS shared files.</li>
+              </ul>
+            </div>
+            <div class="form">
+              <div class="field">
+                <label>
+                  <span>Consent date:</span>
+                </label>
+                <div class="input-container">
+                  <div class="input"></div>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span>Surgery date:</span>
+                </label>
+                <div class="input-container">
+                  <div class="input"></div>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span>Surgical procedure:</span>
+                </label>
+                <div class="input-container">
+                  <div class="input"></div>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span>Consent version:</span>
+                </label>
+                <div class="input-container">
+                  <div class="input"></div>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span>Consenter:</span>
+                </label>
+                <div class="input-container">
+                  <div class="input" style="margin-bottom: 0px;"></div>
+                  <span style="width: 100%; text-align: center; font-size: 10px; display: inline-block;">Signature</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span>Consenter Name:</span>
+                </label>
+                <div class="input-container">
+                  <div class="input" style="margin-bottom: 0px;"></div>
+                  <span style="width: 100%; text-align: center; font-size: 10px; display:inline-block;">Name/System user ID</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="border-top: 2px solid #333; padding-right: 8px;">
+            <h4 style="margin: 5px;">2: TISSUE GROSSING</h4>
+            <div class="clear">
+              <div style="width: 50%; float: left;">
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Banked tissue</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">No tissue obtained</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Banked Fluid</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Fresh Tissue Distributed To Researcher</div>
+                </div>
+              </div>
+              <div style="width: 45%; float: right;">
+                <div>
+                  <u>INSTRUCTIONS</u>
+                </div>
+                <ol style="padding: 0px;">
+                  <li>Verify Patient ID (above) against Specimen ID.</li>
+                  <li>Check appropriate Specimen Banking Result box (left)</li>
+                  <li>Fill in information, below</li>
+                  <li>If <b>"Banked specimen"</b>, use Case ID labels (lower right) to label Tissue Sample Module Form.</li>
+                  <li>If <b>"No specimen obtained"</b>, return form to TBAPS Manager</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="field">
+              <label>
+                <span>Comments:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>
+            <div class="field">
+              <div style="margin-left: 30%;" class="input-container">
+                <div class="input"></div>
+              </div>
+            </div> 
+            <div class="field">
+              <label>
+                <span>Banking Date:</span>
+              </label>
+              <div class="input-container">
+                <div class="input"></div>
+              </div>
+            </div>
+            <div class="field">
+              <label>
+                <span style="font-size: 11px;">Banking Technician:</span>
+              </label>
+              <div class="input-container">
+                <div class="input" style="margin-bottom: 0px;"></div>
+                <span style="width: 100%; text-align: center; font-size: 10px; display:inline-block;">Signature</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>
+                <span style="font-size: 11px;">Banking Technician:</span>
+              </label>
+              <div class="input-container">
+                <div class="input" style="margin-bottom: 0px;"></div>
+                <span style="width: 100%; text-align: center; font-size: 10px; display:inline-block;">Name/System user ID</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="float: left; width: 49%;">
+        <div style="padding: 8px;">
+          <div>
+            <h4 style="margin: 5px;">3: SIGN OFF CHECK LIST</h4>
+            <div>
+              <div style="margin-bottom: 10px;">
+                <u>INSTRUCTIONS</u>
+              </div>
+            </div>
+            <div class="clear">
+              <div style="width: 45%; float: left;">
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">OpenSpecimen</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Code Sheet</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Consents Banked</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Cumulative Reports</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Distribution of Fresh Tissue</div>
+                </div>                
+              </div>
+              <div style="width: 45%; float: left;">
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Monthly Surgery Cases</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Samples By Organ System</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div>
+                  <div style="display: inline-block; position: absolute; top: 3px; left: 30px;">Monthly Clinics Case Reports</div>
+                </div>
+                <div style="position: relative; margin-bottom: 10px; ">
+                  <div style="height: 20px; width: 20px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;"></div> 
+                  <div class="field">
+                    <div class="input-container" style="position: absolute; top: 0; left: 25px;">
+                      <div class="input" style="margin-bottom: 0px;"></div>
+                    </div>
+                  </div>  
+                </div>             
+              </div>              
+            </div>
+            <div class="field" style="margin-top: 10px;">
+              <div class="input-container" style="width: 45%;">
+                <div class="input" style="margin-bottom: 0px;"></div>
+                <span style="width: 100%; text-align: center; font-size: 10px; display:inline-block;">TBAPS Manager Signature</span>
+              </div>
+              <div class="input-container" style="width: 25%;">
+                <div class="input" style="margin-bottom: 0px;"></div>
+                <span style="width: 100%; text-align: center; font-size: 10px; display:inline-block;">Date</span>                
+              </div>              
+            </div>              
+          </div>
+        </div>
+        <div style="border-top: 2px solid #333;">
+          <h4 style="text-align: center;">Case ID labels for Tissue Sample Module Forms</h4>
+          <div class="clear">
+            <div style="float: left; width: 49%;">            
+              <div style="margin: 10px; border: 1px dashed #333; border-radius: 5px;">
+                <div style="width: 90%; margin: auto; margin-top: 5px;">
+                  <img src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 100, 25)"></img>
+                  <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+                </div>  
+              </div>
+            </div>                                  
+            <div style="float: left; width: 49%;">            
+              <div style="margin: 10px; border: 1px dashed #333; border-radius: 5px;">
+                <div style="width: 90%; margin: auto; margin-top: 5px;">
+                  <img src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 100, 25)"></img>
+                  <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+                </div>  
+              </div>
+            </div>                                  
+            <div style="float: left; width: 49%;">            
+              <div style="margin: 10px; border: 1px dashed #333; border-radius: 5px;">
+                <div style="width: 90%; margin: auto; margin-top: 5px;">
+                  <img src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 100, 25)"></img>
+                  <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+                </div>  
+              </div>
+            </div>                                  
+            <div style="float: left; width: 49%;">            
+              <div style="margin: 10px; border: 1px dashed #333; border-radius: 5px;">
+                <div style="width: 90%; margin: auto; margin-top: 5px;">
+                  <img src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 100, 25)"></img>
+                  <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+                </div>  
+              </div>
+            </div>                                  
+            <div style="float: left; width: 49%;">            
+              <div style="margin: 10px; border: 1px dashed #333; border-radius: 5px;">
+                <div style="width: 90%; margin: auto; margin-top: 5px;">
+                  <img src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 100, 25)"></img>
+                  <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+                </div>  
+              </div>
+            </div>                                  
+            <div style="float: left; width: 49%;">            
+              <div style="margin: 10px; border: 1px dashed #333; border-radius: 5px;">
+                <div style="width: 90%; margin: auto; margin-top: 5px;">
+                  <img src="data:image/png;base64, $barcodeGenerator.base64Png('CODE_128', $caseId, 100, 25)"></img>
+                  <h5 style="text-align: center; margin-top: 5px; margin-bottom: 5px;">$caseId</h5>            
+                </div>  
+              </div>
+            </div>                                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
