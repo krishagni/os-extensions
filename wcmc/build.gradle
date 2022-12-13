@@ -8,7 +8,7 @@ apply plugin: 'idea'
 
 jar {
   baseName = 'zos-wcmc'
-  version =  '5.2.0'
+  version =  '9.1.0'
 
   manifest {
     attributes("os-plugin-name": "wcmc")
