@@ -20,6 +20,12 @@ jar {
  
       into 'META-INF/resources/wcmc'
     }
+
+    from('./src/main/ui/dist') {
+      include '**/**'
+
+      into 'META-INF/resources/ui/wcmc'
+    }
   }
 }
 
@@ -130,4 +136,10 @@ compileJava {
   }
 }
 
+task vue_build(type: Exec) {
+  workingDir './src/main/ui'
+  commandLine 'npm', 'run', 'build-bundle'
+}
+
+jar.dependsOn vue_build
 build.dependsOn jar

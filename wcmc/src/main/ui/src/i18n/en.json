@@ -1,0 +1,125 @@
+{
+  "common": {
+    "home": {
+      "cps": "Studies",
+      "cps_desc": "Create, update SOP of events and specimens",
+      "institutes": "Institutions",
+      "institutes_desc": "Update information about institutions",
+      "sites": "Site(s)",
+      "sites_desc": "Add and update site(s)"
+    },
+
+    "add_specimens": {
+      "dup_labels": "Duplicate IBC Codes scanned: {labels}",
+      "multi_cp_specimens": "Specimens found in multiple studies",
+      "select_specimen_cp": "Following specimens are present in multiple studies. Select the right study before proceeding."
+    },
+
+    "specimen_actions": {
+      "select_for_print": "Select at least one existing specimen for IBC codes printing.",
+      "select_same_cp_specimens": "Select specimens of the same study."
+    }
+  },
+
+  "containers": {
+    "collection_protocols": "Studies",
+    "cps": "Studies",
+    "no_free_locs": "Container does not have enough free locations to accommodate input IBC Codes",
+    "paste_specimen_labels": "Paste or input IBC Codes or barcodes separated by comma, tab, or newline",
+    "type": "Type(s)",
+    "ppid": "Registry ID",
+    "cell_display_props": {
+      "SPECIMEN_LABEL": "IBC Code",
+      "SPECIMEN_PPID" : "Registry ID"
+    },
+    "specimen": {
+      "available_qty": "Available Wt/Vol",
+      "cp": "Study",
+      "label": "IBC Code",
+      "ppid": "Registry ID",
+      "type": "Specimen Type"
+    },
+    "specimen_label": "IBC Code"
+  },
+
+  "dps": {
+    "coordinators": "Study Coordinator(s)",
+    "collection_protocol": "Studies",
+    "distributing_sites": "Distribution Site(s)",
+    "ethics_id": "IRB #",
+    "institute": "Institution",
+    "receiving_institute": "Institution",
+    "receiving_institute_req": "Receiving Institution is mandatory",
+    "receiving_site": "Site",
+    "order_custom_fields": "Custom Fields",
+    "order_report_query": "Query Report",
+    "target_quantity": "Target Wt/Vol",
+    "distributed_qty": "Distributed Wt/Vol",
+    "qty_per_specimen": "Wt/Vol per Specimen"
+  },
+    
+  "rde": {
+    "module_desc": "Rapidly capture patients, events and specimens data"
+  },
+
+  "specimen_actions": {
+    "create_aliquots": "Create Aliquot(s)",
+    "create_derivatives": "Create Derivative(s)",
+    "select_for_aliquots": "Please select at least one collected parent specimen to create aliquot(s)"
+  },
+    
+  "specimens": {
+    "cp": "Study",
+    "label": "IBC Code",
+    "ppid": "Registry ID",
+    "quantity": "Wt/Vol",
+    "type": "Specimen Type"
+  },
+
+  "sites": {
+    "collection_protocols": "Studies",
+    "confirm_delete_selected": "Are you sure you want to delete the selected site(s)?",
+    "institute": "Institution",
+    "institute_required": "Institution is mandatory",
+    "list": "Site(s)"
+  },
+
+  "users": {
+    "institute": "Institution",
+    "institute_required": "Institution is mandatory",
+    "role_cp": "Study",
+    "role_cp_required": "Study is mandatory",
+    "multi_institute_add_group_na": "Users of multiple institutions cannot be added to the same group."
+  },
+
+  "institutes": {
+    "confirm_delete_selected": "Are you sure you want to delete the selected institutions?",
+    "create": "Create Institution",
+    "deleted": "One institution deleted. | {count} institutions deleted.",
+    "list": "Institutions",
+    "name": "Name",
+    "name_is_mandatory": "Institution name is mandatory",
+    "saved": "Institution '{name}' saved.",
+    "singular": "Institution"
+  },
+
+  "shipments": {
+    "receiving_institute": "Institution",
+    "receiving_institute_required": "Institution is mandatory",
+    "specimen": {
+      "cp": "Study",
+      "label": "IBC Code",
+      "label_required": "IBC Code is mandatory",
+      "ppid": "Registry ID",
+      "quantity": "Wt/Vol",
+      "type": "Specimen Type"
+    },
+    "scan_specimen_labels": "Add specimens by scanning IBC codes or barcodes separated by a comma, tab, or newline."
+  },
+
+  "user_groups": {
+    "institute": "Institution",
+    "institute_required": "Institution is mandatory",
+    "multi_institute_users_na": "Users of multiple institutions cannot be added to the same group."
+  }
+}
