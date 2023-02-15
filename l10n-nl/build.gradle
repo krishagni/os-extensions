@@ -21,7 +21,7 @@ jar {
       into 'META-INF/resources/l10n-nl'
     }
 
-    from('./src/main/ui/dist') {
+    from('./src/main/ui/src/') {
       include '**/**'
 
       into 'META-INF/resources/ui/l10n-nl'
@@ -140,5 +140,5 @@ task vue_build(type: Exec) {
   commandLine 'npm', 'run', 'build-bundle'
 }
 
-jar.dependsOn vue_build
+// jar.dependsOn vue_build
 build.dependsOn jar
