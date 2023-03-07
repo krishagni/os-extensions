@@ -20,6 +20,12 @@ task fatJar(type: Jar) {
  
       into 'META-INF/resources/washu'
     }
+
+    from('./src/main/ui/dist') {
+      include '**/**'
+
+      into 'META-INF/resources/ui/washu'
+    }
   }
 
   from {
@@ -128,5 +134,11 @@ compileJava {
   }
 }
 
+task vue_build(type: Exec) {
+  workingDir './src/main/ui'
+  commandLine 'npm', 'run', 'build-bundle'
+}
+
+fatJar.dependsOn vue_build
 build.dependsOn fatJar
 
