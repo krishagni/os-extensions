@@ -41,8 +41,11 @@ public class SpecimenSaveHandler implements ApplicationListener<SpecimenSavedEve
 		Specimen primarySpecimen = updatedSpecimen.isPrimary() ? updatedSpecimen : getPrimarySpecimen(updatedSpecimen);
 
 		DeObject customFields = primarySpecimen.getExtension();
-		String daycode = (String) getAttrValue(customFields, "day_code");
+		if (customFields == null) {
+			return;
+		}
 
+		String daycode = (String) getAttrValue(customFields, "day_code");
 		if (updatedSpecimen.isPrimary() && updatedSpecimen.isReceived() && StringUtils.isBlank(daycode) && updatedSpecimen.getReceivedEvent().getTime() != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat(RECV_DATE_FMT);
 			String receivedDate = sdf.format(updatedSpecimen.getReceivedEvent().getTime());
