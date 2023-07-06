@@ -1,177 +1,351 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
-import static groovy.io.FileType.FILES
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+def getTodayDate() {
+  def today = new Date()
+  return String.valueOf(today.getTime())
+}
 
-jar {
-  baseName = 'zos-uams'
-  version =  '9.2.0'
+def getCommitRevision() {
+  def revCmd = "git rev-parse --short HEAD"
+  def revision = revCmd.execute()
+  return revision.text.trim()
+}
 
-  manifest {
-    attributes("os-plugin-name": "uams")
+def getBranch() {
+  def branchCmd = "git symbolic-ref -q --short HEAD";
+  def branch = branchCmd.execute().text.trim();
+
+  if (branch.length() == 0) {
+    branchCmd = "git describe --tags --exact-match";
+    branch = branchCmd.execute().text.trim();
+  }
+  return branch;
+}
+
+projects {
+  apply plugin: 'java'
+  apply plugin: 'eclipse'
+  apply plugin: 'idea'
+
+  sourceCompatibility = 14
+  targetCompatibility = 14
+
+  repositories {
+    mavenCentral()
   }
 
-  doFirst {
-    from ('./src/main/webapp/dist') {
-      include '**/**'
+  configurations {
+    ajc
+    aspects
+    aspectCompile
+ 
+    providedCompile
 
-      into 'META-INF/resources/uams'
+    compile {
+      extendsFrom aspects
+    }
+  }
+
+  configurations.all {
+    transitive = false
+  }
+
+  sourceSets {
+    main.compileClasspath += configurations.providedCompile
+    test.compileClasspath += configurations.providedCompile
+    test.runtimeClasspath += configurations.providedCompile
+  }
+
+  idea {
+    module {
+      scopes.PROVIDED.plus += [configurations.providedCompile]
+    }
+  }
+
+  def springVersion = "5.3.22"
+
+  dependencies {
+    ajc       "org.aspectj:aspectjtools:1.9.7"
+    implementation   "org.aspectj:aspectjrt:1.9.7"
+    aspects   "org.springframework:spring-aspects:5.3.22"
+    aspects   fileTree(dir: rootDir.absolutePath + '/lib', include: ['openspecimen.jar'])
+
+    implementation fileTree(dir: rootDir.absolutePath + '/lib', include: ['openspecimen.jar', 'os-dynamic-forms-trunk.jar'])
+
+    implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    implementation group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
+
+    implementation group: 'asm', name: 'asm', version:'3.3.1'
+    implementation group: 'org.aspectj', name: 'aspectjweaver', version:'1.9.7'
+    implementation group: 'org.javassist', name: 'javassist', version:'3.19.0-GA'
+    implementation group: 'cglib', name: 'cglib', version:'3.1'
+
+    implementation group: 'commons-io', name: 'commons-io', version:'2.10.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version:'3.12.0'
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version:'4.4'
+
+    implementation group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version:'6.0.4.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version:'5.6.11.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-envers', version:'5.6.11.Final'
+
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.13.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.13.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.13.1'
+
+    implementation group: 'net.sf.opencsv', name: 'opencsv', version:'2.3'
+    implementation group: 'org.liquibase', name: 'liquibase-core', version:'4.8.0'
+
+    implementation group: 'org.springframework', name: 'spring-aspects', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-aop', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-beans', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-context', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-context-support', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-core', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-jdbc', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-tx', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-web', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-webmvc', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-orm', version:springVersion
+    implementation group: 'org.springframework', name: 'spring-jms', version:springVersion
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.3'
+    implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.7.3'
+
+    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'
+    implementation group: 'org.apache.pdfbox', name: 'xmpbox', version: '2.0.24'
+    implementation group: 'org.apache.pdfbox', name: 'fontbox', version: '2.0.24'
+    implementation group: 'de.rototor.pdfbox', name: 'graphics2d', version: '0.32'
+    implementation group: 'com.openhtmltopdf', name: 'openhtmltopdf-core', version: '1.0.9'
+    implementation group: 'com.openhtmltopdf', name: 'openhtmltopdf-pdfbox', version: '1.0.9'
+  }
+
+  sourceSets.main.compileClasspath += configurations.providedCompile
+  sourceSets.test.compileClasspath += configurations.providedCompile
+  sourceSets.test.runtimeClasspath += configurations.providedCompile
+
+  compileJava {
+    afterEvaluate {
+      tasks.withType(JavaCompile) {
+        options.compilerArgs += ['-Xlint:deprecation', '-Xmaxwarns', '10000', '-Xmaxerrs',  '2000']
+      }
     }
 
-    from('./src/main/webapp') {
-      include 'def.json'
+    doLast{
+      ant.taskdef(resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+                classpath: configurations.ajc.asPath)
 
-      into 'META-INF/resources/uams'
+      ant.iajc(
+        source: 14,
+        target: 14,
+        destDir: sourceSets.main.output.classesDirs.asPath,
+        maxmem: "512m",
+        fork: "true",
+        aspectPath: configurations.aspects.asPath,
+        sourceRootCopyFilter: "**/*.java",
+        classpath: "${configurations.compileClasspath.asPath};${configurations.providedCompile.asPath};${configurations.aspectCompile.asPath}") {
+          sourceroots {
+            sourceSets.main.java.srcDirs.each {
+              pathelement(location:it.absolutePath)
+            }
+          }
+        }
+    }
+  }
 
-      def scriptHash = "-1", styleHash = "-1"
-      new File('./src/main/webapp/dist/').eachFileRecurse(FILES) {
-        if (it.name.startsWith("scripts") && it.name.endsWith("js")) {
-          def parts = it.name.split(/\./);
-          scriptHash = parts[1]
-        } else if (it.name.startsWith("app") && it.name.endsWith("css")) {
-          def parts = it.name.split(/\./)
-          styleHash = parts[1]
+  def grunt_cmd = "grunt"
+
+  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    grunt_cmd = "grunt.cmd"
+  }
+
+  task grunt_build {
+    if (project.file('./src/main/webapp/Gruntfile.js').exists()) {
+      doFirst {
+        exec {
+          workingDir './src/main/webapp'
+          commandLine grunt_cmd, 'build'
+        }
+      }
+    }
+  }
+
+  task grunt_clean {
+    if (project.file('./src/main/webapp/Gruntfile.js').exists()) {
+      doFirst {
+        exec {
+          workingDir './src/main/webapp'
+          commandLine grunt_cmd, 'clean'
+        }
+      }
+    }
+  }
+
+  task vue_build {
+    if (project.file('./src/main/ui').exists()) {
+      doFirst {
+        exec {
+          workingDir './src/main/ui'
+          commandLine 'npm', 'run', 'build-bundle'
+        }
+      }
+    }
+  }
+
+  task copy_ui_resources {
+    dependsOn grunt_build, vue_build
+
+    doLast {
+      println "Copying UI Resources"
+
+      configure(tasks.'jar') {
+        from ('./src/main/webapp/dist') {
+          include '**/**'
+
+          into 'META-INF/resources/' + osPluginName
+        }
+
+        from('./src/main/webapp') {
+          include 'def.json'
+
+          into 'META-INF/resources/' + osPluginName
+
+          def scriptHash = "-1", styleHash = "-1"
+          fileTree('./src/main/webapp/dist/').visit { FileVisitDetails details ->
+            if (details.name.startsWith("scripts") && details.name.endsWith("js")) {
+              def parts = details.name.split(/\./);
+              scriptHash = parts[1];
+            } else if (details.name.startsWith("app") && details.name.endsWith("css")) {
+              def parts = details.name.split(/\./)
+              styleHash = parts[1]
+            }
+          }
+
+          println scriptHash
+          println styleHash
+          filter(ReplaceTokens, tokens: [script_hash: scriptHash, style_hash: styleHash])
+        }
+
+        from('./src/main/ui/dist') {
+          include '**/**'
+
+          into 'META-INF/resources/ui/' + osPluginName
+        }
+      }
+    }
+  }
+
+  jar {
+    dependsOn copy_ui_resources
+
+    archiveBaseName = osPluginJarName
+    archiveVersion =  getBranch()
+
+    manifest {
+      attributes("os-plugin-name": osPluginName)
+      attributes("built-on": getTodayDate())
+      attributes("commit": getCommitRevision())
+      attributes("version": getBranch())
+    }
+  
+
+
+    if (project.hasProperty('includeJars')) {
+      from {
+        def includeJars = project.properties['includeJars'].split(',')
+        configurations.compileClasspath.filter { d ->
+          includeJars.find { incJar -> d.absolutePath.contains(incJar) }
+        }.collect {
+          println 'Adding ' + it.absolutePath
+          it.isDirectory() ? it : zipTree(it)
+        }
+      }
+    }
+  }
+
+  clean.dependsOn grunt_clean
+
+  jar.dependsOn grunt_build, vue_build
+  build.dependsOn jar
+}
+
+
+task setup_node_modules {
+  if (coreAppDir == null || coreAppDir.trim().isEmpty()) {
+    println "Absolute path of the core app source required"
+    throw new GradleException("Absolute path of the core app source required");
+  }
+
+  if (!coreAppDir.endsWith("/")) {
+    coreAppDir += "/";
+  }
+
+  def ngNodeModules  = Paths.get(coreAppDir, "www/node_modules");
+  def ngBowerComps   = Paths.get(coreAppDir, "www/bower_components");
+  def vueNodeModules = Paths.get(coreAppDir, "ui/node_modules");
+
+  file('.').eachDir { project ->
+    if (project.name.startsWith('.')) {
+      return;
+    }
+
+    def ngUi = project.absolutePath + "/src/main/webapp";
+    if (file(ngUi).exists()) {
+      def ngUiNmLnk = Paths.get(ngUi, "node_modules");
+      if (!ngUiNmLnk.toFile().exists()) {
+        println "Creating symbolic link " + ngUiNmLnk + " to " + ngNodeModules;
+        def result = Files.createSymbolicLink(ngUiNmLnk, ngNodeModules);
+        if (!result.toFile().exists()) {
+          throw GradleException("Failed to create the symbolic link to node_modules " + ngUiNmLnk);
         }
       }
 
-      filter(ReplaceTokens, tokens: [script_hash: scriptHash, style_hash: styleHash])
+      def ngUiBcLnk = Paths.get(ngUi, "bower_components");
+      if (!ngUiBcLnk.toFile().exists()) {
+        println "Creating symbolic link " + ngUiBcLnk + " to " + ngBowerComps;
+        def result = Files.createSymbolicLink(ngUiBcLnk, ngBowerComps);
+        if (!result.toFile().exists()) {
+          throw GradleException("Failed to create the symbolic link to bower_components " + ngUiBcLnk);
+        }
+      }
     }
-  }
-}
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-  mavenCentral()
-}
-
-configurations {
-  ajc
-  aspects
-  aspectCompile
-
-  providedCompile
-
-  compile {
-    extendsFrom aspects
-  }
-}
-
-configurations.all {
-  transitive = false
-}
-
-sourceSets {
-  main.compileClasspath += configurations.providedCompile
-  test.compileClasspath += configurations.providedCompile
-  test.runtimeClasspath += configurations.providedCompile
-}
-
-idea {
-  module {
-    scopes.PROVIDED.plus += [configurations.providedCompile]
-  }
-}
-
-def springVersion = "3.2.13.RELEASE"
-
-dependencies {
-  ajc       "org.aspectj:aspectjtools:1.8.6"
-  compile   "org.aspectj:aspectjrt:1.8.6"
-  compile   "javax.persistence:persistence-api:1.0.2"
-  aspects   "org.springframework:spring-aspects:3.2.13.RELEASE"
-  aspects   fileTree(dir: '../lib', include: ['openspecimen.jar'])
-
-  compile fileTree(dir: 'lib', include: ['*.jar'])
-
-  providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.0.1'
-
-  compile group: 'asm', name: 'asm', version:'3.3.1'
-  compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.8.6'
-  compile group: 'org.javassist', name: 'javassist', version:'3.19.0-GA'
-  compile group: 'cglib', name: 'cglib', version:'3.1'
-
-  compile group: 'commons-collections', name: 'commons-collections', version:'3.2.1'
-  compile group: 'commons-logging', name: 'commons-logging', version:'1.2'
-  compile group: 'commons-io', name: 'commons-io', version:'2.4'
-  compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
-  compile group: 'log4j', name: 'log4j', version:'1.2.16'
-
-  compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.4'
-
-  compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
-  compile group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version:'5.1.2.Final'
-  compile group: 'org.hibernate', name: 'hibernate-core', version:'5.4.32.Final'
-
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.5.3'
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.5.3'
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.5.3'
-
-  compile group: 'org.liquibase', name: 'liquibase-core', version:'3.3.3'
-
-  compile group: 'org.springframework', name: 'spring-aop', version:springVersion
-  compile group: 'org.springframework', name: 'spring-beans', version:springVersion
-  compile group: 'org.springframework', name: 'spring-context', version:springVersion
-  compile group: 'org.springframework', name: 'spring-jdbc', version:springVersion
-  compile group: 'org.springframework', name: 'spring-context-support', version:'3.1.2.RELEASE'
-  compile group: 'org.springframework', name: 'spring-core', version:springVersion
-  compile group: 'org.springframework', name: 'spring-tx', version:springVersion
-  compile group: 'org.springframework', name: 'spring-web', version:springVersion
-  compile group: 'org.springframework', name: 'spring-webmvc', version:springVersion
-
-  compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.2.7.RELEASE'
-
-  compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'
-  compile group: 'com.openhtmltopdf', name: 'openhtmltopdf-core', version: '1.0.9'
-  compile group: 'com.openhtmltopdf', name: 'openhtmltopdf-pdfbox', version: '1.0.9'
-}
-
-sourceSets.main.compileClasspath += configurations.providedCompile
-sourceSets.test.compileClasspath += configurations.providedCompile
-sourceSets.test.runtimeClasspath += configurations.providedCompile
-
-compileJava {
-  doLast{
-    ant.taskdef(resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
-      classpath: configurations.ajc.asPath)
-
-    ant.iajc(
-      source: 1.8, target: 1.8,
-      destDir: sourceSets.main.output.classesDir.absolutePath,
-      maxmem: "512m", fork: "true",
-      aspectPath: configurations.aspects.asPath,
-      sourceRootCopyFilter: "**/*.java",
-      classpath: "${configurations.compile.asPath};${configurations.providedCompile.asPath};${configurations.aspectCompile.asPath}") {
-      sourceroots {
-        sourceSets.main.java.srcDirs.each {
-          pathelement(location:it.absolutePath)
+    def vuUi = project.absolutePath + "/src/main/ui";
+    if (file(vuUi).exists()) { 
+      def vuUiNmLnk = Paths.get(vuUi, "node_modules");
+      if (!vuUiNmLnk.toFile().exists()) {
+        println "Creating symbolic link " + vuUiNmLnk + " to " + vueNodeModules;
+        def result = Files.createSymbolicLink(vuUiNmLnk, vueNodeModules);
+        if (!result.toFile().exists()) {
+          throw GradleException("Failed to create the symbolic link to node_modules " + vuUiNmLnk);
         }
       }
     }
   }
 }
 
-def grunt_cmd = "/usr/local/bin/grunt"
+task cleanup_node_modules {
+  doLast {
+    file('.').eachDir { project ->
+      if (project.name.startsWith('.')) {
+        return;
+      }
 
-if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-  grunt_cmd = "grunt.cmd"
+      def ngUi = project.absolutePath + "/src/main/webapp";
+      if (file(ngUi).exists()) {
+        def ngUiNmLnk = Paths.get(ngUi, "node_modules");
+        ngUiNmLnk.toFile().delete();
+
+        def ngUiBcLnk = Paths.get(ngUi, "bower_components");
+        ngUiBcLnk.toFile().delete();
+      }
+
+      def vuUi = project.absolutePath + "/src/main/ui";
+      def vuUiNmLnk = Paths.get(vuUi, "node_modules");
+      vuUiNmLnk.toFile().delete();
+    }
+  }
 }
-
-task grunt_build(type: Exec) {
-  workingDir './src/main/webapp'
-  commandLine grunt_cmd, 'build'
-}
-
-task grunt_clean(type: Exec) {
-  workingDir './src/main/webapp'
-  commandLine grunt_cmd, 'clean'
-}
-
-clean.dependsOn grunt_clean
-
-jar.dependsOn grunt_build
-build.dependsOn jar
