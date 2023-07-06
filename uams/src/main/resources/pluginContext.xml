@@ -15,4 +15,10 @@
     <property name="exportSvc" ref="exportSvc"/>
     <property name="taskExecutor" ref="taskExecutor"/>
   </bean>
+
+  <bean id="uamsEpicParticipantLookup" class="com.krishagni.openspecimen.uams.services.impl.EpicParticipantLookup">
+    <property name="osDbLookup" ref="localDbParticipantLookup" />
+    <property name="daoFactory" ref="biospecimenDaoFactory" />
+    <property name="participantSvc" ref="participantSvc" />
+  </bean>
 </beans>

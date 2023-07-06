@@ -15,4 +15,29 @@
       );
     </sql>
   </changeSet>
+
+  <changeSet author="vpawar" id="Adding UAMS Epic API settings">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (default, 'uams_epic_module', 'UAMS EPIC Settings');
+    </sql>
+
+    <sql>
+      call add_cfg_prop(
+        'uams_epic_module', 'epic_api_url',
+        'epic_api_url', 'epic_api_url_desc',
+        'STRING', ''
+      );
+    </sql>
+
+    <sql>
+      call add_cfg_prop(
+        'uams_epic_module', 'epic_api_key',
+        'epic_api_key', 'epic_api_key_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
 </databaseChangeLog>
