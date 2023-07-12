@@ -36,6 +36,9 @@ public class SpecimenSaveHandler implements ApplicationListener<SpecimenSavedEve
 	public void onApplicationEvent(SpecimenSavedEvent event) {
 		// specimen that is updated in the current transaction
 		Specimen updatedSpecimen = event.getEventData();
+		if (updatedSpecimen.isDeleted()) {
+			return;
+		}
 
 		// get hold of the primary specimen
 		Specimen primarySpecimen = updatedSpecimen.isPrimary() ? updatedSpecimen : getPrimarySpecimen(updatedSpecimen);
