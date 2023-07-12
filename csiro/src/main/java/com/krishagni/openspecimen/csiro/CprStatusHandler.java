@@ -148,19 +148,19 @@ public class CprStatusHandler implements ApplicationListener<CprSavedEvent> {
 		}
 
 		Stream<String> customFieldsToCheck = Stream.of("survey_source", "address_line_11", "address_line_21", "suburb", "states", "post_code", "phone_number");
-		if (customFieldsToCheck.anyMatch(field -> customFields.getAttrValue(field) == null)) {
+		if (customFieldsToCheck.anyMatch(field -> customFields.getAttrValue(field) == null || customFields.getAttrValue(field).toString().isEmpty())) {
 			setConsentStatusClarify(customFields);
 			return;
 		}
 
-		Stream<String> translatorFormFields   = Stream.of("translator_given_name", "translator_family_name", "translator_signed", "date_translator_signed");
-		Stream<String> investigatorFormFields = Stream.of("investigator_given_name", "investigator_family_name", "date_of_confirmation");
+		List<String> translatorFormFields   = List.of("translator_given_name", "translator_family_name", "translator_signed", "date_translator_signed");
+		List<String> investigatorFormFields = List.of("investigator_given_name", "investigator_family_name", "date_of_confirmation");
 
-		boolean allTranslatorFieldsEmpty   = translatorFormFields.allMatch(field -> recordValues.get(field) == null);
-		boolean someTranslatorFieldsEmpty  = translatorFormFields.anyMatch(field -> recordValues.get(field) == null);
+		boolean allTranslatorFieldsEmpty   = translatorFormFields.stream().allMatch(field -> recordValues.get(field) == null || recordValues.get(field).toString().isEmpty());
+		boolean someTranslatorFieldsEmpty  = translatorFormFields.stream().anyMatch(field -> recordValues.get(field) == null || recordValues.get(field).toString().isEmpty());
 
-		boolean allInvestigatorFieldsEmpty = investigatorFormFields.allMatch(field -> recordValues.get(field) == null);
-		boolean someInvestigatorFieldsEmpty= investigatorFormFields.anyMatch(field -> recordValues.get(field) == null);
+		boolean allInvestigatorFieldsEmpty = investigatorFormFields.stream().allMatch(field -> recordValues.get(field) == null || recordValues.get(field).toString().isEmpty());
+		boolean someInvestigatorFieldsEmpty= investigatorFormFields.stream().anyMatch(field -> recordValues.get(field) == null || recordValues.get(field).toString().isEmpty());
 		if (allTranslatorFieldsEmpty && allInvestigatorFieldsEmpty) {
 			setConsentStatusClarify(customFields);
 			return;
@@ -181,7 +181,7 @@ public class CprStatusHandler implements ApplicationListener<CprSavedEvent> {
 			}
 		}
 
-		if (recordValues.get("form_version") == null) {
+		if (recordValues.get("form_version") == null || recordValues.get("form_version").toString().isEmpty()) {
 			setConsentStatusClarify(customFields);
 			return;
 		}
