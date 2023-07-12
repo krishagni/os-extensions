@@ -153,8 +153,35 @@ public class CprStatusHandler implements ApplicationListener<CprSavedEvent> {
 			return;
 		}
 
-		Stream<String> formFieldsToCheck = Stream.of("form_version", "translator_given_name", "translator_family_name", "translator_signed", "date_translator_signed", "investigator_given_name", "investigator_family_name", "date_of_confirmation");
-		if (formFieldsToCheck.anyMatch(field -> recordValues.get(field) == null)) {
+		Stream<String> translatorFormFields   = Stream.of("translator_given_name", "translator_family_name", "translator_signed", "date_translator_signed");
+		Stream<String> investigatorFormFields = Stream.of("investigator_given_name", "investigator_family_name", "date_of_confirmation");
+
+		boolean allTranslatorFieldsEmpty   = translatorFormFields.allMatch(field -> recordValues.get(field) == null);
+		boolean someTranslatorFieldsEmpty  = translatorFormFields.anyMatch(field -> recordValues.get(field) == null);
+
+		boolean allInvestigatorFieldsEmpty = investigatorFormFields.allMatch(field -> recordValues.get(field) == null);
+		boolean someInvestigatorFieldsEmpty= investigatorFormFields.anyMatch(field -> recordValues.get(field) == null);
+		if (allTranslatorFieldsEmpty && allInvestigatorFieldsEmpty) {
+			setConsentStatusClarify(customFields);
+			return;
+		} else if (allTranslatorFieldsEmpty) {
+			if (someInvestigatorFieldsEmpty) {
+				setConsentStatusClarify(customFields);
+				return;
+			}
+		} else if (allInvestigatorFieldsEmpty) {
+			if (someTranslatorFieldsEmpty) {
+				setConsentStatusClarify(customFields);
+				return;
+			}
+		} else {
+			if (someInvestigatorFieldsEmpty || someTranslatorFieldsEmpty) {
+				setConsentStatusClarify(customFields);
+				return;
+			}
+		}
+
+		if (recordValues.get("form_version") == null) {
 			setConsentStatusClarify(customFields);
 			return;
 		}
@@ -273,7 +300,7 @@ public class CprStatusHandler implements ApplicationListener<CprSavedEvent> {
 				if (cv.getValue() instanceof String[]) {
 					value = Stream.of((String[]) cv.getValue()).map(ctrl::fromString).collect(Collectors.toList());
 				} else {
-					value = ctrl.fromString((String) cv.getValue());
+					value = ctrl.fromString(ctrl.toString(cv.getValue()));
 				}
 			}
 
