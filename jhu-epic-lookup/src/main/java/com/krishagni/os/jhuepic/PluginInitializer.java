@@ -3,16 +3,14 @@ package com.krishagni.os.jhuepic;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import com.krishagni.catissueplus.core.biospecimen.WorkflowUtil;
 import com.krishagni.catissueplus.core.biospecimen.domain.CpWorkflowConfig;
 import com.krishagni.catissueplus.core.common.domain.LabelTmplTokenRegistrar;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
+import com.krishagni.catissueplus.core.common.util.LogUtil;
 import com.krishagni.os.jhuprinttoken.CollectionProtocolPIPrintToken;
 import com.krishagni.os.jhuprinttoken.ParticipantDOBPrintToken;
 import com.krishagni.os.jhuprinttoken.ParticipantFirstNamePrintToken;
@@ -25,7 +23,7 @@ import com.krishagni.os.jhuprinttoken.VisitEventPointUnitPrintToken;
 import com.krishagni.os.jhuprinttoken.VisitSurgPathPrintToken;
 
 public class PluginInitializer implements InitializingBean {
-	private static final Log logger = LogFactory.getLog(PluginInitializer.class);
+	private static final LogUtil logger = LogUtil.getLogger(PluginInitializer.class);
 
 	private ConfigurationService cfgSvc;
 	
