@@ -58,6 +58,36 @@ angular.module('os.plugins.jhu-epic-lookup', ['openspecimen'])
           },
           userRole: function(authInit, cp, AuthorizationService) {
             return AuthorizationService.getRole(cp);
+          },
+          hasConsentRules: function($injector, cp) {
+            if (!$injector.has('ecValidation')) {
+              return false;
+            }
+
+            return $injector.get('ecValidation').getCpRules(cp.id).then(
+              function(cpRules) {
+                return cpRules && cpRules.rules && cpRules.rules.length > 0;
+              }
+            );
+          },
+          tmWorkflowId: function($injector, cp, cpr, hasConsentRules, CpConfigSvc) {
+            if (!!cpr.id || !$injector.has('Workflow') || hasConsentRules) {
+              return -1;
+            }
+
+            return CpConfigSvc.getWorkflowData(cp.id, 'specimenCollection').then(
+              function(data) {
+                if (data && data.workflowId > 0) {
+                  return data.workflowId;
+                }
+
+                return CpConfigSvc.getWorkflowData(-1, 'specimenCollection').then(
+                  function(data) {
+                    return data && data.workflowId;
+                  }
+                );
+              }
+            );
           }
         },
         parent: 'participant-root'
