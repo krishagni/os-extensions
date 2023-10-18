@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -80,7 +79,26 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 	@PlusTransactional
 	public ResponseEvent<QueryDataExportResult> exportWorkingSpecimensReport(RequestEvent<SpecimenListCriteria> req) {
 		try {
-			QueryDataExportResult result = listSvc.exportSpecimenList(req.getPayload(), this::exportSpecimenListToXlsx);
+			SpecimenListCriteria crit = req.getPayload();
+			QueryDataExportResult result = listSvc.exportSpecimenList(
+				crit,
+				new QueryService.ExtendedExportProcessor() {
+					@Override
+					public void output(QueryResultData queryResultData, OutputStream outputStream) {
+						exportSpecimenListToXlsx(queryResultData, outputStream);
+					}
+
+					@Override
+					public String filename() {
+						return "working_specimens_report_" + crit.specimenListId() + ".xlsx";
+					}
+
+					@Override
+					public void headers(OutputStream outputStream) {
+						// skip
+					}
+				}
+			);
 			return ResponseEvent.response(result);
 		} catch (OpenSpecimenException ose) {
 			return ResponseEvent.error(ose);
@@ -113,7 +131,25 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			queryOp.setWideRowMode(WideRowMode.DEEP.name());
 			queryOp.setRunType("Export");
 
-			return ResponseEvent.response(querySvc.exportQueryData(queryOp, exportOrderReportToXlsxFn(order)));
+			return ResponseEvent.response(querySvc.exportQueryData(
+				queryOp,
+				new QueryService.ExtendedExportProcessor() {
+					@Override
+					public void output(QueryResultData queryResultData, OutputStream outputStream) {
+						exportOrderReportToXlsxFn(order, queryResultData, outputStream);
+					}
+
+					@Override
+					public String filename() {
+						return "working_order_report_" + order.getId() + ".xlsx";
+					}
+
+					@Override
+					public void headers(OutputStream outputStream) {
+
+					}
+				}
+			));
 		} catch (OpenSpecimenException ose) {
 			return ResponseEvent.error(ose);
 		} catch (Exception e) {
@@ -158,7 +194,24 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 			op.setAql(query.getAql(restriction));
 			op.setWideRowMode(WideRowMode.DEEP.name());
 			op.setRunType("Export");
-			return ResponseEvent.response(querySvc.exportQueryData(op, this::exportSpecimenListToXlsx));
+			return ResponseEvent.response(querySvc.exportQueryData(
+				op,
+				new QueryService.ExtendedExportProcessor() {
+					@Override
+					public void output(QueryResultData queryResultData, OutputStream outputStream) {
+						exportSpecimenListToXlsx(queryResultData, outputStream);
+					}
+
+					@Override
+					public String filename() {
+						return "working_request_report_" + crit.getId() + ".xlsx";
+					}
+
+					@Override
+					public void headers(OutputStream outputStream) {
+					}
+				}
+			));
 		} catch (OpenSpecimenException ose) {
 			return ResponseEvent.error(ose);
 		} catch (Exception e) {
@@ -174,7 +227,7 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 
 		Integer queryId = ConfigUtil.getInstance().getIntSetting("common", "distribution_report_query", -1);
 		if (queryId == -1) {
-			return null;
+			throw OpenSpecimenException.userError(DistributionOrderErrorCode.RPT_TMPL_NOT_CONFIGURED, order.getDistributionProtocol().getShortTitle());
 		}
 
 		return deDaoFactory.getSavedQueryDao().getQuery(queryId.longValue());
@@ -289,197 +342,195 @@ public class ReportGeneratorImpl implements ReportGenerator  {
 		}
 	}
 
-	private BiConsumer<QueryResultData, OutputStream> exportOrderReportToXlsxFn(DistributionOrder order) {
-		return (data, out) -> {
-			SXSSFWorkbook workbook = new SXSSFWorkbook();
+	private void exportOrderReportToXlsxFn(DistributionOrder order, QueryResultData data, OutputStream out) {
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
 
-			try {
-				SXSSFSheet sheet = workbook.createSheet("Order " + order.getId());
-				sheet.setDefaultColumnWidth(10);
-				sheet.setColumnWidth(0, 10000);
-				sheet.setAutobreaks(true);
-				sheet.setFitToPage(true);
+		try {
+			SXSSFSheet sheet = workbook.createSheet("Order " + order.getId());
+			sheet.setDefaultColumnWidth(10);
+			sheet.setColumnWidth(0, 10000);
+			sheet.setAutobreaks(true);
+			sheet.setFitToPage(true);
 
-				PrintSetup ps = sheet.getPrintSetup();
-				ps.setLandscape(true);
-				ps.setFitWidth((short) 1);
+			PrintSetup ps = sheet.getPrintSetup();
+			ps.setLandscape(true);
+			ps.setFitWidth((short) 1);
 
-				CellStyle hdTitleLabel = hdTitleLabelStyle(workbook);
-				CellStyle hdTitleValue = hdTitleValueStyle(workbook);
-				CellStyle hdSubTitleLabel = hdSubTitleLabelStyle(workbook);
-				CellStyle hdSubTitleValue = hdSubTitleValueStyle(workbook);
+			CellStyle hdTitleLabel = hdTitleLabelStyle(workbook);
+			CellStyle hdTitleValue = hdTitleValueStyle(workbook);
+			CellStyle hdSubTitleLabel = hdSubTitleLabelStyle(workbook);
+			CellStyle hdSubTitleValue = hdSubTitleValueStyle(workbook);
 
-				int rowNum = -1;
-				SXSSFRow hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Order Name:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getName(), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			int rowNum = -1;
+			SXSSFRow hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Order Name:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getName(), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				CellUtil.createCell(hr, 6, "Exported On:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Exported On:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, Utility.getDateTimeString(Calendar.getInstance().getTime()), hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Order ID:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getId().toString(), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Order ID:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getId().toString(), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				CellUtil.createCell(hr, 6, "Exported By:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Exported By:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, AuthUtil.getCurrentUser().formattedName(), hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Distribution Protocol:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getDistributionProtocol().getShortTitle(), hdTitleValue);
-				mergeCells(sheet, hr.getRowNum(), 1, 12);
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Distribution Protocol:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getDistributionProtocol().getShortTitle(), hdTitleValue);
+			mergeCells(sheet, hr.getRowNum(), 1, 12);
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Signature & Date:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, "", hdTitleValue);
-				mergeCells(sheet, hr.getRowNum(), hr.getRowNum() + 2, 0, 12);
-				rowNum += 2;
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Signature & Date:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, "", hdTitleValue);
+			mergeCells(sheet, hr.getRowNum(), hr.getRowNum() + 2, 0, 12);
+			rowNum += 2;
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Requestor's Name:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getRequester().formattedName(), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Requestor's Name:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getRequester().formattedName(), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				CellUtil.createCell(hr, 6, "Distribution Site:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, getDistributionSites(order), hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Distribution Site:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, getDistributionSites(order), hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Requested Date:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, Utility.getDateTimeString(order.getCreationDate()), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Requested Date:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, Utility.getDateTimeString(order.getCreationDate()), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				String distDate = order.getExecutionDate() != null ? Utility.getDateTimeString(order.getExecutionDate()) : StringUtils.EMPTY;
-				CellUtil.createCell(hr, 6, "Distribution Date:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, distDate, hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			String distDate = order.getExecutionDate() != null ? Utility.getDateTimeString(order.getExecutionDate()) : StringUtils.EMPTY;
+			CellUtil.createCell(hr, 6, "Distribution Date:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, distDate, hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Requestor's Address:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getRequester().getAddress(), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Requestor's Address:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getRequester().getAddress(), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				CellUtil.createCell(hr, 6, "Distributor's Address:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, order.getDistributor().getAddress(), hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Distributor's Address:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, order.getDistributor().getAddress(), hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Requestor's Phone:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getRequester().getPhoneNumber(), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Requestor's Phone:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getRequester().getPhoneNumber(), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				CellUtil.createCell(hr, 6, "Distributor's Phone:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, order.getDistributor().getPhoneNumber(), hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Distributor's Phone:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, order.getDistributor().getPhoneNumber(), hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "Requestor's Email:", hdTitleLabel);
-				CellUtil.createCell(hr, 1, order.getRequester().getEmailAddress(), hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "Requestor's Email:", hdTitleLabel);
+			CellUtil.createCell(hr, 1, order.getRequester().getEmailAddress(), hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
-				CellUtil.createCell(hr, 6, "Distributor's Email:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, order.getDistributor().getEmailAddress(), hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Distributor's Email:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, order.getDistributor().getEmailAddress(), hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				hr = sheet.createRow(++rowNum);
-				CellUtil.createCell(hr, 0, "", hdTitleLabel);
-				CellUtil.createCell(hr, 1, "", hdTitleValue);
-				mergeLeftValueColumns(sheet, hr.getRowNum());
+			hr = sheet.createRow(++rowNum);
+			CellUtil.createCell(hr, 0, "", hdTitleLabel);
+			CellUtil.createCell(hr, 1, "", hdTitleValue);
+			mergeLeftValueColumns(sheet, hr.getRowNum());
 
 
-				CellUtil.createCell(hr, 6, "Distributor's Comment:", hdTitleLabel);
-				mergeRightLabelColumns(sheet, hr.getRowNum());
-				CellUtil.createCell(hr, 8, "", hdTitleValue);
-				mergeRightValueColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 6, "Distributor's Comment:", hdTitleLabel);
+			mergeRightLabelColumns(sheet, hr.getRowNum());
+			CellUtil.createCell(hr, 8, "", hdTitleValue);
+			mergeRightValueColumns(sheet, hr.getRowNum());
 
-				if (order.getExtension() != null) {
-					Map<String, String> labelValueMap = order.getExtension().getLabelValueMap();
-					int attrsCount = 0;
-					for (Map.Entry<String, String> labelValue : labelValueMap.entrySet()) {
-						int colNum = (attrsCount % 2);
-						if (colNum == 0) {
-							hr = sheet.createRow(++rowNum);
-							CellUtil.createCell(hr, 0, labelValue.getKey(), hdTitleLabel);
-							CellUtil.createCell(hr, 1, labelValue.getValue(), hdTitleValue);
-							mergeLeftValueColumns(sheet, hr.getRowNum());
-						} else {
-							CellUtil.createCell(hr, 6, labelValue.getKey(), hdTitleLabel);
-							mergeRightLabelColumns(sheet, hr.getRowNum());
-							CellUtil.createCell(hr, 8, labelValue.getValue(), hdTitleValue);
-							mergeRightValueColumns(sheet, hr.getRowNum());
-						}
-
-						++attrsCount;
-					}
-				}
-
-				hr = sheet.createRow(++rowNum);
-				String[] columnLabels = data.getColumnLabels();
-				CellUtil.createCell(hr, 0, "Sample Quantity Units:", hdSubTitleLabel);
-				CellUtil.createCell(hr, 1, "Cell = cell count/number, Fluid/Tissue Lysate/Cell Lysate = ml, Molecular = ug, Tissue Block/Slide = Count, All Other Tissue = gm", hdSubTitleValue);
-				mergeCells(sheet, hr.getRowNum(), 1, 12);
-
-				sheet.flushRows();
-
-				// empty row
-				sheet.createRow(++rowNum);
-
-				CellStyle thStyle = hdSubTitleLabelStyle(workbook);
-				thStyle.setAlignment(HorizontalAlignment.CENTER);
-
-				CellStyle tdStyle = hdSubTitleValueStyle(workbook);
-				tdStyle.setAlignment(HorizontalAlignment.CENTER);
-
-				SXSSFRow dataRow = sheet.createRow(++rowNum);
-				int colNum = 0;
-				for (String columnLabel : columnLabels) {
-					CellUtil.createCell(dataRow, colNum++, columnLabel, thStyle);
-				}
-
-				sheet.flushRows();
-
-				Iterator<String[]> rows = data.stringifiedRowIterator();
-				while (rows.hasNext()) {
-					dataRow = sheet.createRow(++rowNum);
-					colNum = 0;
-					for (String item : rows.next()) {
-						CellUtil.createCell(dataRow, colNum++, item, tdStyle);
+			if (order.getExtension() != null) {
+				Map<String, String> labelValueMap = order.getExtension().getLabelValueMap();
+				int attrsCount = 0;
+				for (Map.Entry<String, String> labelValue : labelValueMap.entrySet()) {
+					int colNum = (attrsCount % 2);
+					if (colNum == 0) {
+						hr = sheet.createRow(++rowNum);
+						CellUtil.createCell(hr, 0, labelValue.getKey(), hdTitleLabel);
+						CellUtil.createCell(hr, 1, labelValue.getValue(), hdTitleValue);
+						mergeLeftValueColumns(sheet, hr.getRowNum());
+					} else {
+						CellUtil.createCell(hr, 6, labelValue.getKey(), hdTitleLabel);
+						mergeRightLabelColumns(sheet, hr.getRowNum());
+						CellUtil.createCell(hr, 8, labelValue.getValue(), hdTitleValue);
+						mergeRightValueColumns(sheet, hr.getRowNum());
 					}
 
-					if (rowNum  % 10 == 0) {
-						sheet.flushRows();
-					}
-				}
-
-				sheet.flushRows();
-				workbook.write(out);
-			} catch (Exception e) {
-				throw OpenSpecimenException.serverError(e);
-			} finally {
-				try {
-					data.close();
-				} catch (Exception de) {
-					de.printStackTrace();
-				}
-
-				try {
-					workbook.close();
-				} catch (Exception we) {
-					we.printStackTrace();
+					++attrsCount;
 				}
 			}
-		};
+
+			hr = sheet.createRow(++rowNum);
+			String[] columnLabels = data.getColumnLabels();
+			CellUtil.createCell(hr, 0, "Sample Quantity Units:", hdSubTitleLabel);
+			CellUtil.createCell(hr, 1, "Cell = cell count/number, Fluid/Tissue Lysate/Cell Lysate = ml, Molecular = ug, Tissue Block/Slide = Count, All Other Tissue = gm", hdSubTitleValue);
+			mergeCells(sheet, hr.getRowNum(), 1, 12);
+
+			sheet.flushRows();
+
+			// empty row
+			sheet.createRow(++rowNum);
+
+			CellStyle thStyle = hdSubTitleLabelStyle(workbook);
+			thStyle.setAlignment(HorizontalAlignment.CENTER);
+
+			CellStyle tdStyle = hdSubTitleValueStyle(workbook);
+			tdStyle.setAlignment(HorizontalAlignment.CENTER);
+
+			SXSSFRow dataRow = sheet.createRow(++rowNum);
+			int colNum = 0;
+			for (String columnLabel : columnLabels) {
+				CellUtil.createCell(dataRow, colNum++, columnLabel, thStyle);
+			}
+
+			sheet.flushRows();
+
+			Iterator<String[]> rows = data.stringifiedRowIterator();
+			while (rows.hasNext()) {
+				dataRow = sheet.createRow(++rowNum);
+				colNum = 0;
+				for (String item : rows.next()) {
+					CellUtil.createCell(dataRow, colNum++, item, tdStyle);
+				}
+
+				if (rowNum % 10 == 0) {
+					sheet.flushRows();
+				}
+			}
+
+			sheet.flushRows();
+			workbook.write(out);
+		} catch (Exception e) {
+			throw OpenSpecimenException.serverError(e);
+		} finally {
+			try {
+				data.close();
+			} catch (Exception de) {
+				de.printStackTrace();
+			}
+
+			try {
+				workbook.close();
+			} catch (Exception we) {
+				we.printStackTrace();
+			}
+		}
 	}
 
 	private String getDistributionSites(DistributionOrder order) {
