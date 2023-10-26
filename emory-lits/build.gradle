@@ -12,7 +12,7 @@ def getTodayDate() {
 }
 
 jar {
-  baseName = 'emory-lits'
+  baseName = 'zos-emory-lits'
   version =  '1.0.0'
 
   manifest {
