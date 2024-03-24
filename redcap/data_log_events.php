@@ -47,7 +47,7 @@ if (strcmp($content, 'data_audit_log') == 0) {
   send_latest_log_event_id($projectId);
 } else if (strcmp($content, 'version') == 0) {
    $result = array();
-   $result["version"] = "2021-10-11T09:30:00.000Z";
+   $result["version"] = "2024-03-22T11:25:36.786Z";
    header("Content-Type:application/json");
    print json_encode($result);
 }
@@ -132,12 +132,18 @@ function get_audit_log_table($projectId) {
   return $table;
 }
 
+function get_data_table($projectId) {
+  return method_exists('\REDCap', 'getDataTable') ? \REDCap::getDataTable($projectId) : "redcap_data";
+}
+
 function send_data_record_values($projectId, $startRowId, $maxRows, $recordIds) {
+  $dataTable = get_data_table($projectId);
+
   $query =
     "select
        d.record, d.event_id, d.instance, d.field_name, d.value, m.element_type
      from
-       redcap_data d
+    " . $dataTable . " d
        inner join redcap_metadata m on m.field_name = d.field_name and m.project_id  = d.project_id
        left join redcap_events_metadata e on e.event_id = d.event_id
      where
