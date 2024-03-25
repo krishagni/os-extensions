@@ -47,7 +47,7 @@ if (strcmp($content, 'data_audit_log') == 0) {
   send_latest_log_event_id($projectId);
 } else if (strcmp($content, 'version') == 0) {
    $result = array();
-   $result["version"] = "2024-03-22T11:25:36.786Z";
+   $result["version"] = "2024-03-25T02:24:38.307Z";
    header("Content-Type:application/json");
    print json_encode($result);
 }
@@ -133,7 +133,27 @@ function get_audit_log_table($projectId) {
 }
 
 function get_data_table($projectId) {
-  return method_exists('\REDCap', 'getDataTable') ? \REDCap::getDataTable($projectId) : "redcap_data";
+  $table = "redcap_data";
+
+  try {
+    $query =
+      "select
+         data_table
+       from
+         redcap_projects
+       where
+         project_id = " . db_real_escape_string($projectId);
+
+    $rs = db_query($query);
+    $row = db_fetch_assoc($rs);
+    if (!empty($row) && !empty($row["data_table"])) {
+      $table = $row["data_table"];
+    }
+  } catch (Exception $e) {
+    echo "Running on REDCap < 14.0\n";
+  }
+
+  return $table;
 }
 
 function send_data_record_values($projectId, $startRowId, $maxRows, $recordIds) {
