@@ -11,31 +11,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
+import com.openspecimen.ext.participant.error.ExtPartImpErrorCode;
+import com.openspecimen.ext.participant.source.ExternalParticipantSource;
+
 import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.biospecimen.events.StagedParticipantDetail;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.PvAttributes;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
-import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
-import com.openspecimen.ext.participant.error.ExtPartImpErrorCode;
-import com.openspecimen.ext.participant.source.ExternalParticipantSource;
+import com.krishagni.catissueplus.core.common.util.LogUtil;
 
 public class ExternalDbParticipants implements ExternalParticipantSource {
-	private static final Log logger = LogFactory.getLog(ExternalDbParticipants.class);
+	private static final LogUtil logger = LogUtil.getLogger(ExternalDbParticipants.class);
 
 	private DbCfg dbCfg;
 

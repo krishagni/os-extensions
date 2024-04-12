@@ -2,17 +2,16 @@ package com.openspecimen.ext.participant.loader;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
+import com.openspecimen.ext.participant.source.ExternalParticipantSource;
 
 import com.krishagni.catissueplus.core.biospecimen.events.StagedParticipantDetail;
 import com.krishagni.catissueplus.core.biospecimen.services.StagedParticipantService;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
-import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
-import com.openspecimen.ext.participant.source.ExternalParticipantSource;
+import com.krishagni.catissueplus.core.common.util.LogUtil;
 
 public class ExternalParticipantsLoader {
-	private static final Log logger = LogFactory.getLog(ExternalParticipantsLoader.class);
+	private static final LogUtil logger = LogUtil.getLogger(ExternalParticipantsLoader.class);
 
 	private List<ExternalParticipantSource> sources;
 

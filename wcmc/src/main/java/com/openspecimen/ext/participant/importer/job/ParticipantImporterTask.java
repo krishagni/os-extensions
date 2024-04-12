@@ -7,17 +7,20 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
+import com.openspecimen.ext.participant.loader.ExternalParticipantsLoader;
 
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJob;
 import com.krishagni.catissueplus.core.administrative.domain.ScheduledJobRun;
 import com.krishagni.catissueplus.core.administrative.services.ScheduledTask;
 import com.krishagni.catissueplus.core.biospecimen.repository.DaoFactory;
 import com.krishagni.catissueplus.core.common.PlusTransactional;
-import com.openspecimen.ext.participant.crit.ExtParticipantListCriteria;
-import com.openspecimen.ext.participant.loader.ExternalParticipantsLoader;
+import com.krishagni.catissueplus.core.common.util.LogUtil;
 
 @Configurable
 public class ParticipantImporterTask implements ScheduledTask {
+
+	private static final LogUtil logger = LogUtil.getLogger(ParticipantImporterTask.class);
 
 	@Autowired
 	private ExternalParticipantsLoader loader;
@@ -32,7 +35,9 @@ public class ParticipantImporterTask implements ScheduledTask {
 	}
 
 	private ExtParticipantListCriteria getCriteria(ScheduledJob scheduledJob) {
-		return new ExtParticipantListCriteria().lastRun(getLastJobRun(scheduledJob.getName()));
+		Date lastRunTime = getLastJobRun(scheduledJob.getName());
+		logger.info("The scheduled job " + scheduledJob.getName() + " was last run on " + (lastRunTime != null ? lastRunTime.toString() : "N/A"));
+		return new ExtParticipantListCriteria().lastRun(lastRunTime);
 	}
 
 	@PlusTransactional
