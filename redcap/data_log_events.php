@@ -47,7 +47,7 @@ if (strcmp($content, 'data_audit_log') == 0) {
   send_latest_log_event_id($projectId);
 } else if (strcmp($content, 'version') == 0) {
    $result = array();
-   $result["version"] = "2024-03-25T02:24:38.307Z";
+   $result["version"] = "2024-04-30T06:53:49.691Z";
    header("Content-Type:application/json");
    print json_encode($result);
 }
@@ -92,7 +92,7 @@ function send_modified_record_ids($projectId, $startEventId) {
        le.pk, le.event
      from
     " . $logEventTable . " le
-       left join " . $logEventTable . " te on te.pk = le.pk and le.log_event_id < te.log_event_id
+       left join " . $logEventTable . " te on te.pk = le.pk and te.project_id = le.project_id and le.log_event_id < te.log_event_id
      where
        le.object_type = 'redcap_data' and
        le.project_id = " . db_real_escape_string($projectId) . " and
