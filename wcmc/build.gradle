@@ -195,7 +195,7 @@ projects {
       println "Copying UI Resources"
 
       configure(tasks.'jar') {
-        from ('./src/main/webapp/dist') {
+        from ('./src/main/webapp/app') {
           include '**/**'
 
           into 'META-INF/resources/' + osPluginName
