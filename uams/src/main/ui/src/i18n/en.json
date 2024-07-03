@@ -1,0 +1,16 @@
+{
+  "settings": {
+    "biospecimen": {
+      "uams_case_form_tmpl": "Case Forms Template",
+      "uams_case_form_tmpl_desc": "HTML template for generating case forms."
+    },
+
+    "uams_epic_module": {
+      "title": "EPIC Participant Lookup",
+      "epic_api_key": "API Key",
+      "epic_api_key_desc": "Credentials or secret key to use when invoking the EPIC participant lookup API.",
+      "epic_api_url": "API URL",
+      "epic_api_url_desc": "URL of the EPIC participant lookup API."
+    }
+  }
+}
