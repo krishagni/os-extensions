@@ -1,0 +1,63 @@
+<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border-spacing:0;border-collapse:separate">
+  <tbody>
+    <tr>
+      <td style="border-collapse:collapse;">
+        <table cellspacing="0" border="0" width="100%" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;line-height:20px">
+          <tbody>
+            <tr>
+              <td style="border-collapse:collapse;padding-bottom:10px">
+                <p style="margin:10px 0 0 0">
+                  Hello $rcpt.firstName $rcpt.lastName,
+                  <br><br>
+                  Please see below the status of the recent CARS import job:
+                  <br>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table>
+                  <tr>
+                    <td> Job ID </td>
+                    <td> : $jobId </td>
+                  </tr>
+                  <tr>
+                    <td> Start Time </td>
+                    <td> : $startTime </td>
+                  </tr>
+                  <tr>
+                    <td> End Time </td>
+                    <td> : $endTime </td>
+                  </tr>
+                  <tr>
+                    <td> Total studies </td>
+                    <td> : $totalStudies </td>
+                  </tr>
+                  <tr>
+                    <td> Number of studies passed </td>
+                    <td> : $passedStudies </td>
+                  </tr>
+                  <tr>
+                    <td> Number of studies failed  </td>
+                    <td> : $failedStudies </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <p style="margin:10px 0 0 0">
+              <br><br>
+                Please find error log attached with this mail.
+              <br>
+            </p>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        #parse( $footer )
+      </td>
+    <tr>
+  </tbody>
+</table>

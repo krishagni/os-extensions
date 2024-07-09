@@ -1,0 +1,8 @@
+{
+  "styles": [
+  ],
+
+  "scripts": [
+    "uams/module.js"
+  ]
+}

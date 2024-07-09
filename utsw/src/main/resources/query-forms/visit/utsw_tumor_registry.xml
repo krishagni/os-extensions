@@ -1,0 +1,60 @@
+<row>
+	<subForm>
+		<name>utswtumorRegistry</name> <!-- unique name within form -->
+		<udn>utswtumorRegistry</udn>
+		<caption>UTSW Tumor Registry</caption>
+		<table>TUMOR_REGISTRY</table>         <!-- custom table name -->
+		<primaryKey>IDENTIFIER</primaryKey>
+		<foreignKey>VISIT_ID</foreignKey>     <!-- visit foreign key in custom table -->
+		<parentKey>IDENTIFIER</parentKey>
+		<row>
+			<numberField>
+				<name>visitID</name>
+				<udn>visitID</udn>
+				<caption>Visit ID</caption>
+				<column>VISIT_ID</column>
+			</numberField>
+
+			<textField>
+				<name>accessionNUM</name>
+				<udn>accessionNUM</udn>
+				<caption>Accession Number</caption>
+				<column>ACCESSION_NUM</column>
+			</textField>
+			<textField>
+				<name>sequenceNUM</name>
+				<udn>sequenceNUM</udn>
+				<caption>Sequence Number</caption>
+				<column>SEQUENCE_NUM</column>
+			</textField>
+
+			<textField>
+				<name>gradeValue</name>
+				<udn>gradeValue</udn>
+				<caption>Grade Value</caption>
+				<column>GRADE_VALUE</column>
+			</textField>
+
+			<textField>
+				<name>tnmPathTValue</name>
+				<udn>tnmPathTValue</udn>
+				<caption>TNM Path T Value</caption>
+				<column>TNM_PATH_T_VALUE</column>
+			</textField>
+
+			<textField>
+				<name>tnmPathNValue</name>
+				<udn>tnmPathNValue</udn>
+				<caption>TNM Path N Value</caption>
+				<column>TNM_PATH_N_Value</column>
+			</textField>
+
+			<textField>
+				<name>tnmPathMValue</name>
+				<udn>tnmPathMValue</udn>
+				<caption>TNM Path M Value</caption>
+				<column>TNM_PATH_M_Value</column>
+			</textField>
+		</row>
+	</subForm>
+</row>

@@ -16,6 +16,8 @@
     "mpi": "Patient ID",
     "no_matching_epic_participant": "No matching participant found",
     "epic_refresh": "Refresh",
-    "epic_refreshed": "Successfully refreshed participant details from EPIC"
+    "epic_refreshed": "Successfully refreshed participant details from EPIC",
+    "lookup_n_add": "Lookup and Add",
+    "review_match_n_save": "Following matching participant found{{registeredCps.length > 0 ? ' (' + registeredCps + ')' : ''}}. Please review the details and save."
   }
 }

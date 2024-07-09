@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+  <bean id="miamiSpecimenImporter" class="com.krishagni.openspecimen.umiami.SpecimenImporter">
+    <property name="daoFactory"  ref="biospecimenDaoFactory"/>
+    <property name="specimenSvc" ref="specimenSvc"/>
+  </bean>
+
+  <bean id="miamiSpecimenInitializer" class="com.krishagni.openspecimen.umiami.PluginInitializer">
+    <property name="objectSchemaFactory"   ref="objectSchemaFactory"/>
+    <property name="objectImporterFactory" ref="objectImporterFactory"/>
+    <property name="specimenImporter"      ref="miamiSpecimenImporter"/>
+  </bean>
+</beans>

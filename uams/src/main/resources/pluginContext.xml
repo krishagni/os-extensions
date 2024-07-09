@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+  <bean class="liquibase.integration.spring.SpringLiquibase">
+    <property name="dataSource" ref="dataSource" />
+    <property name="changeLog" value="classpath:uams/db/changelog-master.xml" />
+  </bean>
+
+  <bean class="com.krishagni.openspecimen.uams.services.impl.CaseFormsGeneratorImpl">
+    <property name="tmplSvc" ref="templateService"/>
+    <property name="daoFactory" ref="biospecimenDaoFactory"/>
+    <property name="exportSvc" ref="exportSvc"/>
+    <property name="taskExecutor" ref="taskExecutor"/>
+  </bean>
+
+  <bean id="uamsEpicParticipantLookup" class="com.krishagni.openspecimen.uams.services.impl.EpicParticipantLookup">
+    <property name="osDbLookup" ref="localDbParticipantLookup" />
+    <property name="daoFactory" ref="biospecimenDaoFactory" />
+    <property name="participantSvc" ref="participantSvc" />
+  </bean>
+</beans>

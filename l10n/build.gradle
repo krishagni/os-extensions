@@ -1,0 +1,65 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin: 'java'
+
+def getTodayDate() {
+  def today = new Date()
+  return String.valueOf(today.getTime())
+}
+
+def getCommitRevision() {
+  def revCmd = "git rev-parse --short HEAD"
+  def revision = revCmd.execute()
+  return revision.text.trim()
+}
+
+def getBranch() {
+  def branchCmd = "git symbolic-ref -q --short HEAD";
+  def branch = branchCmd.execute().text.trim();
+
+  if (branch.length() == 0) {
+    branchCmd = "git describe --tags --exact-match";
+    branch = branchCmd.execute().text.trim();
+  }
+  return branch;
+}
+
+task copy_ui_resources {
+  doLast {
+    println "Copying UI Resources"
+
+    configure(tasks.'jar') {
+      from ('./src/main/webapp/app') {
+        include '**/**'
+
+        into 'META-INF/resources/l10n'
+      }
+
+      from('./src/main/ui/src') {
+        include '**/**'
+
+        into 'META-INF/resources/ui/l10n'
+      }
+    }
+  }
+}
+
+jar {
+  dependsOn copy_ui_resources
+
+  archiveBaseName = "zos-l10n"
+  archiveVersion =  getBranch()
+
+  manifest {
+    attributes("os-plugin-name": "l10n")
+    attributes("built-on": getTodayDate())
+    attributes("commit": getCommitRevision())
+    attributes("version": getBranch())
+  }
+}
+
+build.dependsOn jar

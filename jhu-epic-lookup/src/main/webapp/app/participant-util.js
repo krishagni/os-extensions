@@ -1,12 +1,12 @@
 angular.module('os.plugins.jhu-epic-lookup')
-  .factory('jhuEpicParticipantUtil', function($q, Alerts) {
+  .factory('jhuEpicParticipantUtil', function($q, Participant, Alerts) {
 
     function addMatchParticipantsFn(participant) {
       if (!!participant.$$epicMatchingFn) {
         return;
       }
 
-      var matchingFn = participant.getMatchingParticipants;
+      var matchingFn = Participant.prototype.getMatchingParticipants;
       participant.getMatchingParticipants = function() {
         return matchingFn.apply(participant, [{returnThis: true}]).then(
           function(matches) {

@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+
+import com.krishagni.catissueplus.core.administrative.domain.PermissibleValue;
 import com.krishagni.catissueplus.core.administrative.domain.Site;
 import com.krishagni.catissueplus.core.biospecimen.ConfigParams;
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
@@ -17,7 +19,6 @@ import com.krishagni.catissueplus.core.biospecimen.domain.Visit;
 import com.krishagni.catissueplus.core.biospecimen.domain.factory.CpErrorCode;
 import com.krishagni.catissueplus.core.biospecimen.domain.factory.SpecimenErrorCode;
 import com.krishagni.catissueplus.core.biospecimen.events.CollectionProtocolRegistrationDetail;
-import com.krishagni.catissueplus.core.biospecimen.events.LabelPrintJobSummary;
 import com.krishagni.catissueplus.core.biospecimen.events.ParticipantDetail;
 import com.krishagni.catissueplus.core.biospecimen.events.PrintSpecimenLabelDetail;
 import com.krishagni.catissueplus.core.biospecimen.events.SpecimenDetail;
@@ -32,6 +33,7 @@ import com.krishagni.catissueplus.core.common.PlusTransactional;
 import com.krishagni.catissueplus.core.common.domain.LabelPrintJob;
 import com.krishagni.catissueplus.core.common.domain.PrintItem;
 import com.krishagni.catissueplus.core.common.errors.OpenSpecimenException;
+import com.krishagni.catissueplus.core.common.events.LabelPrintJobSummary;
 import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.common.service.ConfigurationService;
@@ -103,9 +105,9 @@ public class CprServiceImpl implements CprService {
 				registrations.add(regDetail);
 			}
 			
-			if(!regReq.isPrintLabels()){
-				logTridGeneration(registrations);
-			}
+//			if(!regReq.isPrintLabels()){
+//				logTridGeneration(registrations);
+//			}
 			
 			return ResponseEvent.response(BulkParticipantRegDetail.from(regReq, registrations));			
 		} catch (OpenSpecimenException ose) {
@@ -261,13 +263,20 @@ public class CprServiceImpl implements CprService {
 		
 		Visit visit = new Visit();
 		visit.setName(visitName);
-		Site site = new Site();
-		site.setName(printerName);
+		Site site = getSiteFromSiteName(printerName);
 		visit.setSite(site);
-		
+
+		PermissibleValue spmnClass = new PermissibleValue();
+		spmnClass.setValue("*****");
+		PermissibleValue spmnType = new PermissibleValue();
+		spmnType.setValue("*****");
+
 		for(int i = 0; i < 2; ++i){
 			Specimen specimen = new Specimen();
 			specimen.setVisit(visit);
+			specimen.setSpecimenClass(spmnClass);
+			specimen.setSpecimenType(spmnType);
+
 			if(i==1){
 				specimen.setLabel(visitName+" ");
 			} else {
@@ -276,6 +285,11 @@ public class CprServiceImpl implements CprService {
 			printItems.add(PrintItem.make(specimen, 1));
 		}
 		return printItems;
+	}
+	
+	@PlusTransactional
+	private Site getSiteFromSiteName(String siteName) {
+		return daoFactory.getSiteDao().getSiteByName(siteName);
 	}
 	
 	private RequestEvent<PrintSpecimenLabelDetail> getPrintLabelsReq(List<Long> specimenIds) {

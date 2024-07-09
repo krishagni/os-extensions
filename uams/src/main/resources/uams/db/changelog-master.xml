@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="vpawar" id="Case forms HTML template">
+    <sql>
+      call add_cfg_prop(
+        'biospecimen', 'uams_case_form_tmpl',
+        'uams_case_form_tmpl', 'uams_case_form_tmpl_desc',
+        'FILE', ''
+      );
+    </sql>
+  </changeSet>
+
+  <changeSet author="vpawar" id="Adding UAMS Epic API settings">
+    <sql>
+      insert into os_modules
+        (identifier, name, description)
+      values
+        (default, 'uams_epic_module', 'UAMS EPIC Settings');
+    </sql>
+
+    <sql>
+      call add_cfg_prop(
+        'uams_epic_module', 'epic_api_url',
+        'epic_api_url', 'epic_api_url_desc',
+        'STRING', ''
+      );
+    </sql>
+
+    <sql>
+      call add_cfg_prop(
+        'uams_epic_module', 'epic_api_key',
+        'epic_api_key', 'epic_api_key_desc',
+        'STRING', ''
+      );
+    </sql>
+  </changeSet>
+</databaseChangeLog>
