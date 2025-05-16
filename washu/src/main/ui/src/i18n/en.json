@@ -2,6 +2,10 @@
   "washu": {
     "hello": "Hello",
     "world": "World"
+  },
+
+  "participants": {
+    "add_participant": "Add / Search Participant"
   }
 }
 
