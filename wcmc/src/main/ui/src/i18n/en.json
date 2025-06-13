@@ -2,46 +2,148 @@
   "common": {
     "home": {
       "cps": "Studies",
+      "widgets": {
+        "collection-protocols": "Studies"
+      },
       "cps_desc": "Create, update SOP of events and specimens",
       "institutes": "Institutions",
       "institutes_desc": "Update information about institutions",
       "sites": "Site(s)",
       "sites_desc": "Add and update site(s)"
     },
-
     "add_specimens": {
       "dup_labels": "Duplicate IBC Codes scanned: {labels}",
       "multi_cp_specimens": "Specimens found in multiple studies",
       "select_specimen_cp": "Following specimens are present in multiple studies. Select the right study before proceeding."
     },
-
     "specimen_actions": {
       "select_for_print": "Select at least one existing specimen for IBC codes printing.",
       "select_same_cp_specimens": "Select specimens of the same study."
     }
   },
-
   "containers": {
     "collection_protocols": "Studies",
+    "cp": "Study",
     "cps": "Studies",
+    "find_places": {
+      "cp": "Study"
+    },
+    "specimen": {
+      "cp": "Study",
+      "available_qty": "Available Wt/Vol",
+      "label": "IBC Code",
+      "ppid": "Registry ID",
+      "type": "Specimen Type"
+    },
     "no_free_locs": "Container does not have enough free locations to accommodate input IBC Codes",
     "paste_specimen_labels": "Paste or input IBC Codes or barcodes separated by comma, tab, or newline",
     "type": "Type(s)",
     "ppid": "Registry ID",
     "cell_display_props": {
       "SPECIMEN_LABEL": "IBC Code",
-      "SPECIMEN_PPID" : "Registry ID"
-    },
-    "specimen": {
-      "available_qty": "Available Wt/Vol",
-      "cp": "Study",
-      "label": "IBC Code",
-      "ppid": "Registry ID",
-      "type": "Specimen Type"
+      "SPECIMEN_PPID": "Registry ID"
     },
     "specimen_label": "IBC Code"
   },
-
+  "cps": {
+    "list": "Studies",
+    "close_cp_q": "Close Study?",
+    "cp": "Study",
+    "cp_closed": "Study {shortTitle} closed!",
+    "cp_delete_in_progress": "Study {shortTitle} deletion is taking longer time than anticipated. You'll receive email on successful deletion.",
+    "cp_published": "Study {shortTitle} published!",
+    "cp_reopened": "Study {shortTitle} reopened!",
+    "create_cp": "Create Study",
+    "export_csv": "Export Study (CSV)",
+    "export_json": "Export Study (JSON)",
+    "import_cp": "Import Study",
+    "import_cp_json": "Import Study (JSON)",
+    "select_cp": "Select Study",
+    "select_consent_cp_req": "Study is mandatory",
+    "workflows_imported": "Study {shortTitle} workflows JSON imported",
+    "confirm_close_cp_q": "New participants cannot be registered to the closed studies. Are you sure you want to proceed with closing the study?",
+    "delete_more_time": "Deletion of selected studies is taking more time than anticipated. An email notification will be sent to you on completion of delete.",
+    "delete_selected": "Are you sure you want to delete the selected studies along with their participants, visits, and specimens data?",
+    "select_cp_json": "Select study JSON file...",
+    "select_consent_cp": "Select the study to source the consents from..."
+  },
+  "cprs": {
+    "cp": "Study"
+  },
+  "forms": {
+    "all_cps": "All Present and Future Studies",
+    "collection_protocol": "Study",
+    "collection_protocol_req": "Study is mandatory",
+    "entities": {
+      "CollectionProtocolExtension": "Study Custom Fields"
+    }
+  },
+  "import": {
+    "object_types": {
+      "cp": "Studies",
+      "cpWf": "Study Workflows"
+    }
+  },
+  "participants": {
+    "collection_protocols": "Studies",
+    "cp": "Study",
+    "cp_req": "Study is mandatory",
+    "select_cp": "Select the Study"
+  },
+  "roles": {
+    "resources": {
+      "CollectionProtocol": "Studies"
+    }
+  },
+  "orders": {
+    "specimen": {
+      "cp": "Study"
+    }
+  },
+  "queries": {
+    "choose_cp_or_group": "Choose Study / Group"
+  },
+  "settings": {
+    "biospecimen": {
+      "unique_spmn_barcode_per_cp_desc": "Enable or Disable uniqueness of Specimen barcodes at CP level. Enabling this setting ensures Specimen barcodes are unique only within Study. Disabling this setting ensures no two specimen barcodes are same throughout the system.",
+      "unique_spmn_label_per_cp_desc": "Enable or Disable uniqueness of Specimen labels at CP level. Enabling this setting ensures Specimen labels are unique only within Study. Disabling this setting ensures no two specimen labels are same throughout the system."
+    }
+  },
+  "shipments": {
+    "container_cps": "Studies",
+    "specimen": {
+      "cp": "Study",
+      "label": "IBC Code",
+      "label_required": "IBC Code is mandatory",
+      "ppid": "Registry ID",
+      "quantity": "Wt/Vol",
+      "type": "Specimen Type"
+    },
+    "receiving_institute": "Institution",
+    "receiving_institute_required": "Institution is mandatory",
+    "scan_specimen_labels": "Add specimens by scanning IBC codes or barcodes separated by a comma, tab, or newline."
+  },
+  "sites": {
+    "collection_protocols": "Studies",
+    "confirm_delete_selected": "Are you sure you want to delete the selected site(s)?",
+    "institute": "Institution",
+    "institute_required": "Institution is mandatory",
+    "list": "Site(s)"
+  },
+  "specimens": {
+    "cp": "Study",
+    "label": "IBC Code",
+    "ppid": "Registry ID",
+    "quantity": "Wt/Vol",
+    "type": "Specimen Type"
+  },
+  "users": {
+    "role_cp": "Study",
+    "role_cp_required": "Study is mandatory",
+    "institute": "Institution",
+    "institute_required": "Institution is mandatory",
+    "multi_institute_add_group_na": "Users of multiple institutions cannot be added to the same group."
+  },
   "dps": {
     "coordinators": "Study Coordinator(s)",
     "collection_protocol": "Studies",
@@ -57,41 +159,14 @@
     "distributed_qty": "Distributed Wt/Vol",
     "qty_per_specimen": "Wt/Vol per Specimen"
   },
-    
   "rde": {
     "module_desc": "Rapidly capture patients, events and specimens data"
   },
-
   "specimen_actions": {
     "create_aliquots": "Create Aliquot(s)",
     "create_derivatives": "Create Derivative(s)",
     "select_for_aliquots": "Please select at least one collected parent specimen to create aliquot(s)"
   },
-    
-  "specimens": {
-    "cp": "Study",
-    "label": "IBC Code",
-    "ppid": "Registry ID",
-    "quantity": "Wt/Vol",
-    "type": "Specimen Type"
-  },
-
-  "sites": {
-    "collection_protocols": "Studies",
-    "confirm_delete_selected": "Are you sure you want to delete the selected site(s)?",
-    "institute": "Institution",
-    "institute_required": "Institution is mandatory",
-    "list": "Site(s)"
-  },
-
-  "users": {
-    "institute": "Institution",
-    "institute_required": "Institution is mandatory",
-    "role_cp": "Study",
-    "role_cp_required": "Study is mandatory",
-    "multi_institute_add_group_na": "Users of multiple institutions cannot be added to the same group."
-  },
-
   "institutes": {
     "confirm_delete_selected": "Are you sure you want to delete the selected institutions?",
     "create": "Create Institution",
@@ -102,24 +177,35 @@
     "saved": "Institution '{name}' saved.",
     "singular": "Institution"
   },
-
-  "shipments": {
-    "receiving_institute": "Institution",
-    "receiving_institute_required": "Institution is mandatory",
-    "specimen": {
-      "cp": "Study",
-      "label": "IBC Code",
-      "label_required": "IBC Code is mandatory",
-      "ppid": "Registry ID",
-      "quantity": "Wt/Vol",
-      "type": "Specimen Type"
-    },
-    "scan_specimen_labels": "Add specimens by scanning IBC codes or barcodes separated by a comma, tab, or newline."
-  },
-
   "user_groups": {
     "institute": "Institution",
     "institute_required": "Institution is mandatory",
     "multi_institute_users_na": "Users of multiple institutions cannot be added to the same group."
+  },
+  "cpgs": {
+    "collection_protocol": "Study",
+    "collection_protocols": "Studies",
+    "cps_count": "Studies",
+    "cps_req": "Studies are mandatory",
+    "create_cpg": "Create Study Group",
+    "custom_fields": "Custom Fields",
+    "delete_cpg": "Are you sure you want to delete the collection protocol group - {name}?",
+    "delete_cpg_q": "Delete Study Group?",
+    "deleted": "Collection protocol group {name} deleted.",
+    "list": "Study Groups"
+  },
+  "specimen_units": {
+    "cp": "Study"
+  },
+  "workflows": {
+    "collection_protocol": "Study",
+    "collection_protocols": "Studies"
+  },
+  "import": {
+    "object_types": {
+	"cp": "Studies",
+	"cpWf": "Study Workflows",
+	 "cpgWf": "Study Group Workflows"
+    }
   }
 }

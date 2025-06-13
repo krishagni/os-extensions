@@ -416,5 +416,39 @@
     "dist_qty_lt_zero":"Distribution Wt/Vol cannot be less than zero",
     "ret_qty_gt_dist_qty":"Return Wt/Vol greater than distributed",
     "ret_qty_le_zero":"Return Wt/Vol cannot be less than or equals zero"
+  },
+  "cp_groups": {
+    "list": "Study Groups",
+    "cp": "Study",
+    "cps": "Studies",
+    "no_cp_specified": "Group has no studies. Add at least one study to the group.",
+
+    "empty_list": "No Study groups to show!",
+    "loading_list": "Loading Study groups, please wait for a moment...",
+
+    "delete_group_q": "Delete Study Group?",
+    "confirm_delete_group": "Are you sure you want to delete the study group - {{name}}?",
+    "group_deleted": "Study group, {{name}}, deleted."
+  },
+  "specimen_units": {
+    "cp": "Study"
+  },
+  "workflows": {
+    "collection_protocol": "Study",
+    "collection_protocols": "Studies"
+  },
+  "print_rule": {
+   "cp_title": "Study"
+  },
+  "bulk_imports": {
+   "object_types": {
+      "cp": "Studies",
+      "cpe": "Study Events",
+      "cpr": "Study Registrations"
+   }
+  },
+  "cpgs": {
+    "list": "Study Groups"
   }
+
 }
