@@ -1,0 +1,8 @@
+<row>
+   <numberField>
+   <name>ageAtColl</name>
+   <udn>ageAtColl</udn>
+   <caption>Age at Collection</caption>
+   <column>COLLECTION_AGE</column>
+   </numberField>
+</row>
