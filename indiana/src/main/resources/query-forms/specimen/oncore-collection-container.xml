@@ -1,0 +1,8 @@
+<row>
+  <textField>
+  <name>oncoreCollCont</name>
+  <udn>oncoreCollCont</udn>
+  <caption>Oncore Collection Container</caption>
+  <column>oncore_collection_container</column>
+  </textField>
+</row>

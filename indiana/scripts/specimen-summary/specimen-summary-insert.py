@@ -70,15 +70,29 @@ def truncate_and_insert(conn):
             spmn_type.value,
             coll_container.coll_container
     """
+
+    update_query= """
+    UPDATE catissue_specimen s JOIN catissue_form_record_entry e ON s.identifier = e.object_id
+    JOIN catissue_form_context fc ON e.form_ctxt_id = fc.identifier
+    JOIN DE_E_11154 d ON d.identifier = e.record_id
+    LEFT JOIN catissue_permissible_value t3 ON t3.identifier = d.DE_A_15
+    SET s.oncore_collection_container = t3.value
+    WHERE fc.container_id = 226
+    AND e.activity_status = 'ACTIVE'
+    AND d.DE_A_15 IS NOT NULL
+    """
     
     try:
         with conn.cursor() as cursor:
             logging.info("Executing TRUNCATE...")
             cursor.execute(truncate_query)
             logging.info("TRUNCATE complete.")
-
+            conn.commit()
             logging.info("Executing INSERT...")
             cursor.execute(insert_query)
+            conn.commit()
+            logging.info("Updating Collection Containers")
+            cursor.execute(update_query)
             conn.commit()
             logging.info("INSERT complete. Records inserted.")
     except mysql.connector.Error as err:
