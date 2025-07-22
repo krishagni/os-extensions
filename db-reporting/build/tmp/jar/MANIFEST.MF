@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+os-plugin-name: db-reporting
+built-on: 1752233639022
+commit: 687f4b0
+version: master
+
