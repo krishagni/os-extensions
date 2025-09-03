@@ -44,7 +44,7 @@ public class CprServiceImpl implements CprService {
 
 	@Override
 	@PlusTransactional
-	// @Transactional
+	@Transactional
 	public ResponseEvent<BulkParticipantRegDetail> registerParticipants(RequestEvent<BulkParticipantRegDetail> req) {		
 		try {
 			BulkParticipantRegDetail detail = req.getPayload();
