@@ -66,12 +66,12 @@ projects {
     }
   }
 
-  def springVersion = "5.3.22"
+  def springVersion = "3.2.13.RELEASE"
 
   dependencies {
     ajc       "org.aspectj:aspectjtools:1.9.19"
     implementation   "org.aspectj:aspectjrt:1.9.19"
-    aspects   "org.springframework:spring-aspects:5.3.22"
+    aspects   "org.springframework:spring-aspects:3.2.13.RELEASE"
     aspects   fileTree(dir: rootDir.absolutePath + '/lib', include: ['openspecimen.jar'])
 
     implementation fileTree(dir: rootDir.absolutePath + '/lib', include: ['openspecimen.jar', 'os-dynamic-forms-trunk.jar'])
