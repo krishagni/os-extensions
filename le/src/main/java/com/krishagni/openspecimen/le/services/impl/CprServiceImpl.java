@@ -43,7 +43,7 @@ public class CprServiceImpl implements CprService {
 
 
 	@Override
-	// @PlusTransactional
+	@PlusTransactional
 	// @Transactional
 	public ResponseEvent<BulkParticipantRegDetail> registerParticipants(RequestEvent<BulkParticipantRegDetail> req) {		
 		try {
