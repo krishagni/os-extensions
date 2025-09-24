@@ -1,16 +1,16 @@
 <row>
   <subForm>
-    <name>SpecimenAliquotCount</name>
-    <caption>Specimen Summary</caption>
-    <udn>spAliquotCount</udn>
-    <table>VISIT_SPECIMEN_TYPE_SUMMARY</table>
+    <name>receive_in_lab_summary</name>
+    <caption>Received In Lab Summary</caption>
+    <udn>receive_in_lab_summary</udn>
+    <table>receive_in_lab_summary</table>
     <primaryKey>IDENTIFIER</primaryKey>
     <foreignKey>VISIT_ID</foreignKey>
 
     <row>
       <textField>
-        <name>spType</name>
-        <udn>spType</udn>
+        <name>spRecvType</name>
+        <udn>spRecvType</udn>
         <caption>Type</caption>
         <column>SPECIMEN_TYPE</column>
       </textField>
@@ -18,8 +18,8 @@
 
     <row>
       <numberField>
-        <name>alqCount</name>
-        <udn>alqCount</udn>
+        <name>alqRecvCount</name>
+        <udn>alqRecvCount</udn>
         <caption>Count</caption>
         <column>COUNT_OF_ALIQUOTS</column>
       </numberField>
@@ -27,8 +27,8 @@
 
     <row>
       <numberField>
-        <name>spQty</name>
-        <udn>spQty</udn>
+        <name>spRecvQty</name>
+        <udn>spRecvQty</udn>
         <caption>Quantity</caption>
         <column>SPECIMEN_QUANTITY</column>
       </numberField>
@@ -36,8 +36,8 @@
 
    <row>
       <textField>
-        <name>collCont</name>
-        <udn>collCont</udn>
+        <name>collRecvCont</name>
+        <udn>collRecvCont</udn>
         <caption>Collection Container</caption>
         <column>COLLECTION_CONTAINER</column>
       </textField>
@@ -46,8 +46,8 @@
 
    <row>
       <textField>
-        <name>spLng</name>
-        <udn>spLng</udn>
+        <name>spRecvLng</name>
+        <udn>spRecvLng</udn>
         <caption>Lineage</caption>
         <column>LINEAGE</column>
       </textField>
@@ -57,7 +57,7 @@
       <textField>
         <name>spAvailSts</name>
         <udn>spAvailSts</udn>
-        <caption>Availability Status</caption>
+	<caption>Availability Status</caption>
         <column>AVAILABILITY_STATUS</column>
       </textField>
     </row>
@@ -66,19 +66,28 @@
       <textField>
         <name>custReasonDestroyed</name>
         <udn>custReasonDestroyed</udn>
-        <caption>Reason Destroyed</caption>
+	<caption>Reason Destroyed</caption>
         <column>REASON_DESTROYED</column>
       </textField>
     </row>
 
     <row>
+  <datePicker>
+    <name>receivedInLabDate</name>
+    <udn>receivedInLabDate</udn>
+    <caption>Received In Lab</caption>
+    <format>MM-dd-yyyy/dateOnly</format>
+    <column>RECEIVE_IN_LAB_TIME</column>
+  </datePicker>
+</row>
+
+   <row>
       <textField>
-        <name>specimenStored</name>
-        <udn>specimenStored</udn>
+        <name>specimenStoredOrNot</name>
+        <udn>specimenStoredOrNot</udn>
         <caption>Stored?</caption>
         <column>STORED_STATUS</column>
       </textField>
     </row>
-
-  </subForm>
+ </subForm>
 </row>
