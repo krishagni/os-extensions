@@ -1,16 +1,24 @@
 <row>
   <subForm>
-    <name>SpecimenAliquotCount</name>
+    <name>SpecimenSummary2</name>
     <caption>Specimen Summary</caption>
-    <udn>spAliquotCount</udn>
+    <udn>spAliquotCount3</udn>
     <table>VISIT_SPECIMEN_TYPE_SUMMARY</table>
     <primaryKey>IDENTIFIER</primaryKey>
     <foreignKey>VISIT_ID</foreignKey>
-
+    <parentKey>IDENTIFIER</parentKey>
+    
+    <numberField>
+      <name>visitID</name>
+      <udn>visitID</udn>
+      <caption>Visit ID</caption>
+      <column>VISIT_ID</column>
+    </numberField>
+    
     <row>
       <textField>
-        <name>spType</name>
-        <udn>spType</udn>
+        <name>spType3</name>
+        <udn>spType3</udn>
         <caption>Specimen Type</caption>
         <column>SPECIMEN_TYPE</column>
       </textField>
@@ -18,39 +26,53 @@
 
     <row>
       <numberField>
-        <name>alqCount</name>
-        <udn>alqCount</udn>
+        <name>alqCount3</name>
+        <udn>alqCount3</udn>
         <caption>No. Of Aliquots</caption>
         <column>COUNT_OF_ALIQUOTS</column>
       </numberField>
     </row>
 
     <row>
-      <textField>
-        <name>seqType</name>
-        <udn>seqType</udn>
-        <caption>Sequencing Type</caption>
-        <column>SEQUENCING_TYPE</column>
-      </textField>
-    </row>
-
-    <row>
-      <textField>
-        <name>seqResult</name>
-        <udn>seqResult</udn>
-        <caption>Sequencing Result</caption>
-        <column>SEQUENCING_RESULT</column>
-      </textField>
-    </row>
-
-    <row>
       <numberField>
-        <name>age_at_coll</name>
-        <udn>age_at_coll</udn>
+        <name>age_at_coll3</name>
+        <udn>age_at_coll3</udn>
         <caption>Age At Collection</caption>
         <column>COLLECTION_AGE</column>
       </numberField>
     </row>
+    
+    <row>
+      <listBox>
+        <name>diagnoses</name>
+        <udn>diagnoses</udn>
+        <caption>Diagnosis</caption>
+        <table>VISIT_SUMMARY</table>
+        <parentKey>IDENTIFIER</parentKey>
+        <foreignKey>SPEC_TYPE_SUMMARY_ID</foreignKey>
+        <column>VISIT_CUSTOM_CLINICAL_DIAGNOSIS</column>
+        <options>
+          <sql>select distinct VISIT_CUSTOM_CLINICAL_DIAGNOSIS from VISIT_SUMMARY</sql>
+        </options>
+        <multiSelect>true</multiSelect>
+      </listBox>
+    </row>   
 
+   <row>
+      <listBox>
+        <name>seqTypeAndResults</name>
+        <udn>seqTypeAndResults</udn>
+        <caption>Sequencing Type And Results</caption>
+        <table>sequencing_type_and_results_summary</table>
+        <parentKey>IDENTIFIER</parentKey>
+        <foreignKey>SPEC_TYPE_SUMMARY_ID</foreignKey>
+        <column>SEQUENCING_TYPE_AND_RESULTS</column>
+        <options>
+          <sql>select distinct SEQUENCING_TYPE_AND_RESULTS from sequencing_type_and_results_summary</sql>
+        </options>
+        <multiSelect>true</multiSelect>
+      </listBox>
+    </row>
+ 
   </subForm>
 </row>
