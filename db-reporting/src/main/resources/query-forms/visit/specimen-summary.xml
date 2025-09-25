@@ -7,11 +7,19 @@
     <primaryKey>IDENTIFIER</primaryKey>
     <foreignKey>VISIT_ID</foreignKey>
 
+
+    <numberField>
+      <name>visitID</name>
+      <udn>visitID</udn>
+      <caption>Visit ID</caption>
+      <column>VISIT_ID</column>
+    </numberField>
+
     <row>
       <textField>
         <name>spType</name>
         <udn>spType</udn>
-        <caption>Specimen Type</caption>
+        <caption>Type</caption>
         <column>SPECIMEN_TYPE</column>
       </textField>
     </row>
@@ -20,26 +28,27 @@
       <numberField>
         <name>alqCount</name>
         <udn>alqCount</udn>
-        <caption>No. Of Aliquots</caption>
+        <caption>Count</caption>
         <column>COUNT_OF_ALIQUOTS</column>
+      </numberField>
+    </row>
+
+
+    <row>
+      <numberField>
+        <name>age_at_colliction</name>
+        <udn>age_at_colliction</udn>
+        <caption>Age At Collection</caption>
+        <column>COLLECTION_AGE</column>
       </numberField>
     </row>
 
     <row>
       <textField>
-        <name>seqType</name>
-        <udn>seqType</udn>
-        <caption>Sequencing Type</caption>
-        <column>SEQUENCING_TYPE</column>
-      </textField>
-    </row>
-
-    <row>
-      <textField>
-        <name>seqResult</name>
-        <udn>seqResult</udn>
-        <caption>Sequencing Result</caption>
-        <column>SEQUENCING_RESULT</column>
+        <name>specimenStoredOrNot</name>
+        <udn>specimenStoredOrNot</udn>
+        <caption>Stored?</caption>
+        <column>STORED_STATUS</column>
       </textField>
     </row>
 
