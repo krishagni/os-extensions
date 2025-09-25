@@ -1,6 +1,7 @@
 
-import WorkingSpecimensReport from './WorkingSpecimensReport.vue';
 import WorkingOrderReport from './WorkingOrderReport.vue';
+import WorkingRequestReport from './WorkingRequestReport.vue';
+import WorkingSpecimensReport from './WorkingSpecimensReport.vue';
 
 export default {
   install(app, { osSvc }) {
@@ -13,5 +14,9 @@ export default {
     app.component('washuWorkingOrderReport', WorkingOrderReport);
     const orderReport = {name: 'washu-working-order-report', component: 'washuWorkingOrderReport'};
     pluginsReg.registerView('order-detail', 'more-menu', orderReport);
+
+    app.component('washuWorkingRequestReport', WorkingRequestReport);
+    const requestReport = {name: 'washu-working-request-report', component: 'washuWorkingRequestReport'};
+    pluginsReg.registerView('tracker-request-specimens', 'page-header', requestReport);
   }
 }
