@@ -31,8 +31,8 @@ projects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
-  sourceCompatibility = 16
-  targetCompatibility = 16
+  sourceCompatibility = 17
+  targetCompatibility = 17
 
   repositories {
     mavenCentral()
@@ -66,12 +66,12 @@ projects {
     }
   }
 
-  def springVersion = "3.2.13.RELEASE"
+  def springVersion = "5.3.26"
 
   dependencies {
     ajc       "org.aspectj:aspectjtools:1.9.19"
     implementation   "org.aspectj:aspectjrt:1.9.19"
-    aspects   "org.springframework:spring-aspects:3.2.13.RELEASE"
+    aspects   "org.springframework:spring-aspects:5.3.26"
     aspects   fileTree(dir: rootDir.absolutePath + '/lib', include: ['openspecimen.jar'])
 
     implementation fileTree(dir: rootDir.absolutePath + '/lib', include: ['openspecimen.jar', 'os-dynamic-forms-trunk.jar'])
@@ -113,8 +113,8 @@ projects {
     implementation group: 'org.springframework', name: 'spring-webmvc', version:springVersion
     implementation group: 'org.springframework', name: 'spring-orm', version:springVersion
     implementation group: 'org.springframework', name: 'spring-jms', version:springVersion
-    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.3'
-    implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.7.3'
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.13'
+    implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.7.13'
   }
 
   sourceSets.main.compileClasspath += configurations.providedCompile
