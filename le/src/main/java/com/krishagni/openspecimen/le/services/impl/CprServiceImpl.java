@@ -25,11 +25,12 @@ import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.openspecimen.le.events.BulkParticipantRegDetail;
 import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
+import org.apache.log4j.Logger;
 
 
 public class CprServiceImpl implements CprService {
 	
-	private static final Log logger = Logger.getLogger(CprServiceImpl.class);
+	private static final Logger log = Logger.getLogger(CprServiceImpl.class);
 	private DaoFactory daoFactory;
 	
 	private LabelGenerator labelGenerator;
