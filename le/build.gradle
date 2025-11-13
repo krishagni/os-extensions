@@ -69,7 +69,7 @@ projects {
   def springVersion = "5.3.26"
 
   dependencies {
-    implementation 'log4j:log4j:1.2.16'
+    implementation 'log4j:log4j:2.17.1'
     ajc       "org.aspectj:aspectjtools:1.9.19"
     implementation   "org.aspectj:aspectjrt:1.9.19"
     aspects   "org.springframework:spring-aspects:5.3.26"
