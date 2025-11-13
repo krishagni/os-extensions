@@ -29,7 +29,7 @@ import com.krishagni.openspecimen.le.services.CprService;
 
 public class CprServiceImpl implements CprService {
 	
-	private static final Log logger = Logger.getLogger(AsigServiceImpl.class);
+	private static final Log logger = Logger.getLogger(CprServiceImpl.class);
 	private DaoFactory daoFactory;
 	
 	private LabelGenerator labelGenerator;
