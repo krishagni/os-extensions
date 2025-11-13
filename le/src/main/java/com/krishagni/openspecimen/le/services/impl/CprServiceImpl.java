@@ -25,7 +25,6 @@ import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.openspecimen.le.events.BulkParticipantRegDetail;
 import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -35,8 +34,7 @@ import javax.persistence.PersistenceContext;
 
 
 public class CprServiceImpl implements CprService {
-	
-	private static final Logger log = Logger.getLogger(CprServiceImpl.class);
+
 	private DaoFactory daoFactory;
 
     @PersistenceContext
@@ -105,17 +103,19 @@ public class CprServiceImpl implements CprService {
                 }
             } catch (Throwable t) { /* ignore */ }
 
-            log.info("TX active? " + txActive
-                    + " | sync? " + syncActive
-                    + " | readOnly? " + readOnly
-                    + " | EM present? " + emPresent + " open? " + emOpen + " joined? " + emJoined + " | EMF bound? " + emfBound + " (" + emfClass + ")"
-                    + " | Hibernate Session present? " + (hib != null) + " open? " + hibOpen + " joined? " + hibJoined + " | SF bound? " + sfBound + " (" + sfClass + ")");
+            System.out.println(
+                    "TX active? " + txActive
+                            + " | sync? " + syncActive
+                            + " | readOnly? " + readOnly
+                            + " | EM present? " + emPresent + " open? " + emOpen + " joined? " + emJoined + " | EMF bound? " + emfBound + " (" + emfClass + ")"
+                            + " | Hibernate Session present? " + (hib != null) + " open? " + hibOpen + " joined? " + hibJoined + " | SF bound? " + sfBound + " (" + sfClass + ")"
+            );
 
             if (txActive && emPresent && !emJoined) {
-                log.error("EntityManager is NOT joined to the transaction. DAOs that depend on a tx-bound unit of work may fail.");
+                System.err.println("EntityManager is NOT joined to the transaction. DAOs that depend on a tx-bound unit of work may fail.");
             }
             if (txActive && hib != null && !sfBound) {
-                log.error("Hibernate SessionFactory appears NOT bound in Spring resources. Core getCurrentSession() style DAOs may fail.");
+                System.err.println("Hibernate SessionFactory appears NOT bound in Spring resources. Core getCurrentSession() style DAOs may fail.");
             }
             // --- END DIAGNOSTICS ---
 
