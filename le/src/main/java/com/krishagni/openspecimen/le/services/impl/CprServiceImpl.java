@@ -50,6 +50,49 @@ public class CprServiceImpl implements CprService {
 			
 			OpenSpecimenException ose = new OpenSpecimenException(ErrorType.USER_ERROR);
 			CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
+
+			// --- TX/SESSION DIAGNOSTICS (pre-DAO) ---
+			final String tmName = (txManager != null ? txManager.getClass().getName() : "<none>");
+			final boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
+			final boolean syncActive = TransactionSynchronizationManager.isSynchronizationActive();
+			final boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
+
+			// JPA state
+			boolean emPresent = (em != null);
+			boolean emOpen = emPresent && em.isOpen();
+			boolean emJoined = false;
+			try { emJoined = emPresent && em.isJoinedToTransaction(); } catch (Exception ignore) {}
+
+			// Hibernate Session bound to thread?
+			Session hSess = null;
+			try {
+			if (sessionFactory != null) {
+				// false => do not create; only return if already bound to tx/thread
+				hSess = SessionFactoryUtils.getSession(sessionFactory, false);
+			}
+			} catch (Exception ignore) {}
+
+			log.info("TX active? {} | sync? {} | readOnly? {} | TM={} | EM present? {} open? {} joined? {} | HibSession bound? {}",
+					txActive, syncActive, readOnly, tmName, emPresent, emOpen, emJoined, (hSess != null));
+
+			// Guardrails & hints
+			if (!txActive) {
+				log.error("NO Spring transaction is active. @PlusTransactional/@Transactional may not be applied (self-call/async/wrong TM).");
+			} else if (tmName.contains("JpaTransactionManager")) {
+			if (!emJoined) {
+				log.error("JpaTransactionManager in use BUT EntityManager is NOT joined to the transaction. " +
+						"DAO using SessionFactory.getCurrentSession() will fail.");
+			}
+			} else if (tmName.contains("HibernateTransactionManager")) {
+			if (hSess == null) {
+				log.error("HibernateTransactionManager in use BUT no Hibernate Session is bound to the thread. " +
+						"Check that the DAO and TM share the SAME SessionFactory.");
+			}
+			} else {
+			log.warn("Unexpected transaction manager type: {}. Verify configuration.", tmName);
+			}
+			// --- END DIAGNOSTICS ---
+
 			if (cp == null) {
 				return ResponseEvent.userError(CpErrorCode.NOT_FOUND);
 			}
