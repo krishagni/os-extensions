@@ -26,14 +26,23 @@ import com.krishagni.openspecimen.le.events.BulkParticipantRegDetail;
 import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 
 public class CprServiceImpl implements CprService {
 	
 	private static final Logger log = Logger.getLogger(CprServiceImpl.class);
 	private DaoFactory daoFactory;
-	
-	private LabelGenerator labelGenerator;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    private LabelGenerator labelGenerator;
 	
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -51,49 +60,66 @@ public class CprServiceImpl implements CprService {
 			BulkParticipantRegDetail detail = req.getPayload();
 			
 			OpenSpecimenException ose = new OpenSpecimenException(ErrorType.USER_ERROR);
+
+            // --- TX/SESSION DIAGNOSTICS (pre-DAO) ---
+            final boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
+            final boolean syncActive = TransactionSynchronizationManager.isSynchronizationActive();
+            final boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
+
+            boolean emPresent = (em != null);
+            boolean emOpen = false;
+            boolean emJoined = false;
+            boolean emfBound = false;
+            String emfClass = "<none>";
+            try {
+                if (emPresent) {
+                    emOpen = em.isOpen();
+                    emJoined = em.isJoinedToTransaction();
+                    Object emf = em.getEntityManagerFactory();
+                    if (emf != null) {
+                        emfClass = emf.getClass().getName();
+                        try { emfBound = TransactionSynchronizationManager.hasResource(emf); } catch (Throwable t) { /* ignore */ }
+                    }
+                }
+            } catch (Throwable t) { /* ignore */ }
+
+            Session hib = null;
+            boolean hibOpen = false;
+            boolean hibJoined = false;
+            boolean sfBound = false;
+            String sfClass = "<none>";
+            try {
+                if (emPresent) {
+                    hib = em.unwrap(Session.class);
+                }
+                if (hib != null) {
+                    hibOpen = hib.isOpen();
+                    try { hibJoined = hib.isJoinedToTransaction(); } catch (Throwable t) { /* ignore */ }
+                    try {
+                        SessionFactory sf = hib.getSessionFactory();
+                        if (sf != null) {
+                            sfClass = sf.getClass().getName();
+                            try { sfBound = TransactionSynchronizationManager.hasResource(sf); } catch (Throwable t) { /* ignore */ }
+                        }
+                    } catch (Throwable t) { /* ignore */ }
+                }
+            } catch (Throwable t) { /* ignore */ }
+
+            log.info("TX active? " + txActive
+                    + " | sync? " + syncActive
+                    + " | readOnly? " + readOnly
+                    + " | EM present? " + emPresent + " open? " + emOpen + " joined? " + emJoined + " | EMF bound? " + emfBound + " (" + emfClass + ")"
+                    + " | Hibernate Session present? " + (hib != null) + " open? " + hibOpen + " joined? " + hibJoined + " | SF bound? " + sfBound + " (" + sfClass + ")");
+
+            if (txActive && emPresent && !emJoined) {
+                log.error("EntityManager is NOT joined to the transaction. DAOs that depend on a tx-bound unit of work may fail.");
+            }
+            if (txActive && hib != null && !sfBound) {
+                log.error("Hibernate SessionFactory appears NOT bound in Spring resources. Core getCurrentSession() style DAOs may fail.");
+            }
+            // --- END DIAGNOSTICS ---
+
 			CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
-
-			// --- TX/SESSION DIAGNOSTICS (pre-DAO) ---
-			final String tmName = (txManager != null ? txManager.getClass().getName() : "<none>");
-			final boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
-			final boolean syncActive = TransactionSynchronizationManager.isSynchronizationActive();
-			final boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
-
-			// JPA state
-			boolean emPresent = (em != null);
-			boolean emOpen = emPresent && em.isOpen();
-			boolean emJoined = false;
-			try { emJoined = emPresent && em.isJoinedToTransaction(); } catch (Exception ignore) {}
-
-			// Hibernate Session bound to thread?
-			Session hSess = null;
-			try {
-			if (sessionFactory != null) {
-				// false => do not create; only return if already bound to tx/thread
-				hSess = SessionFactoryUtils.getSession(sessionFactory, false);
-			}
-			} catch (Exception ignore) {}
-
-			log.info("TX active? {} | sync? {} | readOnly? {} | TM={} | EM present? {} open? {} joined? {} | HibSession bound? {}",
-					txActive, syncActive, readOnly, tmName, emPresent, emOpen, emJoined, (hSess != null));
-
-			// Guardrails & hints
-			if (!txActive) {
-				log.error("NO Spring transaction is active. @PlusTransactional/@Transactional may not be applied (self-call/async/wrong TM).");
-			} else if (tmName.contains("JpaTransactionManager")) {
-			if (!emJoined) {
-				log.error("JpaTransactionManager in use BUT EntityManager is NOT joined to the transaction. " +
-						"DAO using SessionFactory.getCurrentSession() will fail.");
-			}
-			} else if (tmName.contains("HibernateTransactionManager")) {
-			if (hSess == null) {
-				log.error("HibernateTransactionManager in use BUT no Hibernate Session is bound to the thread. " +
-						"Check that the DAO and TM share the SAME SessionFactory.");
-			}
-			} else {
-			log.warn("Unexpected transaction manager type: {}. Verify configuration.", tmName);
-			}
-			// --- END DIAGNOSTICS ---
 
 			if (cp == null) {
 				return ResponseEvent.userError(CpErrorCode.NOT_FOUND);
