@@ -27,6 +27,7 @@ import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.persistence.EntityManager;
@@ -50,9 +51,9 @@ public class CprServiceImpl implements CprService {
 		this.labelGenerator = labelGenerator;
 	}
 
-
 	@Override
-	@PlusTransactional
+    @Transactional
+    @PlusTransactional
 	public ResponseEvent<BulkParticipantRegDetail> registerParticipants(RequestEvent<BulkParticipantRegDetail> req) {		
 		try {
 			BulkParticipantRegDetail detail = req.getPayload();
@@ -60,6 +61,9 @@ public class CprServiceImpl implements CprService {
 			OpenSpecimenException ose = new OpenSpecimenException(ErrorType.USER_ERROR);
 
             // --- TX/SESSION DIAGNOSTICS (pre-DAO) ---
+
+            System.out.println("Bean runtime class = " + this.getClass());
+
             final boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
             final boolean syncActive = TransactionSynchronizationManager.isSynchronizationActive();
             final boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
@@ -119,7 +123,8 @@ public class CprServiceImpl implements CprService {
             }
             // --- END DIAGNOSTICS ---
 
-			CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
+			//CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
+            CollectionProtocol cp = em.find(CollectionProtocol.class, detail.getCpId());
 
 			if (cp == null) {
 				return ResponseEvent.userError(CpErrorCode.NOT_FOUND);
