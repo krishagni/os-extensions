@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.krishagni.catissueplus.core.biospecimen.domain.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
@@ -63,6 +64,7 @@ public class CprServiceImpl implements CprService {
             // --- TX/SESSION DIAGNOSTICS (pre-DAO) ---
 
             System.out.println("Bean runtime class = " + this.getClass());
+            System.out.println("Is proxied? " + this.getClass().getName().contains("$$"));
 
             final boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
             final boolean syncActive = TransactionSynchronizationManager.isSynchronizationActive();
@@ -123,8 +125,9 @@ public class CprServiceImpl implements CprService {
             }
             // --- END DIAGNOSTICS ---
 
-			//CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
-            CollectionProtocol cp = em.find(CollectionProtocol.class, detail.getCpId());
+			CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
+            //CollectionProtocol cp = em.find(CollectionProtocol.class, detail.getCpId());
+            System.out.println("cp? " + (cp != null ? cp.getId() : "null"));
 
 			if (cp == null) {
 				return ResponseEvent.userError(CpErrorCode.NOT_FOUND);
@@ -187,6 +190,8 @@ public class CprServiceImpl implements CprService {
 		cpr.setPpid(ppid);
 		cpr.setCollectionProtocol(cp);
 		cpr.setParticipant(participant);
+        cpr.setDataEntryStatus(BaseEntity.DataEntryStatus.COMPLETE);
+
 			
 		Date regDate = detail.getRegDate();
 		if (regDate == null) {
