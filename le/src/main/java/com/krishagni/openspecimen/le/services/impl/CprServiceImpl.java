@@ -26,10 +26,7 @@ import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.openspecimen.le.events.BulkParticipantRegDetail;
 import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -61,73 +58,7 @@ public class CprServiceImpl implements CprService {
 			
 			OpenSpecimenException ose = new OpenSpecimenException(ErrorType.USER_ERROR);
 
-            // --- TX/SESSION DIAGNOSTICS (pre-DAO) ---
-
-            System.out.println("Bean runtime class = " + this.getClass());
-            System.out.println("Is proxied? " + this.getClass().getName().contains("$$"));
-
-            final boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
-            final boolean syncActive = TransactionSynchronizationManager.isSynchronizationActive();
-            final boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
-
-            boolean emPresent = (em != null);
-            boolean emOpen = false;
-            boolean emJoined = false;
-            boolean emfBound = false;
-            String emfClass = "<none>";
-            try {
-                if (emPresent) {
-                    emOpen = em.isOpen();
-                    emJoined = em.isJoinedToTransaction();
-                    Object emf = em.getEntityManagerFactory();
-                    if (emf != null) {
-                        emfClass = emf.getClass().getName();
-                        try { emfBound = TransactionSynchronizationManager.hasResource(emf); } catch (Throwable t) { /* ignore */ }
-                    }
-                }
-            } catch (Throwable t) { /* ignore */ }
-
-            Session hib = null;
-            boolean hibOpen = false;
-            boolean hibJoined = false;
-            boolean sfBound = false;
-            String sfClass = "<none>";
-            try {
-                if (emPresent) {
-                    hib = em.unwrap(Session.class);
-                }
-                if (hib != null) {
-                    hibOpen = hib.isOpen();
-                    try { hibJoined = hib.isJoinedToTransaction(); } catch (Throwable t) { /* ignore */ }
-                    try {
-                        SessionFactory sf = hib.getSessionFactory();
-                        if (sf != null) {
-                            sfClass = sf.getClass().getName();
-                            try { sfBound = TransactionSynchronizationManager.hasResource(sf); } catch (Throwable t) { /* ignore */ }
-                        }
-                    } catch (Throwable t) { /* ignore */ }
-                }
-            } catch (Throwable t) { /* ignore */ }
-
-            System.out.println(
-                    "TX active? " + txActive
-                            + " | sync? " + syncActive
-                            + " | readOnly? " + readOnly
-                            + " | EM present? " + emPresent + " open? " + emOpen + " joined? " + emJoined + " | EMF bound? " + emfBound + " (" + emfClass + ")"
-                            + " | Hibernate Session present? " + (hib != null) + " open? " + hibOpen + " joined? " + hibJoined + " | SF bound? " + sfBound + " (" + sfClass + ")"
-            );
-
-            if (txActive && emPresent && !emJoined) {
-                System.err.println("EntityManager is NOT joined to the transaction. DAOs that depend on a tx-bound unit of work may fail.");
-            }
-            if (txActive && hib != null && !sfBound) {
-                System.err.println("Hibernate SessionFactory appears NOT bound in Spring resources. Core getCurrentSession() style DAOs may fail.");
-            }
-            // --- END DIAGNOSTICS ---
-
 			CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
-            //CollectionProtocol cp = em.find(CollectionProtocol.class, detail.getCpId());
-            System.out.println("cp? " + (cp != null ? cp.getId() : "null"));
 
 			if (cp == null) {
 				return ResponseEvent.userError(CpErrorCode.NOT_FOUND);

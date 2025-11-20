@@ -31,5 +31,4 @@
     <property name="cfgSvc" ref="cfgSvc"/>
   </bean>
 
-  <bean id="txProbe" class="com.krishagni.openspecimen.le.support.TxProbe"/>
 </beans>
