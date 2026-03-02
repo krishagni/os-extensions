@@ -22,6 +22,8 @@ import com.krishagni.catissueplus.core.de.domain.DeObject;
 import com.krishagni.openspecimen.le.events.SpecimenAndFrozenEventDetail;
 import com.krishagni.openspecimen.le.events.SpecimenAndFrozenEventDetail.EventDetail;
 import com.krishagni.openspecimen.le.services.SpecimenCollectionService;
+import org.springframework.transaction.annotation.Transactional;
+
 
 public class SpecimenCollectionServiceImpl implements SpecimenCollectionService {
 
@@ -44,6 +46,7 @@ public class SpecimenCollectionServiceImpl implements SpecimenCollectionService 
 	}
 
 	@Override
+	@Transactional
 	@PlusTransactional
 	public ResponseEvent<List<VisitSpecimenDetail>> collectVisitsAndSpecimens(RequestEvent<List<VisitSpecimenDetail>> req) {
 		List<VisitSpecimenDetail> responses = new ArrayList<VisitSpecimenDetail>();
@@ -62,6 +65,7 @@ public class SpecimenCollectionServiceImpl implements SpecimenCollectionService 
 	}
 
 	@Override
+	@Transactional
 	@PlusTransactional
 	public ResponseEvent<SpecimenAndFrozenEventDetail> collectChildSpecimens(RequestEvent<SpecimenAndFrozenEventDetail> req) {
 		try {
