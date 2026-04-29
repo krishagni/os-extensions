@@ -1,0 +1,19 @@
+<row>
+   <subForm>
+    <name>consent_details</name>
+    <caption>Consent Details</caption>
+    <udn>consent_details</udn>
+    <table>CATISSUE_COLL_PROT_REG</table>
+    <primaryKey>IDENTIFIER</primaryKey>
+    <foreignKey>IDENTIFIER</foreignKey>
+    <parentKey>CPR_ID</parentKey>
+    <row>
+  	<textField>
+  	<name>consent_status</name>
+  	<udn>consent_status</udn>
+  	<caption>Consent Status</caption>
+  	<column>CONSENT_STATUS</column>
+  	</textField>
+  </row>
+  </subForm>
+</row>

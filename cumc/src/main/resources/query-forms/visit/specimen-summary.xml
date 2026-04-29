@@ -1,24 +1,26 @@
 <row>
   <subForm>
-    <name>SpecimenSummary2</name>
+    <name>specimenSummary</name>
     <caption>Specimen Summary</caption>
-    <udn>spAliquotCount3</udn>
-    <table>VISIT_SPECIMEN_TYPE_SUMMARY</table>
+    <udn>specimen_summary</udn>
+    <table>specimen_summary</table>
     <primaryKey>IDENTIFIER</primaryKey>
     <foreignKey>VISIT_ID</foreignKey>
     <parentKey>IDENTIFIER</parentKey>
-    
-    <numberField>
-      <name>visitID</name>
-      <udn>visitID</udn>
-      <caption>Visit ID</caption>
-      <column>VISIT_ID</column>
-    </numberField>
-    
+
+    <row>
+      <numberField>
+        <name>specSummaryId</name>
+        <udn>specSummaryId</udn>
+        <caption>Specimen Summary ID</caption>
+	<column>IDENTIFIER</column>
+      </numberField>
+    </row>
+
     <row>
       <textField>
-        <name>spType3</name>
-        <udn>spType3</udn>
+        <name>specimenType</name>
+        <udn>specimen_type</udn>
         <caption>Specimen Type</caption>
         <column>SPECIMEN_TYPE</column>
       </textField>
@@ -26,53 +28,96 @@
 
     <row>
       <numberField>
-        <name>alqCount3</name>
-        <udn>alqCount3</udn>
-        <caption>No. Of Aliquots</caption>
-        <column>COUNT_OF_ALIQUOTS</column>
+        <name>specimenCount</name>
+        <udn>specimen_count</udn>
+        <caption>Specimen Count</caption>
+        <column>SPECIMEN_COUNT</column>
       </numberField>
     </row>
 
     <row>
       <numberField>
-        <name>age_at_coll3</name>
-        <udn>age_at_coll3</udn>
-        <caption>Age At Collection</caption>
+        <name>collectionAge</name>
+        <udn>collection_age</udn>
+        <caption>Age at Collection</caption>
         <column>COLLECTION_AGE</column>
       </numberField>
     </row>
-    
+
+    <row>
+      <datePicker>
+        <name>collectionDate</name>
+        <udn>collection_date</udn>
+        <caption>Collection Date</caption>
+        <column>COLLECTION_DATE</column>
+      </datePicker>
+    </row>
+
+    <row>
+      <numberField>
+        <name>availableQuantity</name>
+        <udn>available_quantity</udn>
+        <caption>Available Quantity</caption>
+        <column>AVAILABLE_QUANTITY</column>
+      </numberField>
+    </row> 
+
+    <row>
+      <textField>
+        <name>unit</name>
+        <udn>unit</udn>
+        <caption>Unit</caption>
+        <column>UNIT</column>
+      </textField>
+    </row>
+
     <row>
       <listBox>
-        <name>diagnoses</name>
-        <udn>diagnoses</udn>
+        <name>diagnosisList</name>
+        <udn>diagnosis_list</udn>
         <caption>Diagnosis</caption>
-        <table>VISIT_SUMMARY</table>
+        <table>diagnosis_summary</table>
         <parentKey>IDENTIFIER</parentKey>
-        <foreignKey>SPEC_TYPE_SUMMARY_ID</foreignKey>
-        <column>VISIT_CUSTOM_CLINICAL_DIAGNOSIS</column>
+        <foreignKey>SPEC_SUMMARY_ID</foreignKey>
+        <column>CLINICAL_DIAGNOSIS</column>
         <options>
-          <sql>select distinct VISIT_CUSTOM_CLINICAL_DIAGNOSIS from VISIT_SUMMARY</sql>
+          <sql>select distinct CLINICAL_DIAGNOSIS from diagnosis_summary</sql>
         </options>
         <multiSelect>true</multiSelect>
       </listBox>
     </row>   
 
-   <row>
+    <row>
       <listBox>
-        <name>seqTypeAndResults</name>
-        <udn>seqTypeAndResults</udn>
+        <name>sequencingTypeResults</name>
+        <udn>sequencing_type_results</udn>
         <caption>Sequencing Type And Results</caption>
-        <table>sequencing_type_and_results_summary</table>
+        <table>seq_type_results_summary</table>
         <parentKey>IDENTIFIER</parentKey>
-        <foreignKey>SPEC_TYPE_SUMMARY_ID</foreignKey>
+        <foreignKey>SPEC_SUMMARY_ID</foreignKey>
         <column>SEQUENCING_TYPE_AND_RESULTS</column>
         <options>
-          <sql>select distinct SEQUENCING_TYPE_AND_RESULTS from sequencing_type_and_results_summary</sql>
+          <sql>select distinct SEQUENCING_TYPE_AND_RESULTS from seq_type_results_summary</sql>
         </options>
         <multiSelect>true</multiSelect>
       </listBox>
     </row>
- 
+
+    <row>
+      <listBox>
+        <name>tissueSiteList</name>
+        <udn>tissue_site_list</udn>
+        <caption>Tissue Site</caption>
+        <table>tissue_site_summary</table>
+        <parentKey>IDENTIFIER</parentKey>
+        <foreignKey>SPEC_SUMMARY_ID</foreignKey>
+        <column>TISSUE_SITE</column>
+        <options>
+          <sql>select distinct TISSUE_SITE from tissue_site_summary</sql>
+        </options>
+        <multiSelect>true</multiSelect>
+      </listBox>
+    </row>
+
   </subForm>
 </row>
