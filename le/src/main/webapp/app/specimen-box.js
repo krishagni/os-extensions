@@ -1,5 +1,5 @@
 angular.module('os.plugins.le')
-  .directive('leSpecimenBox', function(SpecimenUnitSvc) {
+  .directive('leSpecimenBox', function(SpecimenPropsSvc) {
     function drawBox(opts, element) {
       var dimension = opts.dimension;
       var specimens = opts.specimens;
@@ -39,7 +39,7 @@ angular.module('os.plugins.le')
                 angular.element('<div class="desc"/>')
                   .append(angular.element('<div/>').append(specimen.type))
                   .append(angular.element('<span/>').append(specimen.initialQty))
-                  .append(getUnit(specimen)).append(angular.element('<span/>').append('&nbsp;'))
+                  .append(getProps(specimen)).append(angular.element('<span/>').append('&nbsp;'))
                   .append(angular.element('<span/>').append(specimen.collectionContainer))
               );
 
@@ -61,7 +61,7 @@ angular.module('os.plugins.le')
 
         boxContent.append(row);
       }
-       
+
       if (labelPresent) {
         boxContent.addClass('show-not-collected');
       }
@@ -78,16 +78,16 @@ angular.module('os.plugins.le')
         if (specimens[startIdx].storageType != 'Virtual') {
           return startIdx;
         }
-        
+
         startIdx++;
       }
 
       return -1;
     }
 
-    function getUnit(specimen) {
+    function getProps(specimen) {
       var unitEl = angular.element('<span/>');
-      SpecimenUnitSvc.getUnit(specimen.specimenClass, specimen.type).then(
+      SpecimenPropsSvc.getProps(specimen.specimenClass, specimen.type).then(
         function(unit) {
           unitEl.html(unit.qtyHtmlDisplayCode || unit.qtyUnit)
         }
@@ -105,7 +105,7 @@ angular.module('os.plugins.le')
 
       scope: {
         opts: '=',
-        ctrl: '='       
+        ctrl: '='
       },
 
       controller: function($scope, $element) {

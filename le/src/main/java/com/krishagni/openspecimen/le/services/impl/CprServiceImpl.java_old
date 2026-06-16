@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.krishagni.catissueplus.core.biospecimen.domain.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import com.krishagni.catissueplus.core.biospecimen.domain.CollectionProtocol;
@@ -26,20 +25,12 @@ import com.krishagni.catissueplus.core.common.service.LabelGenerator;
 import com.krishagni.openspecimen.le.events.BulkParticipantRegDetail;
 import com.krishagni.openspecimen.le.events.ParticipantRegDetail;
 import com.krishagni.openspecimen.le.services.CprService;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 
 public class CprServiceImpl implements CprService {
-
+	
 	private DaoFactory daoFactory;
-
-    @PersistenceContext
-    private EntityManager em;
-
-    private LabelGenerator labelGenerator;
+	
+	private LabelGenerator labelGenerator;
 	
 	public void setDaoFactory(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -49,17 +40,15 @@ public class CprServiceImpl implements CprService {
 		this.labelGenerator = labelGenerator;
 	}
 
+
 	@Override
-    @Transactional
-    @PlusTransactional
+	@PlusTransactional	
 	public ResponseEvent<BulkParticipantRegDetail> registerParticipants(RequestEvent<BulkParticipantRegDetail> req) {		
 		try {
 			BulkParticipantRegDetail detail = req.getPayload();
 			
 			OpenSpecimenException ose = new OpenSpecimenException(ErrorType.USER_ERROR);
-
 			CollectionProtocol cp = daoFactory.getCollectionProtocolDao().getById(detail.getCpId());
-
 			if (cp == null) {
 				return ResponseEvent.userError(CpErrorCode.NOT_FOUND);
 			}
@@ -121,8 +110,6 @@ public class CprServiceImpl implements CprService {
 		cpr.setPpid(ppid);
 		cpr.setCollectionProtocol(cp);
 		cpr.setParticipant(participant);
-        cpr.setDataEntryStatus(BaseEntity.DataEntryStatus.COMPLETE);
-
 			
 		Date regDate = detail.getRegDate();
 		if (regDate == null) {
